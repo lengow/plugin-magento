@@ -1,0 +1,5 @@
+
+- update company website : http://www.lengow.fr/plugins/magento/
+- update magento connect : http://www.magentocommerce.com/magento-connect/lengow-shopping-feed-management.html
+- update version number  : http://kml.lengow.com/plugins.xml
+

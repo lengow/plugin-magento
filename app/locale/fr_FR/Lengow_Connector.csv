@@ -1,0 +1,12 @@
+###############################
+#           Common
+###############################
+"Id","Id"
+"Created At","Date de création"
+"Message","Message"
+###############################
+#           Log
+###############################
+"Log List is empty now","La liste des log a bien été effacer"
+"Lengow logs", "Logs Lengow"
+"Flush logs", "Vider les logs"

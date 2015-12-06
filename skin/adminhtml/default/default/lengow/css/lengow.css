@@ -1,0 +1,12 @@
+body > .wrapper > .footer {background:transparent;}
+
+#footer {
+  height: 60px;
+  background-color: #D6D6D6;
+  margin-top: 50px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+/* Magento fix */
+table.actions td.pager {text-align: left;}

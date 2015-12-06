@@ -1,0 +1,41 @@
+================================
+     Module Magento
+================================
+
+Install With Magento <= 1.6 + php >= 5.5
+Error :
+    CONNECT ERROR: Unsupported resource type
+Solution :
+    Edit file downloader/lib/Mage/Archive/Tar.php
+    Change the line :
+        const FORMAT_PARSE_HEADER = 'a100name/a8mode/a8uid/a8gid/a12size/a12mtime/a8checksum/a1type/a100symlink/a6magic/a2version/a32uname/a32gname/a8devmajor/a8devminor/a155prefix/a12closer';
+    must be replaced by:
+        const FORMAT_PARSE_HEADER = 'Z100name/Z8mode/Z8uid/Z8gid/Z12size/Z12mtime/Z8checksum/Z1type/Z100symlink/Z6magic/Z2version/Z32uname/Z32gname/Z8devmajor/Z8devminor/Z155prefix/Z12closer';
+
+-----------------------------------------------------------------------------------------------------
+
+Install With Magento <= 1.5
+Error :
+    CONNECT ERROR: The 'community' channel is not installed.
+Solution :
+    chmod 777 mage
+    ./mage mage-setup
+
+
+================================
+     Magento Installation
+================================
+
+Magento Installation 1.7
+Error :
+    During installation : PHP Extensions "0" must be loaded.
+Solution
+    Edit file app/code/core/Mage/Install/etc/config.xml
+    Change the line :
+        <extensions>
+            <pdo_mysql/>
+        </extensions>
+    must be replaced by :
+        <extensions>
+            <pdo_mysql>1</pdo_mysql>
+        </extensions>

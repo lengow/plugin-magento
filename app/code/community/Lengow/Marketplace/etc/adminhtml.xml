@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<config>
+  <menu>
+    <lengowtab module="lengow_marketplace" translate="title">
+      <title>Lengow</title>
+      <sort_order>20</sort_order>
+      <children>
+        <log module="lengow_marketplace" translate="title">
+          <title>Logs</title>
+          <action>adminhtml/lengow_log</action>
+          <sort_order>400</sort_order>
+        </log>
+      </children>
+    </lengowtab>
+  </menu>
+  <acl>
+    <resources>
+      <admin>
+        <children>
+          <custom translate="title" module="lengow_marketplace">
+            <title>My Controller</title>
+            <sort_order>-100</sort_order>
+            <children>
+              <log translate="title">
+                <title>Log</title>
+                <sort_order>1</sort_order>
+              </log>
+            </children>
+          </custom>
+        </children>
+      </admin>
+    </resources>
+  </acl>
+</config>

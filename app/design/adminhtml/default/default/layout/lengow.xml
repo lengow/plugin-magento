@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout>
+  <adminhtml_lengow_log_index>
+    <reference name="content">
+      <block type="page/html" name="lengow_layout" template="lengow/layout.phtml" >
+        <block type="page/html" name="lengow_header" template="lengow/header.phtml" />
+        <block type="lengow/adminhtml_log" name="lengow_content" />
+        <block type="page/html" name="lengow_footer" template="lengow/footer.phtml" />
+      </block>
+    </reference>
+    <reference name="root">
+      <action method="addBodyClass"><classname>lengow_marketplace</classname></action>
+    </reference>
+    <remove name="footer"/>
+  </adminhtml_lengow_log_index>
+</layout>
