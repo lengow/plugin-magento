@@ -1,0 +1,30 @@
+eav:
+  catalog_product:
+    - entity_id: 1
+      type_id: simple
+      sku: book1
+      name: Book2
+      short_description: Book
+      description: Book
+      price: 55
+      visibility: 4  # Visible in Catalog & Search
+      status: 1 # Enabled
+      tax_class_id: 2 # Taxable Goods
+      visibility: 4
+      attribute_set_id: 1
+      website_ids:
+        - base
+    - entity_id: 2
+      type_id: simple
+      sku: book2
+      name: Book2
+      short_description: Book
+      description: Book
+      price: 55
+      visibility: 4  # Visible in Catalog & Search
+      status: 1 # Enabled
+      tax_class_id: 2 # Taxable Goods
+      visibility: 4
+      attribute_set_id: 1
+      website_ids:
+        - base

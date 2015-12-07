@@ -4,12 +4,12 @@ class Lengow_Marketplace_Test_Controller_Adminhtml_Lengow_LogController extends 
 {
 
     /**
-     * test log index
+     * test index action
      *
      * @test
      *
      */
-    public function logIndex(){
+    public function indexAction(){
         $this->mockAdminUserSession();
 
         //test page
@@ -18,12 +18,28 @@ class Lengow_Marketplace_Test_Controller_Adminhtml_Lengow_LogController extends 
     }
 
     /**
-     * test flush logs
+     * test grid action
      *
      * @test
      *
      */
-    public function flushLog(){
+    public function gridAction(){
+        $this->mockAdminUserSession();
+
+        //test page
+        $this->dispatch('adminhtml/lengow_log/grid');
+        $this->assertRequestRoute('adminhtml/lengow_log/grid', '[Log - Url]');
+    }
+
+
+
+    /**
+     * test delete action
+     *
+     * @test
+     *
+     */
+    public function deleteAction(){
         $this->mockAdminUserSession();
 
         Mage::helper('lengow_marketplace')->log('Test message by helper');

@@ -1,19 +1,22 @@
 <?php
+
 /**
  * Lengow select products block
  *
  * @category    Lengow
  * @package     Lengow_Export
  * @author      Ludovic Drin <ludovic@lengow.com>
- * @copyright   2013 Lengow SAS 
+ * @copyright   2013 Lengow SAS
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Lengow_Marketplace_Block_Adminhtml_Product extends Mage_Adminhtml_Block_Widget_Grid_Container {
+class Lengow_Marketplace_Block_Adminhtml_Product extends Mage_Adminhtml_Block_Widget_Grid_Container
+{
 
     /**
      * Set template
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
 
 
