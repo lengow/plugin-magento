@@ -5,7 +5,11 @@
       media="all">
 
 <ul class="nav nav-tabs">
-    <li role="presentation" class="active"><a href="<?php echo Mage::helper("adminhtml")->getUrl('adminhtml/lengow_log'); ?>"><?php echo $this->__('Logs') ?> </a></li>
-    <li role="presentation"><a href="#">Profile</a></li>
+    <li role="presentation" class="<?php echo $this->getRequest()->getControllerName() == 'lengow_log' ? 'active' : ''; ?> ">
+        <a href="<?php echo Mage::helper("adminhtml")->getUrl('adminhtml/lengow_log'); ?>"><?php echo $this->__('Logs') ?> </a>
+    </li>
+    <li role="presentation" class="<?php echo $this->getRequest()->getControllerName() == 'lengow_product' ? 'active' : ''; ?> ">
+        <a href="<?php echo Mage::helper("adminhtml")->getUrl('adminhtml/lengow_product'); ?>"><?php echo $this->__('Products') ?> </a>
+    </li>
     <li role="presentation"><a href="#">Messages</a></li>
 </ul>

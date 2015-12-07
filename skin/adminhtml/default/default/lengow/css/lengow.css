@@ -9,4 +9,6 @@ body > .wrapper > .footer {background:transparent;}
 }
 
 /* Magento fix */
+body {font-size:12px;}
 table.actions td.pager {text-align: left;}
+ul#nav {margin:0;padding:0;}

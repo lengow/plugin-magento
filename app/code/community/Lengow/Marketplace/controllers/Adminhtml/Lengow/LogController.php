@@ -16,8 +16,7 @@ class Lengow_Marketplace_Adminhtml_Lengow_LogController extends Mage_Adminhtml_C
     }
     
     public function indexAction() {
-        $this->_initAction()
-             ->renderLayout();        
+        $this->_initAction()->renderLayout();
         return $this;
     }
 
