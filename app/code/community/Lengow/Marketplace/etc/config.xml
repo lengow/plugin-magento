@@ -53,6 +53,7 @@
       <lengow_setup>
         <setup>
           <module>Lengow_Marketplace</module>
+          <class>Mage_Catalog_Model_Resource_Setup</class>
         </setup>
       </lengow_setup>
     </resources>

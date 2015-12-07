@@ -14,15 +14,22 @@ class Lengow_Marketplace_Test_Model_Product extends EcomDev_PHPUnit_Test_Case
     {
         //load product lengow product must be false
         $product = Mage::getModel('catalog/product')->load(100);
-        $this->assertTrue(!(boolean)$product->getLengowProduct());
+        echo "[L=".$product->getLengowProduct()."]";
+
+        $this->assertTrue(!(boolean)$product->getLengowProduct(),'Test default value Lengow_product');
 
         //we set lengow product to true, lengow product must be true
         $product = Mage::getModel('catalog/product')->load(100);
         $product->setLengowProduct(true);
+        $product->setName("toto");
+
+        echo "[L=".$product->getLengowProduct()."]";
+
         $product->save();
 
         $product = Mage::getModel('catalog/product')->load(100);
-        $this->assertTrue((boolean)$product->getLengowProduct());
+        echo "[L=".$product->getLengowProduct()."]";
+        $this->assertTrue((boolean)$product->getLengowProduct(), 'Lengow_product must be true');
 
         //we set lengow product to false, lengow product must be false
         $product = Mage::getModel('catalog/product')->load(100);
