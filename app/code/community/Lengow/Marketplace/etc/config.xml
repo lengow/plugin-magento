@@ -5,6 +5,17 @@
       <version>3.0.0</version>
     </Lengow_Marketplace>
   </modules>
+  <frontend>
+    <routers>
+      <lengow>
+        <use>standard</use>
+        <args>
+          <module>Lengow_Marketplace</module>
+          <frontName>lengow</frontName>
+        </args>
+      </lengow>
+    </routers>
+  </frontend>
   <admin>
     <routers>
       <adminhtml>

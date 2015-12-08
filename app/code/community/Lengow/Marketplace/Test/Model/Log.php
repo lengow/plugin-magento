@@ -10,7 +10,7 @@ class Lengow_Marketplace_Test_Model_Log extends EcomDev_PHPUnit_Test_Case
      * @loadFixture
      * @doNotIndexAll
      */
-    public function log()
+    public function model()
     {
         $collection = Mage::getModel('lengow/log')->getCollection();
         foreach($collection as $log){
@@ -32,6 +32,44 @@ class Lengow_Marketplace_Test_Model_Log extends EcomDev_PHPUnit_Test_Case
         $log = Mage::getModel('lengow/log')->load($insertLog->getId());
         $this->assertEquals($log->getId(), $insertLog->getId(), '[Log - Helper Insert] check data');
         $this->assertEquals($log->getMessage(), 'Test message by helper', '[Log - Helper Insert] check data');
+    }
+
+    /**
+     * Test log model
+     *
+     * @test
+     */
+    public function log(){
+        $model = Mage::getModel('lengow/log');
+        $model->log('Test Message 1');
+        $model->log('Test Message 2');
+        $model->log('Test Message 3');
+
+        $collection = Mage::getModel('lengow/log')->getCollection();
+        $this->assertEquals(count($collection), 3);
+    }
+
+
+    /**
+     * Empty logs
+     *
+     * @test
+     * @loadFixture empty_log.yaml
+     * @doNotIndexAll
+     */
+    public function emptyLog()
+    {
+        $model = Mage::getModel('lengow/log');
+        $model->log('Test Message 4');
+        $model->log('Test Message 5');
+        $model->log('Test Message 6');
+
+        $collection = Mage::getModel('lengow/log')->getCollection();
+        $this->assertEquals(count($collection), 6);
+        $model->cleanLog();
+
+        $collection = Mage::getModel('lengow/log')->getCollection();
+        $this->assertEquals(count($collection), 3);
     }
 
 }
