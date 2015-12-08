@@ -1,0 +1,14 @@
+scope:
+  store:
+    - store_id: 2
+      website_id: 1
+      group_id: 1
+      code: usa
+      name: USA Store
+      is_active: 1
+    - store_id: 3
+      website_id: 1
+      group_id: 1
+      code: canada
+      name: Canada Store
+      is_active: 1

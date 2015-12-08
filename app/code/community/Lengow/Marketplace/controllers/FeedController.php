@@ -23,8 +23,40 @@ class Lengow_Marketplace_FeedController extends Mage_Core_Controller_Front_Actio
         set_time_limit(0);
         ini_set('memory_limit', '1G');
 
+        //get params data
+        $mode = $this->getRequest()->getParam('mode');
+        $format = $this->getRequest()->getParam('format', null);
+        $types = $this->getRequest()->getParam('product_type', null);
+        $export_child = $this->getRequest()->getParam('export_child', null);
+        $status = $this->getRequest()->getParam('product_status', null);
+        $out_of_stock = $this->getRequest()->getParam('product_out_of_stock', null);
+        $selected_products = $this->getRequest()->getParam('selected_products', null);
+        $stream = $this->getRequest()->getParam('stream', null);
+        $limit = $this->getRequest()->getParam('limit', null);
+        $offset = $this->getRequest()->getParam('offset', null);
+        $ids_product = $this->getRequest()->getParam('ids_product', null);
+        $debug = $this->getRequest()->getParam('debug', null);
 
-//        $mode = $this->getRequest()->getParam('mode');
+        //get store data
+        $storeCode = $this->getRequest()->getParam('code', null);
+        if ($storeCode) //if store code is in URL
+            $storeId = (int) Mage::getModel('core/store')->load($storeCode, 'code')->getId();
+        else // if store id is in URL
+            $storeId = (integer) $this->getRequest()->getParam('store', Mage::app()->getStore()->getId());
+        $storeName = Mage::app()->getStore($storeId)->getName();
+
+        if ($locale = $this->getRequest()->getParam('locale', null)) {
+            // changing locale works!
+            Mage::app()->getLocale()->setLocale($locale);
+            // needed to add this
+            Mage::app()->getTranslator()->setLocale($locale);
+            // translation now works
+            Mage::app()->getTranslator()->init('frontend', true);
+        }
+        if($currency = $this->getRequest()->getParam('currency', null)) {
+            $generate->setCurrentCurrencyCode($currency);
+        }
+
 //        $helper = Mage::helper('lenexport/security');
 //        if($helper->checkIp()) {
 //            $log->log('## Start manual export ##');
@@ -36,12 +68,6 @@ class Lengow_Marketplace_FeedController extends Mage_Core_Controller_Front_Actio
 //                Mage::throwException($e);
 //            }
 //
-//            // get store
-//            $storeCode = $this->getRequest()->getParam('code', null);
-//            if ($storeCode) //if store code is in URL
-//                $id_store = (int) Mage::getModel('core/store')->load($storeCode, 'code')->getId();
-//            else // if store id is in URL
-//                $id_store = (integer) $this->getRequest()->getParam('store', Mage::app()->getStore()->getId());
 //
 //            // config store
 //            $_configModel->setStore($id_store);
@@ -58,34 +84,11 @@ class Lengow_Marketplace_FeedController extends Mage_Core_Controller_Front_Actio
 //                $generate->setCurrentStore($id_store);
 //                $generate->setOriginalCurrency(Mage::app()->getStore()->getCurrentCurrencyCode());
 //
-//                // other params
-//                $format = $this->getRequest()->getParam('format', null);
-//                $types = $this->getRequest()->getParam('product_type', null);
-//                $export_child = $this->getRequest()->getParam('export_child', null);
-//                $status = $this->getRequest()->getParam('product_status', null);
-//                $out_of_stock = $this->getRequest()->getParam('product_out_of_stock', null);
-//                $selected_products = $this->getRequest()->getParam('selected_products', null);
-//                $stream = $this->getRequest()->getParam('stream', null);
-//                $limit = $this->getRequest()->getParam('limit', null);
-//                $offset = $this->getRequest()->getParam('offset', null);
-//                $ids_product = $this->getRequest()->getParam('ids_product', null);
-//                $debug = $this->getRequest()->getParam('debug', null);
 //
-//                if ($locale = $this->getRequest()->getParam('locale', null)) {
-//                    // changing locale works!
-//                    Mage::app()->getLocale()->setLocale($locale);
-//                    // needed to add this
-//                    Mage::app()->getTranslator()->setLocale($locale);
-//                    // translation now works
-//                    Mage::app()->getTranslator()->init('frontend', true);
-//                }
-//                if($currency = $this->getRequest()->getParam('currency', null)) {
-//                    $generate->setCurrentCurrencyCode($currency);
-//                }
-//                $log->log('Start manual export in store ' . Mage::app()->getStore($id_store)->getName() . '(' . $id_store . ')');
+//                $log->log('Start manual export in store ' . $storeName . '(' . $storeId . ')');
 //
-//                if(Mage::getStoreConfig('lenexport/performances/optimizeexport')) {
-//                    $generate->exec($id_store, $format, array(
+//                if(Mage::getStoreConfig('lengow/performances/optimizeexport')) {
+//                    $generate->exec($storeId, $format, array(
 //                        "mode" => $mode,
 //                        "types" => $types,
 //                        "status" => $status,
@@ -99,12 +102,12 @@ class Lengow_Marketplace_FeedController extends Mage_Core_Controller_Front_Actio
 //                        "debug" => $debug,
 //                    ));
 //                }else{
-//                    $generate->exec($id_store, $mode, $format, $types, $status, $export_child, $out_of_stock, $selected_products, $stream, $limit, $offset, $ids_product);
+//                    $generate->exec($storeId, $mode, $format, $types, $status, $export_child, $out_of_stock, $selected_products, $stream, $limit, $offset, $ids_product);
 //                }
 //            } else {
-//                $log->log('Stop manual export - Store ' . Mage::app()->getStore($id_store)->getName() . '(' . $id_store . ') is disabled');
+//                $log->log('Stop manual export - Store ' . $storeName . '(' . $storeId . ') is disabled');
 //                header('Content-Type: text/html; charset=utf-8');
-//                echo 'Stop manual export - Store ' . Mage::app()->getStore($id_store)->getName() . '(' . $id_store . ') is disabled';
+//                echo 'Stop manual export - Store ' . $storeName . '(' . $storeId . ') is disabled';
 //                flush();
 //            }
 //            $log->log('## End manual export ##');

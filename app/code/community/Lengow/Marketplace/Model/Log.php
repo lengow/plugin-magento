@@ -27,6 +27,7 @@ class Lengow_Marketplace_Model_Log extends Mage_Core_Model_Abstract
     {
         $log = Mage::getModel('lengow/log');
         if (strlen($message) > 0) {
+            $log->setCreatedAt(Mage::getModel('core/date')->date('Y-m-d H:i:s'));
             $log->setMessage($message);
             return $log->save();
         } else {
@@ -42,7 +43,7 @@ class Lengow_Marketplace_Model_Log extends Mage_Core_Model_Abstract
         $resource = Mage::getSingleton('core/resource');
         $writeConnection = $resource->getConnection('core_write');
         $table = $resource->getTableName('lengow/log');
-        $query = "DELETE FROM ".$table." WHERE date < DATE_SUB(NOW(),INTERVAL 20 DAY)";
+        $query = "DELETE FROM ".$table." WHERE created_at < DATE_SUB(NOW(),INTERVAL 20 DAY)";
         $writeConnection->query($query);
     }
 

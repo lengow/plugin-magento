@@ -40,6 +40,7 @@ class Lengow_Marketplace_Test_Controller_Adminhtml_Lengow_ProductController exte
      *
      * @test
      * @doNotIndexAll
+     * @loadFixture store.yaml
      * @loadFixture mass_publish_action.yaml
      *
      */

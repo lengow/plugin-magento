@@ -8,9 +8,10 @@ class Lengow_Marketplace_Test_Model_Product extends EcomDev_PHPUnit_Test_Case
      *
      * @test
      * @doNotIndexAll
-     * @loadFixture
+     * @loadFixture store.yaml
+     * @loadFixture lengow_product.yaml
      */
-    public function lengow_product()
+    public function lengowProduct()
     {
         //load product lengow product must be false
         $product = Mage::getModel('catalog/product')->load(100);

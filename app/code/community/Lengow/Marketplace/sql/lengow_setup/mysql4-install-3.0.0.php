@@ -1,6 +1,5 @@
 <?php
 
-
 $installer = $this;
 $installer->startSetup();
 
@@ -28,6 +27,30 @@ if(!$attribute) {
         'used_in_product_listing' => 1
     ));
 }
+
+$new_attributes = array("lengow_product");
+
+// Add new Attribute group
+$groupName = 'Lengow';
+
+$entityTypeId = $installer->getEntityTypeId('catalog_product');
+
+//Add group Lengow in all Attribute Set
+$attributeSetCollection = Mage::getResourceModel('eav/entity_attribute_set_collection')->load();
+foreach ($attributeSetCollection as $id => $attributeSet) {
+
+    // Add group lengow in attribute set
+    $installer->addAttributeGroup($entityTypeId, $attributeSet->getId(), $groupName, 100);
+    $attributeGroupId = $installer->getAttributeGroupId($entityTypeId, $attributeSet->getId(), $groupName);
+
+    // Add new attribute (lengow_product) on Group (Lengow)
+    foreach($new_attributes as $attribute_code) {
+        $attributeId = $installer->getAttributeId('catalog_product', $attribute_code);
+        $entityTypeId = $attributeSet->getEntityTypeId();
+        $installer->addAttributeToGroup($entityTypeId, $attributeSet->getId(), $attributeGroupId, $attributeId, null);
+    }
+}
+
 
 $tableName = $installer->getTable('lengow_log');
 if ($installer->getConnection()->isTableExists($tableName) != true) {
