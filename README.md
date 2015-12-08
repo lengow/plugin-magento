@@ -5,13 +5,13 @@
 
 Cloner le repo dans votre espace de travail :
 
-    git clone git@bitbucket.org:lengow-dev/magento.git
+    git clone git@bitbucket.org:lengow-dev/magento-v3.git
 
 ### Installation dans Magento ###
 
 Exécuter le script suivant :
 
-    ./lenginstall.sh /path/instance/magento
+    ./install.sh /path/instance/magento
 
 Le script va créer des liens symboliques vers les sources du module, vous devez ensuite activer l'option 'symlinks' dans la configuration Magento 
 
