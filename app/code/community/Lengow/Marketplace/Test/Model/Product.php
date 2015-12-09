@@ -20,7 +20,6 @@ class Lengow_Marketplace_Test_Model_Product extends EcomDev_PHPUnit_Test_Case
         //we set lengow product to true, lengow product must be true
         $product = Mage::getModel('catalog/product')->load(100);
         $product->setLengowProduct(true);
-        $product->setName("toto");
         $product->save();
 
         $product = Mage::getModel('catalog/product')->load(100);
