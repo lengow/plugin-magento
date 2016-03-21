@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<config>
+    <menu>
+        <lengowtab module="lengow_connector" translate="title">
+            <title>module.name</title>
+            <sort_order>20</sort_order>
+            <action>adminhtml/lengow_home</action>
+            <children>
+                <product module="lengow_connector" translate="title">
+                    <title>menu.products</title>
+                    <action>adminhtml/lengow_product</action>
+                    <sort_order>1</sort_order>
+                    <disabled>1</disabled>
+                </product>
+                <log module="lengow_connector" translate="title">
+                    <title>menu.logs</title>
+                    <action>adminhtml/lengow_log</action>
+                    <sort_order>2</sort_order>
+                    <disabled>1</disabled>
+                </log>
+            </children>
+        </lengowtab>
+    </menu>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <custom translate="title" module="lengow_connector">
+                        <title>My Controller</title>
+                        <sort_order>-100</sort_order>
+                        <children>
+                            <product translate="title">
+                                <title>menu.products</title>
+                                <sort_order>1</sort_order>
+                            </product>
+                            <log translate="title">
+                                <title>menu.logs</title>
+                                <sort_order>2</sort_order>
+                            </log>
+                        </children>
+                    </custom>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>

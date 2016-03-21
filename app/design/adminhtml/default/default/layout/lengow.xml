@@ -1,22 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<layout>
+<layout>fez f
+  <adminhtml_lengow_home_index>
+    <reference name="content">
+      <block type="page/html" name="lengow_layout" template="lengow/layout/home.phtml" >
+        <block type="page/html" name="lengow_content" template="lengow/home/index.phtml" />
+      </block>
+    </reference>
+  </adminhtml_lengow_home_index>
+
   <adminhtml_lengow_log_index>
     <reference name="content">
-      <block type="page/html" name="lengow_layout" template="lengow/layout.phtml" >
+      <block type="page/html" name="lengow_layout" template="lengow/layout/main.phtml" >
         <block type="page/html" name="lengow_header" template="lengow/header.phtml" />
         <block type="lengow/adminhtml_log" name="lengow_content" />
         <block type="page/html" name="lengow_footer" template="lengow/footer.phtml" />
       </block>
     </reference>
     <reference name="root">
-      <action method="addBodyClass"><classname>lengow_marketplace</classname></action>
+      <action method="addBodyClass"><classname>lengow_connector</classname></action>
     </reference>
     <remove name="footer"/>
   </adminhtml_lengow_log_index>
 
   <adminhtml_lengow_product_index>
     <reference name="content">
-      <block type="page/html" name="lengow_layout" template="lengow/layout.phtml" >
+      <block type="page/html" name="lengow_layout" template="lengow/layout/main.phtml" >
         <block type="page/html" name="lengow_header" template="lengow/header.phtml" />
         <block type="adminhtml/store_switcher" name="store_switcher" as="store_switcher">
           <action method="setUseConfirm">
@@ -28,7 +36,7 @@
       </block>
     </reference>
     <reference name="root">
-      <action method="addBodyClass"><classname>lengow_marketplace</classname></action>
+      <action method="addBodyClass"><classname>lengow_connector</classname></action>
     </reference>
     <remove name="footer"/>
   </adminhtml_lengow_product_index>

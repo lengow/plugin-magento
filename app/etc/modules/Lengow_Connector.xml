@@ -25,9 +25,9 @@
 -->
 <config>
     <modules>
-        <Lengow_Marketplace>
+        <Lengow_Connector>
             <active>true</active>
             <codePool>community</codePool>
-        </Lengow_Marketplace>
+        </Lengow_Connector>
     </modules>
 </config>
