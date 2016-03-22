@@ -3,7 +3,7 @@
 
 ### Installation de magento ###
 
-1 - Aller sur le site de mangento : https://www.magentocommerce.com/download
+1 - Aller sur le site de magento : https://www.magentocommerce.com/download
 
 2 - Dans l'onglet release archive, choisir la version a télécharger (ex: la 1.9.2)
 
