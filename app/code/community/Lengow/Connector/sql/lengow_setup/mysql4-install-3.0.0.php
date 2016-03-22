@@ -59,7 +59,6 @@ foreach ($attributeSetCollection as $id => $attributeSet) {
     }
 }
 
-
 $tableName = $installer->getTable('lengow_log');
 if ($installer->getConnection()->isTableExists($tableName) != true) {
     $table = $installer->getConnection()
