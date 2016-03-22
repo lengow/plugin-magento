@@ -4,8 +4,11 @@
 ### Installation de magento ###
 
 1 - Aller sur le site de mangento : https://www.magentocommerce.com/download
+
 2 - Dans l'onglet release archive, choisir la version a télécharger (ex: la 1.9.2)
+
 3 - Décompresser le projet dans /var/www/magento/magento-1-9-2
+
 4 - Modification du fichier /etc/hosts
 
     echo "127.0.0.1 magento-1-9.local" >> /etc/hosts
