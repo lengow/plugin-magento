@@ -1,3 +1,11 @@
-<h1>Home Layout</h1>
-<?php
-echo $this->getChildHtml("lengow_content");
+<script type="text/javascript" src="<?php echo Mage::getDesign()->getSkinUrl();?>lengow/js/jquery-2.2.2.js"></script>
+<script type="text/javascript">var lengow_jquery = jQuery.noConflict();</script>
+<script type="text/javascript" src="<?php echo Mage::getDesign()->getSkinUrl();?>lengow/js/home.js"></script>
+
+<div id="lengow-container">
+    <h1>Home Page</h1>
+    <?php
+        echo $this->getChildHtml("lengow_content");
+    ?>
+</div>
+<div id="lengow-iframe-container"></div>

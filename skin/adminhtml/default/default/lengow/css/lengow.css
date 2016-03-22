@@ -1,4 +1,4 @@
-body > .wrapper > .footer {background:transparent;}
+/*body > .wrapper > .footer {background:transparent;}
 
 #footer {
   height: 60px;
@@ -8,7 +8,24 @@ body > .wrapper > .footer {background:transparent;}
   padding-bottom: 20px;
 }
 
-/* Magento fix */
+Magento fix
 body {font-size:12px;}
 table.actions td.pager {text-align: left;}
-ul#nav {margin:0;padding:0;}
+ul#nav {margin:0;padding:0;}*/
+
+
+
+body.lengow-connector .middle {
+  padding:0px;
+}
+
+.footer {
+  padding:0px;
+}
+
+/* HOME */
+#lengow-iframe {
+  width: 100%;
+  min-height:632px;
+  border:0px;
+}
