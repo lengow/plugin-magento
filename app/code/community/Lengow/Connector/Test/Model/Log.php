@@ -35,17 +35,21 @@ class Lengow_Connector_Test_Model_Log extends EcomDev_PHPUnit_Test_Case
     }
 
     /**
-     * Test log model
+     * Test log
      *
+     * @loadFixture write.yaml
      * @test
      */
-    public function log(){
+    public function write()
+    {
         $model = Mage::getModel('lengow/log');
-        $model->log('Test Message 1');
-        $model->log('Test Message 2');
-        $model->log('Test Message 3');
+        $model->write('Category', 'Test Message 1');
+        $model->write('Category', 'Test Message 2');
+        $model->write('Category', 'Test Message 3');
 
         $collection = Mage::getModel('lengow/log')->getCollection();
+
+        $this->assertEquals('[Category] Test Message 1', $collection->getFirstItem()->getMessage());
         $this->assertEquals(count($collection), 3);
     }
 
@@ -60,9 +64,9 @@ class Lengow_Connector_Test_Model_Log extends EcomDev_PHPUnit_Test_Case
     public function emptyLog()
     {
         $model = Mage::getModel('lengow/log');
-        $model->log('Test Message 4');
-        $model->log('Test Message 5');
-        $model->log('Test Message 6');
+        $model->write('Category', 'Test Message 4');
+        $model->write('Category', 'Test Message 5');
+        $model->write('Category', 'Test Message 6');
 
         $collection = Mage::getModel('lengow/log')->getCollection();
         $this->assertEquals(count($collection), 6);

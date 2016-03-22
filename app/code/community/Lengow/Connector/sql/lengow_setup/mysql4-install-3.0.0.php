@@ -15,7 +15,7 @@ $installer->removeAttribute('catalog_product','lengow_product');
 
 $attribute = $installer->getAttribute('catalog_product','lengow_product');
 
-if(!$attribute) {
+if (!$attribute) {
     $installer->addAttribute('catalog_product', 'lengow_product', array(
         'type' => 'int',
         'backend' => '',
@@ -52,7 +52,7 @@ foreach ($attributeSetCollection as $id => $attributeSet) {
     $attributeGroupId = $installer->getAttributeGroupId($entityTypeId, $attributeSet->getId(), $groupName);
 
     // Add new attribute (lengow_product) on Group (Lengow)
-    foreach($new_attributes as $attribute_code) {
+    foreach ($new_attributes as $attribute_code) {
         $attributeId = $installer->getAttributeId('catalog_product', $attribute_code);
         $entityTypeId = $attributeSet->getEntityTypeId();
         $installer->addAttributeToGroup($entityTypeId, $attributeSet->getId(), $attributeGroupId, $attributeId, null);
@@ -70,7 +70,7 @@ if ($installer->getConnection()->isTableExists($tableName) != true) {
             'nullable' => false,
             'primary' => true,
         ), 'Id')
-        ->addColumn('created_at', Varien_Db_Ddl_Table::TYPE_DATETIME, null, array(
+        ->addColumn('date', Varien_Db_Ddl_Table::TYPE_DATETIME, null, array(
             'nullable' => false,
         ), 'Date')
         ->addColumn('message', Varien_Db_Ddl_Table::TYPE_TEXT, null, array(
