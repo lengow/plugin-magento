@@ -30,10 +30,12 @@ if (!$attribute) {
         'searchable' => 0,
         'filterable' => 0,
         'comparable' => 0,
-        'visible_on_front' => 1,
+        'visible_on_front' => 0,
         'unique' => 0,
         'used_in_product_listing' => 1
     ));
+} else {
+    $installer->updateAttribute('catalog_product', 'lengow_product', 'is_visible_on_front', 0);
 }
 
 $new_attributes = array("lengow_product");
