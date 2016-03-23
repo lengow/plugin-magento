@@ -165,7 +165,7 @@ if ($installer->getConnection()->isTableExists($tableName) != true) {
             'nullable'  => false,
             'length'    => 100
         ), 'Marketplace Sku')
-        ->addColumn('markeplace_name', Varien_Db_Ddl_Table::TYPE_TEXT, 100, array(
+        ->addColumn('marketplace_name', Varien_Db_Ddl_Table::TYPE_TEXT, 100, array(
             'nullable'  => false,
             'length'    => 100
         ), 'Marketplace Name')
@@ -249,6 +249,10 @@ if ($installer->getConnection()->isTableExists($tableName) != true) {
         ->addColumn('created_at', Varien_Db_Ddl_Table::TYPE_DATETIME, null, array(
             'nullable'  => false,
         ), 'Created At')
+        ->addColumn('updated_at', Varien_Db_Ddl_Table::TYPE_DATETIME, null, array(
+            'nullable'  => true,
+            'default'   => null
+        ), 'Updated At')
         ->addColumn('extra', Varien_Db_Ddl_Table::TYPE_TEXT, null, array(
             'nullable'  => true,
             'default'   => null
@@ -300,6 +304,10 @@ if ($installer->getConnection()->isTableExists($tableName) != true) {
         ->addColumn('created_at', Varien_Db_Ddl_Table::TYPE_DATETIME, null, array(
             'nullable'  => false,
         ), 'Created At')
+        ->addColumn('updated_at', Varien_Db_Ddl_Table::TYPE_DATETIME, null, array(
+            'nullable'  => true,
+            'default'   => null
+        ), 'Updated At')
         ->addColumn('type', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
             'nullable'  => false,
             'unsigned'  => true
@@ -359,7 +367,8 @@ if ($installer->getConnection()->isTableExists($tableName) != true) {
             'nullable'  => false
         ), 'Created At')
         ->addColumn('updated_at', Varien_Db_Ddl_Table::TYPE_DATETIME, null, array(
-            'nullable'  => false
+            'nullable'  => true,
+            'default'   => null
         ), 'Updated At');
     $installer->getConnection()->createTable($table);
 }

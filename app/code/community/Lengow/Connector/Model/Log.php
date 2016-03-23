@@ -11,19 +11,20 @@
 
 class Lengow_Connector_Model_Log extends Mage_Core_Model_Abstract
 {
-
     protected function _construct()
     {
+        parent::_construct();
         $this->_init('lengow/log');
     }
 
     /**
      * Write log
      *
-     * @param string $category Category
-     * @param string $message log message
-     * @param boolean $display display on screen
-     * @param string $marketplace_sku lengow order id
+     * @param string    $category           Category
+     * @param string    $message            log message
+     * @param boolean   $display            display on screen
+     * @param string    $marketplace_sku    lengow order id
+     *
      * @return boolean
      */
     public function write($category, $message = "", $display = false, $marketplace_sku = null)
@@ -46,7 +47,8 @@ class Lengow_Connector_Model_Log extends Mage_Core_Model_Abstract
     }
 
     /**
-     * Suppress log files when too old.
+     * Suppress log files when too old
+     *
      * @param integer $nbDays
      */
     public function cleanLog($nbDays = 20)
