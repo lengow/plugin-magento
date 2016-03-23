@@ -25,7 +25,6 @@ class Lengow_Connector_Helper_Translation extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * v3
      * Translate message
      *
      * @param string $message   localization key
@@ -60,7 +59,6 @@ class Lengow_Connector_Helper_Translation extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * v3
      * Translate string
      *
      * @param $text
@@ -84,7 +82,6 @@ class Lengow_Connector_Helper_Translation extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * v3
      * Load csv file
      *
      * @param string $iso_code
