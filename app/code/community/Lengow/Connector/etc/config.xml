@@ -54,6 +54,18 @@
             <lengow_resource>
                 <class>Lengow_Connector_Model_Resource</class>
                 <entities>
+                    <order>
+                        <table>lengow_order</table>
+                    </order>
+                    <orderline>
+                        <table>lengow_order_line</table>
+                    </orderline>
+                    <ordererror>
+                        <table>lengow_order_error</table>
+                    </ordererror>
+                    <action>
+                        <table>lengow_action</table>
+                    </action>
                     <log>
                         <table>lengow_log</table>
                     </log>
