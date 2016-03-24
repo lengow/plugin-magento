@@ -102,8 +102,7 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action 
             $export->exec();
             Mage::getSingleton('lengow/log')->write(
                 'Export',
-                Mage::helper('lengow_connector/translation')->t('log.export.manual_end'),
-                true
+                Mage::helper('lengow_connector/translation')->t('log.export.manual_end')
             );
         } else {
             echo $this->__('Unauthorised IP : %s', $_SERVER['REMOTE_ADDR']);

@@ -11,5 +11,7 @@ log.export.manual_end|## End manual export ##
 log.export.start_for_shop|## Start export in shop %{name_shop} (%{id_shop}) ##
 log.export.stop_for_shop|## Stop manual export - Store %{name_shop} (%{id_shop}) is disabled ##
 log.export.nb_product_found|%{nb_product} product(s) found
+log.export.memory_usage|Memory usage
+log.export.execution_time|Execution time : %{seconds} seconds
 log.export.your_feed_available_here|your feed is available here: <a href='%{feed_url}' target='_blank'>%{feed_url}</a>
 log.export.generate_feed_available_here|Export of the store %{name_shop} (%{id_shop}) generated a file here : %{feed_url}

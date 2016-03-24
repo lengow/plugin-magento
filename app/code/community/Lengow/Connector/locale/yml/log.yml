@@ -8,6 +8,8 @@ en:
       start_for_shop: "## Start export in shop %{name_shop} (%{id_shop}) ##"
       stop_for_shop: "## Stop manual export - Store %{name_shop} (%{id_shop}) is disabled ##"
       nb_product_found: "%{nb_product} product(s) found"
+      memory_usage: "Memory usage"
+      execution_time: "Execution time : %{seconds} seconds"
 #      count_product: "%{product_count} products exported"
 #      export_failed: "export failed - %{decoded_message}"
       your_feed_available_here: "your feed is available here: <a href='%{feed_url}' target='_blank'>%{feed_url}</a>"

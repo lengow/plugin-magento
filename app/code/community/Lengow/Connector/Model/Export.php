@@ -463,8 +463,11 @@ class Lengow_Connector_Model_Export extends Varien_Object
         $time_end = $this->microtime_float();
         $time = $time_end - $time_start;
         if (!$this->_stream) {
-            echo "<br/> Memory Usage " . memory_get_usage() / 1000000;
-            echo "<br/> Execution time $time secondes<br/>";
+            echo "<br/>".Mage::helper('lengow_connector/translation')->t('log.export.memory_usage')
+                ." : ". round(memory_get_usage() / 1000000,2)." Mb";
+            echo "<br/>".Mage::helper('lengow_connector/translation')->t('log.export.execution_time', array(
+                    "seconds" => round($time,2)
+                ))."<br/>";
         }
     }
 
