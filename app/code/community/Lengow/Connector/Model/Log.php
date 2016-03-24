@@ -11,6 +11,18 @@
 
 class Lengow_Connector_Model_Log extends Mage_Core_Model_Abstract
 {
+    /**
+     * @var array $_field_list field list for the table lengow_order_line
+     * required => Required fields when creating registration
+     * update   => Fields allowed when updating registration
+     */
+    protected $_field_list = array(
+        'message' => array('required' => true, 'updated' => false)
+    );
+
+    /**
+     * Constructor
+     */
     protected function _construct()
     {
         parent::_construct();
@@ -18,46 +30,22 @@ class Lengow_Connector_Model_Log extends Mage_Core_Model_Abstract
     }
 
     /**
-     * Write log
+     * Create Lengow log
      *
-     * @param string    $category           Category
-     * @param string    $message            log message
-     * @param boolean   $display            display on screen
-     * @param string    $marketplace_sku    lengow order id
+     * @param array $params
      *
-     * @return boolean
      */
-    public function write($category, $message = "", $display = false, $marketplace_sku = null)
+    public function createLog($params = array())
     {
-        if (strlen($message) == 0) {
-            return false;
+        foreach ($this->_field_list as $key => $value) {
+            if (!array_key_exists($key, $params) && $value['required']) {
+                return false;
+            }
         }
-        $decoded_message = $message; //= LengowMain::decodeLogMessage($message, 'en');
-        $finalMessage = (empty($category) ? '' : '['.$category.'] ');
-        $finalMessage .= ''.(empty($marketplace_sku) ? '' : 'order '.$marketplace_sku.' : ');
-        $finalMessage .= $decoded_message;
-        if ($display) {
-            echo $finalMessage.'<br />';
-            flush();
+        foreach ($params as $key => $value) {
+            $this->setData($key, $value);
         }
-        $log = Mage::getModel('lengow/log');
-        $log->setDate(Mage::getModel('core/date')->date('Y-m-d H:i:s'));
-        $log->setMessage($finalMessage);
-        return $log->save();
-    }
-
-    /**
-     * Suppress log files when too old
-     *
-     * @param integer $nbDays
-     */
-    public function cleanLog($nbDays = 20)
-    {
-        $nbDays = (int)$nbDays;
-        $resource = Mage::getSingleton('core/resource');
-        $writeConnection = $resource->getConnection('core_write');
-        $table = $resource->getTableName('lengow/log');
-        $query = "DELETE FROM ".$table." WHERE `date` < DATE_SUB(NOW(),INTERVAL ".$nbDays." DAY)";
-        $writeConnection->query($query);
+        $this->setData('date', Mage::getModel('core/date')->date('Y-m-d H:i:s'));
+        return $this->save();
     }
 }

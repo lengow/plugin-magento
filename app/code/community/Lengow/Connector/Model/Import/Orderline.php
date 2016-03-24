@@ -9,13 +9,21 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-class Lengow_Connector_Model_Orderline extends Mage_Core_Model_Abstract
+class Lengow_Connector_Model_Import_Orderline extends Mage_Core_Model_Abstract
 {
-    protected $_required_fields = array(
-        'id_order',
-        'id_order_line'
+    /**
+     * @var array $_field_list field list for the table lengow_order_line
+     * required => Required fields when creating registration
+     * update   => Fields allowed when updating registration
+     */
+    protected $_field_list = array(
+        'id_order'      => array('required' => true, 'updated' => false),
+        'id_order_line' => array('required' => true, 'updated' => false)
     );
 
+    /**
+     * Constructor
+     */
     protected function _construct()
     {
         parent::_construct();
@@ -30,8 +38,8 @@ class Lengow_Connector_Model_Orderline extends Mage_Core_Model_Abstract
      */
     public function createOrderLine($params = array())
     {
-        foreach ($this->_required_fields as $value) {
-            if (!array_key_exists($value, $params)) {
+        foreach ($this->_field_list as $key => $value) {
+            if (!array_key_exists($key, $params) && $value['required']) {
                 return false;
             }
         }

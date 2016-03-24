@@ -301,13 +301,6 @@ if ($installer->getConnection()->isTableExists($tableName) != true) {
             'nullable'  => true,
             'default'   => null
         ), 'Message')
-        ->addColumn('created_at', Varien_Db_Ddl_Table::TYPE_DATETIME, null, array(
-            'nullable'  => false,
-        ), 'Created At')
-        ->addColumn('updated_at', Varien_Db_Ddl_Table::TYPE_DATETIME, null, array(
-            'nullable'  => true,
-            'default'   => null
-        ), 'Updated At')
         ->addColumn('type', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
             'nullable'  => false,
             'unsigned'  => true
@@ -319,7 +312,14 @@ if ($installer->getConnection()->isTableExists($tableName) != true) {
         ->addColumn('mail', Varien_Db_Ddl_Table::TYPE_BOOLEAN, null, array(
             'nullable'  => false,
             'default'   => 0
-        ), 'Mail');
+        ), 'Mail')
+        ->addColumn('created_at', Varien_Db_Ddl_Table::TYPE_DATETIME, null, array(
+            'nullable'  => false,
+        ), 'Created At')
+        ->addColumn('updated_at', Varien_Db_Ddl_Table::TYPE_DATETIME, null, array(
+            'nullable'  => true,
+            'default'   => null
+        ), 'Updated At');
     $installer->getConnection()->createTable($table);
 }
 
