@@ -14,25 +14,13 @@ class Lengow_Connector_Adminhtml_Lengow_LogController extends Mage_Adminhtml_Con
     protected function _initAction()
     {
         $this->loadLayout()->_setActiveMenu('lengowtab');
-
         return $this;
     }
 
     public function indexAction()
     {
         $this->_initAction()->renderLayout();
-
         return $this;
-    }
-
-    public function deleteAction()
-    {
-        $collection = Mage::getModel('lengow/log')->getCollection();
-        foreach ($collection as $log) {
-            $log->delete();
-        }
-        $this->_getSession()->addSuccess($this->__('Log is empty'));
-        $this->_redirect('*/*/index');
     }
 
     public function gridAction()

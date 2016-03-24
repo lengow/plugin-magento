@@ -32,19 +32,19 @@ class Lengow_Connector_Block_Adminhtml_Log_Grid extends Mage_Adminhtml_Block_Wid
     protected function _prepareColumns()
     {
         $this->addColumn('id', array(
-            'header' => Mage::helper('lengow_connector')->__('id'),
+            'header' => Mage::helper('lengow_connector')->__('log.table.id'),
             'width' => '80px',
             'type' => 'text',
             'index' => 'id',
         ));
-        $this->addColumn('created_at', array(
-            'header' => $this->__('Created At'),
-            'index' => 'created_at',
+        $this->addColumn('date', array(
+            'header' => Mage::helper('lengow_connector')->__('log.table.date'),
+            'index' => 'date',
             'type' => 'datetime',
             'width' => '100px',
         ));
         $this->addColumn('message', array(
-            'header' => $this->__('Message'),
+            'header' => Mage::helper('lengow_connector')->__('log.table.message'),
             'index' => 'message',
         ));
         return parent::_prepareColumns();
