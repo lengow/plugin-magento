@@ -4,3 +4,10 @@ en:
     logs: "Logs"
   module:
     name: "Lengow"
+  log:
+    screen:
+      title: "Lengow logs"
+    table:
+      id: "Id"
+      date: "Date"
+      message: "Message"

@@ -18,8 +18,6 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action 
      */
     public function indexAction()
     {
-        $log = Mage::getModel('lengow/log');
-
 
         set_time_limit(0);
         ini_set('memory_limit', '1G');
@@ -37,14 +35,30 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action 
         $offset = $this->getRequest()->getParam('offset', null);
         $ids_product = $this->getRequest()->getParam('ids_product', null);
         $debug = $this->getRequest()->getParam('debug', null);
+        $currency = $this->getRequest()->getParam('currency', null);
 
         //get store data
         $storeCode = $this->getRequest()->getParam('code', null);
-        if ($storeCode) //if store code is in URL
+        if ($storeCode) {
             $storeId = (int) Mage::getModel('core/store')->load($storeCode, 'code')->getId();
-        else // if store id is in URL
+        } else {
             $storeId = (integer) $this->getRequest()->getParam('store', Mage::app()->getStore()->getId());
+        }
         $storeName = Mage::app()->getStore($storeId)->getName();
+
+        // check if store is enable for export
+        if (!Mage::getStoreConfig('lenexport/global/active_store', $storeId)) {
+            header('Content-Type: text/html; charset=utf-8');
+            Mage::getSingleton('lengow/log')->write(
+                'Export',
+                Mage::helper('lengow_connector/translation')->t(
+                    'log.export.stop_for_shop',
+                    array('name_shop' => $storeName, 'id_shop' => $storeId)
+                ),
+                true
+            );
+            exit();
+        }
 
         if ($locale = $this->getRequest()->getParam('locale', null)) {
             // changing locale works!
@@ -54,66 +68,45 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action 
             // translation now works
             Mage::app()->getTranslator()->init('frontend', true);
         }
-        if($currency = $this->getRequest()->getParam('currency', null)) {
-            $generate->setCurrentCurrencyCode($currency);
-        }
 
-//        $helper = Mage::helper('lenexport/security');
-//        if($helper->checkIp()) {
-//            $log->log('## Start manual export ##');
-//            $_configModel = Mage::getSingleton('lenexport/config');
-//            try {
-//                $this->loadLayout(false);
-//                $this->renderLayout();
-//            } catch (Exception $e) {
-//                Mage::throwException($e);
-//            }
-//
-//
-//            // config store
-//            $_configModel->setStore($id_store);
-//            Mage::app()->getStore()->setCurrentStore($id_store);
-//
-//            // check if store is enable for export
-//            if(Mage::getStoreConfig('lenexport/global/active_store', Mage::app()->getStore($id_store))) {
-//
-//                if(Mage::getStoreConfig('lenexport/performances/optimizeexport')) {
-//                    $generate = Mage::getSingleton('lenexport/generateoptimize');
-//                }else{
-//                    $generate = Mage::getSingleton('lenexport/generate');
-//                }
-//                $generate->setCurrentStore($id_store);
-//                $generate->setOriginalCurrency(Mage::app()->getStore()->getCurrentCurrencyCode());
-//
-//
-//                $log->log('Start manual export in store ' . $storeName . '(' . $storeId . ')');
-//
-//                if(Mage::getStoreConfig('lengow/performances/optimizeexport')) {
-//                    $generate->exec($storeId, $format, array(
-//                        "mode" => $mode,
-//                        "types" => $types,
-//                        "status" => $status,
-//                        "export_child" => $export_child,
-//                        "out_of_stock" => $out_of_stock,
-//                        "selected_products" => $selected_products,
-//                        "stream" => $stream,
-//                        "limit" => $limit,
-//                        "offset" => $offset,
-//                        "product_ids" => $ids_product,
-//                        "debug" => $debug,
-//                    ));
-//                }else{
-//                    $generate->exec($storeId, $mode, $format, $types, $status, $export_child, $out_of_stock, $selected_products, $stream, $limit, $offset, $ids_product);
-//                }
-//            } else {
-//                $log->log('Stop manual export - Store ' . $storeName . '(' . $storeId . ') is disabled');
-//                header('Content-Type: text/html; charset=utf-8');
-//                echo 'Stop manual export - Store ' . $storeName . '(' . $storeId . ') is disabled';
-//                flush();
-//            }
-//            $log->log('## End manual export ##');
-//        } else {
-//            echo $this->__('Unauthorised IP : %s', $_SERVER['REMOTE_ADDR']);
-//        }
+        $helper = Mage::helper('lengow_connector/security');
+        if ($helper->checkIp()) {
+
+            Mage::getSingleton('lengow/log')->write(
+                'Export',
+                Mage::helper('lengow_connector/translation')->t(
+                    'log.export.manual_start',
+                    array('name_shop' => $storeName, 'id_shop' => $storeId)
+                )
+            );
+
+            // config store
+            Mage::app()->getStore()->setCurrentStore($storeId);
+
+            $export = Mage::getModel('lengow/export', array(
+                "store_id" => $storeId,
+                "format" => $format,
+                "mode" => $mode,
+                "types" => $types,
+                "status" => $status,
+                "export_child" => $export_child,
+                "out_of_stock" => $out_of_stock,
+                "selected_products" => $selected_products,
+                "stream" => $stream,
+                "limit" => $limit,
+                "offset" => $offset,
+                "product_ids" => $ids_product,
+                "debug" => $debug,
+                "currency" => $currency,
+            ));
+            $export->exec();
+            Mage::getSingleton('lengow/log')->write(
+                'Export',
+                Mage::helper('lengow_connector/translation')->t('log.export.manual_end'),
+                true
+            );
+        } else {
+            echo $this->__('Unauthorised IP : %s', $_SERVER['REMOTE_ADDR']);
+        }
     }
 }

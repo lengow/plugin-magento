@@ -1,0 +1,22 @@
+en:
+  log:
+    export:
+      manual_start: "## Start manual export in store %{name_shop} (%{id_shop}) ##"
+      start: "## Start export ##"
+#      end: "## end export ##"
+      manual_end: "## End manual export ##"
+      start_for_shop: "## Start export in shop %{name_shop} (%{id_shop}) ##"
+      stop_for_shop: "## Stop manual export - Store %{name_shop} (%{id_shop}) is disabled ##"
+      nb_product_found: "%{nb_product} product(s) found"
+#      count_product: "%{product_count} products exported"
+#      export_failed: "export failed - %{decoded_message}"
+      your_feed_available_here: "your feed is available here: <a href='%{feed_url}' target='_blank'>%{feed_url}</a>"
+      generate_feed_available_here : "Export of the store %{name_shop} (%{id_shop}) generated a file here : %{feed_url}"
+#      error_folder_not_writable: "export file generation did not end properly. Please make sure the export folder is writable"
+#      error_no_product_combination: "unable to retrieve product combinations"
+#      error_illegal_currency: "illegal Currency"
+#      error_no_carrier_selected: "you must select a default carrier in Lengow import parameters"
+#      error_illegal_export_format: "illegal export format"
+#      error_unable_to_create_folder: "unable to create folder %{folder_path}. Make sure it is writeable"
+#      error_unable_to_create_file: "unable to create file %{file_name} in %{folder_name}"
+#      error_cant_find_image_size: "cant find Image type size, check your table ps_image_type"
