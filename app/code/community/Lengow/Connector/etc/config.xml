@@ -140,7 +140,7 @@
         </suite>
     </phpunit>
     <default>
-        <lengow_export>
+        <lengow_connector>
             <global>
                 <active_store>0</active_store>
                 <export_only_selected>0</export_only_selected>
@@ -171,6 +171,6 @@
                 <usesavefile>0</usesavefile>
                 <active_cron>0</active_cron>
             </performances>
-        </lengow_export>
+        </lengow_connector>
     </default>
 </config>

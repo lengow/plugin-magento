@@ -1,0 +1,58 @@
+eav:
+  catalog_product:
+    - entity_id: 1
+      type_id: simple
+      sku: SIMPLESKU001
+      name: NAMESKU001
+      short_description: SHORTDESC001
+      description: DESC001
+      price: 55
+      visibility: 4  # Visible in Catalog & Search
+      status: 1 # Enabled
+      tax_class_id: 2 # Taxable Goods
+      visibility: 4
+      attribute_set_id: 1
+      website_ids:
+        - base
+    - entity_id: 2
+      type_id: simple
+      sku: SIMPLESKU002
+      name: NAMESKU002
+      short_description: SHORTDESC002
+      description: DESC002
+      price: 55
+      visibility: 4  # Visible in Catalog & Search
+      status: 1 # Enabled
+      tax_class_id: 2 # Taxable Goods
+      visibility: 4
+      attribute_set_id: 1
+      website_ids:
+        - base
+    - entity_id: 3
+      type_id: simple
+      sku: SIMPLESKU003
+      name: NAMESKU003
+      short_description: SHORTDESC003
+      description: DESC003
+      price: 55
+      visibility: 4  # Visible in Catalog & Search
+      status: 1 # Enabled
+      tax_class_id: 2 # Taxable Goods
+      visibility: 4
+      attribute_set_id: 1
+      website_ids:
+        - base
+    - entity_id: 4
+      type_id: simple
+      sku: SIMPLESKU004
+      name: NAMESKU004
+      short_description: SHORTDESC004
+      description: DESC004
+      price: 55
+      visibility: 4  # Visible in Catalog & Search
+      status: 1 # Enabled
+      tax_class_id: 2 # Taxable Goods
+      visibility: 4
+      attribute_set_id: 1
+      website_ids:
+        - base

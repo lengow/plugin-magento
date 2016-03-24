@@ -264,5 +264,4 @@ class Lengow_Connector_Model_Export_Config extends Varien_Object
         }
         return $this->_attributesHtml;
     }
-
 }

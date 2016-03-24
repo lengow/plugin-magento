@@ -49,9 +49,9 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action 
         // check if store is enable for export
         if (!Mage::getStoreConfig('lenexport/global/active_store', $storeId)) {
             header('Content-Type: text/html; charset=utf-8');
-            Mage::getSingleton('lengow/log')->write(
+            Mage::helper('lengow_connector')->log(
                 'Export',
-                Mage::helper('lengow_connector/translation')->t(
+                Mage::helper('lengow_connector')->__(
                     'log.export.stop_for_shop',
                     array('name_shop' => $storeName, 'id_shop' => $storeId)
                 ),
@@ -72,9 +72,9 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action 
         $helper = Mage::helper('lengow_connector/security');
         if ($helper->checkIp()) {
 
-            Mage::getSingleton('lengow/log')->write(
+            Mage::helper('lengow_connector')->log(
                 'Export',
-                Mage::helper('lengow_connector/translation')->t(
+                Mage::helper('lengow_connector')->__(
                     'log.export.manual_start',
                     array('name_shop' => $storeName, 'id_shop' => $storeId)
                 )
@@ -100,12 +100,12 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action 
                 "currency" => $currency,
             ));
             $export->exec();
-            Mage::getSingleton('lengow/log')->write(
+            Mage::helper('lengow_connector')->log(
                 'Export',
-                Mage::helper('lengow_connector/translation')->t('log.export.manual_end')
+                Mage::helper('lengow_connector')->__('log.export.manual_end')
             );
         } else {
-            echo $this->__('Unauthorised IP : %s', $_SERVER['REMOTE_ADDR']);
+            echo Mage::helper('lengow_connector')->__('Unauthorised IP : %s', $_SERVER['REMOTE_ADDR']);
         }
     }
 }
