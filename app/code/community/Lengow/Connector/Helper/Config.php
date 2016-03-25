@@ -130,4 +130,26 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
         }
         return $token;
     }
+
+    /**
+     * Get Store by token
+     * @param string $token
+     * @return mixed
+     */
+    public function getStoreByToken($token)
+    {
+        if (strlen($token)<=0) {
+            return false;
+        }
+        foreach (Mage::app()->getWebsites() as $website) {
+            foreach ($website->getGroups() as $group) {
+                $stores = $group->getStores();
+                foreach ($stores as $store) {
+                    if ($token == $this->get('token', $store->getId())) {
+                        return $store;
+                    }
+                }
+            }
+        }
+    }
 }
