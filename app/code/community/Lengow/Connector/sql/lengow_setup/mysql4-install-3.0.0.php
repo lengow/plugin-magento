@@ -394,3 +394,35 @@ if ($installer->getConnection()->isTableExists($tableName) != true) {
 }
 
 $installer->endSetup();
+
+// *********************************************************
+//                    Setting Migration
+// *********************************************************
+
+// setting deleted
+// 
+// autoexport_newproduct
+// format
+// count_images
+// without_product_ordering
+// formatdata
+// html_attributes
+// default_shipping_delay
+// optimizeexport
+// levelcategory
+// 
+// 
+// setting renamed
+//
+// active_store => export_store_enable
+// export_only_selected => export_selection_enable
+// export_soldout => export_out_stock
+// producttype => export_product_type
+// productstatus => export_product_status
+// parentsimages => export_parent_image
+// shipping_price_based_on => export_default_shipping_country
+// default_shipping_method => export_default_shipping_method
+// default_shipping_price => export_default_shipping_price
+// attributes => export_attribute
+// usesavefile => export_file_enabled
+// active_cron => export_cron_enabled

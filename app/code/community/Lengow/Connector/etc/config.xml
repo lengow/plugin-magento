@@ -100,9 +100,15 @@
                             <children>
                                 <config>
                                     <children>
+                                        <lengow_global_options>
+                                            <title>Lengow Global Configuration</title>
+                                        </lengow_global_options>
                                         <lengow_export_options>
                                             <title>Lengow Export Feed Configuration</title>
                                         </lengow_export_options>
+                                        <lengow_import_options>
+                                            <title>Lengow Import Order Configuration</title>
+                                        </lengow_import_options>
                                     </children>
                                 </config>
                             </children>
@@ -140,37 +146,34 @@
         </suite>
     </phpunit>
     <default>
-        <lengow_connector>
-            <global>
-                <active_store>0</active_store>
-                <export_only_selected>0</export_only_selected>
-                <autoexport_newproduct>0</autoexport_newproduct>
-                <export_soldout>0</export_soldout>
-                <producttype>simple,configurable</producttype>
-                <productstatus></productstatus>
-            </global>
-            <data>
-                <format>csv</format>
-                <count_images>5</count_images>
-                <parentsimages>0</parentsimages>
-                <levelcategory>5</levelcategory>
-                <without_product_ordering>0</without_product_ordering>
-                <formatdata>0</formatdata>
-                <html_attribute>0</html_attribute>
-                <shipping_price_based_on>FR</shipping_price_based_on>
-                <default_shipping_price></default_shipping_price>
-                <default_shipping_method>flatrate_flatrate</default_shipping_method>
-                <default_shipping_delay>2</default_shipping_delay>
-            </data>
-            <attributelist>
-                <attributes>0</attributes>
-            </attributelist>
-            <performances>
-                <valid_ip></valid_ip>
-                <optimizeexport>1</optimizeexport>
-                <usesavefile>0</usesavefile>
-                <active_cron>0</active_cron>
-            </performances>
-        </lengow_connector>
+        <lengow_global_options>
+            <simple>
+            </simple>
+            <advanced>
+            </advanced>
+        </lengow_global_options>
+        <lengow_export_options>
+            <simple>
+                <export_store_enable>1</export_store_enable>
+                <export_selection_enable>0</export_selection_enable>
+                <export_out_stock>0</export_out_stock>
+                <export_product_type>simple,configurable</export_product_type>
+                <export_product_status></export_product_status>
+            </simple>
+            <advanced>
+                <export_default_shipping_country>FR</export_default_shipping_country>
+                <export_default_shipping_method>flatrate_flatrate</export_default_shipping_method>
+                <export_default_shipping_price></export_default_shipping_price>
+                <export_parent_image>0</export_parent_image>
+                <export_file_enabled>0</export_file_enabled>
+                <export_cron_enabled>0</export_cron_enabled>
+            </advanced>
+        </lengow_export_options>
+        <lengow_import_options>
+            <simple>
+            </simple>
+            <advanced>
+            </advanced>
+        </lengow_import_options>
     </default>
 </config>

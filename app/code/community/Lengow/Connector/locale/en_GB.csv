@@ -7,6 +7,31 @@ log.table.date|Date
 log.table.message|Message
 product.screen.title|Export product
 product.table.publish_on_lengow|Publish on Lengow
+lengow_setting.global_setting|Global settings
+lengow_setting.global_simple_setting|Simple global settings
+lengow_setting.global_advanced_setting|Advanced global settings
+lengow_setting.export_setting|Export settings
+lengow_setting.export_simple_setting|Simple export settings
+lengow_setting.export_advanced_setting|Advanced export settings
+lengow_setting.export_selection_enable_label|Export only selected product
+lengow_setting.export_out_stock_label|Export product out of stock
+lengow_setting.export_product_type_label|Product type to export
+lengow_setting.export_product_status_label|Status of product to export
+lengow_setting.export_parent_image_label|Merge images with parents products if exist
+lengow_setting.export_default_shipping_country_label|Country shipping
+lengow_setting.export_default_shipping_country_comment|Default country for shipping cost
+lengow_setting.export_default_shipping_method_label|Shipping method
+lengow_setting.export_default_shipping_method_comment|Default shipping method to calculate shipping cost
+lengow_setting.export_default_shipping_price_label|Shipping cost
+lengow_setting.export_default_shipping_price_comment|Default shipping cost if matching find
+lengow_setting.export_attribute_label|Select attributes to export
+lengow_setting.export_file_enabled_label|Save feed on file
+lengow_setting.export_file_enabled_comment|Save the feed on a file
+lengow_setting.export_cron_enabled_lable|Active cron
+lengow_setting.export_cron_enabled_comment|Active the scheduled task for export your feed every 4h
+lengow_setting.import_setting|Import settings
+lengow_setting.import_simple_setting|Simple import settings
+lengow_setting.import_advanced_setting|Advanced import settings
 log.export.manual_start|## Start manual export in store %{name_shop} (%{id_shop}) ##
 log.export.start|## Start export ##
 log.export.manual_end|## End manual export ##
