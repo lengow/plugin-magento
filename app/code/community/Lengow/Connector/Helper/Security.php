@@ -45,7 +45,7 @@ class Lengow_Connector_Helper_Security extends Mage_Core_Helper_Abstract
         $ips = trim(str_replace(array("\r\n", ',', '-', '|', ' '), ';', $ips), ';');
         $ips = explode(';', $ips);
         $authorized_ips = array_merge($ips, self::$IPS_LENGOW);
-        $hostname_ip = $_SERVER['REMOTE_ADDR'];
+        $hostname_ip = Mage::helper('core/http')->getRemoteAddr(true);
         if (in_array($hostname_ip, $authorized_ips)) {
             return true;
         }

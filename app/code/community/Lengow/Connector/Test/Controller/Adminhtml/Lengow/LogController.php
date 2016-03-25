@@ -2,7 +2,6 @@
 
 class Lengow_Connector_Test_Controller_Adminhtml_Lengow_LogController extends Lengow_Connector_Test_Case
 {
-
     /**
      * test index action
      *
@@ -30,22 +29,4 @@ class Lengow_Connector_Test_Controller_Adminhtml_Lengow_LogController extends Le
         $this->dispatch('adminhtml/lengow_log/grid');
         $this->assertRequestRoute('adminhtml/lengow_log/grid', '[Log - Url]');
     }
-
-
-
-    /**
-     * test delete action
-     *
-     * @test
-     *
-     */
-    public function deleteAction(){
-        $this->mockAdminUserSession();
-
-        Mage::helper('lengow_connector')->log('Test message by helper');
-        $this->dispatch('adminhtml/lengow_log/delete');
-        $collection = Mage::getModel('lengow/log')->getCollection();
-        $this->assertEquals(0, count($collection), '[Log - Collection] should be empty');
-    }
-
 }

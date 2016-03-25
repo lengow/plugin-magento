@@ -64,14 +64,17 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
 
     /**
      * Delete log files when too old
+     * @param integer $nbDays
      */
-    public function cleanLog()
+    public function cleanLog($nbDays = 20)
     {
-        $nbDays = (int)$nbDays;
+        if ($nbDays<=0) {
+            $nbDays = self::LOG_LIFE;
+        }
         $resource = Mage::getSingleton('core/resource');
         $writeConnection = $resource->getConnection('core_write');
         $table = $resource->getTableName('lengow/log');
-        $query = "DELETE FROM ".$table." WHERE `date` < DATE_SUB(NOW(),INTERVAL ".self::LOG_LIFE." DAY)";
+        $query = "DELETE FROM ".$table." WHERE `date` < DATE_SUB(NOW(),INTERVAL ".$nbDays." DAY)";
         $writeConnection->query($query);
     }
 
