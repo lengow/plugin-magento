@@ -99,7 +99,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
 
         $stream = isset($params['stream']) ? (boolean)$params['stream'] : null;
         if (is_null($stream)) {
-            $this->_stream = $this->_config_helper->get('file_enabled', $this->_storeId) ? false : true;
+            $this->_stream = $this->_config_helper->get('file_enable', $this->_storeId) ? false : true;
         } else {
             $this->_stream = $stream;
         }

@@ -11,27 +11,92 @@
             <label>lengow_setting.global_setting</label>
             <tab>lengow</tab>
             <frontend_type>text</frontend_type>
-            <sort_order>10</sort_order>
+            <sort_order>1</sort_order>
             <show_in_default>1</show_in_default>
             <show_in_website>0</show_in_website>
             <show_in_store>1</show_in_store>
             <groups>
-                <simple>
-                    <label>lengow_setting.global_simple_setting</label>
+                <check translate="label comment">
+                    <label/>
+                    <frontend_type>note</frontend_type>
+                    <frontend_model>Lengow_Connector_Block_Adminhtml_System_Config_Check</frontend_model>
+                    <sort_order>1</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>0</show_in_website>
                     <show_in_store>1</show_in_store>
-                    <sort_order>1</sort_order>
+                </check>
+                <store_credential translate="label comment">
+                    <label>lengow_setting.global_store_credential</label>
+                    <sort_order>2</sort_order>
+                    <show_in_default>0</show_in_default>
+                    <show_in_website>0</show_in_website>
+                    <show_in_store>1</show_in_store>
                     <fields>
+                        <global_store_enable>
+                            <label>lengow_setting.global_store_enable_title</label>
+                            <comment>lengow_setting.global_store_enable_comment</comment>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>0</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                        </global_store_enable>
+                        <global_account_id>
+                            <label>lengow_setting.global_account_id_title</label>
+                            <comment>lengow_setting.global_account_id_comment</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>0</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </global_account_id>
+                        <global_access_token>
+                            <label>lengow_setting.global_access_token_title</label>
+                            <comment>lengow_setting.global_access_token_comment</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>3</sort_order>
+                            <show_in_default>0</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </global_access_token>
+                        <global_secret_token>
+                            <label>lengow_setting.global_secret_token_title</label>
+                            <comment>lengow_setting.global_secret_token_comment</comment>             
+                            <frontend_type>text</frontend_type>
+                            <sort_order>4</sort_order>
+                            <show_in_default>0</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </global_secret_token>
                     </fields>
-                </simple>
-                <advanced>
+                </store_credential>
+                <advanced translate="label comment">
                     <label>lengow_setting.global_advanced_setting</label>
+                    <sort_order>1</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>0</show_in_website>
-                    <show_in_store>1</show_in_store>
-                    <sort_order>1</sort_order>
+                    <show_in_store>0</show_in_store>
                     <fields>
+                        <global_authorized_ip>
+                            <label>lengow_setting.global_authorized_ip_label</label>
+                            <comment>lengow_setting.global_authorized_ip_comment</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </global_authorized_ip>
+                        <global_tracking_id>
+                            <label>lengow_setting.global_tracking_id_label</label>
+                            <comment>lengow_setting.global_tracking_id_comment</comment>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <source_model>Lengow_Connector_Model_System_Config_Source_Tracking</source_model>
+                        </global_tracking_id>
                     </fields>
                 </advanced>
             </groups>
@@ -40,23 +105,23 @@
             <label>lengow_setting.export_setting</label>
             <tab>lengow</tab>
             <frontend_type>text</frontend_type>
-            <sort_order>20</sort_order>
+            <sort_order>2</sort_order>
             <show_in_default>1</show_in_default>
             <show_in_website>0</show_in_website>
             <show_in_store>1</show_in_store>
             <groups>
                 <simple translate="label comment">
                     <label>lengow_setting.export_simple_setting</label>
+                    <sort_order>1</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>0</show_in_website>
                     <show_in_store>1</show_in_store>
-                    <sort_order>1</sort_order>
                     <fields>
                         <export_selection_enable>
                             <label>lengow_setting.export_selection_enable_label</label>
                             <comment></comment>
                             <frontend_type>select</frontend_type>
-                            <sort_order>10</sort_order>
+                            <sort_order>1</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -66,7 +131,7 @@
                             <label>lengow_setting.export_out_stock_label</label>
                             <comment></comment>
                             <frontend_type>select</frontend_type>
-                            <sort_order>20</sort_order>
+                            <sort_order>2</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -76,7 +141,7 @@
                             <label>lengow_setting.export_product_type_label</label>
                             <comment></comment>
                             <frontend_type>multiselect</frontend_type>
-                            <sort_order>30</sort_order>
+                            <sort_order>3</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -86,7 +151,7 @@
                             <label>lengow_setting.export_product_status_label</label>
                             <comment></comment>
                             <frontend_type>select</frontend_type>
-                            <sort_order>40</sort_order>
+                            <sort_order>4</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -96,80 +161,80 @@
                 </simple>
                 <advanced translate="label comment">
                     <label>lengow_setting.export_advanced_setting</label>
-                    <comment></comment>
+                    <sort_order>2</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>0</show_in_website>
                     <show_in_store>1</show_in_store>
-                    <sort_order>2</sort_order>
                     <fields>
                         <export_attribute>
                             <label>lengow_setting.export_attribute_label</label>
+                            <comment>lengow_setting.export_attribute_comment</comment>
                             <frontend_type>multiselect</frontend_type>
-                            <source_model>lengow/system_config_source_getattributes</source_model>
-                            <sort_order>10</sort_order>
+                            <sort_order>1</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <source_model>lengow/system_config_source_attribute</source_model>
                         </export_attribute>
                         <export_default_shipping_country>
                             <label>lengow_setting.export_default_shipping_country_label</label>
                             <comment>lengow_setting.export_default_shipping_country_comment</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_country</source_model>
-                            <sort_order>20</sort_order>
+                            <sort_order>2</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <source_model>adminhtml/system_config_source_country</source_model>
                         </export_default_shipping_country>
                         <export_default_shipping_method>
                             <label>lengow_setting.export_default_shipping_method_label</label>
                             <comment>lengow_setting.export_default_shipping_method_comment</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_shipping_allmethods</source_model>
-                            <sort_order>30</sort_order>
+                            <sort_order>3</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <source_model>adminhtml/system_config_source_shipping_allmethods</source_model>
                         </export_default_shipping_method>
                         <export_default_shipping_price>
                             <label>lengow_setting.export_default_shipping_price_label</label>
                             <comment>lengow_setting.export_default_shipping_price_comment</comment>
                             <frontend_type>text</frontend_type>
-                            <sort_order>40</sort_order>
+                            <sort_order>4</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
                             <show_in_store>1</show_in_store>
                         </export_default_shipping_price>
                         <export_parent_image>
                             <label>lengow_setting.export_parent_image_label</label>
-                            <comment></comment>
+                            <comment>lengow_setting.export_parent_image_comment</comment>
                             <frontend_type>select</frontend_type>
-                            <sort_order>50</sort_order>
+                            <sort_order>5</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
                             <show_in_store>1</show_in_store>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                         </export_parent_image>
-                        <export_file_enabled>
-                            <label>lengow_setting.export_file_enabled_label</label>
-                            <comment>lengow_setting.export_file_enabled_comment</comment>
+                        <export_file_enable>
+                            <label>lengow_setting.export_file_enable_label</label>
+                            <comment>lengow_setting.export_file_enable_comment</comment>
                             <frontend_type>select</frontend_type>
-                            <sort_order>60</sort_order>
+                            <sort_order>6</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                        </export_file_enabled>
-                        <export_cron_enabled>
-                            <label>lengow_setting.export_cron_enabled_lable</label>
-                            <comment>lengow_setting.export_cron_enabled_comment</comment>
+                        </export_file_enable>
+                        <export_cron_enable>
+                            <label>lengow_setting.export_cron_enable_lable</label>
+                            <comment>lengow_setting.export_cron_enable_comment</comment>
                             <frontend_type>select</frontend_type>
-                            <sort_order>70</sort_order>
+                            <sort_order>7</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                        </export_cron_enabled>
+                        </export_cron_enable>
                     </fields>
                 </advanced>
             </groups>
@@ -178,27 +243,65 @@
             <label>lengow_setting.import_setting</label>
             <tab>lengow</tab>
             <frontend_type>text</frontend_type>
-            <sort_order>30</sort_order>
+            <sort_order>3</sort_order>
             <show_in_default>1</show_in_default>
             <show_in_website>0</show_in_website>
             <show_in_store>1</show_in_store>
             <groups>
-                <simple>
+                <simple translate="label comment">
                     <label>lengow_setting.import_simple_setting</label>
+                    <sort_order>1</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>0</show_in_website>
                     <show_in_store>1</show_in_store>
-                    <sort_order>1</sort_order>
                     <fields>
+                        <import_days>
+                            <label>lengow_setting.import_days_title</label>
+                            <comment>lengow_setting.import_days_comment</comment>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </import_days>
+                        <import_customer_group>
+                            <label>lengow_setting.import_customer_group_title</label>
+                            <comment>lengow_setting.import_customer_group_comment</comment>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <source_model>lengow/system_config_source_group</source_model>
+                        </import_customer_group>
                     </fields>
                 </simple>
-                <advanced>
+                <advanced translate="label comment">
                     <label>lengow_setting.import_advanced_setting</label>
+                    <sort_order>2</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>0</show_in_website>
-                    <show_in_store>1</show_in_store>
-                    <sort_order>1</sort_order>
+                    <show_in_store>0</show_in_store>
                     <fields>
+                        <import_preprod_mode_enable>
+                            <label>lengow_setting.import_preprod_mode_enable_title</label>
+                            <comment>lengow_setting.import_preprod_mode_enable_comment</comment>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                        </import_preprod_mode_enable>
+                        <import_cron_enable>
+                            <label>lengow_setting.import_cron_enable_title</label>
+                            <comment>lengow_setting.import_cron_enable_comment</comment>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                        </import_cron_enable>
                     </fields>
                 </advanced>
             </groups>
