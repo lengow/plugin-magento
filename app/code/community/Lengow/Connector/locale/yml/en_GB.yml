@@ -3,6 +3,7 @@ en:
     products: "Manage products export"
     settings: "Settings"
     logs: "Logs"
+    orders: "Orders"
   module:
     name: "Lengow"
   log:
@@ -17,6 +18,10 @@ en:
       title: "Export product"
     table:
       publish_on_lengow: "Publish on Lengow"
+  order:
+    screen:
+      button_import: "Import Order"
+      title: "Orders"
   lengow_setting:
     global_setting: "Global settings"
     global_plugin_version_title: "Plugin's version"

@@ -54,9 +54,9 @@
             <lengow_resource>
                 <class>Lengow_Connector_Model_Resource</class>
                 <entities>
-                    <order>
+                    <import_order>
                         <table>lengow_order</table>
-                    </order>
+                    </import_order>
                     <orderline>
                         <table>lengow_order_line</table>
                     </orderline>

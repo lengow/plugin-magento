@@ -19,21 +19,26 @@ class Lengow_Connector_Adminhtml_Lengow_HomeController extends Mage_Adminhtml_Co
 
     public function indexAction()
     {
-
         $isAjax = Mage::app()->getRequest()->isAjax();
         if ($isAjax) {
             $action = (string)$this->getRequest()->getParam('action');
             if (strlen($action)>0) {
-                if ($action == "get_sync_data") {
-                    $data = array();
-                    $data['function'] = 'sync';
-                    $data['parameters'] =  Mage::helper('lengow_connector/sync')->getSyncData();
-                    echo json_encode($data);
-                    exit();
+                switch ($action) {
+                    case "get_sync_data":
+                        $data = array();
+                        $data['function'] = 'sync';
+                        $data['parameters'] =  Mage::helper('lengow_connector/sync')->getSyncData();
+                        echo json_encode($data);
+                        break;
+                    case "sync":
+                        $data = $this->getRequest()->getParam('data', 0);
+                        Mage::helper('lengow_connector/sync')->sync($data);
+                        break;
                 }
             }
+        } else {
+            $this->_initAction()->renderLayout();
         }
-        $this->_initAction()->renderLayout();
         return $this;
     }
 

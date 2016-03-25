@@ -12,16 +12,22 @@
                     <sort_order>1</sort_order>
                     <disabled>1</disabled>
                 </product>
+                <order module="lengow_connector" translate="title">
+                    <title>menu.orders</title>
+                    <action>adminhtml/lengow_order</action>
+                    <sort_order>2</sort_order>
+                    <disabled>1</disabled>
+                </order>
                 <setting module="lengow_connector" translate="title">
                     <title>menu.settings</title>
                     <action>adminhtml/system_config/edit/section/lengow_global_options</action>
-                    <sort_order>2</sort_order>
+                    <sort_order>3</sort_order>
                     <disabled>1</disabled>
                 </setting>
                 <log module="lengow_connector" translate="title">
                     <title>menu.logs</title>
                     <action>adminhtml/lengow_log</action>
-                    <sort_order>3</sort_order>
+                    <sort_order>4</sort_order>
                     <disabled>1</disabled>
                 </log>
             </children>
@@ -39,13 +45,17 @@
                                 <title>menu.products</title>
                                 <sort_order>1</sort_order>
                             </product>
+                            <order translate="title">
+                                <title>menu.orders</title>
+                                <sort_order>2</sort_order>
+                            </order>
                             <setting translate="title">
                                 <title>menu.settings</title>
-                                <sort_order>1</sort_order>
+                                <sort_order>3</sort_order>
                             </setting>
                             <log translate="title">
                                 <title>menu.logs</title>
-                                <sort_order>2</sort_order>
+                                <sort_order>4</sort_order>
                             </log>
                         </children>
                     </custom>

@@ -64,7 +64,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
     protected function _construct()
     {
         parent::_construct();
-        $this->_init('lengow/order');
+        $this->_init('lengow/import_order');
     }
 
     /**

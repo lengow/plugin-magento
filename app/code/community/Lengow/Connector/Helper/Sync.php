@@ -47,4 +47,44 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
         }
         return $data;
     }
+
+    /**
+     * Sync Lengow Information
+     * @param $params
+     */
+    public static function sync($params)
+    {
+        $configHelper = Mage::helper('lengow_connector/config');
+
+        foreach ($params as $shop_token => $values) {
+            if ($store = $configHelper->getStoreByToken($shop_token)) {
+                $list_key = array(
+                    'account_id' => false,
+                    'access_token' => false,
+                    'secret_token' => false
+                );
+                foreach ($values as $k => $v) {
+                    if (!in_array($k, array_keys($list_key))) {
+                        continue;
+                    }
+                    if (strlen($v) > 0) {
+                        $list_key[$k] = true;
+                        $configHelper->set($k, $v, $store->getId());
+                    }
+                }
+                $findFalseValue = false;
+                foreach ($list_key as $k => $v) {
+                    if (!$v) {
+                        $findFalseValue = true;
+                        break;
+                    }
+                }
+                if (!$findFalseValue) {
+                    $configHelper->set('store_enable', true, $store->getId());
+                } else {
+                    $configHelper->set('store_enable', false, $store->getId());
+                }
+            }
+        }
+    }
 }
