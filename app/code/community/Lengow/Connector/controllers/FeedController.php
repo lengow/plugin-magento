@@ -89,7 +89,6 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action 
                 "mode" => $mode,
                 "types" => $types,
                 "status" => $status,
-                "export_child" => $export_child,
                 "out_of_stock" => $out_of_stock,
                 "selected_products" => $selected_products,
                 "stream" => $stream,

@@ -83,16 +83,11 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
      * Clean None utf-8 characters
      *
      * @param string $value The content
-     * @param boolean $convert If convert specials chars
-     * @param boolean $html Keep html
      *
      * @return string $value
      */
-    public function cleanData($value, $convert = false, $html = false)
+    public function cleanData($value)
     {
-        if ($convert && $html) {
-            $value = htmlentities($value);
-        }
         if (is_array($value)) {
             return $value;
         }
@@ -107,10 +102,6 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
         // Reject overly long 3 byte sequences and UTF-16 surrogates and replace with blank
         $value = preg_replace('/\xE0[\x80-\x9F][\x80-\xBF]' .
             '|\xED[\xA0-\xBF][\x80-\xBF]/S', '', $value);
-        if (!$html) {
-            $pattern = '@<[\/\!]*?[^<>]*?>@si'; //nettoyage du code HTML
-            $value = preg_replace($pattern, ' ', $value);
-        }
         $value = preg_replace('/[\s]+/', ' ', $value); //nettoyage des espaces multiples
         $value = trim($value);
         $value = str_replace(

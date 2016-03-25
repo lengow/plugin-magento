@@ -67,9 +67,9 @@ class Lengow_Connector_Adminhtml_Lengow_ProductController extends Mage_Adminhtml
             } else {
                 $product_action->updateAttributes($_product_ids, array('lengow_product' => $_publish), $_store_id);
             }
-            $this->_getSession()->addSuccess(
-                $this->__('Total of %d record(s) were successfully updated', count($_product_ids))
-            );
+            //$this->_getSession()->addSuccess(
+            //   $this->__('Total of %d record(s) were successfully updated', count($_product_ids))
+            //);
         } catch (Mage_Core_Model_Exception $e) {
             $this->_getSession()->addError($e->getMessage());
         } catch (Exception $e) {
