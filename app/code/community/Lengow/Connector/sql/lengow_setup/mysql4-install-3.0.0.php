@@ -401,6 +401,12 @@ $installer->endSetup();
 
 // setting deleted
 // 
+// version3
+// login
+// type
+// last_synchro
+// group
+// api_key
 // autoexport_newproduct
 // format
 // count_images
@@ -410,11 +416,23 @@ $installer->endSetup();
 // default_shipping_delay
 // optimizeexport
 // levelcategory
-// 
+// version3
+// marketplace
+// date_import
+// processing_fee
+// title
+// split_name
+// default_shipping
+// fake_email
 // 
 // setting renamed
 //
-// active_store => export_store_enable
+// active_store => global_store_enable
+// account_id => global_account_id
+// access_token => global_access_token
+// secret => global_secret_token
+// identifiant => global_tracking_id
+// valid_ip => global_authorized_ip
 // export_only_selected => export_selection_enable
 // export_soldout => export_out_stock
 // producttype => export_product_type
@@ -424,5 +442,9 @@ $installer->endSetup();
 // default_shipping_method => export_default_shipping_method
 // default_shipping_price => export_default_shipping_price
 // attributes => export_attribute
-// usesavefile => export_file_enabled
-// active_cron => export_cron_enabled
+// usesavefile => export_file_enable
+// active_cron => export_cron_enable
+// period => import_days
+// customer_group => import_customer_group
+// debug => import_preprod_mode_enable
+// active_cron => import_cron_enable

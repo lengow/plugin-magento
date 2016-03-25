@@ -71,4 +71,44 @@ class Lengow_Connector_Helper_Security extends Mage_Core_Helper_Abstract
         }
         return true;
     }
+
+    /**
+     * Get plugin version
+     *
+     * @return string
+     */
+    public function getPluginVersion()
+    {
+        return (string)Mage::getConfig()->getNode()->modules->Lengow_Connector->version;
+    }
+
+    /**
+     * Get Magento version
+     *
+     * @return string
+     */
+    public function getMagentoVersion()
+    {
+        return Mage::getVersion();
+    }
+
+    /**
+     * Get serveur IP
+     *
+     * @return string
+     */
+    public function getRealIP()
+    {
+        return $_SERVER['SERVER_ADDR'];
+    }
+
+    /**
+     * Check if valid magento version
+     *
+     * @return boolean
+     */
+    public function checkValidMagentoVersion()
+    {
+        return (Mage::getVersion() < '1.5.0.0') ? false : true;
+    }
 }
