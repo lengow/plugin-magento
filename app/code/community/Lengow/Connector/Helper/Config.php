@@ -40,11 +40,11 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
         'parent_image' => array(
             'path' => 'lengow_export_options/advanced/export_parent_image'
         ),
-        'file_enabled' => array(
-            'path' => 'lengow_export_options/advanced/export_file_enabled'
+        'file_enable' => array(
+            'path' => 'lengow_export_options/advanced/export_file_enable'
         ),
-        'cron_enabled' => array(
-            'path' => 'lengow_export_options/advanced/export_cron_enabled'
+        'cron_enable' => array(
+            'path' => 'lengow_export_options/advanced/export_cron_enable'
         ),
         'token' => array(
             'path' => 'lengow_global_options/token'
