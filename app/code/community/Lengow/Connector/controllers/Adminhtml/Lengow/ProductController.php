@@ -40,8 +40,6 @@ class Lengow_Connector_Adminhtml_Lengow_ProductController extends Mage_Adminhtml
         $_product_ids = (array)$this->getRequest()->getParam('product');
         $_store_id = (integer)$this->getRequest()->getParam('store', Mage::app()->getStore()->getId());
         $_publish = (integer)$this->getRequest()->getParam('publish');
-        $resource = Mage::getResourceModel('catalog/product');
-        $_entity_type_id = $resource->getEntityType()->getId();
 
         try {
             //update all attribute in one query
@@ -49,8 +47,11 @@ class Lengow_Connector_Adminhtml_Lengow_ProductController extends Mage_Adminhtml
             if ($_store_id != 0) {
                 $defaultStoreProductToUpdate = array();
                 foreach ($_product_ids as $_product_id) {
-                    $lengow_product_value = Mage::getResourceModel('catalog/product')->getAttributeRawValue($_product_id,
-                        'lengow_product', 0);
+                    $lengow_product_value = Mage::getResourceModel('catalog/product')->getAttributeRawValue(
+                        $_product_id,
+                        'lengow_product',
+                        0
+                    );
                     if ($lengow_product_value === false) {
                         $defaultStoreProductToUpdate[] = $_product_id;
                     }
@@ -72,13 +73,13 @@ class Lengow_Connector_Adminhtml_Lengow_ProductController extends Mage_Adminhtml
         } catch (Mage_Core_Model_Exception $e) {
             $this->_getSession()->addError($e->getMessage());
         } catch (Exception $e) {
-            $this->_getSession()->addException($e,
-                $e->getMessage() . $this->__('There was an error while updating product(s) publication'));
+            $this->_getSession()->addException(
+                $e,
+                $e->getMessage() . $this->__('There was an error while updating product(s) publication')
+            );
         }
-
-        $this->_redirect('*/*/', array('store' => $_store_id));
+        exit();
     }
-
 
     protected function _getSession()
     {

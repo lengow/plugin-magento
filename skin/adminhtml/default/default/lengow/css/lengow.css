@@ -29,3 +29,18 @@ body.lengow-connector .middle {
   min-height:632px;
   border:0px;
 }
+
+/* PRODUCT */
+span.publish_on_lengow {
+  text-align: center;
+  display: block;
+  width:auto;
+  color:white;
+  border-radius: 10px;
+}
+span.publish_on_lengow.green {
+  background:#89B963;
+}
+span.publish_on_lengow.red {
+  background:#C4676B;
+}

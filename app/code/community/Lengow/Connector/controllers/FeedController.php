@@ -105,7 +105,10 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action 
                 Mage::helper('lengow_connector')->__('log.export.manual_end')
             );
         } else {
-            echo Mage::helper('lengow_connector')->__('Unauthorised IP : %s', $_SERVER['REMOTE_ADDR']);
+            echo Mage::helper('lengow_connector')->__(
+                'log.export.unauthorised_ip',
+                array('ip' => Mage::helper('core/http')->getRemoteAddr())
+            );
         }
     }
 }

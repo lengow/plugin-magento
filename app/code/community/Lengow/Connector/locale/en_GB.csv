@@ -5,6 +5,8 @@ log.screen.title|Lengow logs
 log.table.id|Id
 log.table.date|Date
 log.table.message|Message
+product.screen.title|Export product
+product.table.publish_on_lengow|Publish on Lengow
 log.export.manual_start|## Start manual export in store %{name_shop} (%{id_shop}) ##
 log.export.start|## Start export ##
 log.export.manual_end|## End manual export ##
@@ -15,3 +17,4 @@ log.export.memory_usage|Memory usage
 log.export.execution_time|Execution time : %{seconds} seconds
 log.export.your_feed_available_here|your feed is available here: <a href='%{feed_url}' target='_blank'>%{feed_url}</a>
 log.export.generate_feed_available_here|Export of the store %{name_shop} (%{id_shop}) generated a file here : %{feed_url}
+log.export.unauthorised_ip|Unauthorised IP : %{ip}
