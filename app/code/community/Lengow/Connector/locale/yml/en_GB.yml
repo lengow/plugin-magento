@@ -1,6 +1,7 @@
 en:
   menu:
     products: "Manage products export"
+    settings: "Settings"
     logs: "Logs"
   module:
     name: "Lengow"

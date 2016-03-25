@@ -399,52 +399,137 @@ $installer->endSetup();
 //                    Setting Migration
 // *********************************************************
 
-// setting deleted
-// 
-// version3
-// login
-// type
-// last_synchro
-// group
-// api_key
-// autoexport_newproduct
-// format
-// count_images
-// without_product_ordering
-// formatdata
-// html_attributes
-// default_shipping_delay
-// optimizeexport
-// levelcategory
-// version3
-// marketplace
-// date_import
-// processing_fee
-// title
-// split_name
-// default_shipping
-// fake_email
-// 
-// setting renamed
-//
-// active_store => global_store_enable
-// account_id => global_account_id
-// access_token => global_access_token
-// secret => global_secret_token
-// identifiant => global_tracking_id
-// valid_ip => global_authorized_ip
-// export_only_selected => export_selection_enable
-// export_soldout => export_out_stock
-// producttype => export_product_type
-// productstatus => export_product_status
-// parentsimages => export_parent_image
-// shipping_price_based_on => export_default_shipping_country
-// default_shipping_method => export_default_shipping_method
-// default_shipping_price => export_default_shipping_price
-// attributes => export_attribute
-// usesavefile => export_file_enable
-// active_cron => export_cron_enable
-// period => import_days
-// customer_group => import_customer_group
-// debug => import_preprod_mode_enable
-// active_cron => import_cron_enable
+$new_settings = array(
+    array(
+        'old_path'  => 'lensync/orders/active_store',
+        'new_path'  => 'lengow_global_options/store_credential/global_store_enable',
+        'store'     => true
+    ),
+    array(
+        'old_path'  => 'lentracker/general/account_id',
+        'new_path'  => 'lengow_global_options/store_credential/global_account_id',
+        'store'     => true
+    ),
+    array(
+        'old_path'  => 'lentracker/general/access_token',
+        'new_path'  => 'lengow_global_options/store_credential/global_access_token',
+        'store'     => true
+    ),
+    array(
+        'old_path'  => 'lentracker/general/secret',
+        'new_path'  => 'lengow_global_options/store_credential/global_secret_token',
+        'store'     => true
+    ),
+    array(
+        'old_path'  => 'lentracker/tag/identifiant',
+        'new_path'  => 'lengow_global_options/advanced/global_tracking_id',
+        'store'     => false
+    ),
+    array(
+        'old_path'  => 'lenexport/performances/valid_ip',
+        'new_path'  => 'lengow_global_options/advanced/global_authorized_ip',
+        'store'     => false
+    ),
+    array(
+        'old_path'  => 'export_only_selected',
+        'new_path'  => 'lengow_export_options/simple/export_selection_enable',
+        'store'     => true
+    ),
+    array(
+        'old_path'  => 'lenexport/global/export_soldout',
+        'new_path'  => 'lengow_export_options/simple/export_out_stock',
+        'store'     => true
+    ),
+    array(
+        'old_path'  => 'lenexport/global/producttype',
+        'new_path'  => 'lengow_export_options/simple/export_product_type',
+        'store'     => true
+    ),
+    array(
+        'old_path'  => 'lenexport/global/productstatus',
+        'new_path'  => 'lengow_export_options/simple/export_product_status',
+        'store'     => true
+    ),
+    array(
+        'old_path'  => 'lenexport/data/parentsimages',
+        'new_path'  => 'lengow_export_options/advanced/export_parent_image',
+        'store'     => true
+    ),
+    array(
+        'old_path'  => 'lenexport/data/shipping_price_based_on',
+        'new_path'  => 'lengow_export_options/advanced/export_default_shipping_country',
+        'store'     => true
+    ),
+    array(
+        'old_path'  => 'lenexport/data/default_shipping_method',
+        'new_path'  => 'lengow_export_options/advanced/export_default_shipping_method',
+        'store'     => true
+    ),
+    array(
+        'old_path'  => 'lenexport/data/default_shipping_price',
+        'new_path'  => 'lengow_export_options/advanced/export_default_shipping_price',
+        'store'     => true
+    ),
+    array(
+        'old_path'  => 'lenexport/attributelist/attributes',
+        'new_path'  => 'lengow_export_options/advanced/export_attribute',
+        'store'     => true
+    ),
+    array(
+        'old_path'  => 'lenexport/performances/usesavefile',
+        'new_path'  => 'lengow_export_options/advanced/export_file_enable',
+        'store'     => false
+    ),
+    array(
+        'old_path'  => 'lenexport/performances/active_cron',
+        'new_path'  => 'lengow_export_options/advanced/export_cron_enable',
+        'store'     => false
+    ),
+    array(
+        'old_path'  => 'lensync/orders/period',
+        'new_path'  => 'lengow_import_options/simple/import_days',
+        'store'     => true
+    ),
+    array(
+        'old_path'  => 'lensync/orders/customer_group',
+        'new_path'  => 'lengow_import_options/simple/import_customer_group',
+        'store'     => true
+    ),
+    array(
+        'old_path'  => 'lensync/performances/debug',
+        'new_path'  => 'lengow_import_options/advanced/import_preprod_mode_enable',
+        'store'     => false
+    ),
+    array(
+        'old_path'  => 'lensync/performances/active_cron',
+        'new_path'  => 'lengow_import_options/advanced/import_cron_enable',
+        'store'     => false
+    )
+);
+
+$delete_settings = array(
+    'lentracker/general/version3',
+    'lentracker/general/login',
+    'lentracker/general/group',
+    'lentracker/general/api_key',
+    'lentracker/tag/type',
+    'lentracker/hidden/last_synchro',
+    'lenexport/global/autoexport_newproduct',
+    'lenexport/data/format',
+    'lenexport/data/count_images',
+    'lenexport/data/without_product_ordering',
+    'lenexport/data/formatdata',
+    'lenexport/data/html_attributes',
+    'lenexport/data/default_shipping_delay',
+    'lenexport/data/levelcategory',
+    'lenexport/performances/optimizeexport',
+    'lensync/orders/version3',
+    'lensync/orders/marketplace',
+    'lensync/orders/date_import',
+    'lensync/orders/processing_fee',
+    'lensync/orders/title',
+    'lensync/orders/split_name',
+    'lensync/orders/default_shipping',
+    'lensync/orders/fake_email',
+    'lensync/hidden/last_synchro',
+);
