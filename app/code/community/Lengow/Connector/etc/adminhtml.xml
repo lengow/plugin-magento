@@ -12,6 +12,12 @@
                     <sort_order>1</sort_order>
                     <disabled>1</disabled>
                 </product>
+                <order module="lengow_connector" translate="title">
+                    <title>menu.orders</title>
+                    <action>adminhtml/lengow_order</action>
+                    <sort_order>1</sort_order>
+                    <disabled>1</disabled>
+                </order>
                 <log module="lengow_connector" translate="title">
                     <title>menu.logs</title>
                     <action>adminhtml/lengow_log</action>

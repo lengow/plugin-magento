@@ -55,4 +55,27 @@
     <remove name="footer"/>
   </adminhtml_lengow_product_index>
 
+  <adminhtml_lengow_order_index>
+    <reference name="head">
+      <action method="addCss">
+        <stylesheet>lengow/css/lengow.css</stylesheet>
+      </action>
+    </reference>
+    <reference name="content">
+      <block type="page/html" name="lengow_layout" template="lengow/layout/main.phtml" >
+        <block type="page/html" name="lengow_header" template="lengow/header.phtml" />
+        <block type="adminhtml/store_switcher" name="store_switcher" as="store_switcher">
+          <action method="setUseConfirm">
+            <params>0</params>
+          </action>
+        </block>
+        <block type="lengow/adminhtml_order" name="lengow_content" />
+        <block type="page/html" name="lengow_footer" template="lengow/footer.phtml" />
+      </block>
+    </reference>
+    <reference name="root">
+      <action method="addBodyClass"><classname>lengow_connector</classname></action>
+    </reference>
+    <remove name="footer"/>
+  </adminhtml_lengow_order_index>
 </layout>

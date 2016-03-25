@@ -1,5 +1,6 @@
 menu.products|Manage products export
 menu.logs|Logs
+menu.orders|Orders
 module.name|Lengow
 log.screen.title|Lengow logs
 log.table.id|Id
@@ -7,6 +8,8 @@ log.table.date|Date
 log.table.message|Message
 product.screen.title|Export product
 product.table.publish_on_lengow|Publish on Lengow
+order.screen.button_import|Import Order
+order.screen.title|Orders
 lengow_setting.global_setting|Global settings
 lengow_setting.global_plugin_version_title|Plugin's version
 lengow_setting.global_magento_version_title|Magento's version
