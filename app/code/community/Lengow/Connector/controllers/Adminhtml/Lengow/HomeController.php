@@ -25,8 +25,10 @@ class Lengow_Connector_Adminhtml_Lengow_HomeController extends Mage_Adminhtml_Co
             $action = (string)$this->getRequest()->getParam('action');
             if (strlen($action)>0) {
                 if ($action == "get_sync_data") {
-                    $sync = Mage::helper('lengow_connector/sync');
-                    echo json_encode($sync->getSyncData());
+                    $data = array();
+                    $data['function'] = 'sync';
+                    $data['parameters'] =  Mage::helper('lengow_connector/sync')->getSyncData();
+                    echo json_encode($data);
                     exit();
                 }
             }

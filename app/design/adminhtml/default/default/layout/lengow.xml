@@ -32,6 +32,11 @@
   </adminhtml_lengow_log_index>
 
   <adminhtml_lengow_product_index>
+    <reference name="head">
+      <action method="addCss">
+        <stylesheet>lengow/css/lengow.css</stylesheet>
+      </action>
+    </reference>
     <reference name="content">
       <block type="page/html" name="lengow_layout" template="lengow/layout/main.phtml" >
         <block type="page/html" name="lengow_header" template="lengow/header.phtml" />

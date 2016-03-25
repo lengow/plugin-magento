@@ -11,6 +11,11 @@ en:
       id: "Id"
       date: "Date"
       message: "Message"
+  product:
+    screen:
+      title: "Export product"
+    table:
+      publish_on_lengow: "Publish on Lengow"
   lengow_setting:
     global_setting: "Global settings"
     global_plugin_version_title: "Plugin's version"
