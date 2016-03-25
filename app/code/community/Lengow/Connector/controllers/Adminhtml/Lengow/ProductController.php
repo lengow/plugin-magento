@@ -78,7 +78,6 @@ class Lengow_Connector_Adminhtml_Lengow_ProductController extends Mage_Adminhtml
                 $e->getMessage() . $this->__('There was an error while updating product(s) publication')
             );
         }
-        exit();
     }
 
     protected function _getSession()

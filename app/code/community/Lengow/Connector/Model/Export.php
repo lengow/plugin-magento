@@ -82,7 +82,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
         $this->_config['types'] = isset($params['types']) ?
             $params['types'] : $this->_config_helper->get('product_type', $this->_storeId);
         $this->_config['status'] = isset($params['status']) ?
-            (boolean)$params['status'] : (string)$this->_config_helper->get('product_status', $this->_storeId);
+            (string)$params['status'] : (string)$this->_config_helper->get('product_status', $this->_storeId);
         $this->_config['out_of_stock'] = isset($params['out_of_stock']) ?
             (boolean)$params['out_of_stock'] : $this->_config_helper->get('out_stock', $this->_storeId);
         $this->_config['selected_products'] = isset($params['selected_products']) ?
