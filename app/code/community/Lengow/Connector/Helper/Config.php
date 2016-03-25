@@ -47,7 +47,19 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
             'path' => 'lengow_export_options/advanced/export_cron_enable'
         ),
         'token' => array(
-            'path' => 'lengow_global_options/token'
+            'path' => 'lengow_global_options/store_credential/token'
+        ),
+        'store_enable' => array(
+            'path' => 'lengow_global_options/store_credential/global_store_enable'
+        ),
+        'account_id' => array(
+            'path' => 'lengow_global_options/store_credential/global_account_id'
+        ),
+        'access_token' => array(
+            'path' => 'lengow_global_options/store_credential/global_access_token'
+        ),
+        'secret_token' => array(
+            'path' => 'lengow_global_options/store_credential/global_secret_token'
         ),
     );
 
@@ -86,7 +98,7 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
             Mage::getModel('core/config')->saveConfig(
                 $this->options[$key]['path'],
                 $value,
-                'store',
+                'stores',
                 $storeId
             );
         }

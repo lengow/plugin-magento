@@ -80,9 +80,9 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
                     }
                 }
                 if (!$findFalseValue) {
-                    $configHelper->set('store_active', true, $store->getId());
+                    $configHelper->set('store_enable', true, $store->getId());
                 } else {
-                    $configHelper->set('store_active', false, $store->getId());
+                    $configHelper->set('store_enable', false, $store->getId());
                 }
             }
         }
