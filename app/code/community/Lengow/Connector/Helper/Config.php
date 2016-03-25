@@ -46,6 +46,9 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
         'cron_enabled' => array(
             'path' => 'lengow_export_options/advanced/export_cron_enabled'
         ),
+        'token' => array(
+            'path' => 'lengow_global_options/token'
+        ),
     );
 
     /**
@@ -64,10 +67,34 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * Set Value
+     * @param $key
+     * @param $value
+     * @param $storeId
+     * @return null
+     */
+    public function set($key, $value, $storeId)
+    {
+        if ($storeId==0) {
+            Mage::getModel('core/config')->saveConfig(
+                $this->options[$key]['path'],
+                $value,
+                'default',
+                0
+            );
+        } else {
+            Mage::getModel('core/config')->saveConfig(
+                $this->options[$key]['path'],
+                $value,
+                'store',
+                $storeId
+            );
+        }
+    }
+
+    /**
      * Get Selected attributes
-     *
      * @param int $id_store
-     *
      * @return array
      */
     public function getSelectedAttributes($id_store = null)
@@ -85,5 +112,22 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
             }
         }
         return $attributeSelected;
+    }
+
+    /**
+     * Generate token
+     * @param integer $storeId
+     * @return array
+     */
+    public function getToken($storeId = null)
+    {
+        $token = $this->get('token', $storeId);
+        if ($token && strlen($token)>0) {
+            return $token;
+        } else {
+            $token =  bin2hex(openssl_random_pseudo_bytes(16));
+            $this->set('token', $token, $storeId);
+        }
+        return $token;
     }
 }

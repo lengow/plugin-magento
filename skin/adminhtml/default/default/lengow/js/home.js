@@ -14,10 +14,10 @@
             sync_iframe.onload = function () {
                 $.ajax({
                     method: 'POST',
-                    data: {action: 'get_sync_data'},
+                    data: {action: 'get_sync_data', 'form_key': FORM_KEY},
                     dataType: 'json',
                     success: function (data) {
-                        var targetFrame = document.getElementById("lengow_iframe").contentWindow;
+                        var targetFrame = document.getElementById("lengow-iframe").contentWindow;
                         targetFrame.postMessage(data, '*');
                     }
                 });

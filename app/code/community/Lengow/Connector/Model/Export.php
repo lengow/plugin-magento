@@ -705,4 +705,9 @@ class Lengow_Connector_Model_Export extends Varien_Object
         }
         echo round($time, 4) . " &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $string  secondes <br/>";
     }
+
+    public function getExportUrl()
+    {
+        return Mage::getUrl('lengow/feed', array('store' => $this->_storeId));
+    }
 }

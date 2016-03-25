@@ -17,29 +17,34 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
      */
     public static function getSyncData()
     {
+        $configHelper = Mage::helper('lengow_connector/config');
+
         $data = array();
         $data['domain_name'] = $_SERVER["SERVER_NAME"];
-        $data['token'] = ''; //LengowMain::getToken();
+        $data['token'] = $configHelper->getToken();
         $data['type'] = 'magento';
         $data['version'] = Mage::getVersion();
-        $data['plugin_version'] = ''; //LengowConfiguration::getGlobalValue('LENGOW_VERSION');
-        $data['email'] = ''; //LengowConfiguration::get('PS_SHOP_EMAIL');
-        $data['return_url'] = ''; //'http://'.$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
+        $data['plugin_version'] = (string)Mage::getConfig()->getNode()->modules->Lengow_Connector->version;
+        $data['email'] = Mage::getSingleton('admin/session')->getUser()->getEmail();
+        $data['return_url'] = 'http://'.$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
 
-        /*$shopCollection = LengowShop::findAll(true);
-        foreach ($shopCollection as $row) {
-            $shopId = $row['id_shop'];
-
-            $lengowExport = new LengowExport(array("shop_id" => $shopId));
-            $shop = new LengowShop($shopId);
-            $data['shops'][$row['id_shop']]['token'] = LengowMain::getToken($shopId);
-            $data['shops'][$row['id_shop']]['name'] = $shop->name;
-            $data['shops'][$row['id_shop']]['domain'] = $shop->domain;
-            $data['shops'][$row['id_shop']]['feed_url'] = LengowMain::getExportUrl($shop->id);
-            $data['shops'][$row['id_shop']]['cron_url'] = LengowMain::getImportUrl($shop->id);
-            $data['shops'][$row['id_shop']]['nb_product_total'] = $lengowExport->getTotalProduct();
-            $data['shops'][$row['id_shop']]['nb_product_exported'] = $lengowExport->getTotalExportProduct();
-        }*/
+        foreach (Mage::app()->getWebsites() as $website) {
+            foreach ($website->getGroups() as $group) {
+                $stores = $group->getStores();
+                foreach ($stores as $store) {
+                    $export = Mage::getModel('lengow/export', array(
+                        "store_id" => $store->getId(),
+                    ));
+                    $data['shops'][$store->getId()]['token'] = $configHelper->getToken($store->getId());
+                    $data['shops'][$store->getId()]['name'] = $store->getName();
+                    $data['shops'][$store->getId()]['domain'] = $store->getBaseUrl();
+                    $data['shops'][$store->getId()]['feed_url'] = $export->getExportUrl();
+                    $data['shops'][$store->getId()]['cron_url'] = ''; //LengowMain::getImportUrl($shop->id);
+                    $data['shops'][$store->getId()]['nb_product_total'] = $export->getTotalProduct();
+                    $data['shops'][$store->getId()]['nb_product_exported'] = $export->getTotalExportedProduct();
+                }
+            }
+        }
         return $data;
     }
 }
