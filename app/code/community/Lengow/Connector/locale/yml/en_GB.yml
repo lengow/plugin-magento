@@ -4,6 +4,7 @@ en:
     settings: "Settings"
     logs: "Logs"
     orders: "Orders"
+    help: "Help"
   module:
     name: "Lengow"
   log:

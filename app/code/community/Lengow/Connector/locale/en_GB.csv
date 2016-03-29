@@ -2,6 +2,7 @@ menu.products|Manage products export
 menu.settings|Settings
 menu.logs|Logs
 menu.orders|Orders
+menu.help|Help
 module.name|Lengow
 log.screen.title|Lengow logs
 log.table.id|Id
