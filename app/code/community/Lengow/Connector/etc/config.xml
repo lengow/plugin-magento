@@ -71,6 +71,11 @@
                     </log>
                 </entities>
             </lengow_resource>
+            <core>
+                <rewrite>
+                    <config>Lengow_Connector_Model_Config</config>
+                </rewrite>
+            </core>
         </models>
         <resources>
             <lengow_setup>
@@ -80,6 +85,17 @@
                 </setup>
             </lengow_setup>
         </resources>
+        <events>
+            <model_save_after>
+                <observers>
+                    <events_after_save>
+                        <type>singleton</type>
+                        <class>Lengow_Connector_Model_Observer</class>
+                        <method>onAfterSave</method>
+                    </events_after_save>
+                </observers>
+            </model_save_after>
+        </events>
         <blocks>
             <lengow>
                 <class>Lengow_Connector_Block</class>

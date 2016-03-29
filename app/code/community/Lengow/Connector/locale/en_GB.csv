@@ -77,3 +77,5 @@ log.export.execution_time|Execution time : %{seconds} seconds
 log.export.your_feed_available_here|your feed is available here: <a href='%{feed_url}' target='_blank'>%{feed_url}</a>
 log.export.generate_feed_available_here|Export of the store %{name_shop} (%{id_shop}) generated a file here : %{feed_url}
 log.export.unauthorised_ip|Unauthorised IP : %{ip}
+log.setting.setting_change|%{key} - old value %{old_value} change by %{value}
+log.setting.setting_change_for_shop|%{key} - old value %{old_value} change by %{value} for shop %{shop_id}

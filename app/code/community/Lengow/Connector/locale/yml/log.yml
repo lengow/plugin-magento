@@ -23,3 +23,6 @@ en:
 #      error_unable_to_create_folder: "unable to create folder %{folder_path}. Make sure it is writeable"
 #      error_unable_to_create_file: "unable to create file %{file_name} in %{folder_name}"
 #      error_cant_find_image_size: "cant find Image type size, check your table ps_image_type"
+    setting:
+      setting_change: "%{key} - old value %{old_value} change by %{value}"
+      setting_change_for_shop: "%{key} - old value %{old_value} change by %{value} for shop %{shop_id}"
