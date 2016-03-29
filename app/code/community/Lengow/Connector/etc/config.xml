@@ -57,15 +57,15 @@
                     <import_order>
                         <table>lengow_order</table>
                     </import_order>
-                    <orderline>
+                    <import_orderline>
                         <table>lengow_order_line</table>
-                    </orderline>
-                    <ordererror>
+                    </import_orderline>
+                    <import_ordererror>
                         <table>lengow_order_error</table>
-                    </ordererror>
-                    <action>
+                    </import_ordererror>
+                    <import_action>
                         <table>lengow_action</table>
-                    </action>
+                    </import_action>
                     <log>
                         <table>lengow_log</table>
                     </log>
