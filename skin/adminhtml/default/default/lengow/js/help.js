@@ -22,6 +22,7 @@
                     }
                 });
             };
+            //sync_iframe.src = 'http://cms.v3-inte.poney.io/help';
             sync_iframe.src = '/skin/adminhtml/default/default/lengow/temp/help.html';
         }
     });
