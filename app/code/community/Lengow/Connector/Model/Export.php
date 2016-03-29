@@ -143,8 +143,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
 
         // Get products list to export
         $productCollection = $this->_getQuery();
-
-        $tempProductCollection = clone $productCollection;
+        $tempProductCollection = $productCollection;
         $tempProductCollection->getSelect()->columns('COUNT(DISTINCT e.entity_id) As total');
 
         if ($this->_config['mode'] == 'size') {

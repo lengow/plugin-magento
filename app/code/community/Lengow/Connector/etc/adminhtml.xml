@@ -30,12 +30,12 @@
                     <sort_order>4</sort_order>
                     <disabled>1</disabled>
                 </log>
-                <log module="lengow_connector" translate="title">
+                <help module="lengow_connector" translate="title">
                     <title>menu.help</title>
                     <action>adminhtml/lengow_help</action>
-                    <sort_order>2</sort_order>
+                    <sort_order>5</sort_order>
                     <disabled>1</disabled>
-                </log>
+                </help>
             </children>
         </lengowtab>
     </menu>
@@ -63,6 +63,10 @@
                                 <title>menu.logs</title>
                                 <sort_order>4</sort_order>
                             </log>
+                            <help translate="title">
+                                <title>menu.help</title>
+                                <sort_order>4</sort_order>
+                            </help>
                         </children>
                     </custom>
                 </children>
