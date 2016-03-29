@@ -105,3 +105,5 @@ log.import.find_all_orders|%{nb_order} order(s) found with account ID: %{account
 log.import.import_failed|import failed - %{decoded_message}
 log.connector.call_api|call %{curl_url}
 log.connector.error_api|call api failed - %{error_code}
+log.setting.setting_change|%{key} - old value %{old_value} change by %{value}
+log.setting.setting_change_for_shop|%{key} - old value %{old_value} change by %{value} for shop %{shop_id}

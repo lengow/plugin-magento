@@ -22,16 +22,8 @@
                     }
                 });
             };
+            //sync_iframe.src = 'http://cms.v3-inte.poney.io';
             sync_iframe.src = '/skin/adminhtml/default/default/lengow/temp/home.html';
-            //sync_iframe.src = '/modules/lengow/webservice/sync.php';
-            //$('#lengow-iframe').height($('body').height() - $('.header').height() - $('.notification-global').height());
-            //resize();
-            //$(window).on('resize', function () {
-            //    resize();
-            //});
-            //function resize() {
-            //    $('#lengow-iframe').height($('body').height());
-            //}
         }
 
         window.addEventListener("message", receiveMessage, false);
