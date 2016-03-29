@@ -9,10 +9,10 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-class Lengow_Connector_Model_Resource_Orderline extends Mage_Core_Model_Resource_Db_Abstract
+class Lengow_Connector_Model_Resource_Import_Action extends Mage_Core_Model_Resource_Db_Abstract
 {
     protected function _construct()
     {
-        $this->_init('lengow/orderline', 'id');
+        $this->_init('lengow/import_action', 'id');
     }
 }
