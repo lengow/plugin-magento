@@ -50,7 +50,7 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
         if (strlen($message) == 0) {
             return false;
         }
-        $decoded_message = $message; //= LengowMain::decodeLogMessage($message, 'en');
+        $decoded_message = $this->decodeLogMessage($message, 'en_GB');
         $finalMessage = (empty($category) ? '' : '['.$category.'] ');
         $finalMessage.= ''.(empty($marketplace_sku) ? '' : 'order '.$marketplace_sku.' : ');
         $finalMessage.= $decoded_message;
@@ -63,7 +63,58 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * Set message with params for translation
+     *
+     * @param string $key
+     * @param array  $params
+     *
+     * @return string
+     */
+    public function setLogMessage($key, $params = null)
+    {
+        if (is_null($params) || (is_array($params) && count($params) == 0)) {
+            return $key;
+        }
+        $all_params = array();
+        foreach ($params as $param => $value) {
+            $value = str_replace(array('|', '=='), array('', ''), $value);
+            $all_params[] = $param.'=='.$value;
+        }
+        $message = $key.'['.join('|', $all_params).']';
+        return $message;
+    }
+
+    /**
+     * Decode message with params for translation
+     *
+     * @param string $message
+     * @param string $iso_code
+     * @param mixed  $params
+     *
+     * @return string
+     */
+    public function decodeLogMessage($message, $iso_code = null, $params = null)
+    {
+        if (preg_match('/^(([a-z\_]*\.){1,3}[a-z\_]*)(\[(.*)\]|)$/', $message, $result)) {
+            if (isset($result[1])) {
+                $key = $result[1];
+            }
+            if (isset($result[4]) && is_null($params)) {
+                $str_param = $result[4];
+                $all_params = explode('|', $str_param);
+                foreach ($all_params as $param) {
+                    $result = explode('==', $param);
+                    $params[$result[0]] = $result[1];
+                }
+            }
+            $message = $this->__($key, $params, $iso_code);
+        }
+        return $message;
+    }
+
+    /**
      * Delete log files when too old
+     *
      * @param integer $nbDays
      */
     public function cleanLog($nbDays = 20)
@@ -142,5 +193,64 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
             $value
         );
         return $value;
+    }
+
+    /**
+     * Check if import is already in process
+     *
+     * @return boolean
+     */
+    public function importIsInProcess()
+    {
+        $timestamp = Mage::getStoreConfig('lengow_import_options/advanced/import_in_progress');
+        if ($timestamp > 0) {
+            // security check : if last import is more than 10 min old => authorize new import to be launched
+            if (($timestamp + (60 * 1)) < time()) {
+                $this->setImportEnd();
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Get Rest time to make re import order
+     *
+     * @return boolean
+     */
+    public function restTimeToImport()
+    {
+        $timestamp = Mage::getStoreConfig('lengow_import_options/advanced/import_in_progress');
+        if ($timestamp > 0) {
+            return $timestamp + (60 * 1) - time();
+        }
+        return false;
+    }
+
+    /**
+     * Set import to "in process" state
+     *
+     * @return boolean
+     */
+    public function setImportInProcess()
+    {
+        return Mage::getModel('core/config')->saveConfig(
+            'lengow_import_options/advanced/import_in_progress',
+            time()
+        );
+    }
+
+    /**
+     * Set import to finished
+     *
+     * @return boolean
+     */
+    public function setImportEnd()
+    {
+        return Mage::getModel('core/config')->saveConfig(
+            'lengow_import_options/advanced/import_in_progress',
+            -1
+        );
     }
 }
