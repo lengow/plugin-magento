@@ -1,0 +1,35 @@
+<html>
+<head>
+    <script type="text/javascript" src="/skin/adminhtml/default/default/lengow/js/jquery-2.2.2.js"></script>
+</head>
+<body style="background: #CDCDCD;font-family: Open Sans;margin: 0;">
+<div style="background: #f7f7f7;float:right;width: 400px;padding:20px;height:500px;">
+    <h1 style="font-size: 4.9em;text-align: center;color: #31353d;margin-bottom: 5px;">Form Page</h1>
+</div>
+
+<h1>Lengow Page</h1>
+<div id="call">
+    &nbsp;&nbsp;&nbsp;&nbsp;
+</div>
+<pre><code id="parameters" style="display: block;overflow: hidden;"></code></pre>
+</body>
+
+<script type="text/javascript">
+    window.addEventListener("message", receiveMessage, false);
+
+    function receiveMessage(event) {
+        //if (event.origin !== "http://solution.lengow.com")
+        //    return;
+        switch (event.data.function) {
+            case 'sync':
+                global_parameters = event.data.parameters;
+                document.getElementById("parameters").innerHTML = 'Parameters : <br/><br/>';
+                document.getElementById("parameters").appendChild(
+                        document.createTextNode(JSON.stringify(event.data.parameters, null, 4))
+                );
+                break;
+        }
+    }
+
+</script>
+</html>

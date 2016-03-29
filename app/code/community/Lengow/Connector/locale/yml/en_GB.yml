@@ -3,6 +3,7 @@ en:
     products: "Manage products export"
     logs: "Logs"
     orders: "Orders"
+    help: "Help"
   module:
     name: "Lengow"
   log:

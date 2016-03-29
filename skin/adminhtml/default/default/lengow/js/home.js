@@ -22,7 +22,7 @@
                     }
                 });
             };
-            sync_iframe.src = '/skin/adminhtml/default/default/lengow/temp/index.html';
+            sync_iframe.src = '/skin/adminhtml/default/default/lengow/temp/home.html';
             //sync_iframe.src = '/modules/lengow/webservice/sync.php';
             //$('#lengow-iframe').height($('body').height() - $('.header').height() - $('.notification-global').height());
             //resize();

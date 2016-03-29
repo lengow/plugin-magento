@@ -24,6 +24,12 @@
                     <sort_order>2</sort_order>
                     <disabled>1</disabled>
                 </log>
+                <log module="lengow_connector" translate="title">
+                    <title>menu.help</title>
+                    <action>adminhtml/lengow_help</action>
+                    <sort_order>2</sort_order>
+                    <disabled>1</disabled>
+                </log>
             </children>
         </lengowtab>
     </menu>
