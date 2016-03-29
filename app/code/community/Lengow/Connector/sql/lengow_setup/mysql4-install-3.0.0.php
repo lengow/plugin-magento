@@ -399,6 +399,7 @@ $installer->endSetup();
 //                    Setting Migration
 // *********************************************************
 
+// All settings update
 $new_settings = array(
     array(
         'old_path'  => 'lensync/orders/active_store',
@@ -507,6 +508,7 @@ $new_settings = array(
     )
 );
 
+// All the settings to delete
 $delete_settings = array(
     'lentracker/general/version3',
     'lentracker/general/login',
@@ -533,3 +535,45 @@ $delete_settings = array(
     'lensync/orders/fake_email',
     'lensync/hidden/last_synchro',
 );
+
+// Get Store collection
+$store_collection = Mage::getResourceModel('core/store_collection')->addFieldToFilter('is_active', 1);
+
+// Update settings
+foreach ($new_settings as $setting) {
+    if ($setting['store']) {
+        foreach ($store_collection as $store) {
+            $store_value = Mage::getStoreConfig($setting['old_path'], $store);
+            if (!is_null($store_value)) {
+                Mage::getModel('core/config')->saveConfig(
+                    $setting['new_path'],
+                    $store_value,
+                    $store->getCode(),
+                    $store->getId()
+                );
+                Mage::getModel('core/config')->deleteConfig(
+                    $setting['old_path'],
+                    $store->getCode(),
+                    $store->getId()
+                );
+            }
+        }
+    }
+    $global_value = Mage::getStoreConfig($setting['old_path']);
+    if (!is_null($global_value)) {
+        Mage::getModel('core/config')->saveConfig($setting['new_path'], $global_value);
+        Mage::getModel('core/config')->deleteConfig($setting['old_path']);
+    }
+}
+
+// Delete settings
+foreach ($delete_settings as $setting_path) {
+    foreach ($store_collection as $store) {
+        if (!is_null(Mage::getStoreConfig($setting_path, $store))) {
+            Mage::getModel('core/config')->deleteConfig($setting_path, $store->getCode(), $store->getId());
+        }
+    }
+    if (!is_null(Mage::getStoreConfig($setting_path))) {
+        Mage::getModel('core/config')->deleteConfig($setting_path);
+    }
+}
