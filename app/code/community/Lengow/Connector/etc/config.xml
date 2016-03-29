@@ -106,6 +106,13 @@
                 <class>Lengow_Connector_Helper</class>
             </lengow_connector>
         </helpers>
+        <blocks>
+            <adminhtml>
+                <rewrite>
+                    <system_config_edit>Lengow_Connector_Block_Adminhtml_System_Config_Edit</system_config_edit>
+                </rewrite>
+            </adminhtml>
+        </blocks>
     </global>
     <adminhtml>
         <acl>
