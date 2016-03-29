@@ -29,6 +29,24 @@
 6 - Rédémarrer apache
 
     sudo service apache2 restart
+    
+7 - Creation de la base de données
+    
+    mysql -u root -p -e "CREATE DATABASE magento-1-9"; 
+    
+7 -  Récupération des Sample Data
+
+Les fichier sont dispo ici : https://github.com/Vinai/compressed-magento-sample-data
+
+    cd /tmp
+    wget https://raw.githubusercontent.com/Vinai/compressed-magento-sample-data/1.9.1.0/compressed-no-mp3-magento-sample-data-1.9.1.0.tgz
+    tar -zxvf compressed-magento-sample-data-1.9.1.0.tgz
+    cd magento-sample-data-1.9.1.0
+    mysql -u root -p magento-1-9 < magento_sample_data_for_1.9.1.0.sql
+    
+8 - Se connecter sur magento pour lancer l'installation
+    
+    http://magento-1-9.local
 
 ### Récupération des sources ###
 
