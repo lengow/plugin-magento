@@ -129,7 +129,25 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
         return $updated_fields;
     }
 
-    public function checkOldOrder()
+    public function countNotMigrateOrder()
+    {
+        $coreResource = Mage::getSingleton('core/resource');
+        $saleFlatOrder = $coreResource->getTableName('sales_flat_order');
+        $lengowOrder = $coreResource->getTableName('lengow_order');
+        $connection = $coreResource->getConnection('core_read');
+        $query = $connection->select(array('COUNT(entity_id) as total'));
+        $query->from($saleFlatOrder);
+        $query->joinleft(array('lo' => $lengowOrder), 'lo.order_id = '.$saleFlatOrder.'.entity_id');
+        $query->where($saleFlatOrder.'.from_lengow = 1 AND lo.order_id IS NULL');
+        $rows = $connection->fetchCol($query);
+        if ($rows) {
+            return $rows[0];
+        } else {
+            return 0;
+        }
+    }
+
+    public function migrateOldOrder()
     {
         $order_collection = Mage::getModel('sales/order')->getCollection()
             ->addAttributeToFilter('from_lengow', 1);
@@ -176,9 +194,9 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
                 'total_paid' => $order->getTotalInvoiced(),
                 //'commission' => $order->getTotalInvoiced(),
                 'customer_name' => $order->getCustomerFirstname().' '.$order->getCustomerLastname(),
-                //'carrier' => '',
-                //'carrier_method' => '',
-                //'carrier_tracking' => '',
+                'carrier' => $order->getCarrierLengow(),
+                'carrier_method' => $order->getCarrierMethodLengow(),
+                'carrier_tracking' => $order->getCarrierTrackingLengow(),
                 'sent_marketplace' => $sendByMarketplace ,
                 'created_at' => $order->getCreatedAt(),
                 'updated_at' => $order->getUpdateAt(),

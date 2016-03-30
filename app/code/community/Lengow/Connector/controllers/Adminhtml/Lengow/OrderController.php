@@ -33,7 +33,7 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
     public function migrateAction()
     {
         $order = Mage::getModel('lengow/import_order');
-        $order->checkOldOrder();
+        $order->migrateOldOrder();
         $this->_redirect('adminhtml/lengow_order/index');
     }
 
