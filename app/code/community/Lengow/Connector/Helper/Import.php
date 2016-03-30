@@ -33,18 +33,18 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
      * Get Marketplace singleton
      *
      * @param string    $name       markeplace name
-     * @param integer   $id_store   store Id
+     * @param integer   $store_id   store Id
      *
      * @return array Lengow marketplace
      */
-    public static function getMarketplaceSingleton($name, $id_store = null)
+    public static function getMarketplaceSingleton($name, $store_id = null)
     {
         if (!array_key_exists($name, self::$marketplaces)) {
             self::$marketplaces[$name] = Mage::getModel(
                 'lengow/import_marketplace',
                 array(
                     'name'     => $name,
-                    'id_store' => $id_store
+                    'store_id' => $store_id
                 )
             );
         }

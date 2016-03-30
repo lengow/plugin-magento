@@ -45,9 +45,9 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
     public $name;
 
     /**
-     * @var integer ID Store
+     * @var integer Store Id
      */
-    public $id_store;
+    public $store_id;
     
     /**
      * @var boolean if the marketplace is loaded
@@ -79,24 +79,24 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
      *
      * @param array params options
      *
-     * integer  id_store  Id store for current order
+     * integer  store_id  Store Id for current order
      * string   name      Marketplace name
      */
     public function __construct($params = array())
     {
         $this->_helper = Mage::helper('lengow_connector/data');
         $this->_config = Mage::helper('lengow_connector/config');
-        $this->id_store = $params['id_store'];
+        $this->store_id = $params['store_id'];
         $this->loadApiMarketplace();
         $this->name = strtolower($params['name']);
-        if (!isset(self::$MARKETPLACES[$this->id_store]->{$this->name})) {
+        if (!isset(self::$MARKETPLACES[$this->store_id]->{$this->name})) {
             throw new Lengow_Connector_Model_Exception(
                 $this->_helper->setLogMessage('lengow_log.exception.marketplace_not_present', array(
                     'markeplace_name' => $this->name
                 ))
             );
         }
-        $this->marketplace = self::$MARKETPLACES[$this->id_store]->{$this->name};
+        $this->marketplace = self::$MARKETPLACES[$this->store_id]->{$this->name};
         if (!empty($this->marketplace)) {
             $this->label_name = $this->marketplace->name;
             foreach ($this->marketplace->orders->status as $key => $state) {
@@ -130,10 +130,10 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
      */
     public function loadApiMarketplace()
     {
-        if (!array_key_exists($this->id_store, self::$MARKETPLACES)) {
+        if (!array_key_exists($this->store_id, self::$MARKETPLACES)) {
             $connector = Mage::getModel('lengow/connector');
-            $result = $connector->queryApi('get', '/v3.0/marketplaces', $this->id_store);
-            self::$MARKETPLACES[$this->id_store] = $result;
+            $result = $connector->queryApi('get', '/v3.0/marketplaces', $this->store_id);
+            self::$MARKETPLACES[$this->store_id] = $result;
         }
     }
 

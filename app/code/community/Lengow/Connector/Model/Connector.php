@@ -281,17 +281,17 @@ class Lengow_Connector_Model_Connector
     /**
      * Get Valid Account / Access / Secret
      *
-     * @param integer $id_store Store Id
+     * @param integer $store_id Store Id
      *
      * @return array
      */
-    public function getAccessId($id_store = null)
+    public function getAccessId($store_id = null)
     {
         $config = Mage::helper('lengow_connector/config');
-        if ($id_store) {
-            $account_id = $config->get('account_id', $id_store);
-            $access_token = $config->get('access_token', $id_store);
-            $secret_token = $config->get('secret_token', $id_store);
+        if ($store_id) {
+            $account_id = $config->get('account_id', $store_id);
+            $access_token = $config->get('access_token', $store_id);
+            $secret_token = $config->get('secret_token', $store_id);
         } else {
             $store_collection = Mage::getResourceModel('core/store_collection')->addFieldToFilter('is_active', 1);
             foreach ($store_collection as $store) {
@@ -315,18 +315,18 @@ class Lengow_Connector_Model_Connector
      *
      * @param string    $type       (get/post)
      * @param string    $url        to query
-     * @param integer   $id_store   Store Id
+     * @param integer   $store_id   Store Id
      * @param array     $params
      *
      * @return api result as array
      */
-    public function queryApi($type, $url, $id_store = null, $params = array())
+    public function queryApi($type, $url, $store_id = null, $params = array())
     {
         if (!in_array($type, array('get', 'post'))) {
             return false;
         }
         try {
-            list($account_id, $access_token, $secret_token) = $this->getAccessId($id_store);
+            list($account_id, $access_token, $secret_token) = $this->getAccessId($store_id);
             $this->init($access_token, $secret_token);
             $results = $this->$type(
                 $url,

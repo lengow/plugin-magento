@@ -27,9 +27,14 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
     protected $_config = null;
 
     /**
+     * @var Lengow_Connector_Model_Import_Order
+     */
+    protected $_model_order = null;
+
+    /**
      * @var integer store id
      */
-    protected $_id_store = null;
+    protected $_store_id = null;
 
     /**
      * @var boolean use preprod mode
@@ -77,6 +82,11 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
     protected $_first_package;
 
     /**
+     * @var boolean re-import order
+     */
+    protected $_is_reimported = false;
+
+    /**
      * @var string
      */
     protected $_order_state_marketplace;
@@ -99,7 +109,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
     public function __construct($params = array())
     {
         // get params
-        $this->_id_store            = $params['id_store'];
+        $this->_store_id            = $params['store_id'];
         $this->_preprod_mode        = $params['preprod_mode'];
         $this->_log_output          = $params['log_output'];
         $this->_marketplace_sku     = $params['marketplace_sku'];
@@ -111,10 +121,11 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
         // get helpers
         $this->_helper = Mage::helper('lengow_connector/data');
         $this->_config = Mage::helper('lengow_connector/config');
+        $this->_model_order = Mage::getModel('lengow/import_order');
         // get marketplace and Lengow order state
         $this->_marketplace = $this->_import_helper->getMarketplaceSingleton(
             (string)$this->_order_data->marketplace,
-            $this->_id_store
+            $this->_store_id
         );
         $this->_marketplace_label = $this->_marketplace->label_name;
         $this->_order_state_marketplace = (string)$this->_order_data->marketplace_status;
@@ -129,8 +140,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
     public function importOrder()
     {
         // if log import exist and not finished
-        $model_order = $model_order = Mage::getModel('lengow/import_order');
-        $import_log = $model_order->orderIsInError($this->_marketplace_sku, $this->_delivery_address_id, 'import');
+        $import_log = $this->_model_order->orderIsInError($this->_marketplace_sku, $this->_delivery_address_id, 'import');
         if ($import_log) {
             $decoded_message = $this->_helper->decodeLogMessage($import_log['message'], 'en_GB');
             $this->_helper->log(
@@ -145,35 +155,36 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
             return false;
         }
         // recovery id if the command has already been imported
-        $order_id = $model_order->getOrderIdFromLengowOrders(
+        $order_id = $this->_model_order->getOrderIdFromLengowOrders(
             $this->_marketplace_sku,
             (string)$this->_marketplace->name,
             $this->_delivery_address_id
         );
-        die();
         // update order state if already imported
-        // if ($order_id) {
-        //     $order_updated = $this->checkAndUpdateOrder($order_id);
-        //     if ($order_updated && isset($order_updated['update'])) {
-        //         return $this->returnResult('update', $order_updated['id_order_lengow'], $order_id);
-        //     }
-        //     if (!$this->is_reimported) {
-        //         return false;
-        //     }
-        // }
+        if ($order_id) {
+            // TODO
+            // $order_updated = $this->_checkAndUpdateOrder($order_id);
+            // if ($order_updated && isset($order_updated['update'])) {
+            //     return $this->_returnResult('update', $order_updated['order_lengow_id'], $order_id);
+            // }
+            // if (!$this->_is_reimported) {
+            //     return false;
+            // }
+        }
         // // checks if an external id already exists
-        // $id_order_prestashop = $this->checkExternalIds($this->order_data->merchant_order_id);
-        // if ($id_order_prestashop && !$this->preprod_mode && !$this->is_reimported) {
-        //     LengowMain::log(
-        //         'Import',
-        //         LengowMain::setLogMessage('log.import.external_id_exist', array(
-        //             'order_id' => $id_order_prestashop
-        //         )),
-        //         $this->log_output,
-        //         $this->marketplace_sku
-        //     );
-        //     return false;
-        // }
+        $order_magento_id = $this->_checkExternalIds($this->_order_data->merchant_order_id);
+        if ($order_magento_id && !$this->_preprod_mode && !$this->_is_reimported) {
+            $this->_helper->log(
+                'Import',
+                $this->_helper->setLogMessage('log.import.external_id_exist', array(
+                    'order_id' => $order_magento_id
+                )),
+                $this->_log_output,
+                $this->_marketplace_sku
+            );
+            return false;
+        }
+        // TODO
         // // if order is cancelled or new -> skip
         // if (!LengowImport::checkState($this->order_state_marketplace, $this->marketplace)) {
         //     LengowMain::log(
@@ -374,23 +385,49 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
      * Return an array of result for each order
      *
      * @param string    $type_result        Type of result (new, update, error)
-     * @param integer   $id_order_lengow    ID of the lengow order record
+     * @param integer   $order_lengow_id    ID of the lengow order record
      * @param integer   $order_id           Order ID Prestashop
      *
      * @return array
      */
-    protected function _returnResult($type_result, $id_order_lengow, $order_id = null)
+    protected function _returnResult($type_result, $order_lengow_id, $order_id = null)
     {
         $result = array(
-            // 'order_id'              => $order_id,
-            // 'id_order_lengow'       => $id_order_lengow,
-            // 'marketplace_sku'       => $this->marketplace_sku,
-            // 'marketplace_name'      => (string)$this->marketplace->name,
-            // 'lengow_state'          => $this->order_state_lengow,
+            'order_id'              => $order_id,
+            'id_order_lengow'       => $order_lengow_id,
+            'marketplace_sku'       => $this->_marketplace_sku,
+            'marketplace_name'      => (string)$this->marketplace->name,
+            'lengow_state'          => $this->_order_state_lengow,
             'order_new'             => ($type_result == 'new' ? true : false),
             'order_update'          => ($type_result == 'update' ? true : false),
             'order_error'           => ($type_result == 'error' ? true : false)
         );
         return $result;
+    }
+
+    /**
+     * Checks if an external id already exists
+     *
+     * @param array $external_ids
+     *
+     * @return mixed
+     */
+    protected function _checkExternalIds($external_ids)
+    {
+        $line_id = false;
+        $order_magento_id = false;
+        if (!is_null($external_ids) && count($external_ids) > 0) {
+            foreach ($external_ids as $external_id) {
+                $line_id = $this->_model_order->getIdFromLengowDeliveryAddress(
+                    (int)$external_id,
+                    (int)$this->_delivery_address_id
+                );
+                if ($line_id) {
+                    $order_magento_id = $external_id;
+                    break;
+                }
+            }
+        }
+        return $order_magento_id;
     }
 }

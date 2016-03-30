@@ -81,7 +81,7 @@
             <lengow_setup>
                 <setup>
                     <module>Lengow_Connector</module>
-                    <class>Mage_Catalog_Model_Resource_Setup</class>
+                    <class>Mage_Sales_Model_Mysql4_Setup</class>
                 </setup>
             </lengow_setup>
         </resources>
