@@ -78,26 +78,74 @@ if (!$from_lengow_customer) {
 }
 
 // create attribute from_lengow for order
-$from_lengow_order = $installer->getAttribute('order', 'from_lengow');
-if (!$from_lengow_order) {
-    $installer->addAttribute(
-        'order',
-        'from_lengow',
-        array(
-            'name'       => 'from_lengow',
-            'label'      => 'From Lengow',
-            'type'       => 'int',
-            'visible'    => true,
-            'required'   => false,
-            'unique'     => false,
-            'filterable' => 1,
-            'sort_order' => 700,
-            'default'    => 0,
-            'input'      => 'select',
-            'source'     => 'eav/entity_attribute_source_boolean',
-            'grid'       => true
-        )
-    );
+$list_attribute = array();
+$list_attribute[] = array(
+    'name' => 'from_lengow',
+    'label' => 'From Lengow',
+    'type' => 'int',
+    'input' => 'select',
+    'source' => 'eav/entity_attribute_source_boolean',
+    'default' => 0,
+    'grid' => true,
+);
+$list_attribute[] = array(
+    'name' => 'order_id_lengow',
+    'label' => 'Lengow order ID',
+    'type' => 'text',
+    'input' => 'text',
+    'source' => '',
+    'default' => '',
+    'grid' => true,
+);
+$list_attribute[] = array(
+    'name' => 'feed_id_lengow',
+    'label' => 'Feed ID',
+    'type' => 'float',
+    'input' => 'text',
+    'source' => '',
+    'default' => 0,
+    'grid' => false,
+);
+$list_attribute[] = array(
+    'name' => 'marketplace_lengow',
+    'label' => 'marketplace',
+    'type' => 'text',
+    'input' => 'text',
+    'source' => '',
+    'default' => '',
+    'grid' => true,
+);
+$list_attribute[] = array(
+    'name' => 'delivery_address_id_lengow',
+    'label' => 'Delivery address id lengow',
+    'type' => 'int',
+    'input' => 'text',
+    'source' => '',
+    'default' => 0,
+    'grid' => false,
+);
+foreach ($list_attribute as $attr) {
+    $order_attribute = $installer->getAttribute('order', $attr['name']);
+    if (!$order_attribute) {
+        $installer->addAttribute(
+            'order',
+            $attr['name'],
+            array(
+                'name'       => $attr['name'],
+                'label'      => $attr['label'],
+                'type'       => $attr['type'],
+                'visible'    => true,
+                'required'   => false,
+                'unique'     => false,
+                'filterable' => 1,
+                'sort_order' => 700,
+                'default'    => $attr['default'],
+                'input'      => $attr['input'],
+                'source'     => $attr['source'],
+                'grid'       => $attr['grid']
+            )
+        );
+    }
 }
 
 // *********************************************************

@@ -277,4 +277,65 @@ class Lengow_Connector_Model_Connector
             return false;
         }
     }
+
+    /**
+     * Get Valid Account / Access / Secret
+     *
+     * @param integer $store_id Store Id
+     *
+     * @return array
+     */
+    public function getAccessId($store_id = null)
+    {
+        $config = Mage::helper('lengow_connector/config');
+        if ($store_id) {
+            $account_id = $config->get('account_id', $store_id);
+            $access_token = $config->get('access_token', $store_id);
+            $secret_token = $config->get('secret_token', $store_id);
+        } else {
+            $store_collection = Mage::getResourceModel('core/store_collection')->addFieldToFilter('is_active', 1);
+            foreach ($store_collection as $store) {
+                $account_id = $config->get('account_id', $store->getId());
+                $access_token = $config->get('access_token', $store->getId());
+                $secret_token = $config->get('secret_token', $store->getId());
+                if (strlen($account_id) > 0 && strlen($access_token) > 0 && strlen($secret_token) > 0) {
+                    break;
+                }
+            }
+        }
+        if (strlen($account_id) > 0 && strlen($access_token) > 0 && strlen($secret_token) > 0) {
+            return array($account_id, $access_token, $secret_token);
+        } else {
+            return array(null, null, null);
+        }
+    }
+
+    /**
+     * Query Api
+     *
+     * @param string    $type       (get/post)
+     * @param string    $url        to query
+     * @param integer   $store_id   Store Id
+     * @param array     $params
+     *
+     * @return api result as array
+     */
+    public function queryApi($type, $url, $store_id = null, $params = array())
+    {
+        if (!in_array($type, array('get', 'post'))) {
+            return false;
+        }
+        try {
+            list($account_id, $access_token, $secret_token) = $this->getAccessId($store_id);
+            $this->init($access_token, $secret_token);
+            $results = $this->$type(
+                $url,
+                array_merge(array('account_id' => $account_id), $params),
+                'stream'
+            );
+        } catch (Lengow_Connector_Model_Exception $e) {
+            return false;
+        }
+        return json_decode($results);
+    }
 }
