@@ -1,6 +1,6 @@
 en:
   menu:
-    products: "Manage products export"
+    products: "Products"
     settings: "Settings"
     logs: "Logs"
     orders: "Orders"
@@ -86,7 +86,26 @@ en:
     import_days_comment: "Choose a number of days"
     import_customer_group_title: "Customer group"
     import_customer_group_comment: "Choose a customer group for lengow customer"
+    import_report_mail_enable_title: "I would like to be notified when there are issues regarding order importation"
+    import_report_mail_enable_comment: "We will send you this once a day"
+    import_report_mail_address_title: "Mail for the report email"
+    import_report_mail_address_comment: "Email separated by ;"
     import_preprod_mode_enable_title: "Preprod mode"
     import_preprod_mode_enable_comment: "Only for preproduction's mode: no synchronisation orders with Lengow, import orders every time"
     import_cron_enable_title: "Enable Magento cron"
     import_cron_enable_comment: "Enable the scheduled task for import your order every 30 minutes"
+  lengow_log:
+    error:
+      nb_order_imported: "%{nb_order} order(s) imported"
+      nb_order_updated: "%{nb_order} order(s) updated"
+      nb_order_with_error: "%{nb_order} order(s) with errors"
+      import_in_progress: "import has already started"
+      rest_time_to_import: "Please wait %{rest_time} seconds before re-importing orders"
+      account_id_empty: "id account, access token or secret is empty in shop %{name_shop} (%{id_shop})"
+      account_id_already_used: "account ID %{account_id} is already used by shop %{name_shop} (%{id_shop})"
+      order_not_found: "Order can't be found in lengow feed"
+    exception:
+      no_connection_webservice: "connection didn't work with the Lengow webservice in shop %{name_shop} (%{id_shop})"
+      crendentials_not_valid: "account ID, token access or secret token are not valid in shop %{name_shop} (%{id_shop})"
+      error_lengow_webservice: "Lengow webservice : %{error_code} - %{error_message} in shop %{name_shop} (%{id_shop})"
+      timeout_api: "API call was blocked by a timeout"

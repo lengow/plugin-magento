@@ -12,9 +12,30 @@
 class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
 {
 
-    var $options = array(
+    /**
+     * All Lengow Options Path
+     */
+    public $options = array(
+        'token' => array(
+            'path' => 'lengow_global_options/store_credential/token'
+        ),
         'store_enable' => array(
-            'path' => 'lengow_export_options/simple/export_store_enable'
+            'path' => 'lengow_global_options/store_credential/global_store_enable'
+        ),
+        'account_id' => array(
+            'path' => 'lengow_global_options/store_credential/global_account_id'
+        ),
+        'access_token' => array(
+            'path' => 'lengow_global_options/store_credential/global_access_token'
+        ),
+        'secret_token' => array(
+            'path' => 'lengow_global_options/store_credential/global_secret_token'
+        ),
+        'tracking_id' => array(
+            'path' => 'lengow_global_options/advanced/global_tracking_id'
+        ),
+        'authorized_ip' => array(
+            'path' => 'lengow_global_options/advanced/global_authorized_ip'
         ),
         'selection_enable' => array(
             'path' => 'lengow_export_options/simple/export_selection_enable'
@@ -43,33 +64,47 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
         'file_enable' => array(
             'path' => 'lengow_export_options/advanced/export_file_enable'
         ),
-        'cron_enable' => array(
+        'export_cron_enable' => array(
             'path' => 'lengow_export_options/advanced/export_cron_enable'
         ),
-        'token' => array(
-            'path' => 'lengow_global_options/store_credential/token'
+        'days' => array(
+            'path' => 'lengow_import_options/simple/import_days'
         ),
-        'store_enable' => array(
-            'path' => 'lengow_global_options/store_credential/global_store_enable'
+        'customer_group' => array(
+            'path' => 'lengow_import_options/simple/import_customer_group'
         ),
-        'account_id' => array(
-            'path' => 'lengow_global_options/store_credential/global_account_id'
+        'report_mail_enable' => array(
+            'path' => 'lengow_import_options/advanced/import_report_mail_enable'
         ),
-        'access_token' => array(
-            'path' => 'lengow_global_options/store_credential/global_access_token'
+        'report_mail_address' => array(
+            'path' => 'lengow_import_options/advanced/import_report_mail_address'
         ),
-        'secret_token' => array(
-            'path' => 'lengow_global_options/store_credential/global_secret_token'
+        'preprod_mode_enable' => array(
+            'path' => 'lengow_import_options/advanced/import_preprod_mode_enable'
+        ),
+        'import_cron_enable' => array(
+            'path' => 'lengow_import_options/advanced/import_cron_enable'
+        ),
+        'import_in_progress' => array(
+            'path' => 'lengow_import_options/advanced/import_in_progress'
+        ),
+        'last_import_manual' => array(
+            'path' => 'lengow_import_options/advanced/last_import_manual'
+        ),
+        'last_import_cron' => array(
+            'path' => 'lengow_import_options/advanced/last_import_cron'
         ),
     );
 
     /**
      * Get Value
+     *
      * @param $key
      * @param $storeId
+     *
      * @return null
      */
-    public function get($key, $storeId)
+    public function get($key, $storeId = 0)
     {
         if (!array_key_exists($key, $this->options)) {
             return null;
@@ -80,12 +115,14 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
 
     /**
      * Set Value
+     *
      * @param $key
      * @param $value
      * @param $storeId
+     *
      * @return null
      */
-    public function set($key, $value, $storeId)
+    public function set($key, $value, $storeId = 0)
     {
         if ($storeId==0) {
             Mage::getModel('core/config')->saveConfig(
@@ -105,30 +142,10 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Get Selected attributes
-     * @param int $id_store
-     * @return array
-     */
-    public function getSelectedAttributes($id_store = null)
-    {
-        $tab = array();
-        $attributeSelected = array();
-        $val = Mage::getStoreConfig('lenexport/attributelist/attributes', $id_store);
-        if (!empty($val)) {
-            $tab = explode(',', $val);
-            $attributeSelected = array_flip($tab);
-        }
-        if (!empty($tab)) {
-            foreach ($attributeSelected as $key => $value) {
-                $attributeSelected[$key] = $key;
-            }
-        }
-        return $attributeSelected;
-    }
-
-    /**
      * Generate token
+     *
      * @param integer $storeId
+     *
      * @return array
      */
     public function getToken($storeId = null)
@@ -145,7 +162,9 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
 
     /**
      * Get Store by token
+     *
      * @param string $token
+     *
      * @return mixed
      */
     public function getStoreByToken($token)
