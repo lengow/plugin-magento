@@ -7,7 +7,7 @@
 
 2 - Dans l'onglet release archive, choisir la version a télécharger (ex: la 1.9.2)
 
-3 - Décompresser le projet dans /var/www/magento/magento-1-9-2
+3 - Décompresser le projet dans /var/www/magento/magento-1-9
 
 4 - Modification du fichier /etc/hosts
 
@@ -17,9 +17,9 @@
 
     sudo vim /etc/apache2/sites-enabled/magento_1_9.conf 
     <VirtualHost *:80>
-    DocumentRoot /var/www/magento-1-9/
+    DocumentRoot /var/www/magento/magento-1-9/
     ServerName magento-1-9.local
-    <Directory /var/www/magento-1-9/>
+    <Directory /var/www/magento/magento-1-9/>
         Options FollowSymLinks Indexes MultiViews
         AllowOverride All
     </Directory>
@@ -34,7 +34,7 @@
     
     mysql -u root -p -e "CREATE DATABASE magento-1-9"; 
     
-7 -  Récupération des Sample Data
+8 -  Récupération des Sample Data
 
 Les fichier sont dispo ici : https://github.com/Vinai/compressed-magento-sample-data
 
@@ -44,7 +44,7 @@ Les fichier sont dispo ici : https://github.com/Vinai/compressed-magento-sample-
     cd magento-sample-data-1.9.1.0
     mysql -u root -p magento-1-9 < magento_sample_data_for_1.9.1.0.sql
     
-8 - Se connecter sur magento pour lancer l'installation
+9 - Se connecter sur magento pour lancer l'installation
     
     http://magento-1-9.local
 
@@ -59,7 +59,7 @@ Cloner le repo dans votre espace de travail :
 
 Exécuter le script suivant :
 
-    cd /var/www/magento/
+    cd /var/www/magento/magento-v3/tools/
     ./install.sh /var/www/magento/magento-1-9
 
 Le script va créer des liens symboliques vers les sources du module, vous devez ensuite activer l'option 'symlinks' dans la configuration Magento 

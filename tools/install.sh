@@ -2,7 +2,7 @@
 MAGE=$1
 
 copy_file(){
-    ORIGINAL_FILE="$PWD$1"
+    ORIGINAL_FILE="$(dirname "$(pwd)")$1"
     DESTINATION_FILE="$MAGE$1"
     if [ -f "$ORIGINAL_FILE" ]; then
         if [ -f "$DESTINATION_FILE" ]; then
@@ -17,7 +17,7 @@ copy_file(){
 }
 
 copy_directory(){
-    ORIGINAL_DIRECTORY="$PWD$1"
+    ORIGINAL_DIRECTORY="$(dirname "$(pwd)")$1"
     DESTINATION_DIRECTORY="$MAGE$1"
     if [ -d "$ORIGINAL_DIRECTORY" ]; then
         if [ -e "$DESTINATION_DIRECTORY" ]; then
