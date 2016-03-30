@@ -17,8 +17,8 @@ class Lengow_Connector_Model_Import_Orderline extends Mage_Core_Model_Abstract
      * update   => Fields allowed when updating registration
      */
     protected $_field_list = array(
-        'id_order'      => array('required' => true, 'updated' => false),
-        'id_order_line' => array('required' => true, 'updated' => false)
+        'order_id'      => array('required' => true, 'updated' => false),
+        'order_line_id' => array('required' => true, 'updated' => false)
     );
 
     /**

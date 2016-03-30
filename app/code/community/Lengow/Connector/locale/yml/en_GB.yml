@@ -22,7 +22,19 @@ en:
   order:
     screen:
       button_import: "Import Order"
+      button_migrate: "Migrate Old Data"
       title: "Orders"
+    table:
+      lengow_state: "Lengow State"
+      marketplace_name: "Marketplace"
+      marketplace_sku: "Marketplace Sku"
+      magento_sku: "Magento Sku"
+      order_date: "Order Date"
+      country: "Country"
+      items: "Items"
+      store: "Store"
+      total_paid: "Total"
+      magento_status: "Status"
   lengow_setting:
     global_setting: "Global settings"
     global_plugin_version_title: "Plugin's version"

@@ -137,16 +137,21 @@ if ($installer->getConnection()->isTableExists($tableName) != true) {
             'nullable'  => false,
             'primary'   => true
         ), 'Id')
-        ->addColumn('id_order', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
+        ->addColumn('order_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
             'nullable'  => true,
             'unsigned'  => true,
             'default'   => null
         ), 'Id Order')
-        ->addColumn('id_store', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
+        ->addColumn('order_sku', Varien_Db_Ddl_Table::TYPE_TEXT, null, array(
+            'nullable'  => true,
+            'default'   => null,
+            'length'    => 40
+        ), 'Id Order')
+        ->addColumn('store_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
             'nullable'  => false,
             'unsigned'  => true
         ), 'Id Store')
-        ->addColumn('id_feed', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
+        ->addColumn('feed_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
             'nullable'  => true,
             'unsigned'  => true,
             'default'   => null
@@ -271,11 +276,11 @@ if ($installer->getConnection()->isTableExists($tableName) != true) {
             'nullable'  => false,
             'primary'   => true,
         ), 'Id')
-        ->addColumn('id_order', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
+        ->addColumn('order_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
             'nullable'  => false,
             'unsigned'  => true
         ), 'Id Order')
-        ->addColumn('id_order_line', Varien_Db_Ddl_Table::TYPE_TEXT, 100, array(
+        ->addColumn('order_line_id', Varien_Db_Ddl_Table::TYPE_TEXT, 100, array(
             'nullable'  => false,
             'length'    => 100
         ), 'Id Order Line');
@@ -293,7 +298,7 @@ if ($installer->getConnection()->isTableExists($tableName) != true) {
             'nullable'  => false,
             'primary'   => true,
         ), 'Id')
-        ->addColumn('id_order_lengow', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
+        ->addColumn('order_lengow_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
             'nullable'  => false,
             'unsigned'  => true
         ), 'Id Order Lengow')
@@ -334,11 +339,11 @@ if ($installer->getConnection()->isTableExists($tableName) != true) {
             'nullable'  => false,
             'primary'   => true,
         ), 'Id')
-        ->addColumn('id_order', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
+        ->addColumn('order_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
             'nullable'  => false,
             'unsigned'  => true
         ), 'Id Order')
-        ->addColumn('id_action', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
+        ->addColumn('action_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
             'nullable'  => false,
             'unsigned'  => true
         ), 'Id Action')
