@@ -149,60 +149,78 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
 
     public function migrateOldOrder()
     {
-        $order_collection = Mage::getModel('sales/order')->getCollection()
-            ->addAttributeToFilter('from_lengow', 1);
-        foreach ($order_collection as $order) {
-            //print_r($order->getData());
 
-            $lengowNode = json_decode($order->getXmlNodeLengow());
-            //print_r($lengowNode);
+        $perPage = 20;
+        $total = $this->countNotMigrateOrder();
 
-            $idFeed = isset($lengowNode->idFlux) ? $lengowNode->idFlux : $order->getFeedIdLengow();
-            $marketplaceSku = isset($lengowNode->order_id_lengow) ? $lengowNode->order_id : $order->getOrderIdLengow();
-            $countryIso = isset($lengowNode->delivery_address->delivery_country_iso) ?
-                $lengowNode->delivery_address->delivery_country_iso : '' ;
-            $marketplaceName = isset($lengowNode->marketplace) ?
-                $lengowNode->marketplace : $order->getMarketplaceLengow();
-            $sendByMarketplace = isset($lengowNode->tracking_informations->tracking_deliveringByMarketPlace) ?
-                (bool)$lengowNode->tracking_informations->tracking_deliveringByMarketPlace : 0;
-            if (isset($lengowNode->order_purchase_date) && isset($lengowNode->order_purchase_heure)) {
-                $orderDate = $lengowNode->order_purchase_date.' '.$lengowNode->order_purchase_heure;
-            } else {
-                $orderDate = $order->getCreatedAt();
+        $nbPage = ceil($total / $perPage);
+        for ($i = 1; $i <= $nbPage; $i++) {
+
+            $order_collection = Mage::getModel('sales/order')->getCollection()
+                ->addAttributeToFilter('from_lengow', 1);
+            $order_collection->getSelect()->limit($perPage, ($i-1)*$perPage);
+            foreach ($order_collection as $order) {
+
+
+                $oldOrder = Mage::getModel('lengow/import_order')->getCollection()
+                    ->addFieldToFilter('order_id', $order->getId())->getFirstItem();
+                if ($oldOrder->getId()>0) {
+                    continue;
+                }
+
+
+                //print_r($order->getData());
+
+                $lengowNode = json_decode($order->getXmlNodeLengow());
+                //print_r($lengowNode);
+
+                $idFeed = isset($lengowNode->idFlux) ? $lengowNode->idFlux : $order->getFeedIdLengow();
+                $marketplaceSku = isset($lengowNode->order_id_lengow) ? $lengowNode->order_id : $order->getOrderIdLengow();
+                $countryIso = isset($lengowNode->delivery_address->delivery_country_iso) ?
+                    $lengowNode->delivery_address->delivery_country_iso : '' ;
+                $marketplaceName = isset($lengowNode->marketplace) ?
+                    $lengowNode->marketplace : $order->getMarketplaceLengow();
+                $sendByMarketplace = isset($lengowNode->tracking_informations->tracking_deliveringByMarketPlace) ?
+                    (bool)$lengowNode->tracking_informations->tracking_deliveringByMarketPlace : 0;
+                if (isset($lengowNode->order_purchase_date) && isset($lengowNode->order_purchase_heure)) {
+                    $orderDate = $lengowNode->order_purchase_date.' '.$lengowNode->order_purchase_heure;
+                } else {
+                    $orderDate = $order->getCreatedAt();
+                }
+
+                if ($countryIso=='') {
+                    $address = $order->getShippingAddress();
+                    $countryIso = $address->getCountryId();
+                }
+
+                $newOrder = Mage::getModel('lengow/import_order');
+                $newOrder->createOrder(array(
+                    'order_id' => $order->getId(),
+                    'order_sku' => $order->getIncrementId(),
+                    'store_id' => $order->getStoreId(),
+                    'feed_id' => $idFeed,
+                    'delivery_address_id' => '',
+                    'delivery_country_iso' => $countryIso,
+                    'marketplace_sku' => $marketplaceSku,
+                    'marketplace_name' => $marketplaceName,
+                    'marketplace_label' => $marketplaceName,
+                    'order_lengow_state' => '',
+                    'order_date' => $orderDate,
+                    'order_item' => $order->getTotalItemCount(),
+                    'currency' => $order->getBaseCurrencyCode(),
+                    'total_paid' => $order->getTotalInvoiced(),
+                    //'commission' => $order->getTotalInvoiced(),
+                    'customer_name' => $order->getCustomerFirstname().' '.$order->getCustomerLastname(),
+                    'carrier' => $order->getCarrierLengow(),
+                    'carrier_method' => $order->getCarrierMethodLengow(),
+                    'carrier_tracking' => $order->getCarrierTrackingLengow(),
+                    'sent_marketplace' => $sendByMarketplace ,
+                    'created_at' => $order->getCreatedAt(),
+                    'updated_at' => $order->getUpdateAt(),
+                    'message' => $order->getMessageLengow(),
+                    'extra' => $order->getXmlNodeLengow()
+                ));
             }
-
-            if ($countryIso=='') {
-                $address = $order->getShippingAddress();
-                $countryIso = $address->getCountryId();
-            }
-
-            $newOrder = Mage::getModel('lengow/import_order');
-            $newOrder->createOrder(array(
-                'order_id' => $order->getId(),
-                'order_sku' => $order->getIncrementId(),
-                'store_id' => $order->getStoreId(),
-                'feed_id' => $idFeed,
-                'delivery_address_id' => '',
-                'delivery_country_iso' => $countryIso,
-                'marketplace_sku' => $marketplaceSku,
-                'marketplace_name' => $marketplaceName,
-                'marketplace_label' => $marketplaceName,
-                'order_lengow_state' => '',
-                'order_date' => $orderDate,
-                'order_item' => $order->getTotalItemCount(),
-                'currency' => $order->getBaseCurrencyCode(),
-                'total_paid' => $order->getTotalInvoiced(),
-                //'commission' => $order->getTotalInvoiced(),
-                'customer_name' => $order->getCustomerFirstname().' '.$order->getCustomerLastname(),
-                'carrier' => $order->getCarrierLengow(),
-                'carrier_method' => $order->getCarrierMethodLengow(),
-                'carrier_tracking' => $order->getCarrierTrackingLengow(),
-                'sent_marketplace' => $sendByMarketplace ,
-                'created_at' => $order->getCreatedAt(),
-                'updated_at' => $order->getUpdateAt(),
-                'message' => $order->getMessageLengow(),
-                'extra' => $order->getXmlNodeLengow()
-            ));
         }
     }
 }
