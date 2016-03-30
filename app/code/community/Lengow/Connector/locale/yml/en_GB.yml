@@ -97,3 +97,4 @@ en:
       crendentials_not_valid: "account ID, token access or secret token are not valid in shop %{name_shop} (%{id_shop})"
       error_lengow_webservice: "Lengow webservice : %{error_code} - %{error_message} in shop %{name_shop} (%{id_shop})"
       timeout_api: "API call was blocked by a timeout"
+      marketplace_not_present: "the marketplace %{markeplace_name} does not feature in the marketplace list"

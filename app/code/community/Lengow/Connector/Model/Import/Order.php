@@ -125,4 +125,90 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
         }
         return $updated_fields;
     }
+
+    /**
+     * is Already Imported
+     *
+     * @param string    $lengow_id              Lengow order id
+     * @param string    $markeplace_name        marketplace name
+     * @param integer   $delivery_address_id    delivery address id
+     *
+     * @return mixed
+     */
+    public function getOrderIdFromLengowOrders($marketplace_sku, $marketplace_name, $delivery_address_id)
+    {
+        // get order id in lengow order table
+        $results = $this->getCollection()
+            ->addFieldToFilter('marketplace_sku', $marketplace_sku)
+            ->addFieldToFilter('marketplace_name', $marketplace_name)
+            ->addFieldToFilter('order_process_state', array('neq' => 0))
+            ->addFieldToSelect('id_order')
+            ->addFieldToSelect('delivery_address_id')
+            ->addFieldToSelect('id_feed')
+            ->getData();
+        print_r($results);
+        if (count($results) > 0) {
+            foreach ($results as $result) {
+                if ($result['delivery_address_id'] == 0 && $result['id_feed'] != 0) {
+                    return $result['id_order'];
+                } elseif ($result['delivery_address_id'] == $delivery_address_id) {
+                    return $result['id_order'];
+                }
+            }
+        }
+        // get order id in Magento flat order table (compatibility)
+        $order_results = Mage::getModel('sales/order')->getCollection()
+            ->addAttributeToFilter('order_id_lengow', $marketplace_sku)
+            ->addAttributeToFilter('marketplace_lengow', $marketplace_name)
+            ->addAttributeToSelect('entity_id')
+            ->addAttributeToSelect('delivery_address_id_lengow')
+            ->addAttributeToSelect('feed_id_lengow')
+            ->getData();
+        print_r($order_results);
+        if (count($order_results) > 0) {
+            foreach ($order_results as $result) {
+                if ($result['delivery_address_id_lengow'] == 0 && $result['feed_id_lengow'] != 0) {
+                    return $result['entity_id'];
+                } elseif ($result['delivery_address_id_lengow'] == $delivery_address_id) {
+                    return $result['entity_id'];
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Check if an order has an error
+     *
+     * @param string    $marketplace_sku        Lengow order id
+     * @param integer   $delivery_address_id    Id delivery address
+     * @param string    $type                   Type (import or send)
+     *
+     * @return mixed
+     */
+    public function orderIsInError($marketplace_sku, $delivery_address_id, $type = 'import')
+    {
+        $order_error = Mage::getModel('lengow/import_ordererror');
+        $log_type = $order_error->getOrderLogType($type);
+        // check if log already exists for the given order id
+        $results = $order_error->getCollection()
+            ->join(
+                array('order'=> 'lengow/import_order'),
+                'order.id=main_table.id_order_lengow',
+                array('marketplace_sku' => 'marketplace_sku', 'delivery_address_id' => 'delivery_address_id')
+            )
+            ->addFieldToFilter('marketplace_sku', $marketplace_sku)
+            ->addFieldToFilter('delivery_address_id', $delivery_address_id)
+            ->addFieldToFilter('type', $log_type)
+            ->addFieldToFilter('is_finished', array('eq' => 0))
+            ->addFieldToSelect('id')
+            ->addFieldToSelect('message')
+            ->addFieldToSelect('created_at')
+            ->getData();
+        if (count($results) == 0) {
+            return false;
+        }
+        return $results[0];
+    }
 }

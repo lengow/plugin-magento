@@ -33,7 +33,12 @@ en:
       connector_get_all_order: "get orders between %{date_from} and %{date_to} with account ID: %{account_id}"
       find_one_order: "%{nb_order} order found for order ID: %{marketplace_sku} and markeplace: %{markeplace_name} with account ID: %{account_id}"
       find_all_orders: "%{nb_order} order(s) found with account ID: %{account_id}"
+      error_already_created: "%{decoded_message} (created on the %{date_message})"
       import_failed: "import failed - %{decoded_message}"
+      order_import_failed: "import order failed - %{decoded_message}"
+      error_no_package: "import order failed - no package in the order"
+      error_wrong_package_number: "import order failed - wrong package number"
+      error_no_delivery_address: "import order failed - no delivery address in the order"
     connector:
       call_api: "call %{curl_url}"
       error_api: "call api failed - %{error_code}"
