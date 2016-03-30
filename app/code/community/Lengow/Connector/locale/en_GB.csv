@@ -11,7 +11,18 @@ log.table.message|Message
 product.screen.title|Export product
 product.table.publish_on_lengow|Publish on Lengow
 order.screen.button_import|Import Order
+order.screen.button_migrate|Migrate Old Data
 order.screen.title|Orders
+order.table.lengow_state|Lengow State
+order.table.marketplace_name|Marketplace
+order.table.marketplace_sku|Marketplace Sku
+order.table.magento_sku|Magento Sku
+order.table.order_date|Order Date
+order.table.country|Country
+order.table.items|Items
+order.table.store|Store
+order.table.total_paid|Total
+order.table.magento_status|Status
 lengow_setting.global_setting|Global settings
 lengow_setting.global_plugin_version_title|Plugin's version
 lengow_setting.global_magento_version_title|Magento's version

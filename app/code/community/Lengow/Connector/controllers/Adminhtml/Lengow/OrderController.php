@@ -30,6 +30,13 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
         exit();
     }
 
+    public function migrateAction()
+    {
+        $order = Mage::getModel('lengow/import_order');
+        $order->migrateOldOrder();
+        $this->_redirect('adminhtml/lengow_order/index');
+    }
+
     /**
      * Product grid for AJAX request
      */

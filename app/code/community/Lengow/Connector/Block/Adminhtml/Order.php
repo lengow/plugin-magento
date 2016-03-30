@@ -23,11 +23,18 @@ class Lengow_Connector_Block_Adminhtml_Order extends Mage_Adminhtml_Block_Widget
         $this->_blockGroup = 'lengow';
         $this->_headerText = $this->helper('lengow_connector')->__('order.screen.title');
         $this->_removeButton('add');
+        $order = Mage::getModel('lengow/import_order');
+        if ($order->countNotMigrateOrder() > 0) {
+            $this->_addButton('migrate', array(
+                'label'   => $this->helper('lengow_connector')->__('order.screen.button_migrate'),
+                'onclick' => 'setLocation(\'' . $this->getUrl('*/*/migrate') . '\')',
+                'class'   => 'add'
+            ));
+        }
         $this->_addButton('import', array(
             'label'   => $this->helper('lengow_connector')->__('order.screen.button_import'),
             'onclick' => 'setLocation(\'' . $this->getUrl('*/*/import') . '\')',
             'class'   => 'add'
         ));
-
     }
 }

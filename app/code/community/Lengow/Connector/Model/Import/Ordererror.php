@@ -27,7 +27,7 @@ class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
      * update   => Fields allowed when updating registration
      */
     protected $_field_list = array(
-        'id_order_lengow' => array('required' => true, 'updated' => false),
+        'order_lengow_id' => array('required' => true, 'updated' => false),
         'message'         => array('required' => true, 'updated' => false),
         'type'            => array('required' => true, 'updated' => false),
         'is_finished'     => array('required' => false, 'updated' => true),
