@@ -142,6 +142,28 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * Get Selected attributes
+     * @param int $id_store
+     * @return array
+     */
+    public function getSelectedAttributes($id_store = null)
+    {
+        $tab = array();
+        $attributeSelected = array();
+        $val = Mage::getStoreConfig('lenexport/attributelist/attributes', $id_store);
+        if (!empty($val)) {
+            $tab = explode(',', $val);
+            $attributeSelected = array_flip($tab);
+        }
+        if (!empty($tab)) {
+            foreach ($attributeSelected as $key => $value) {
+                $attributeSelected[$key] = $key;
+            }
+        }
+        return $attributeSelected;
+    }
+
+    /**
      * Generate token
      *
      * @param integer $storeId
