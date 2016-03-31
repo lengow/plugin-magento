@@ -262,7 +262,8 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
 
     public function migrateOldOrder()
     {
-        $perPage = 20;
+
+        $perPage = 500;
         $total = $this->countNotMigrateOrder();
 
         $nbPage = ceil($total / $perPage);
