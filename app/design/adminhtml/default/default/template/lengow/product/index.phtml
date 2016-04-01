@@ -1,0 +1,18 @@
+<?php
+$store_id = (integer)$this->getRequest()->getParam('store', Mage::app()->getStore()->getId());
+$sync_data = Mage::helper('lengow_connector/sync')->getSyncData();
+?>
+<?php if ($store_id != 0) { ?>
+    <div><?php echo $this->getChildHtml('store_switcher'); ?></div>
+    <h2 id="lengow_product_store_name"><?php echo $sync_data['shops'][$store_id]['name'] ?></h2>
+
+    <a href="<?php echo $sync_data['shops'][$store_id]['domain'] ?>">
+        <?php echo $sync_data['shops'][$store_id]['domain'] ?>
+    </a><br>
+    <a href="<?php echo $sync_data['shops'][$store_id]['feed_url'] ?>">
+    <?php echo $sync_data['shops'][$store_id]['feed_url'] ?>
+    </a>
+    <?php } else { ?>
+    <div><?php echo $this->getChildHtml('store_switcher'); ?></div>
+    <p>For display export information, please choose a store view.</p>
+<?php } ?>

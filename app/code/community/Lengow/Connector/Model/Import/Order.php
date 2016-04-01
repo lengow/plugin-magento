@@ -152,9 +152,9 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
         if (count($results) > 0) {
             foreach ($results as $result) {
                 if ($result['delivery_address_id'] == 0 && $result['feed_id'] != 0) {
-                    return $result['id_order'];
+                    return $result['order_id'];
                 } elseif ($result['delivery_address_id'] == $delivery_address_id) {
-                    return $result['id_order'];
+                    return $result['order_id'];
                 }
             }
         }

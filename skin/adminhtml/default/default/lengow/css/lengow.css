@@ -38,9 +38,16 @@ span.publish_on_lengow {
   color:white;
   border-radius: 10px;
 }
+
 span.publish_on_lengow.green {
   background:#89B963;
 }
+
 span.publish_on_lengow.red {
   background:#C4676B;
+}
+
+#lengow_product_store_name {
+  display: inline-block;
+  margin-right: 10px;
 }
