@@ -10,19 +10,18 @@
  */
 class Lengow_Connector_Model_Export_Feed_Csv extends Lengow_Connector_Model_Export_Feed_Abstract
 {
-
     /**
-     * CSV separator.
+     * CSV separator
      */
     public static $CSV_SEPARATOR = '|';
 
     /**
-     * CSV protection.
+     * CSV protection
      */
     public static $CSV_PROTECTION = '"';
 
     /**
-     * CSV End of line.
+     * CSV End of line
      */
     public static $CSV_EOL = "\r\n";
 
@@ -37,9 +36,9 @@ class Lengow_Connector_Model_Export_Feed_Csv extends Lengow_Connector_Model_Expo
     {
         $head = '';
         foreach ($this->_fields as $name) {
-            $head .= self::$CSV_PROTECTION .
-                $this->_clean(substr(str_replace('-', '_', $name), 0, 59)) .
-                self::$CSV_PROTECTION . self::$CSV_SEPARATOR;
+            $head .= self::$CSV_PROTECTION.
+                $this->_clean(substr(str_replace('-', '_', $name), 0, 59)).
+                self::$CSV_PROTECTION.self::$CSV_SEPARATOR;
         }
         return rtrim($head, self::$CSV_SEPARATOR) . self::$CSV_EOL;
     }
@@ -48,8 +47,11 @@ class Lengow_Connector_Model_Export_Feed_Csv extends Lengow_Connector_Model_Expo
     {
         $line = '';
         foreach ($this->_fields as $name) {
-            $line .= self::$CSV_PROTECTION .
-                (array_key_exists($name, $array) ? (str_replace(array(self::$CSV_PROTECTION, '\\'), '', $array[$name])) : '') . self::$CSV_PROTECTION . self::$CSV_SEPARATOR;
+            $line .= self::$CSV_PROTECTION.
+                (array_key_exists($name, $array)
+                    ? (str_replace(array(self::$CSV_PROTECTION, '\\'), '', $array[$name]))
+                    : ''
+                ).self::$CSV_PROTECTION.self::$CSV_SEPARATOR;
         }
         return rtrim($line, self::$CSV_SEPARATOR) . self::$CSV_EOL;
     }
@@ -63,7 +65,8 @@ class Lengow_Connector_Model_Export_Feed_Csv extends Lengow_Connector_Model_Expo
      * Clean header
      *
      * @param string $str The fieldname
-     * @return string The formated header.
+     *
+     * @return string The formated header
      */
     private function _clean($str)
     {

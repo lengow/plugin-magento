@@ -10,6 +10,14 @@
 
 class Lengow_Connector_Model_System_Config_Source_Attribute extends Mage_Core_Model_Config_Data
 {
+    protected $_excludes = array(
+        'media_gallery',
+        'tier_price',
+        'short_description',
+        'description',
+        'quantity'
+    );
+
     /**
      * Get option array for settings
      *
@@ -24,10 +32,12 @@ class Lengow_Connector_Model_System_Config_Source_Attribute extends Mage_Core_Mo
         $attributeArray = array();
         $attributeArray[] = array('value' => 'none', 'label' => '');
         foreach ($attribute as $option) {
-            $attributeArray[] = array(
-                'value' => $option->getAttributeCode(),
-                'label' => $option->getAttributeCode()
-            );
+            if (!in_array($option->getAttributeCode(), $this->_excludes)) {
+                $attributeArray[] = array(
+                    'value' => $option->getAttributeCode(),
+                    'label' => $option->getAttributeCode()
+                );
+            }
         }
         $this->setDefaultAttributes($attributeArray);
         return $attributeArray;

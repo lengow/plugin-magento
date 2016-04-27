@@ -133,13 +133,13 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
     /**
      * Get price
      *
-     * @param Mage_Catalog_Model_Product $product_instance
-     * @param Mage_Catalog_Model_Product $configurable_instance
-     * @param integer $id_store
+     * @param Mage_Catalog_Model_Product    $product_instance
+     * @param integer                       $id_store
+     * @param Mage_Catalog_Model_Product    $configurable_instance
      *
      * @return array
      */
-    public function getPrices($product_instance, $configurable_instance = null, $id_store)
+    public function getPrices($product_instance, $id_store, $configurable_instance = null)
     {
         $store = Mage::app()->getStore($id_store);
         $config = Mage::helper('tax')->priceIncludesTax($store);
@@ -153,7 +153,8 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
             $finalPrice = $configurable_instance->getFinalPrice();
             $configurablePrice = 0;
             $configurableOldPrice = 0;
-            $attributes = $configurable_instance->getTypeInstance(true)->getConfigurableAttributes($configurable_instance);
+            $attributes = $configurable_instance->getTypeInstance(true)
+                                                ->getConfigurableAttributes($configurable_instance);
             $attributes = Mage::helper('core')->decorateArray($attributes);
             if ($attributes) {
                 foreach ($attributes as $attribute) {
@@ -162,11 +163,16 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
                     $attributeValue = $product_instance->getData($productAttribute->getAttributeCode());
                     if (count($attribute->getPrices()) > 0) {
                         foreach ($attribute->getPrices() as $priceChange) {
-                            if (is_array($price) && array_key_exists('value_index',
-                                    $price) && $price['value_index'] == $attributeValue
+                            if (is_array($price)
+                                && array_key_exists('value_index', $price)
+                                && $price['value_index'] == $attributeValue
                             ) {
-                                $configurableOldPrice += (float)($priceChange['is_percent'] ? (((float)$priceChange['pricing_value']) * $price / 100) : $priceChange['pricing_value']);
-                                $configurablePrice += (float)($priceChange['is_percent'] ? (((float)$priceChange['pricing_value']) * $finalPrice / 100) : $priceChange['pricing_value']);
+                                $configurableOldPrice += (float)($priceChange['is_percent']
+                                    ? (((float)$priceChange['pricing_value']) * $price / 100)
+                                    : $priceChange['pricing_value']);
+                                $configurablePrice += (float)($priceChange['is_percent']
+                                    ? (((float)$priceChange['pricing_value']) * $finalPrice / 100)
+                                    : $priceChange['pricing_value']);
                             }
                         }
                     }
@@ -226,28 +232,47 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
             $data['price-ttc'] = round($final_price_including_tax, 2);
             $data['price-before-discount'] = round($price_including_tax, 2);
         } else {
-            $discount_amount = Mage::helper('directory')->currencyConvert($price_including_tax,
-                    $this->getOriginalCurrency(),
-                    $toCurrency) - Mage::helper('directory')->currencyConvert($final_price_including_tax,
-                    $this->getOriginalCurrency(), $this->getCurrentCurrencyCode());
-            $data['price-ttc'] = round(Mage::helper('directory')->currencyConvert($final_price_including_tax,
-                $this->getOriginalCurrency(), $this->getCurrentCurrencyCode()), 2);
-            $data['price-before-discount'] = round(Mage::helper('directory')->currencyConvert($price_including_tax,
-                $this->getOriginalCurrency(), $this->getCurrentCurrencyCode()), 2);
+            $discount_amount = Mage::helper('directory')->currencyConvert(
+                $price_including_tax,
+                $this->getOriginalCurrency(),
+                $toCurrency
+            ) - Mage::helper('directory')->currencyConvert(
+                $final_price_including_tax,
+                $this->getOriginalCurrency(),
+                $this->getCurrentCurrencyCode()
+            );
+            $data['price-ttc'] = round(Mage::helper('directory')->currencyConvert(
+                $final_price_including_tax,
+                $this->getOriginalCurrency(),
+                $this->getCurrentCurrencyCode()
+            ), 2);
+            $data['price-before-discount'] = round(Mage::helper('directory')->currencyConvert(
+                $price_including_tax,
+                $this->getOriginalCurrency(),
+                $this->getCurrentCurrencyCode()
+            ), 2);
         }
         $data['discount-amount'] = $discount_amount > 0 ? round($discount_amount, 2) : '0';
-        $data['discount-percent'] = $discount_amount > 0 ? round(($discount_amount * 100) / $price_including_tax,
-            0) : '0';
+        $data['discount-percent'] = $discount_amount > 0
+            ? round(($discount_amount * 100) / $price_including_tax, 0)
+            : '0';
         $data['start-date-discount'] = $product_instance->getSpecialFromDate();
         $data['end-date-discount'] = $product_instance->getSpecialToDate();
         // retrieving promotions
         $dateTs = Mage::app()->getLocale()->storeTimeStamp($product_instance->getStoreId());
         if (method_exists(Mage::getResourceModel('catalogrule/rule'), 'getRulesFromProduct')) {
-            $promo = Mage::getResourceModel('catalogrule/rule')->getRulesFromProduct($dateTs,
-                $product_instance->getStoreId(), 1, $product_instance->getId());
+            $promo = Mage::getResourceModel('catalogrule/rule')->getRulesFromProduct(
+                $dateTs,
+                $product_instance->getStoreId(),
+                1,
+                $product_instance->getId()
+            );
         } elseif (method_exists(Mage::getResourceModel('catalogrule/rule'), 'getRulesForProduct')) {
-            $promo = Mage::getResourceModel('catalogrule/rule')->getRulesForProduct($dateTs,
-                $product_instance->getStoreId(), $product_instance->getId());
+            $promo = Mage::getResourceModel('catalogrule/rule')->getRulesForProduct(
+                $dateTs,
+                $product_instance->getStoreId(),
+                $product_instance->getId()
+            );
         }
         if (count($promo)) {
             $promo = $promo[0];
@@ -280,14 +305,15 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
     public function getCategories($product_instance, $parent_instance, $id_store, &$categoryCache = array())
     {
         $id_root_category = Mage::app()->getStore($id_store)->getRootCategoryId();
-        if ($product_instance->getVisibility() == Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE &&
-            isset($parent_instance)) {
+        if ($product_instance->getVisibility() == Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE
+            && isset($parent_instance)
+        ) {
             $categories = $parent_instance->getCategoryCollection()
-                ->addPathsFilter('1/' . $id_root_category . '/')
+                ->addPathsFilter('1/'.$id_root_category.'/')
                 ->exportToArray();
         } else {
             $categories = $product_instance->getCategoryCollection()
-                ->addPathsFilter('1/' . $id_root_category . '/')
+                ->addPathsFilter('1/'.$id_root_category.'/')
                 ->exportToArray();
         }
         if (isset($categoryCache[key($categories)])) {
@@ -315,8 +341,8 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
         $data['category'] = '';
         $data['category-url'] = '';
         for ($i = 1; $i <= $max_level; $i++) {
-            $data['category-sub-' . ($i)] = '';
-            $data['category-url-sub-' . ($i)] = '';
+            $data['category-sub-'.($i)] = '';
+            $data['category-url-sub-'.($i)] = '';
         }
         $i = 0;
         $ariane = array();
@@ -332,8 +358,8 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
                     $ariane[] = $c->getName();
                 } elseif ($i <= $max_level) {
                     $ariane[] = $c->getName();
-                    $data['category-sub-' . $i] = $c->getName();
-                    $data['category-url-sub-' . $i] = $c->getUrl();
+                    $data['category-sub-'.$i] = $c->getName();
+                    $data['category-url-sub-'.$i] = $c->getUrl();
                 }
                 $i++;
             }
@@ -374,15 +400,15 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
             unset($_images, $_ids, $parentimages);
         }
         $data = array();
-        //old config value #max_images
+        // old config value #max_images
         $max_image = 10;
         for ($i = 1; $i < $max_image + 1; $i++) {
-            $data['image-url-' . $i] = '';
+            $data['image-url-'.$i] = '';
         }
         $c = 1;
         foreach ($images as $i) {
-            $url = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . 'catalog/product' . $i['file'];
-            $data['image-url-' . $c++] = $url;
+            $url = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).'catalog/product'.$i['file'];
+            $data['image-url-'.$c++] = $url;
             if ($i == $max_image + 1) {
                 break;
             }

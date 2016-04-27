@@ -49,6 +49,9 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
         'product_status' => array(
             'path' => 'lengow_export_options/simple/export_product_status'
         ),
+        'export_attribute' => array(
+            'path' => 'lengow_export_options/advanced/export_attribute'
+        ),
         'shipping_country' => array(
             'path' => 'lengow_export_options/advanced/export_default_shipping_country'
         ),
@@ -124,7 +127,7 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
      */
     public function set($key, $value, $storeId = 0)
     {
-        if ($storeId==0) {
+        if ($storeId == 0) {
             Mage::getModel('core/config')->saveConfig(
                 $this->options[$key]['path'],
                 $value,
@@ -150,7 +153,7 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
     {
         $tab = array();
         $attributeSelected = array();
-        $val = Mage::getStoreConfig('lenexport/attributelist/attributes', $id_store);
+        $val = $this->get('export_attribute', $id_store);
         if (!empty($val)) {
             $tab = explode(',', $val);
             $attributeSelected = array_flip($tab);
@@ -173,10 +176,10 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
     public function getToken($storeId = null)
     {
         $token = $this->get('token', $storeId);
-        if ($token && strlen($token)>0) {
+        if ($token && strlen($token) > 0) {
             return $token;
         } else {
-            $token =  bin2hex(openssl_random_pseudo_bytes(16));
+            $token = bin2hex(openssl_random_pseudo_bytes(16));
             $this->set('token', $token, $storeId);
         }
         return $token;
@@ -191,7 +194,7 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
      */
     public function getStoreByToken($token)
     {
-        if (strlen($token)<=0) {
+        if (strlen($token) <= 0) {
             return false;
         }
         foreach (Mage::app()->getWebsites() as $website) {

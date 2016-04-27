@@ -33,7 +33,6 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action
         $limit = $this->getRequest()->getParam('limit', null);
         $offset = $this->getRequest()->getParam('offset', null);
         $ids_product = $this->getRequest()->getParam('ids_product', null);
-        $debug = $this->getRequest()->getParam('debug', null);
         $currency = $this->getRequest()->getParam('currency', null);
 
         //get store data
@@ -55,40 +54,28 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action
         }
 
         $helper = Mage::helper('lengow_connector/security');
+
         if ($helper->checkIp()) {
-
-            Mage::helper('lengow_connector')->log(
-                'Export',
-                Mage::helper('lengow_connector')->__(
-                    'log.export.manual_start',
-                    array('name_shop' => $storeName, 'id_shop' => $storeId)
-                )
-            );
-
             // config store
             Mage::app()->getStore()->setCurrentStore($storeId);
-
+            // launch export process
             $export = Mage::getModel('lengow/export', array(
-                "store_id"          => $storeId,
-                "format"            => $format,
-                "mode"              => $mode,
-                "types"             => $types,
-                "status"            => $status,
-                "out_of_stock"      => $out_of_stock,
-                "selected_products" => $selected_products,
-                "stream"            => $stream,
-                "limit"             => $limit,
-                "offset"            => $offset,
-                "product_ids"       => $ids_product,
-                "debug"             => $debug,
-                "currency"          => $currency,
+                'store_id'          => $storeId,
+                'format'            => $format,
+                'mode'              => $mode,
+                'types'             => $types,
+                'status'            => $status,
+                'out_of_stock'      => $out_of_stock,
+                'selected_products' => $selected_products,
+                'stream'            => $stream,
+                'limit'             => $limit,
+                'offset'            => $offset,
+                'product_ids'       => $ids_product,
+                'currency'          => $currency,
             ));
             $export->exec();
-            Mage::helper('lengow_connector')->log(
-                'Export',
-                Mage::helper('lengow_connector')->__('log.export.manual_end')
-            );
         } else {
+            header('HTTP/1.1 403 Forbidden');
             echo Mage::helper('lengow_connector')->__(
                 'log.export.unauthorised_ip',
                 array('ip' => Mage::helper('core/http')->getRemoteAddr())

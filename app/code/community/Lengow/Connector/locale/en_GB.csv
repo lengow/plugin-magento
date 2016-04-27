@@ -94,17 +94,22 @@ lengow_log.exception.crendentials_not_valid|account ID, token access or secret t
 lengow_log.exception.error_lengow_webservice|Lengow webservice : %{error_code} - %{error_message} in shop %{store_name} (%{store_id})
 lengow_log.exception.timeout_api|API call was blocked by a timeout
 lengow_log.exception.marketplace_not_present|the marketplace %{markeplace_name} does not feature in the marketplace list
-log.export.manual_start|## Start manual export in store %{name_shop} (%{id_shop}) ##
-log.export.start|## Start export ##
-log.export.manual_end|## End manual export ##
-log.export.start_for_shop|## Start export in shop %{name_shop} (%{id_shop}) ##
-log.export.stop_for_shop|## Stop manual export - Store %{name_shop} (%{id_shop}) is disabled ##
+log.export.start|## start export ##
+log.export.end|## end export ##
+log.export.start_for_shop|start export in shop %{name_shop} (%{id_shop})
+log.export.feed_already_launch|feed already launch
 log.export.nb_product_found|%{nb_product} product(s) found
-log.export.memory_usage|Memory usage
-log.export.execution_time|Execution time : %{seconds} seconds
+log.export.count_product|%{product_count} products exported
+log.export.total_product_exported|%{nb_product} product(s) exported (%{nb_simple} simple product(s), %{nb_configurable} configurable product(s), %{nb_bundle} bundle product(s), %{nb_grouped} grouped product(s), %{nb_virtual} virtual product(s))
+log.export.memory_usage|memory usage: %{memory} Mb
+log.export.execution_time|execution time: %{seconds} seconds
+log.export.export_failed|export failed - %{decoded_message}
 log.export.your_feed_available_here|your feed is available here: <a href='%{feed_url}' target='_blank'>%{feed_url}</a>
-log.export.generate_feed_available_here|Export of the store %{name_shop} (%{id_shop}) generated a file here : %{feed_url}
-log.export.unauthorised_ip|Unauthorised IP : %{ip}
+log.export.generate_feed_available_here|export of the store %{name_shop} (%{id_shop}) generated a file here : %{feed_url}
+log.export.unauthorised_ip|unauthorised IP : %{ip}
+log.export.error_configurable_product_disabled|WARNING ! %{nb_product} simple product(s) are associated with configurable products disabled
+log.export.error_folder_not_created|can't create folder %{folder_path}
+log.export.error_folder_not_writable|can't access folder %{folder_path}
 log.import.not_valid_action|Action: %{action} is not a valid action
 log.import.preprod_mode_active|warning ! Preprod mode is activated
 log.import.start|## start %{type} import ##

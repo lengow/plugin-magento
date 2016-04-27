@@ -20,15 +20,15 @@ class Lengow_Connector_Model_Export_Feed_Yaml extends Lengow_Connector_Model_Exp
 
     public function makeHeader()
     {
-        return '"catalog":' . "\r\n";
+        return '"catalog":'."\r\n";
     }
 
     public function makeData($array, $args = array())
     {
-        $line = '  ' . '"product":' . "\r\n";
+        $line = '  '.'"product":' . "\r\n";
         foreach ($this->_fields as $name) {
-            $line .= '    ' . '"' . $name . '":' .
-                $this->_addSpaces($name, 22) . (isset($array[$name]) ? $array[$name] : '') . "\r\n";
+            $line .= '    '.'"'.$name.'":'.
+                $this->_addSpaces($name, 22).(isset($array[$name]) ? $array[$name] : '')."\r\n";
         }
         return $line;
     }
@@ -42,9 +42,9 @@ class Lengow_Connector_Model_Export_Feed_Yaml extends Lengow_Connector_Model_Exp
      * For YAML, add spaces to have good indentation.
      *
      * @param string $name The fielname
-     * @param string $maxsize The max spaces
+     * @param string $size The max spaces
      *
-     * @return string Spaces.
+     * @return string Spaces
      */
     private function _addSpaces($name, $size)
     {
