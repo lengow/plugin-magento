@@ -18,7 +18,6 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action
      */
     public function indexAction()
     {
-
         set_time_limit(0);
         ini_set('memory_limit', '1G');
 
@@ -46,20 +45,6 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action
         }
         $storeName = Mage::app()->getStore($storeId)->getName();
 
-        // check if store is enable for export
-        // if (!Mage::getStoreConfig('lenexport/global/active_store', $storeId)) {
-        //     header('Content-Type: text/html; charset=utf-8');
-        //     Mage::helper('lengow_connector')->log(
-        //         'Export',
-        //         Mage::helper('lengow_connector')->__(
-        //             'log.export.stop_for_shop',
-        //             array('name_shop' => $storeName, 'id_shop' => $storeId)
-        //         ),
-        //         true
-        //     );
-        //     exit();
-        // }
-
         if ($locale = $this->getRequest()->getParam('locale', null)) {
             // changing locale works!
             Mage::app()->getLocale()->setLocale($locale);
@@ -84,19 +69,19 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action
             Mage::app()->getStore()->setCurrentStore($storeId);
 
             $export = Mage::getModel('lengow/export', array(
-                "store_id" => $storeId,
-                "format" => $format,
-                "mode" => $mode,
-                "types" => $types,
-                "status" => $status,
-                "out_of_stock" => $out_of_stock,
+                "store_id"          => $storeId,
+                "format"            => $format,
+                "mode"              => $mode,
+                "types"             => $types,
+                "status"            => $status,
+                "out_of_stock"      => $out_of_stock,
                 "selected_products" => $selected_products,
-                "stream" => $stream,
-                "limit" => $limit,
-                "offset" => $offset,
-                "product_ids" => $ids_product,
-                "debug" => $debug,
-                "currency" => $currency,
+                "stream"            => $stream,
+                "limit"             => $limit,
+                "offset"            => $offset,
+                "product_ids"       => $ids_product,
+                "debug"             => $debug,
+                "currency"          => $currency,
             ));
             $export->exec();
             Mage::helper('lengow_connector')->log(

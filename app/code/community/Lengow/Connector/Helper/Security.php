@@ -11,7 +11,6 @@
 
 class Lengow_Connector_Helper_Security extends Mage_Core_Helper_Abstract
 {
-
     /**
      * Lengow IP.
      */

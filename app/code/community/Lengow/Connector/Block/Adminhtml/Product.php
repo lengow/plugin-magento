@@ -11,18 +11,15 @@
 
 class Lengow_Connector_Block_Adminhtml_Product extends Mage_Adminhtml_Block_Widget_Grid_Container
 {
-
     /**
      * Set template
      */
     public function __construct()
     {
         parent::__construct();
-
         $this->_controller = 'adminhtml_product';
         $this->_blockGroup = 'lengow';
         $this->_headerText = $this->helper('lengow_connector')->__('product.screen.title');
         $this->_removeButton('add');
     }
-
 }

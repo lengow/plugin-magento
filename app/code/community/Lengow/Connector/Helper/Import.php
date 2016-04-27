@@ -146,7 +146,6 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * v3
      * Check logs table and send mail for order not imported correctly
      *
      * @param  boolean $log_output See log or not

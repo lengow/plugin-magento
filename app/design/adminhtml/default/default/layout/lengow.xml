@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<layout>fez f
+<layout>
   <adminhtml_lengow_home_index>
     <reference name="head">
       <action method="addCss">
@@ -37,6 +37,11 @@
   </adminhtml_lengow_help_index>
 
   <adminhtml_lengow_log_index>
+    <reference name="head">
+      <action method="addCss">
+        <stylesheet>lengow/css/lengow.css</stylesheet>
+      </action>
+    </reference>
     <reference name="content">
       <block type="page/html" name="lengow_layout" template="lengow/layout/main.phtml" >
         <block type="page/html" name="lengow_header" template="lengow/header.phtml" />

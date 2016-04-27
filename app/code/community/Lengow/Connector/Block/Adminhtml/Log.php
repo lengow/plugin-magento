@@ -11,14 +11,15 @@
 
 class Lengow_Connector_Block_Adminhtml_Log extends Mage_Adminhtml_Block_Widget_Grid_Container
 {
+    /**
+     * Set template
+     */
     public function __construct()
     {
         parent::__construct();
-
         $this->_controller = 'adminhtml_log';
         $this->_blockGroup = 'lengow';
         $this->_headerText = $this->helper('lengow_connector')->__('log.screen.title');
-
         $this->_removeButton('add');
     }
 }

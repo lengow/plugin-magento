@@ -188,7 +188,7 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
                 $childs = Mage::getModel('catalog/product_type_grouped')->getChildrenIds($product_instance->getId());
                 $childs = $childs[Mage_Catalog_Model_Product_Link::LINK_TYPE_GROUPED];
                 foreach ($childs as $value) {
-                    $product = Mage::getModel('lenexport/catalog_product')->load($value);
+                    $product = Mage::getModel('lengow/export_catalog_product')->load($value);
                     $price += $product->getPrice();
                     $final_price += $product->getFinalPrice();
                 }

@@ -12,7 +12,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
 {
     
     /**
-     * Default fields.
+     * Default fields
      */
     public static $DEFAULT_FIELDS = array(
         'sku' => 'sku',
@@ -28,16 +28,34 @@ class Lengow_Connector_Model_Export extends Varien_Object
         'product-url' => 'product-url'
     );
 
-    //(boolean) is the export output stream ?
+    /**
+     * (boolean) is the export output stream ?
+     */
     protected $_stream;
-    //(store) store object
+
+    /**
+     * store object
+     */
     protected $_store;
+
+    /**
+     * integer Store Id
+     */
     protected $_storeId;
-    //(file) output file object
+
+    /**
+     * output file object
+     */
     protected $_file;
-    //(string) filename of output file
+
+    /**
+     * string filename of output file
+     */
     protected $_fileName = 'lengow_feed';
-    //(int) timestamp of output file
+
+    /**
+     * integer timestamp of output file
+     */
     protected $_fileTimeStamp = null;
 
 
@@ -56,14 +74,27 @@ class Lengow_Connector_Model_Export extends Varien_Object
         'quantity'
     );
 
-
     /**
-     * Construct generator
-     * Set models
+     * Construct the export manager
+     * @param array params optional options
+     * integer $id_store ID of store
+     * varchar $mode The mode of export
+     *     size : display only count of products to export
+     *     full : export simple product + configured product
+     *     xxx,yyy : export xxx type product + yyy type product
+     * varchar $format Format of export
+     * varchar $types Type(s) of product
+     * varchar $status Status of product to export
+     * boolean $out_of_stock Export product out of stock
+     * boolean $selected_products Export selected product
+     * boolean $stream Export in file or not
+     * integer $limit The number of product to be exported
+     * integer $offset From what product export
+     * array $ids_product Ids product to export
+     *
      */
     public function __construct($params)
     {
-
         $this->_config_helper = Mage::helper('lengow_connector/config');
 
         $storeId = isset($params['store_id']) ? (int)$params['store_id'] : false;
@@ -79,23 +110,27 @@ class Lengow_Connector_Model_Export extends Varien_Object
 
         $this->_config['format'] = isset($params['format']) ? $params['format'] : 'csv';
         $this->_config['mode'] = isset($params['mode']) ? $params['mode'] : '';
-        $this->_config['types'] = isset($params['types']) ?
-            $params['types'] : $this->_config_helper->get('product_type', $this->_storeId);
-        $this->_config['status'] = isset($params['status']) ?
-            (string)$params['status'] : (string)$this->_config_helper->get('product_status', $this->_storeId);
-        $this->_config['out_of_stock'] = isset($params['out_of_stock']) ?
-            (boolean)$params['out_of_stock'] : $this->_config_helper->get('out_stock', $this->_storeId);
-        $this->_config['selected_products'] = isset($params['selected_products']) ?
-            (boolean)$params['selected_products'] : $this->_config_helper->get('selection_enable', $this->_storeId);
-
+        $this->_config['types'] = isset($params['types'])
+            ? $params['types']
+            : $this->_config_helper->get('product_type', $this->_storeId);
+        $this->_config['status'] = isset($params['status'])
+            ? (string)$params['status']
+            : (string)$this->_config_helper->get('product_status', $this->_storeId);
+        $this->_config['out_of_stock'] = isset($params['out_of_stock'])
+            ? (boolean)$params['out_of_stock']
+            : $this->_config_helper->get('out_stock', $this->_storeId);
+        $this->_config['selected_products'] = isset($params['selected_products'])
+            ? (boolean)$params['selected_products']
+            : $this->_config_helper->get('selection_enable', $this->_storeId);
         $this->_config['offset'] = isset($params['offset']) ? (int)$params['offset'] : '';
         $this->_config['limit'] = isset($params['limit']) ? (int)$params['limit'] : '';
         $this->_config['product_ids'] = isset($params['product_ids']) ? $params['product_ids'] : '';
         $this->_config['debug'] = isset($params['debug']) ? (boolean)$params['debug'] : false;
         $this->_config['directory_path'] = Mage::getBaseDir('media').DS.'lengow'.DS.$this->_store->getCode().DS;
 
-        $this->setOriginalCurrency(isset($params['currency']) ?
-            $params['currency'] : Mage::app()->getStore($storeId)->getCurrentCurrencyCode());
+        $this->setOriginalCurrency(isset($params['currency'])
+            ? $params['currency']
+            : Mage::app()->getStore($storeId)->getCurrentCurrencyCode());
 
         $stream = isset($params['stream']) ? (boolean)$params['stream'] : null;
         if (is_null($stream)) {
@@ -109,29 +144,12 @@ class Lengow_Connector_Model_Export extends Varien_Object
     }
 
     /**
-    * Make the feed
-    *
-    * @param integer $id_store ID of store
-    * @param varchar $mode The mode of export
-    *       size : display only count of products to export
-    *       full : export simple product + configured product
-    *       xxx,yyy : export xxx type product + yyy type product
-    * @param varchar $format Format of export
-    * @param varchar $types Type(s) of product
-    * @param varchar $status Status of product to export
-    * @param boolean $out_of_stock Export product out of stock
-    * @param boolean $selected_products Export selected product
-    * @param boolean $stream Export in file or not
-    * @param integer $limit The number of product to be exported
-    * @param integer $offset From what product export
-    * @param array $ids_product Ids product to export
-    *
-    * @return Mage_Catalog_Model_Product
-    */
+     * Excute export
+     */
     public function exec()
     {
 
-        $time_start = $this->microtime_float();
+        $time_start = $this->_microtimeFloat();
 
         if ($this->_isAlreadyLaunch()) {
             Mage::helper('lengow_connector')->log('Export', 'Feed already launch');
@@ -279,7 +297,9 @@ class Lengow_Connector_Model_Export extends Varien_Object
                     $parent_instance = $this->_getParentEntity((int)$parents[0]);
 
                     // Exclude if parent is disabled
-                    if ($parent_instance && $parent_instance->getStatus() == Mage_Catalog_Model_Product_Status::STATUS_DISABLED) {
+                    if ($parent_instance
+                        && $parent_instance->getStatus() == Mage_Catalog_Model_Product_Status::STATUS_DISABLED
+                    ) {
                         $count_simple_disabled++;
                         if (!$this->_stream) {
                             if ($pi % 20 == 0) {
@@ -300,7 +320,10 @@ class Lengow_Connector_Model_Export extends Varien_Object
                         unset($array_data);
                         continue;
                     }
-                    if ($parent_instance && $parent_instance->getId() && $parent_instance->getTypeId() == 'configurable') {
+                    if ($parent_instance
+                        && $parent_instance->getId()
+                        && $parent_instance->getTypeId() == 'configurable'
+                    ) {
                         $parent_id = $parent_instance->getId();
 
                         $variations = $parent_instance->getTypeInstance(true)
@@ -315,7 +338,9 @@ class Lengow_Connector_Model_Export extends Varien_Object
                     }
                 }
             }
-            $parents = Mage::getModel('catalog/product_type_grouped')->getParentIdsByChild($parent_id ? $parent_id : $p['entity_id']);
+            $parents = Mage::getModel('catalog/product_type_grouped')->getParentIdsByChild(
+                $parent_id ? $parent_id : $p['entity_id']
+            );
             if (!empty($parents)) {
                 $temp_instance = Mage::getModel('catalog/product')
                     ->setOriginalCurrency($this->getOriginalCurrency())
@@ -360,13 +385,19 @@ class Lengow_Connector_Model_Export extends Varien_Object
             } else {
                 $array_data = array_merge($array_data, $product->getImages($data['media_gallery']['images']));
             }
-            if ($product->getVisibility() == Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE && isset($parent_instance)) {
-                $array_data['product-url'] = $parent_instance->getUrlInStore() ? $parent_instance->getUrlInStore() : $parent_instance->getProductUrl();
+            if ($product->getVisibility() == Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE
+                && isset($parent_instance)
+            ) {
+                $array_data['product-url'] = $parent_instance->getUrlInStore()
+                    ? $parent_instance->getUrlInStore()
+                    : $parent_instance->getProductUrl();
                 $array_data['name'] = $this->_helper->cleanData($parent_instance->getName());
                 $array_data['description'] = $this->_helper->cleanData($parent_instance->getDescription());
                 $array_data['short_description'] = $this->_helper->cleanData($parent_instance->getShortDescription());
             } else {
-                $array_data['product-url'] = $product->getUrlInStore() ? $product->getUrlInStore() : $product->getProductUrl();
+                $array_data['product-url'] = $product->getUrlInStore()
+                    ? $product->getUrlInStore()
+                    : $product->getProductUrl();
                 $array_data['name'] = $this->_helper->cleanData($product->getName());
                 $array_data['description'] = $this->_helper->cleanData($product->getDescription());
                 $array_data['short_description'] = $this->_helper->cleanData($product->getShortDescription());
@@ -375,7 +406,8 @@ class Lengow_Connector_Model_Export extends Varien_Object
             // Product variation
             $array_data['product_type'] = $product_type;
             $array_data['product_variation'] = $variation_name;
-            $array_data['image_default'] = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . 'catalog/product' . $product->getImage();
+            $array_data['image_default'] = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA)
+                .'catalog/product'.$product->getImage();
             $array_data['child_name'] = $this->_helper->cleanData($product->getName());
             // Selected attributes to export with Frond End value of current shop
             if (!empty($attributes_to_export)) {
@@ -387,7 +419,9 @@ class Lengow_Connector_Model_Export extends Varien_Object
                             if (is_array($product->getData($field))) {
                                 $array_data[$attr] = implode(',', $product->getData($field));
                             } else {
-                                $array_data[$attr] = $this->_helper->cleanData($product->getResource()->getAttribute($field)->getFrontend()->getValue($product));
+                                $array_data[$attr] = $this->_helper->cleanData(
+                                    $product->getResource()->getAttribute($field)->getFrontend()->getValue($product)
+                                );
                             }
                         }
                     }
@@ -425,21 +459,21 @@ class Lengow_Connector_Model_Export extends Varien_Object
         $total_simple = $count_simple - $count_simple_disabled;
         $total = $count_configurable + $count_grouped + $count_bundle + $count_virtual + $total_simple;
         $message_count = 'Export ' . $total . ' product' . ($total_product > 1 ? 's ' : '') . ' ('
-            . $total_simple . ' simple product' . ($total_simple > 1 ? 's ' : '') . ', '
-            . $count_configurable . ' configurable product' . ($count_configurable > 1 ? 's ' : '') . ', '
-            . $count_bundle . ' bundle product' . ($count_bundle > 1 ? 's ' : '') . ', '
-            . $count_grouped . ' grouped product' . ($count_grouped > 1 ? 's ' : '') . ', '
-            . $count_virtual . ' virtual product' . ($count_virtual > 1 ? 's ' : '') . ')';
+            .$total_simple.' simple product' . ($total_simple > 1 ? 's ' : '') . ', '
+            .$count_configurable.' configurable product' . ($count_configurable > 1 ? 's ' : '') . ', '
+            .$count_bundle.' bundle product' . ($count_bundle > 1 ? 's ' : '') . ', '
+            .$count_grouped.' grouped product'.($count_grouped > 1 ? 's ' : '') . ', '
+            .$count_virtual.' virtual product'.($count_virtual > 1 ? 's ' : '') . ')';
         Mage::helper('lengow_connector')->log($message_count);
         if ($count_simple_disabled > 1) {
             if ($count_simple_disabled == 1) {
                 $message_warning = 'WARNING ! 1 simple product is associated with a disabled configurable product';
             } else {
-                $message_warning = 'WARNING ! ' . $count_simple_disabled . ' simple products are associated with configurable products disabled';
+                $message_warning = 'WARNING ! '.$count_simple_disabled.' simple products are associated with configurable products disabled';
             }
             Mage::helper('lengow_connector')->log($message_warning);
             if (!$this->_stream) {
-                echo date('Y-m-d h:i:s') . ' - ' . $message_warning . '<br />';
+                echo date('Y-m-d h:i:s').' - '.$message_warning.'<br />';
                 flush();
             }
         }
@@ -452,7 +486,8 @@ class Lengow_Connector_Model_Export extends Varien_Object
             echo Mage::helper('lengow_connector')->__('log.export.your_feed_available_here', array(
                 'feed_url' => $url_file
             ));
-            Mage::helper('lengow_connector')->log('Export',
+            Mage::helper('lengow_connector')->log(
+                'Export',
                 Mage::helper('lengow_connector')->__('log.export.your_feed_available_here', array(
                     'name_shop' => $this->_store->getName(),
                     'id_shop' => $this->_storeId,
@@ -461,14 +496,14 @@ class Lengow_Connector_Model_Export extends Varien_Object
             );
         }
 
-        $time_end = $this->microtime_float();
+        $time_end = $this->_microtimeFloat();
         $time = $time_end - $time_start;
         if (!$this->_stream) {
             echo "<br/>".Mage::helper('lengow_connector')->__('log.export.memory_usage')
-                ." : ". round(memory_get_usage() / 1000000,2)." Mb";
+                ." : ". round(memory_get_usage() / 1000000, 2)." Mb";
             echo "<br/>".Mage::helper('lengow_connector')->__('log.export.execution_time', array(
-                    "seconds" => round($time,2)
-                ))."<br/>";
+                "seconds" => round($time, 2)
+            ))."<br/>";
         }
     }
 
@@ -508,7 +543,8 @@ class Lengow_Connector_Model_Export extends Varien_Object
      *
      * @return array
      */
-    public function _getQuery(){
+    public function _getQuery()
+    {
         // Filter
         $_types = explode(',', $this->_config['types']);
         $status = $this->_config['status'];
@@ -521,23 +557,39 @@ class Lengow_Connector_Model_Export extends Varien_Object
             ->setStoreId($this->_storeId)
             ->addStoreFilter($this->_storeId)
             ->addAttributeToFilter('type_id', array('in' => $_types))
-            ->joinField('store_id', Mage::getConfig()->getTablePrefix() . 'catalog_category_product_index', 'store_id',
-                'product_id=entity_id', '{{table}}.store_id = ' . $this->_storeId, 'left');
+            ->joinField(
+                'store_id',
+                Mage::getConfig()->getTablePrefix().'catalog_category_product_index',
+                'store_id',
+                'product_id=entity_id',
+                '{{table}}.store_id = '.$this->_storeId,
+                'left'
+            );
         // Filter status
         if ($status === (string)Mage_Catalog_Model_Product_Status::STATUS_ENABLED) {
-            $productCollection->addAttributeToFilter('status', array('eq' => Mage_Catalog_Model_Product_Status::STATUS_ENABLED));
+            $productCollection->addAttributeToFilter(
+                'status',
+                array('eq' => Mage_Catalog_Model_Product_Status::STATUS_ENABLED)
+            );
         } else {
             if ($status === (string)Mage_Catalog_Model_Product_Status::STATUS_DISABLED) {
-                $productCollection->addAttributeToFilter('status',
-                    array('eq' => Mage_Catalog_Model_Product_Status::STATUS_DISABLED));
+                $productCollection->addAttributeToFilter(
+                    'status',
+                    array('eq' => Mage_Catalog_Model_Product_Status::STATUS_DISABLED)
+                );
             }
         }
         // Export only selected products
         if ($selected_products) {
             $productCollection->addAttributeToFilter('lengow_product', 1);
         }
-        $productCollection->joinTable('cataloginventory/stock_item', 'product_id=entity_id',
-            array('qty' => 'qty', 'is_in_stock' => 'is_in_stock'), $this->_getOutOfStockSQL($out_of_stock), 'inner');
+        $productCollection->joinTable(
+            'cataloginventory/stock_item',
+            'product_id=entity_id',
+            array('qty' => 'qty', 'is_in_stock' => 'is_in_stock'),
+            $this->_getOutOfStockSQL($out_of_stock),
+            'inner'
+        );
 
         // Filter to hide products
         Mage::getSingleton('catalog/product_status')->addVisibleFilterToCollection($productCollection);
@@ -551,8 +603,14 @@ class Lengow_Connector_Model_Export extends Varien_Object
             ->getCollection()
             ->setStoreId($this->_storeId)
             ->addStoreFilter($this->_storeId)
-            ->joinField('store_id', Mage::getConfig()->getTablePrefix() . 'catalog_category_product_index', 'store_id',
-                'product_id=entity_id', '{{table}}.store_id = ' . $this->_storeId, 'left');
+            ->joinField(
+                'store_id',
+                Mage::getConfig()->getTablePrefix().'catalog_category_product_index',
+                'store_id',
+                'product_id=entity_id',
+                '{{table}}.store_id = '.$this->_storeId,
+                'left'
+            );
         $productCollection = clone $productCollection;
         $productCollection->getSelect()->columns('COUNT(DISTINCT e.entity_id) As total');
         return $productCollection->getFirstItem()->getTotal();
@@ -681,28 +739,20 @@ class Lengow_Connector_Model_Export extends Varien_Object
     protected function _copyFile()
     {
         $file_path = $this->_config['directory_path'];
-        copy($file_path . $this->_fileName . '.' . $this->_fileTimeStamp . '.' . $this->_fileFormat,
-            $file_path . $this->_fileName . '.' . $this->_fileFormat);
-        unlink($file_path . $this->_fileName . '.' . $this->_fileTimeStamp . '.' . $this->_fileFormat);
+        copy(
+            $file_path.$this->_fileName.'.'.$this->_fileTimeStamp.'.'.$this->_fileFormat,
+            $file_path . $this->_fileName . '.' . $this->_fileFormat
+        );
+        unlink($file_path.$this->_fileName.'.'.$this->_fileTimeStamp.'.'.$this->_fileFormat);
     }
 
     /**
      * get microtime float
      */
-    protected function microtime_float()
+    protected function _microtimeFloat()
     {
         list($usec, $sec) = explode(" ", microtime());
         return ((float)$usec + (float)$sec);
-    }
-
-    protected function stop($time_start, $string)
-    {
-        $time_end = $this->microtime_float();
-        $time = $time_end - $time_start;
-        if ($time < 0.0001) {
-            $time = 0;
-        }
-        echo round($time, 4) . " &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $string  secondes <br/>";
     }
 
     public function getExportUrl()

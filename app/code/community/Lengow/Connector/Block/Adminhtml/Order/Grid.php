@@ -37,29 +37,10 @@ class Lengow_Connector_Block_Adminhtml_Order_Grid extends Mage_Adminhtml_Block_W
             'main_table.order_id = s.entity_id',
             array('status' => 's.status')
         );
-
-
         $this->setCollection($collection);
-        parent::_prepareCollection();
-        return $this;
+        return parent::_prepareCollection();
+        // return $this;
     }
-
-//    protected function _addColumnFilterToCollection($column)
-//    {
-//        if ($this->getCollection()) {
-//            if ($column->getId() == 'websites') {
-//                $this->getCollection()->joinField(
-//                    'websites',
-//                    'catalog/product_website',
-//                    'website_id',
-//                    'product_id=entity_id',
-//                    null,
-//                    'left'
-//                );
-//            }
-//        }
-//        return parent::_addColumnFilterToCollection($column);
-//    }
 
     protected function _prepareColumns()
     {
@@ -149,49 +130,8 @@ class Lengow_Connector_Block_Adminhtml_Order_Grid extends Mage_Adminhtml_Block_W
         return parent::_prepareColumns();
     }
 
-//    protected function _prepareMassaction()
-//    {
-//
-//        $this->setMassactionIdField('entity_id');
-//        $this->getMassactionBlock()->setFormFieldName('product');
-//        $this->getMassactionBlock()->setUseAjax(true);
-//        $options = array(
-//            0 => Mage::helper('catalog')->__('No'),
-//            1 => Mage::helper('catalog')->__('Yes')
-//        );
-//        $this->getMassactionBlock()->addItem('publish', array(
-//            'label' => $this->__('Change Lengow\'s publication'),
-//            'url' => $this->getUrl('*/*/massPublish', array('_current' => true)),
-//            'complete' => 'reloadGrid',
-//            'additional' => array(
-//                'visibility' => array(
-//                    'name' => 'publish',
-//                    'type' => 'select',
-//                    'class' => 'required-entry',
-//                    'label' => Mage::helper('catalog')->__('Publication'),
-//                    'values' => $options
-//                )
-//            )
-//        ));
-//        return $this;
-//    }
-
     public function getGridUrl()
     {
         return $this->getUrl('*/*/grid', array('_current' => true));
     }
-//
-//    public function getRowUrl($row)
-//    {
-//        if (Mage::getSingleton('admin/session')->isAllowed('catalog_product/actions/edit')) {
-//            return $this->getUrl(
-//                '*/catalog_product/edit',
-//                array(
-//                'store'=>$this->getRequest()->getParam('store'),
-//                'id'=>$row->getId()
-//                )
-//            );
-//        }
-//        return false;
-//    }
 }

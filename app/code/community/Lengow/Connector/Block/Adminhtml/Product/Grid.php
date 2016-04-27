@@ -227,7 +227,6 @@ class Lengow_Connector_Block_Adminhtml_Product_Grid extends Mage_Adminhtml_Block
 
     protected function _prepareMassaction()
     {
-
         $this->setMassactionIdField('entity_id');
         $this->getMassactionBlock()->setFormFieldName('product');
         $this->getMassactionBlock()->setUseAjax(true);

@@ -11,7 +11,9 @@
 
 class Lengow_Connector_Block_Home extends Mage_Core_Block_Template
 {
-
+    /**
+     * Set template
+     */
     public function __construct()
     {
         parent::__construct();
