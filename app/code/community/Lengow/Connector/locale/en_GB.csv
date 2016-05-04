@@ -73,6 +73,8 @@ lengow_setting.import_days_title|Import orders from x days
 lengow_setting.import_days_comment|Choose a number of days
 lengow_setting.import_customer_group_title|Customer group
 lengow_setting.import_customer_group_comment|Choose a customer group for lengow customer
+lengow_setting.import_default_shipping_method_title|Shipping method
+lengow_setting.import_default_shipping_method_comment|Choose a shipping method for imported orders
 lengow_setting.import_report_mail_enable_title|I would like to be notified when there are issues regarding order importation
 lengow_setting.import_report_mail_enable_comment|We will send you this once a day
 lengow_setting.import_report_mail_address_title|Mail for the report email
@@ -89,11 +91,22 @@ lengow_log.error.rest_time_to_import|Please wait %{rest_time} seconds before re-
 lengow_log.error.account_id_empty|id account, access token or secret is empty in shop %{store_name} (%{store_id})
 lengow_log.error.account_id_already_used|account ID %{account_id} is already used by shop %{store_name} (%{store_id})
 lengow_log.error.order_not_found|Order can't be found in lengow feed
+lengow_log.error.no_product|no products in the order
+lengow_log.error.no_change_rate|no exchange rates available for order prices
+lengow_log.error.no_currency|no currency in the order
+lengow_log.error.currency_not_available|currency %{currency_iso} is not available in your shop
+lengow_log.error.no_country_for_delivery_address|delivery address doesn't contain the country
+lengow_log.error.no_billing_address|no billing address in the order
+lengow_log.error.no_country_for_billing_address|billing address doesn't contain the country
+lengow_log.exception.product_not_be_found|product %{product_id} could not be found
+lengow_log.exception.product_is_a_parent|product %{product_id} is a parent ID. Product variation is needed
 lengow_log.exception.no_connection_webservice|connection didn't work with the Lengow webservice in shop %{store_name} (%{store_id})
 lengow_log.exception.crendentials_not_valid|account ID, token access or secret token are not valid in shop %{store_name} (%{store_id})
 lengow_log.exception.error_lengow_webservice|Lengow webservice : %{error_code} - %{error_message} in shop %{store_name} (%{store_id})
 lengow_log.exception.timeout_api|API call was blocked by a timeout
 lengow_log.exception.marketplace_not_present|the marketplace %{markeplace_name} does not feature in the marketplace list
+lengow_log.exception.order_failed_with_quote|service unable to create order based on given quote
+lengow_log.exception.order_is_empty|order could not be saved
 log.export.start|## start export ##
 log.export.end|## end export ##
 log.export.start_for_shop|start export in shop %{name_shop} (%{id_shop})
@@ -103,7 +116,6 @@ log.export.count_product|%{product_count} products exported
 log.export.total_product_exported|%{nb_product} product(s) exported (%{nb_simple} simple product(s), %{nb_configurable} configurable product(s), %{nb_bundle} bundle product(s), %{nb_grouped} grouped product(s), %{nb_virtual} virtual product(s))
 log.export.memory_usage|memory usage: %{memory} Mb
 log.export.execution_time|execution time: %{seconds} seconds
-log.export.export_failed|export failed - %{decoded_message}
 log.export.your_feed_available_here|your feed is available here: <a href='%{feed_url}' target='_blank'>%{feed_url}</a>
 log.export.generate_feed_available_here|export of the store %{name_shop} (%{id_shop}) generated a file here : %{feed_url}
 log.export.unauthorised_ip|unauthorised IP : %{ip}
@@ -119,13 +131,28 @@ log.import.connector_get_order|get order with order id: %{marketplace_sku} and m
 log.import.connector_get_all_order|get orders between %{date_from} and %{date_to} with account ID: %{account_id}
 log.import.find_one_order|%{nb_order} order found for order ID: %{marketplace_sku} and markeplace: %{markeplace_name} with account ID: %{account_id}
 log.import.find_all_orders|%{nb_order} order(s) found with account ID: %{account_id}
-log.import.error_already_created|%{decoded_message} (created on the %{date_message})
 log.import.external_id_exist|already imported in a Magento with order ID %{order_id}
+log.import.order_shipped_by_marketplace|order shipped by %{markeplace_name}
+log.import.current_order_state_unavailable|current order's state [%{order_state_marketplace}] makes it unavailable to import for marketplace %{marketplace_name}
 log.import.import_failed|import failed - %{decoded_message}
+log.import.order_successfully_imported|order successfully imported (Order ID %{order_id})
+log.import.lengow_order_saved|order saved in lengow orders table
+log.import.lengow_order_not_saved|WARNING ! Order could NOT be saved in lengow orders table
+log.import.lengow_order_updated|order updated in lengow orders table
+log.import.lengow_order_line_saved|save order lines product : %{order_line_saved}
+log.import.update_state_to_shipped|update state to 'shipped' (Order ID %{order_id})
+log.import.rewrite_processing_fee|rewrite amount without processing fee
+log.import.rewrite_shipping_cost|rewrite amount without shipping cost
+log.import.shipping_method_unavailable|the selected shipping method is unavailable for current order. Lengow shipping method assigned
+log.import.generate_unique_email|generate unique email %{email}
+log.import.product_be_found|product id %{product_id} found with field %{attribute_name} (%{attribute_value})
+log.import.product_state_canceled|product %{product_id} could not be added to cart - status: %{state_product}
 log.import.order_already_imported|order already imported (ORDER ID %{order_id})
 log.import.order_ready_to_reimport|order is ready to be re-imported (ORDER ID %{order_id})
 log.import.order_state_updated|order's state has been updated to %{state_name}
 log.import.order_import_failed|import order failed - %{decoded_message}
+log.import.error_value_required|%{key} is required to create Lengow order
+log.import.error_already_created|%{decoded_message} (created on the %{date_message})
 log.import.error_no_package|import order failed - no package in the order
 log.import.error_wrong_package_number|import order failed - wrong package number
 log.import.error_no_delivery_address|import order failed - no delivery address in the order

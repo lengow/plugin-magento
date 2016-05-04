@@ -130,6 +130,21 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * Get host for generated email.
+     *
+     * @return string Hostname
+     */
+    public function getHost($store_id)
+    {
+        $domain = Mage::app()->getStore($store_id)->getBaseUrl();
+        preg_match('`([a-zàâäéèêëôöùûüîïç0-9-]+\.[a-z]+)`', $domain, $out);
+        if ($out[1]) {
+            return $out[1];
+        }
+        return $domain;
+    }
+
+    /**
      * Convert specials chars to html chars
      * Clean None utf-8 characters
      *

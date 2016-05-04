@@ -189,21 +189,21 @@ if ($installer->getConnection()->isTableExists($tableName) != true) {
             'nullable'  => true,
             'unsigned'  => true,
             'default'   => null
-        ), 'Id Order')
+        ), 'Order Id')
         ->addColumn('order_sku', Varien_Db_Ddl_Table::TYPE_TEXT, null, array(
             'nullable'  => true,
             'default'   => null,
             'length'    => 40
-        ), 'Id Order')
+        ), 'Order sku')
         ->addColumn('store_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
             'nullable'  => false,
             'unsigned'  => true
-        ), 'Id Store')
+        ), 'Store Id')
         ->addColumn('feed_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
             'nullable'  => true,
             'unsigned'  => true,
             'default'   => null
-        ), 'Id Feed')
+        ), 'Feed Id')
         ->addColumn('delivery_address_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
             'nullable'  => true,
             'unsigned'  => true,
@@ -327,11 +327,11 @@ if ($installer->getConnection()->isTableExists($tableName) != true) {
         ->addColumn('order_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
             'nullable'  => false,
             'unsigned'  => true
-        ), 'Id Order')
+        ), 'Order Id')
         ->addColumn('order_line_id', Varien_Db_Ddl_Table::TYPE_TEXT, 100, array(
             'nullable'  => false,
             'length'    => 100
-        ), 'Id Order Line');
+        ), 'Order Line Id');
     $installer->getConnection()->createTable($table);
 }
 
@@ -349,7 +349,7 @@ if ($installer->getConnection()->isTableExists($tableName) != true) {
         ->addColumn('order_lengow_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
             'nullable'  => false,
             'unsigned'  => true
-        ), 'Id Order Lengow')
+        ), 'Order Lengow Id')
         ->addColumn('message', Varien_Db_Ddl_Table::TYPE_TEXT, null, array(
             'nullable'  => true,
             'default'   => null
@@ -390,11 +390,11 @@ if ($installer->getConnection()->isTableExists($tableName) != true) {
         ->addColumn('order_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
             'nullable'  => false,
             'unsigned'  => true
-        ), 'Id Order')
+        ), 'Order Id')
         ->addColumn('action_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
             'nullable'  => false,
             'unsigned'  => true
-        ), 'Id Action')
+        ), 'Action Id')
         ->addColumn('order_line_sku', Varien_Db_Ddl_Table::TYPE_TEXT, 100, array(
             'nullable'  => true,
             'length'    => 100,
@@ -550,6 +550,11 @@ $new_settings = array(
         'store'     => true
     ),
     array(
+        'old_path'  => 'lensync/orders/default_shipping',
+        'new_path'  => 'lengow_import_options/simple/import_default_shipping_method',
+        'store'     => true
+    ),
+    array(
         'old_path'  => 'lensync/performances/debug',
         'new_path'  => 'lengow_import_options/advanced/import_preprod_mode_enable',
         'store'     => false
@@ -584,7 +589,6 @@ $delete_settings = array(
     'lensync/orders/processing_fee',
     'lensync/orders/title',
     'lensync/orders/split_name',
-    'lensync/orders/default_shipping',
     'lensync/orders/fake_email',
     'lensync/hidden/last_synchro',
 );

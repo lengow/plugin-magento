@@ -76,6 +76,9 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
         'customer_group' => array(
             'path' => 'lengow_import_options/simple/import_customer_group'
         ),
+        'import_shipping_method' => array(
+            'path' => 'lengow_import_options/simple/import_default_shipping_method'
+        ),
         'report_mail_enable' => array(
             'path' => 'lengow_import_options/advanced/import_report_mail_enable'
         ),

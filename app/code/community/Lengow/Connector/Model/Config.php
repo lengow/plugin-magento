@@ -11,11 +11,22 @@
 
 class Lengow_Connector_Model_Config extends Mage_Core_Model_Config
 {
-
+    /**
+     * Path for Lengow options
+     */
     private $lengowOption = array(
         'lengow_global_options',
         'lengow_export_options',
         'lengow_import_options'
+    );
+
+    /**
+     * Excludes attributes for export
+     */
+    protected $_exclude_options = array(
+        'import_in_progress',
+        'last_import_manual',
+        'last_import_cron',
     );
 
     /**
@@ -33,7 +44,7 @@ class Lengow_Connector_Model_Config extends Mage_Core_Model_Config
         if (isset($pathExplode[0]) && in_array($pathExplode[0], $this->lengowOption)) {
             if ($scope == 'default' || $scope == 'stores') {
                 $oldValue = Mage::getStoreConfig($path, $scopeId);
-                if ($oldValue!= $value) {
+                if ($oldValue!= $value && !in_array($pathExplode[2], $this->_exclude_options)) {
                     if ($scope == 'stores') {
                         $message = Mage::helper('lengow_connector/translation')
                             ->t(

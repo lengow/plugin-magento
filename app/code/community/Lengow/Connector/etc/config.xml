@@ -27,24 +27,6 @@
             </adminhtml>
         </routers>
     </admin>
-    <!--<admin>
-      <routers>
-        <lengow>
-          <use>admin</use>
-          <args>
-            <module>Lengow_Connector</module>
-            <frontName>lengow</frontName>
-          </args>
-        </lengow>
-        <adminhtml>
-          <args>
-            <modules>
-              <Lengow_Connector before="Mage_Adminhtml">Lengow_Connector_Adminhtml</Lengow_Connector>
-            </modules>
-          </args>
-        </adminhtml>
-      </routers>
-    </admin>-->
     <global>
         <models>
             <lengow>
@@ -113,6 +95,50 @@
                 </rewrite>
             </adminhtml>
         </blocks>
+        <fieldsets>
+            <lengow_convert_address>
+                <company>
+                    <to_customer>company</to_customer>
+                    <to_billing_address>company</to_billing_address>
+                    <to_shipping_address>company</to_shipping_address>
+                </company>
+                <last_name>
+                    <to_customer>lastname</to_customer>
+                    <to_billing_address>lastname</to_billing_address>
+                    <to_shipping_address>lastname</to_shipping_address>
+                </last_name>
+                <first_name>
+                    <to_customer>firstname</to_customer>
+                    <to_billing_address>firstname</to_billing_address>
+                    <to_shipping_address>firstname</to_shipping_address>
+                </first_name>
+                <email>
+                    <to_customer>email</to_customer>
+                    <to_billing_address>email</to_billing_address>
+                    <to_shipping_address>email</to_shipping_address>
+                </email>
+                <phone_home>
+                    <to_billing_address>telephone</to_billing_address>
+                    <to_shipping_address>telephone</to_shipping_address>
+                </phone_home>
+                <address>
+                    <to_billing_address>street_full</to_billing_address>
+                    <to_shipping_address>street_full</to_shipping_address>
+                </address>
+                <zipcode>
+                    <to_billing_address>postcode</to_billing_address>
+                    <to_shipping_address>postcode</to_shipping_address>
+                </zipcode>
+                <city>
+                    <to_billing_address>city</to_billing_address>
+                    <to_shipping_address>city</to_shipping_address>
+                </city>
+                <common_country_iso_a2>
+                    <to_billing_address>country_id</to_billing_address>
+                    <to_shipping_address>country_id</to_shipping_address>
+                </common_country_iso_a2>
+            </lengow_convert_address>
+        </fieldsets>
     </global>
     <adminhtml>
         <acl>
@@ -195,11 +221,39 @@
             <simple>
                 <import_days>5</import_days>
                 <import_customer_group>0</import_customer_group>
+                <import_default_shipping_method>lengow_lengow</import_default_shipping_method>
             </simple>
             <advanced>
                 <import_preprod_mode_enable>0</import_preprod_mode_enable>
                 <import_cron_enable>0</import_cron_enable>
             </advanced>
         </lengow_import_options>
+        <payment>
+            <lengow>
+                <active>1</active>
+                <model>lengow/payment_method_lengow</model>
+                <order_status>pending</order_status>
+                <title>Lengow Payment</title>
+                <allowspecific>0</allowspecific>
+                <group>offline</group>
+            </lengow>
+            <lengow_purchaseorder>
+                <active>1</active>
+                <model>lengow/payment_method_lengow</model>
+                <order_status>new</order_status>
+                <title>Lengow Payment (version 1.x)</title>
+                <allowspecific>0</allowspecific>
+                <group>offline</group>
+            </lengow_purchaseorder>
+        </payment>
+        <carriers>
+            <lengow>
+                <active>1</active>
+                <sallowspecific>0</sallowspecific>
+                <model>lengow/shipping_carrier_lengow</model>
+                <name>Shipping from marketplace</name>
+                <title>Lengow</title>
+            </lengow>
+        </carriers>
     </default>
 </config>

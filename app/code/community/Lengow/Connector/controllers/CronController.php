@@ -69,17 +69,18 @@ class Lengow_Connector_CronController extends Mage_Core_Controller_Front_Action
 
             // sync option is not valid
             if ($sync && ($sync !== 'order' && $sync !== 'action' && $sync !== 'option')) {
-                header('HTTP/1.1 400 Bad Request');
-                echo Mage::helper('lengow_connector')->__(
-                    'log.import.not_valid_action',
-                    array('action' => $sync)
+                $this->getResponse()->setHeader('HTTP/1.1', '400 Bad Request');
+                $this->getResponse()->setBody(
+                    Mage::helper('lengow_connector')->__('log.import.not_valid_action', array('action' => $sync))
                 );
             }
         } else {
-            header('HTTP/1.1 403 Forbidden');
-            echo Mage::helper('lengow_connector')->__(
-                'log.export.unauthorised_ip',
-                array('ip' => Mage::helper('core/http')->getRemoteAddr())
+            $this->getResponse()->setHeader('HTTP/1.1', '403 Forbidden');
+            $this->getResponse()->setBody(
+                Mage::helper('lengow_connector')->__(
+                    'log.export.unauthorised_ip',
+                    array('ip' => Mage::helper('core/http')->getRemoteAddr())
+                )
             );
         }
     }

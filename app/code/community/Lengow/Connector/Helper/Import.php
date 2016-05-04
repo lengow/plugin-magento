@@ -22,6 +22,16 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
     public static $marketplaces = array();
 
     /**
+     * @var array valid states lengow to create a Lengow order
+     */
+    protected $_lengow_states = array(
+        'accepted',
+        'waiting_shipment',
+        'shipped',
+        'closed'
+    );
+
+    /**
      * Construct
      */
     public function __construct()
@@ -102,6 +112,25 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
     public function setImportEnd()
     {
         return $this->_config->set('import_in_progress', -1);
+    }
+
+    /**
+     * Check if order status is valid for import
+     *
+     * @param string                                    $order_state_marketplace    order state
+     * @param Lengow_Connector_Model_Import_Marketplace $marketplace                order marketplace
+     *
+     * @return boolean
+     */
+    public function checkState($order_state_marketplace, $marketplace)
+    {
+        if (empty($order_state_marketplace)) {
+            return false;
+        }
+        if (!in_array($marketplace->getStateLengow($order_state_marketplace), $this->_lengow_states)) {
+            return false;
+        }
+        return true;
     }
 
     /**

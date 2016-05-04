@@ -175,6 +175,8 @@ class Lengow_Connector_Model_Import extends Varien_Object
             //     LengowOrder::addOrderLog($this->order_lengow_id, $global_error, $this->re_import_type);
             // }
         } else {
+            // to activate lengow shipping method
+            Mage::getSingleton('core/session')->setIsFromlengow('true');
             $this->_helper->log(
                 'Import',
                 $this->_helper->setLogMessage('log.import.start', array('type' => $this->_type_import)),
@@ -211,7 +213,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
                         // check account ID, Access Token and Secret
                         $error_credential = $this->_checkCredentials((int)$store->getId(), $store->getName());
                         if ($error_credential !== true) {
-                            $this->_helper->log('Import', $error_credential, $this->log_output);
+                            $this->_helper->log('Import', $error_credential, $this->_log_output);
                             $errors[(int)$store->getId()] = $error_credential;
                             continue;
                         }
@@ -249,7 +251,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
                         //     LengowOrder::finishOrderLogs($this->order_lengow_id, $this->re_import_type);
                         // }
                         // import orders in prestashop
-                        $result = $this->_importOrders($orders, (int)$store->id);
+                        $result = $this->_importOrders($orders, (int)$store->getId());
                         if (!$this->_import_one_order) {
                             $order_new    += $result['order_new'];
                             $order_update += $result['order_update'];
@@ -258,7 +260,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
                     } catch (Lengow_Connector_Model_Exception $e) {
                         $error_message = $e->getMessage();
                     } catch (Exception $e) {
-                        $error_message = '[Magento error] "'.$e->getMessage().'" '.$e->getFile().' | '.$e->getLine();
+                        $error_message = '[Magento error] "'.$e->getMessage().'" '.$e->getFile().' line '.$e->getLine();
                     }
                     if (isset($error_message)) {
                         // TODO
@@ -317,6 +319,8 @@ class Lengow_Connector_Model_Import extends Varien_Object
                 // $this->_import_helper->sendMailAlert($this->log_output);
             }
         }
+        // Clear session
+        Mage::getSingleton('core/session')->clear();
         if ($this->_import_one_order) {
             $result['error'] = $errors;
             return $result;
@@ -345,8 +349,8 @@ class Lengow_Connector_Model_Import extends Varien_Object
         $this->_secret_token = $this->_config->get('secret_token', $store_id);
         if (!$this->_account_id || !$this->_access_token || !$this->_secret_token) {
             $message = $this->_helper->setLogMessage('lengow_log.error.account_id_empty', array(
-                'name_shop' => $store_name,
-                'id_shop'   => $store_id
+                'store_name' => $store_name,
+                'store_id'   => $store_id
             ));
             return $message;
         }
@@ -447,8 +451,8 @@ class Lengow_Connector_Model_Import extends Varien_Object
                         $this->_helper->setLogMessage('lengow_log.exception.error_lengow_webservice', array(
                             'error_code'    => $results->error->code,
                             'error_message' => $results->error->message,
-                            'store_name'     => $store->getName(),
-                            'store_id'       => $store->getId()
+                            'store_name'    => $store->getName(),
+                            'store_id'      => $store->getId()
                         ))
                     );
                 }
@@ -513,7 +517,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
                     $this->_helper->log(
                         'Import',
                         $this->_helper->setLogMessage('log.import.error_no_delivery_address'),
-                        $this->log_output,
+                        $this->_log_output,
                         $marketplace_sku
                     );
                     continue;
@@ -528,7 +532,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
                         $this->_helper->log(
                             'Import',
                             $this->_helper->setLogMessage('log.import.error_wrong_package_number'),
-                            $this->log_output,
+                            $this->_log_output,
                             $marketplace_sku
                         );
                         continue;
@@ -554,10 +558,10 @@ class Lengow_Connector_Model_Import extends Varien_Object
                 } catch (Lengow_Connector_Model_Exception $e) {
                     $error_message = $e->getMessage();
                 } catch (Exception $e) {
-                    $error_message = '[Magento error]: "'.$e->getMessage().'" '.$e->getFile().' | '.$e->getLine();
+                    $error_message = '[Magento error]: "'.$e->getMessage().'" '.$e->getFile().' line '.$e->getLine();
                 }
                 if (isset($error_message)) {
-                    $decoded_message = $this->_helper->decodeLogMessage($error_message, 'en_GB');
+                    $decoded_message =  $this->_helper->decodeLogMessage($error_message, 'en_GB');
                     $this->_helper->log(
                         'Import',
                         $this->_helper->setLogMessage('log.import.order_import_failed', array(
@@ -571,10 +575,13 @@ class Lengow_Connector_Model_Import extends Varien_Object
                 }
                 // Sync to lengow if no preprod_mode
                 if (!$this->_preprod_mode && $order['order_new'] == true) {
-                    // TODO
-                    // $lengow_order = new LengowOrder((int)$order['order_id']);
-                    // $lengow_order->synchronizeOrder($this->connector, $this->log_output);
-                    unset($lengow_order);
+                    $magento_order = Mage::getModel('sales/order')->load($order['order_id']);
+                    Mage::getModel('lengow/import_order')->synchronizeOrder(
+                        $magento_order,
+                        $this->_connector,
+                        $this->_log_output
+                    );
+                    unset($magento_order);
                 }
                 // if re-import order -> return order informations
                 if ($this->_import_one_order) {

@@ -39,7 +39,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
                     $data['shops'][$store->getId()]['name'] = $store->getName();
                     $data['shops'][$store->getId()]['domain'] = $store->getBaseUrl();
                     $data['shops'][$store->getId()]['feed_url'] = $export->getExportUrl();
-                    $data['shops'][$store->getId()]['cron_url'] = ''; //LengowMain::getImportUrl($shop->id);
+                    $data['shops'][$store->getId()]['cron_url'] = Mage::getUrl('lengow/cron');
                     $data['shops'][$store->getId()]['nb_product_total'] = $export->getTotalProduct();
                     $data['shops'][$store->getId()]['nb_product_exported'] = $export->getTotalExportedProduct();
                 }

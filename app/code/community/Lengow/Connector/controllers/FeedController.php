@@ -75,10 +75,12 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action
             ));
             $export->exec();
         } else {
-            header('HTTP/1.1 403 Forbidden');
-            echo Mage::helper('lengow_connector')->__(
-                'log.export.unauthorised_ip',
-                array('ip' => Mage::helper('core/http')->getRemoteAddr())
+            $this->getResponse()->setHeader('HTTP/1.1', '403 Forbidden');
+            $this->getResponse()->setBody(
+                Mage::helper('lengow_connector')->__(
+                    'log.export.unauthorised_ip',
+                    array('ip' => Mage::helper('core/http')->getRemoteAddr())
+                )
             );
         }
     }
