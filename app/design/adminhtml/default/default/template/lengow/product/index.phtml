@@ -1,10 +1,13 @@
 <?php
 $store_id = (integer)$this->getRequest()->getParam('store', Mage::app()->getStore()->getId());
+$type = Mage::getModel('lengow/system_config_source_types')->toOptionArray();
+$type_selected = Mage::helper('lengow_connector/config')->get('product_type' , $shopId);
+$arrayTypes = explode(",", $type_selected);
 $sync_data = Mage::helper('lengow_connector/sync')->getSyncData();
 ?>
 <?php if ($store_id != 0) { ?>
     <div><?php echo $this->getChildHtml('store_switcher'); ?></div>
-    <h2 id="lengow_product_store_name"><?php echo $sync_data['shops'][$store_id]['name'] ?></h2>
+    <h2 id="lengow_product_store_name"><?php echo $sync_data['shops'][$store_id]['name'] ?> ( <?php echo $store_id ?> )</h2>
 
     <a href="<?php echo $sync_data['shops'][$store_id]['domain'] ?>">
         <?php echo $sync_data['shops'][$store_id]['domain'] ?>
@@ -12,6 +15,43 @@ $sync_data = Mage::helper('lengow_connector/sync')->getSyncData();
     <a href="<?php echo $sync_data['shops'][$store_id]['feed_url'] ?>">
     <?php echo $sync_data['shops'][$store_id]['feed_url'] ?>
     </a>
+    <p><?php echo $sync_data['shops'][$store_id]['nb_product_total'] ?> total products</p>
+    <p><?php echo $sync_data['shops'][$store_id]['nb_product_exported'] ?> exported products</p>
+    <input
+        type="checkbox"
+        data-size="mini"
+        data-on-text="yes"
+        data-off-text="no"
+        name="lengow_export_selection" class="lengow_switch lengow_switch_option"
+        data-href="<?php echo Mage::helper('core/url')->getCurrentUrl(); ?>?isAjax=true"
+        data-action="change_option_product_out_of_stock"
+        data-id_shop="<?php echo $store_id ?>"
+        value="1" <?php if ( Mage::helper('lengow_connector/config')->get('out_stock' , $shopId) == '1'): ?> checked="checked" <?php endif; ?>>
+    <span class="lengow_select_text">include_out_of_stock</span>
+    <br/>
+    <input
+        type="checkbox"
+        data-size="mini"
+        data-on-text="yes"
+        data-off-text="no"
+        name="lengow_export_selection" class="lengow_switch lengow_switch_option"
+        data-href="<?php echo Mage::helper('core/url')->getCurrentUrl(); ?>?isAjax=true"
+        data-action="change_option_selected"
+        data-id_shop="<?php echo $store_id ?>"
+        value="1"  <?php if ( Mage::helper('lengow_connector/config')->get('selection_enable' , $shopId) == '1'): ?> checked="checked" <?php endif; ?>>
+    <span class="lengow_select_text">specific_product</span>
+    <br/>
+    <select
+        name="lengow_export_selection" class="lengow_select lengow_option" multiple="multiple" id="lengow_select"
+        data-href="<?php echo Mage::helper('core/url')->getCurrentUrl(); ?>?isAjax=true"
+        data-action="change_option_type"
+        data-id_shop="<?php echo $store_id ?>">
+        <?php foreach ($type as $types): ?>
+            <?php foreach ($arrayTypes as $key => $value): ?>
+                <option value="<?php echo $types['value'] ?>" <?php if ($types['value'] ==  $value): ?> selected="selected" <?php endif; ?>><?php echo $types['label'] ?></option>
+            <?php endforeach; ?>
+        <?php endforeach; ?>
+    </select>
     <?php } else { ?>
     <div><?php echo $this->getChildHtml('store_switcher'); ?></div>
     <p>For display export information, please choose a store view.</p>
