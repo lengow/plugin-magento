@@ -135,12 +135,10 @@ log.import.external_id_exist|already imported in a Magento with order ID %{order
 log.import.order_shipped_by_marketplace|order shipped by %{markeplace_name}
 log.import.current_order_state_unavailable|current order's state [%{order_state_marketplace}] makes it unavailable to import for marketplace %{marketplace_name}
 log.import.import_failed|import failed - %{decoded_message}
-log.import.order_successfully_imported|order successfully imported (Order ID %{order_id})
 log.import.lengow_order_saved|order saved in lengow orders table
 log.import.lengow_order_not_saved|WARNING ! Order could NOT be saved in lengow orders table
 log.import.lengow_order_updated|order updated in lengow orders table
 log.import.lengow_order_line_saved|save order lines product : %{order_line_saved}
-log.import.update_state_to_shipped|update state to 'shipped' (Order ID %{order_id})
 log.import.rewrite_processing_fee|rewrite amount without processing fee
 log.import.rewrite_shipping_cost|rewrite amount without shipping cost
 log.import.shipping_method_unavailable|the selected shipping method is unavailable for current order. Lengow shipping method assigned
@@ -150,12 +148,15 @@ log.import.product_state_canceled|product %{product_id} could not be added to ca
 log.import.order_already_imported|order already imported (ORDER ID %{order_id})
 log.import.order_ready_to_reimport|order is ready to be re-imported (ORDER ID %{order_id})
 log.import.order_state_updated|order's state has been updated to %{state_name}
+log.import.order_successfully_imported|order successfully imported (ORDER ID %{order_id})
 log.import.order_import_failed|import order failed - %{decoded_message}
 log.import.error_value_required|%{key} is required to create Lengow order
 log.import.error_already_created|%{decoded_message} (created on the %{date_message})
 log.import.error_no_package|import order failed - no package in the order
 log.import.error_wrong_package_number|import order failed - wrong package number
 log.import.error_no_delivery_address|import order failed - no delivery address in the order
+log.import.order_synchronized_with_lengow|order successfully synchronised with Lengow webservice (ORDER ID %{order_id})
+log.import.order_not_synchronized_with_lengow|WARNING ! Order could NOT be synchronised with Lengow webservice (ORDER ID %{order_id})
 log.connector.call_api|call %{curl_url}
 log.connector.error_api|call api failed - %{error_code}
 log.setting.setting_change|%{key} - old value %{old_value} change by %{value}

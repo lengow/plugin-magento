@@ -292,6 +292,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
             'total_paid'           => $this->_order_amount,
             'order_item'           => $this->_order_items,
             'customer_name'        => $customer_name,
+            'commission'           => (float) $this->_order_data->commission,
             'carrier'              => $this->_carrier_name,
             'method'               => $this->_carrier_method,
             'tracking'             => $this->_tracking_number,

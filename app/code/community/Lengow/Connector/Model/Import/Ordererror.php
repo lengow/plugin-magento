@@ -111,7 +111,7 @@ class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
      *
      * @return mixed
      */
-    public function getOrderLogType($type = null)
+    public function getOrderErrorType($type = null)
     {
         switch ($type) {
             case 'import':
@@ -125,4 +125,33 @@ class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
                 break;
         }
     }
+
+    /**
+     * Removes all order error for one order lengow
+     *
+     * @param integer   $order_lengow_id    lengow_order_id
+     * @param string    $log_type           type (import or wsdl)
+     *
+     * @return boolean
+     */
+    public static function finishOrderErrors($lengow_order_id, $type = 'import')
+    {
+        $error_type = $this->getOrderErrorType($type);
+        // get all order errors
+        $results = $this->getCollection()
+            ->addAttributeToFilter('order_lengow_id', $order_lengow_id)
+            ->addAttributeToFilter('type', $type)
+            ->addAttributeToSelect('id')
+            ->getData();
+        if (count($results) > 0) {
+            foreach ($results as $result) {
+                $order_error = Mage::getModel('lengow/import_ordererror')->load($result['id']);
+                $order_error->updateOrderError(array('is_finished' => 1));
+                unset($order_error);
+            }
+            return true;
+        }
+        return false;
+    }
+
 }

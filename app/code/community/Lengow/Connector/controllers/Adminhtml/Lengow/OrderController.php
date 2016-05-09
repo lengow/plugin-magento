@@ -26,8 +26,23 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
 
     public function importAction()
     {
-        echo "Go";
-        exit();
+        $params['type'] = 'manual';
+        // Import orders
+        $import = Mage::getModel('lengow/import', $params);
+        $results = $import->exec();
+        if ($results['order_new'] > 0) {
+            $this->_getSession()->addSuccess($results['order_new'].'orders new');
+        }
+        if ($results['order_update'] > 0) {
+            $this->_getSession()->addSuccess($results['order_update'].'orders updated');
+        }
+        if ($results['order_error'] > 0) {
+            $this->_getSession()->addSuccess($results['order_error'].'orders with error');
+        }
+        if ($results['order_new'] == 0 && $results['order_new'] == 0 && $results['order_error'] == 0) {
+            $this->_getSession()->addSuccess('No order available to import');
+        }
+        $this->_redirect('*/*/index');
     }
 
     public function migrateAction()

@@ -271,7 +271,7 @@ class Lengow_Connector_Model_Connector
     public function isValidAuth($account_id)
     {
         $result = $this->connect();
-        if (isset($result['token']) && $account_id != 0 && is_integer($account_id)) {
+        if (isset($result['token']) && $account_id != 0 && preg_match('/^[0-9]*$/', $account_id)) {
             return true;
         } else {
             return false;
@@ -308,6 +308,23 @@ class Lengow_Connector_Model_Connector
         } else {
             return array(null, null, null);
         }
+    }
+
+    /**
+     * Get Connector by store
+     *
+     * @param integer $store_id Store Id
+     *
+     * @return boolean
+     */
+    public function getConnectorByStore($store_id = null)
+    {
+        list($account_id, $access_token, $secret_token) = $this->getAccessId($store_id);
+        $this->init($access_token, $secret_token);
+        if (!$this->isValidAuth($account_id)) {
+            return false;
+        }
+        return true;
     }
 
     /**

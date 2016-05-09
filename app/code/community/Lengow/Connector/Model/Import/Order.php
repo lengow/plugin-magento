@@ -176,7 +176,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
     public function orderIsInError($marketplace_sku, $delivery_address_id, $type = 'import')
     {
         $order_error = Mage::getModel('lengow/import_ordererror');
-        $log_type = $order_error->getOrderLogType($type);
+        $error_type = $order_error->getOrderErrorType($type);
         // check if log already exists for the given order id
         $results = $order_error->getCollection()
             ->join(
@@ -186,7 +186,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
             )
             ->addFieldToFilter('marketplace_sku', $marketplace_sku)
             ->addFieldToFilter('delivery_address_id', $delivery_address_id)
-            ->addFieldToFilter('type', $log_type)
+            ->addFieldToFilter('type', $error_type)
             ->addFieldToFilter('is_finished', array('eq' => 0))
             ->addFieldToSelect('id')
             ->addFieldToSelect('message')
@@ -459,15 +459,15 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
      */
     public function synchronizeOrder($order, $connector = null, $log_output = false)
     {
+        if ($order->getData('from_lengow') != 1) {
+            return false;
+        }
         $store_id = $order->getStore()->getId();
         $account_id = Mage::helper('lengow_connector/config')->get('account_id', $store_id);
         if (is_null($connector)) {
             $connector = Mage::getModel('lengow/connector');
-            $connector->init(
-                Mage::helper('lengow_connector/config')->get('access_token', $store_id),
-                Mage::helper('lengow_connector/config')->get('secret_token', $store_id)
-            );
-            if (!$connector->isValidAuth($account_id)) {
+            $connector_is_valid = $this->_connector->getConnectorByStore($store_id);
+            if (!$connector_is_valid) {
                 return false;
             }
         }
@@ -478,46 +478,80 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
                 $magento_ids[] = $order_id['entity_id'];
             }
             // compatibility V2
-            // if ($order->getData('feed_id_lengow') != 0) {
-            //     $this->checkAndChangeMarketplaceName($connector);
-            // }
-            // $result = $connector->patch(
-            //     '/v3.0/orders',
-            //     array(
-            //         'account_id'            => LengowMain::getIdAccount($id_shop),
-            //         'marketplace_order_id'  => $this->lengow_marketplace_sku,
-            //         'marketplace'           => $this->lengow_marketplace_name,
-            //         'merchant_order_id'     => $presta_ids
-            //     )
-            // );
-            // if (is_null($result)
-            //     || (isset($result['detail']) && $result['detail'] == 'Pas trouvé.')
-            //     || isset($result['error'])
-            // ) {
-            //     LengowMain::log(
-            //         'Import',
-            //         LengowMain::setLogMessage('log.import.order_not_synchronized_with_lengow', array(
-            //             'order_id' => $this->id
-            //         )),
-            //         $log_output,
-            //         $this->lengow_marketplace_sku
-            //     );
-            //     return false;
-            // } else {
-            //     LengowMain::log(
-            //         'Import',
-            //         LengowMain::setLogMessage('log.import.order_synchronized_with_lengow', array(
-            //             'order_id' => $this->id
-            //         )),
-            //         $log_output,
-            //         $this->lengow_marketplace_sku
-            //     );
-            //     return true;
-            // }
+            if ($order->getData('feed_id_lengow') != 0) {
+                $this->checkAndChangeMarketplaceName($store_id, $connector);
+            }
+            $result = $connector->patch(
+                '/v3.0/orders',
+                array(
+                    'account_id'           => $account_id,
+                    'marketplace_order_id' => $order->getData('order_id_lengow'),
+                    'marketplace'          => $order->getData('marketplace_lengow'),
+                    'merchant_order_id'    => $order_ids
+                )
+            );
+            if (is_null($result)
+                || (isset($result['detail']) && $result['detail'] == 'Pas trouvé.')
+                || isset($result['error'])
+            ) {
+                return false;
+            } else {
+                return true;
+            }
         }
         return false;
     }
 
+    /**
+     * Check and change the name of the marketplace for v3 compatibility
+     *
+     * @param Mage_Sales_Model_Order           $order     Magento Order
+     * @param Lengow_Connector_Model_Connector $connector Lengow Connector for API calls
+     *
+     * @return boolean
+     */
+    public function checkAndChangeMarketplaceName($order, $connector = null)
+    {
+        if ($order->getData('from_lengow') != 1) {
+            return false;
+        }
+        $store_id = $order->getStore()->getId();
+        $account_id = Mage::helper('lengow_connector/config')->get('account_id', $store_id);
+        if (is_null($connector)) {
+            $connector = Mage::getModel('lengow/connector');
+            $connector_is_valid = $this->_connector->getConnectorByStore($store_id);
+            if (!$connector_is_valid) {
+                return false;
+            }
+        }
+        $results = $connector->get(
+            '/v3.0/orders',
+            array(
+                'marketplace_order_id' => $order->getData('order_id_lengow'),
+                'marketplace'          => $order->getData('marketplace_lengow'),
+                'account_id'           => $account_id
+            ),
+            'stream'
+        );
+        if (is_null($results)) {
+            return false;
+        }
+        $results = Tools::jsonDecode($results);
+        if (isset($results->error)) {
+            return false;
+        }
+        foreach ($results->results as $order) {
+            if ($order->getData('marketplace_lengow') != (string)$order->marketplace) {
+                $order->setData('marketplace_lengow', (string)$order->marketplace);
+                $order->save();
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Count old lengow order
+     */
     public function countNotMigrateOrder()
     {
         $coreResource = Mage::getSingleton('core/resource');
@@ -536,28 +570,26 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
         }
     }
 
+    /**
+     * Migrate old order
+     */
     public function migrateOldOrder()
     {
         $perPage = 500;
         $total = $this->countNotMigrateOrder();
-
         $nbPage = ceil($total / $perPage);
         for ($i = 1; $i <= $nbPage; $i++) {
-
             $order_collection = Mage::getModel('sales/order')->getCollection()
                 ->addAttributeToFilter('from_lengow', 1);
             $order_collection->getSelect()->limit($perPage, ($i-1)*$perPage);
             foreach ($order_collection as $order) {
-
-
                 $oldOrder = Mage::getModel('lengow/import_order')->getCollection()
                     ->addFieldToFilter('order_id', $order->getId())->getFirstItem();
-                if ($oldOrder->getId()>0) {
+                if ($oldOrder->getId() > 0) {
                     continue;
                 }
-
+                // Get old Lengow informations
                 $lengowNode = json_decode($order->getXmlNodeLengow());
-
                 $idFeed = isset($lengowNode->idFlux) ? $lengowNode->idFlux : $order->getFeedIdLengow();
                 $marketplaceSku = isset($lengowNode->order_id_lengow)
                     ? $lengowNode->order_id
@@ -571,6 +603,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
                 $sendByMarketplace = isset($lengowNode->tracking_informations->tracking_deliveringByMarketPlace)
                     ? (bool)$lengowNode->tracking_informations->tracking_deliveringByMarketPlace
                     : 0;
+                $commission = isset($lengowNode->commission) ? $lengowNode->commission : 0;
                 if (isset($lengowNode->order_purchase_date) && isset($lengowNode->order_purchase_heure)) {
                     $orderDate = $lengowNode->order_purchase_date.' '.$lengowNode->order_purchase_heure;
                 } else {
@@ -581,33 +614,33 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
                     $address = $order->getShippingAddress();
                     $countryIso = $address->getCountryId();
                 }
-
+                // create new lengow order
                 $newOrder = Mage::getModel('lengow/import_order');
                 $newOrder->createOrder(array(
-                    'order_id' => $order->getId(),
-                    'order_sku' => $order->getIncrementId(),
-                    'store_id' => $order->getStoreId(),
-                    'feed_id' => $idFeed,
-                    'delivery_address_id' => '',
+                    'order_id'             => $order->getId(),
+                    'order_sku'            => $order->getIncrementId(),
+                    'store_id'             => $order->getStoreId(),
+                    'feed_id'              => $idFeed,
+                    'delivery_address_id'  => '',
                     'delivery_country_iso' => $countryIso,
-                    'marketplace_sku' => $marketplaceSku,
-                    'marketplace_name' => $marketplaceName,
-                    'marketplace_label' => $marketplaceName,
-                    'order_lengow_state' => '',
-                    'order_date' => $orderDate,
-                    'order_item' => $order->getTotalItemCount(),
-                    'currency' => $order->getBaseCurrencyCode(),
-                    'total_paid' => $order->getTotalInvoiced(),
-                    //'commission' => $order->getTotalInvoiced(),
-                    'customer_name' => $order->getCustomerFirstname().' '.$order->getCustomerLastname(),
-                    'carrier' => $order->getCarrierLengow(),
-                    'carrier_method' => $order->getCarrierMethodLengow(),
-                    'carrier_tracking' => $order->getCarrierTrackingLengow(),
-                    'sent_marketplace' => $sendByMarketplace ,
-                    'created_at' => $order->getCreatedAt(),
-                    'updated_at' => $order->getUpdateAt(),
-                    'message' => $order->getMessageLengow(),
-                    'extra' => $order->getXmlNodeLengow()
+                    'marketplace_sku'      => $marketplaceSku,
+                    'marketplace_name'     => $marketplaceName,
+                    'marketplace_label'    => $marketplaceName,
+                    'order_lengow_state'   => '',
+                    'order_date'           => $orderDate,
+                    'order_item'           => $order->getTotalItemCount(),
+                    'currency'             => $order->getBaseCurrencyCode(),
+                    'total_paid'           => $order->getTotalInvoiced(),
+                    'commission'           => $commission,
+                    'customer_name'        => $order->getCustomerFirstname().' '.$order->getCustomerLastname(),
+                    'carrier'              => $order->getCarrierLengow(),
+                    'carrier_method'       => $order->getCarrierMethodLengow(),
+                    'carrier_tracking'     => $order->getCarrierTrackingLengow(),
+                    'sent_marketplace'     => $sendByMarketplace ,
+                    'created_at'           => $order->getCreatedAt(),
+                    'updated_at'           => $order->getUpdateAt(),
+                    'message'              => $order->getMessageLengow(),
+                    'extra'                => $order->getXmlNodeLengow()
                 ));
             }
         }
