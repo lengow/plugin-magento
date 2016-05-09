@@ -194,7 +194,11 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
     public function importOrder()
     {
         // if log import exist and not finished
-        $import_log = $this->_model_order->orderIsInError($this->_marketplace_sku, $this->_delivery_address_id, 'import');
+        $import_log = $this->_model_order->orderIsInError(
+            $this->_marketplace_sku,
+            $this->_delivery_address_id,
+            'import'
+        );
         if ($import_log) {
             $decoded_message = $this->_helper->decodeLogMessage($import_log['message'], 'en_GB');
             $this->_helper->log(

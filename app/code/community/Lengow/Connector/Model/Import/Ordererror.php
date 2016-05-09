@@ -58,7 +58,7 @@ class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
         }
         foreach ($params as $key => $value) {
             if ($key == 'type') {
-                $value = $this->getOrderLogType($value);
+                $value = $this->getOrderErrorType($value);
             }
             $this->setData($key, $value);
         }
