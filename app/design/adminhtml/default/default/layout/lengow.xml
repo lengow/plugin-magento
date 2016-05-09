@@ -57,9 +57,10 @@
 
   <adminhtml_lengow_product_index>
     <reference name="head">
-      <action method="addCss">
-        <stylesheet>lengow/css/lengow.css</stylesheet>
-      </action>
+      <action method="addCss"><stylesheet>lengow/css/lengow.css</stylesheet></action>
+      <action method="addCss"><stylesheet>lengow/css/bootstrap-3.3.6.css</stylesheet></action>
+      <action method="addCss"><stylesheet>lengow/css/bootstrap-switch.min.css</stylesheet></action>
+      <action method="addCss"><stylesheet>lengow/css/select2.css</stylesheet></action>
     </reference>
     <reference name="content">
       <block type="page/html" name="lengow_layout" template="lengow/layout/main_product.phtml" >

@@ -1,6 +1,39 @@
 (function( $ ) {
     $(function() {
 
+        $('.lengow-connector').on('switchChange.bootstrapSwitch', '.lengow_switch_option', function (event, state) {
+            if (event.type == "switchChange") {
+                var href = $(this).attr('data-href');
+                var action = $(this).attr('data-action');
+                var id_shop = $(this).attr('data-id_shop');
+                $.ajax({
+                    url: href,
+                    method: 'POST',
+                    data: {state: state ? 1 : 0, action: action, id_shop: id_shop, form_key: FORM_KEY},
+                    dataType: 'script'
+                });
+            }
+        });
+
+        $('.lengow-connector').on('change', '#lengow_select', function () {
+                var href = $(this).attr('data-href');
+                var action = $(this).attr('data-action');
+                var id_shop = $(this).attr('data-id_shop');
+                var values = $(this).val();
+                $.ajax({
+                    url: href,
+                    method: 'POST',
+                    data: {action: action, id_shop: id_shop, types:values.join(','), form_key: FORM_KEY},
+                    dataType: 'script'
+                });
+        });
+
+
+        $('.lengow_switch').bootstrapSwitch();
+        $('.lengow_select').select2({
+            tags: true,
+            tokenSeparators: [',']
+        });
     });
 })(lengow_jquery);
 
