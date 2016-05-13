@@ -49,12 +49,13 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
         'total_paid'            => array('required' => false, 'updated' => true),
         'commission'            => array('required' => false, 'updated' => true),
         'customer_name'         => array('required' => false, 'updated' => true),
+        'customer_email'        => array('required' => false, 'updated' => true),
         'carrier'               => array('required' => false, 'updated' => true),
         'carrier_method'        => array('required' => false, 'updated' => true),
         'carrier_tracking'      => array('required' => false, 'updated' => true),
         'carrier_id_relay'      => array('required' => false, 'updated' => true),
         'sent_marketplace'      => array('required' => false, 'updated' => true),
-        'is_reimported'         => array('required' => false, 'updated' => true),
+        'is_in_error'           => array('required' => false, 'updated' => true),
         'message'               => array('required' => true, 'updated' => true),
         'extra'                 => array('required' => false, 'updated' => true)
     );
@@ -633,6 +634,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
                     'total_paid'           => $order->getTotalInvoiced(),
                     'commission'           => $commission,
                     'customer_name'        => $order->getCustomerFirstname().' '.$order->getCustomerLastname(),
+                    'customer_email'       => $order->getCustomerEmail(),
                     'carrier'              => $order->getCarrierLengow(),
                     'carrier_method'       => $order->getCarrierMethodLengow(),
                     'carrier_tracking'     => $order->getCarrierTrackingLengow(),

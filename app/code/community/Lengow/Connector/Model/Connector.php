@@ -271,7 +271,7 @@ class Lengow_Connector_Model_Connector
     public function isValidAuth($account_id)
     {
         $result = $this->connect();
-        if (isset($result['token']) && $account_id != 0 && preg_match('/^[0-9]*$/', $account_id)) {
+        if (isset($result['token']) && $account_id != 0 && is_integer($account_id)) {
             return true;
         } else {
             return false;
@@ -289,7 +289,7 @@ class Lengow_Connector_Model_Connector
     {
         $config = Mage::helper('lengow_connector/config');
         if ($store_id) {
-            $account_id = $config->get('account_id', $store_id);
+            $account_id = (int)$config->get('account_id', $store_id);
             $access_token = $config->get('access_token', $store_id);
             $secret_token = $config->get('secret_token', $store_id);
         } else {

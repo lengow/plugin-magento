@@ -127,10 +127,39 @@ class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
     }
 
     /**
+     * Get all order errors
+     *
+     * @param integer $order_lengow_id Lengow order id
+     * @param string  $type            type (import or send)
+     * @param boolean $finished        log finished (true or false)
+     *
+     * @return mixed
+     *
+     */
+    public function getOrderErrors($order_lengow_id, $type = null, $finished = null)
+    {
+        $error_type = $this->getOrderErrorType($type);
+        $collection = $this->getCollection()->addFieldToFilter('order_lengow_id', $order_lengow_id);
+        if (!is_null($type)) {
+            $error_type = $this->getOrderErrorType($type);
+            $collection->addFieldToFilter('type', $error_type);
+        }
+        if (!is_null($finished)) {
+            $error_finished = $finished ? 1 : 0;
+            $collection->addFieldToFilter('is_finished', $error_finished);
+        }
+        $results = $collection->getData();
+        if (count($results) > 0) {
+            return $results;
+        }
+        return false;
+    }
+
+    /**
      * Removes all order error for one order lengow
      *
-     * @param integer   $order_lengow_id    lengow_order_id
-     * @param string    $log_type           type (import or wsdl)
+     * @param integer $order_lengow_id Lengow order id
+     * @param string  $type            type (import or send)
      *
      * @return boolean
      */
@@ -139,9 +168,9 @@ class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
         $error_type = $this->getOrderErrorType($type);
         // get all order errors
         $results = $this->getCollection()
-            ->addAttributeToFilter('order_lengow_id', $order_lengow_id)
-            ->addAttributeToFilter('type', $type)
-            ->addAttributeToSelect('id')
+            ->addFieldToFilter('order_lengow_id', $order_lengow_id)
+            ->addFieldToFilter('type', $error_type)
+            ->addFieldToSelect('id')
             ->getData();
         if (count($results) > 0) {
             foreach ($results as $result) {

@@ -14,7 +14,7 @@ class Lengow_Connector_Block_Adminhtml_Product_Renderer_Lengow extends Mage_Admi
     public function render(Varien_Object $row)
     {
         $value =  $row->getData($this->getColumn()->getIndex());
-        if ($value==1) {
+        if ($value == 1) {
             $value = $this->__('Yes');
             $class = 'green';
         } else {

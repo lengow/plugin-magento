@@ -164,15 +164,10 @@ class Lengow_Connector_Model_Import extends Varien_Object
         // clean logs
         $this->_helper->cleanLog();
         if ($this->_import_helper->importIsInProcess() && !$this->_preprod_mode && !$this->_import_one_order) {
-            $global_error = $this->_helper->setLogMessage('lengow_log.error.import_in_progress');
+            $global_error = $this->_helper->setLogMessage('lengow_log.error.rest_time_to_import', array(
+                'rest_time' => $this->_import_helper->restTimeToImport()
+            ));
             $this->_helper->log('Import', $global_error, $this->_log_output);
-            $this->_helper->log(
-                'Import',
-                $this->_helper->setLogMessage('lengow_log.error.rest_time_to_import', array(
-                    'rest_time' => $this->_helper->restTimeToImport()
-                )),
-                $this->_log_output
-            );
             $errors[0] = $global_error;
             if (!is_null($this->_order_lengow_id)) {
                 $lengow_order_error = Mage::getModel('lengow/import_ordererror');
@@ -291,7 +286,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
                             )),
                             $this->_log_output
                         );
-                        $error[(int)$store->getId()] = $e->getMessage();
+                        $errors[(int)$store->getId()] = $e->getMessage();
                         unset($error_message);
                         continue;
                     }

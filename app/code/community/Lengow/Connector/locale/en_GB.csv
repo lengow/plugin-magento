@@ -10,19 +10,40 @@ log.table.date|Date
 log.table.message|Message
 product.screen.title|Export product
 product.table.publish_on_lengow|Publish on Lengow
+order.screen.title|Orders
 order.screen.button_import|Import Order
 order.screen.button_migrate|Migrate Old Data
-order.screen.title|Orders
+order.screen.lengow_information|Lengow informations
+order.screen.not_lengow_order|This order doesn't come from Lengow
+order.table.lengow_action|Actions
 order.table.lengow_state|Lengow State
 order.table.marketplace_name|Marketplace
+order.table.store|Store
 order.table.marketplace_sku|Marketplace Sku
 order.table.magento_sku|Magento Sku
+order.table.magento_status|Magento State
 order.table.order_date|Order Date
+order.table.customer_name|Customer name
 order.table.country|Country
 order.table.items|Items
-order.table.store|Store
 order.table.total_paid|Total
-order.table.magento_status|Status
+order.table.action_success|Success
+order.table.action_error|Error
+order.table.order_not_imported|Order hasn't been imported into Magento
+order.table.action_sent|action sent
+order.table.not_imported|not imported
+order.table.not_sent|not sent
+order.table.action_waiting_return|Action sent, waiting returns
+order.table.action_sent_not_work|Action sent to the marketplace didn't work
+order.table.status_not_synchronized|Not synchronized
+order.table.status_accepted|Accepted
+order.table.status_waiting_shipment|Waiting shipment
+order.table.status_shipped|Shipped
+order.table.status_closed|Closed
+order.table.status_refunded|Refunded
+order.table.status_canceled|Canceled
+order.table.button_reimport_order|Re-import Orders
+order.table.button_resend_order|Resend Orders
 lengow_setting.global_setting|Global settings
 lengow_setting.global_plugin_version_title|Plugin's version
 lengow_setting.global_magento_version_title|Magento's version
@@ -86,23 +107,22 @@ lengow_setting.import_cron_enable_comment|Enable the scheduled task for import y
 lengow_log.error.nb_order_imported|%{nb_order} order(s) imported
 lengow_log.error.nb_order_updated|%{nb_order} order(s) updated
 lengow_log.error.nb_order_with_error|%{nb_order} order(s) with errors
-lengow_log.error.import_in_progress|import has already started
-lengow_log.error.rest_time_to_import|Please wait %{rest_time} seconds before re-importing orders
-lengow_log.error.account_id_empty|id account, access token or secret is empty in shop %{store_name} (%{store_id})
-lengow_log.error.account_id_already_used|account ID %{account_id} is already used by shop %{store_name} (%{store_id})
+lengow_log.error.rest_time_to_import|import has already started. Please wait %{rest_time} seconds before re-importing orders
+lengow_log.error.account_id_empty|id account, access token or secret is empty in store %{store_name} (%{store_id})
+lengow_log.error.account_id_already_used|account ID %{account_id} is already used by store %{store_name} (%{store_id})
 lengow_log.error.order_not_found|Order can't be found in lengow feed
 lengow_log.error.no_product|no products in the order
 lengow_log.error.no_change_rate|no exchange rates available for order prices
 lengow_log.error.no_currency|no currency in the order
-lengow_log.error.currency_not_available|currency %{currency_iso} is not available in your shop
+lengow_log.error.currency_not_available|currency %{currency_iso} is not available in your store
 lengow_log.error.no_country_for_delivery_address|delivery address doesn't contain the country
 lengow_log.error.no_billing_address|no billing address in the order
 lengow_log.error.no_country_for_billing_address|billing address doesn't contain the country
 lengow_log.exception.product_not_be_found|product %{product_id} could not be found
 lengow_log.exception.product_is_a_parent|product %{product_id} is a parent ID. Product variation is needed
-lengow_log.exception.no_connection_webservice|connection didn't work with the Lengow webservice in shop %{store_name} (%{store_id})
-lengow_log.exception.crendentials_not_valid|account ID, token access or secret token are not valid in shop %{store_name} (%{store_id})
-lengow_log.exception.error_lengow_webservice|Lengow webservice : %{error_code} - %{error_message} in shop %{store_name} (%{store_id})
+lengow_log.exception.no_connection_webservice|connection didn't work with the Lengow webservice in store %{store_name} (%{store_id})
+lengow_log.exception.crendentials_not_valid|account ID, token access or secret token are not valid in store %{store_name} (%{store_id})
+lengow_log.exception.error_lengow_webservice|Lengow webservice : %{error_code} - %{error_message} in store %{store_name} (%{store_id})
 lengow_log.exception.timeout_api|API call was blocked by a timeout
 lengow_log.exception.marketplace_not_present|the marketplace %{markeplace_name} does not feature in the marketplace list
 lengow_log.exception.order_failed_with_quote|service unable to create order based on given quote

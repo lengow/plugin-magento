@@ -13,7 +13,9 @@ body {font-size:12px;}
 table.actions td.pager {text-align: left;}
 ul#nav {margin:0;padding:0;}*/
 
-
+/*************************************************/
+/*                    GLOBAL                     */
+/*************************************************/
 
 body.lengow-connector .middle {
   padding:23px 27px 0 27px;
@@ -23,20 +25,26 @@ body.lengow-connector .middle {
   padding:0px;
 }
 
-/* HOME */
+/*************************************************/
+/*                    IFRAME                     */
+/*************************************************/
+
 #lengow-iframe {
-  width: 100%;
+  width:100%;
   min-height:632px;
   border:0px;
 }
 
-/* PRODUCT */
+/*************************************************/
+/*                PAGE PRODUCT                   */
+/*************************************************/
+
 span.publish_on_lengow {
-  text-align: center;
-  display: block;
+  text-align:center;
+  display:block;
   width:auto;
   color:white;
-  border-radius: 10px;
+  border-radius:10px;
 }
 
 span.publish_on_lengow.green {
@@ -48,6 +56,168 @@ span.publish_on_lengow.red {
 }
 
 #lengow_product_store_name {
-  display: inline-block;
-  margin-right: 10px;
+  display:inline-block;
+  margin-right:10px;
 }
+
+/*************************************************/
+/*                    TABLE                      */
+/*************************************************/
+
+.lgw-table-center {
+    line-height:50px;
+}
+
+/*************************************************/
+/*                    LABELS                     */
+/*************************************************/
+
+.lgw-label{
+    font-size:13px;
+    background:#ebebeb;
+    color:#828282;
+    height:23px;
+    line-height:23px;
+    margin:15px 0;
+    padding:0 20px;
+    border-radius:12px;
+    display:inline-block;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.lgw-label_red,
+.lgw-label_canceled,
+.lgw-label.red{
+    color:white;
+    background:#e55a4d;
+}
+
+.lgw-label.orange{
+    color:white;
+    background:#fbb829;
+}
+
+.lgw-label.green{
+    color:white;
+    background:#7ac279;
+}
+
+.lgw-label_waiting_shipment,
+.lgw-label_accepted {
+    border:1px solid #7ac279;
+    color:#7ac279;
+    background:transparent;
+    line-height:21px;
+}
+
+/*************************************************/
+/*                    TOOLTIP                    */
+/*************************************************/
+
+a.lgw-tooltip {
+    position:relative;
+    color:#000;
+    text-decoration:none;
+}
+ 
+a.lgw-tooltip:hover {
+    z-index:1070;
+    background-color:#FFF
+}
+ 
+a.lgw-tooltip span {
+    display:none
+}
+ 
+a.lgw-tooltip:hover span {
+    display:block;
+    position:absolute;
+    background-color:#000;
+    color:#FFF;
+    border-radius:4px;
+    padding:3px 8px;
+    text-align:center;
+    font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size:11px;
+    font-style:normal;
+    font-weight:normal;
+    line-height:1.42857143;
+    text-align:center;
+    max-width:200px;
+    opacity:.9;
+}
+
+span.lgw-order-action {
+    bottom:40px;
+    left:-30px;
+    width:150px;
+}
+
+span.lgw-order-country {
+    bottom:20px;
+    left:-15px;
+}
+
+/*************************************************/
+/*                    BUTTONS                    */
+/*************************************************/
+
+.lgw-btn{
+    border-radius:3px;
+    padding:8px 15px;
+    margin:10px 0;
+    color:white;
+    text-decoration: none !important;
+    background:#00aeef;
+    position:relative;
+    transition:all 100ms ease;
+    border:0;
+    display:inline-block;
+}
+
+.lgw-btn:hover,
+.lgw-btn:active{
+    background:#019ce2;
+    color:white;
+}
+
+/* RED */
+
+.lgw-btn-red{
+    background:#e55a4d;
+}
+.lgw-btn-red:hover,
+.lgw-btn-red:focus{
+    background:#da493b;
+}
+
+/* WHITE */
+
+.lgw-btn-white:hover,
+.lgw-btn-white{
+    background-color:#fff;
+    border:1px solid #d7d7d7;
+    color:#828282;
+}
+
+.lgw-btn-white:focus{
+    background-color:#f7f7f7;
+    color:#555;
+}
+
+/* GREEN */
+
+.lgw-container .lgw-btn-green{
+    background-color:#7ac279;
+}
+
+.lgw-btn-green:hover,
+.lgw-btn-green:focus{
+    background-color:#66b165;
+}
+
+.lengow_toolbar .lgw-btn{
+    margin-right:15px;
+}
+
