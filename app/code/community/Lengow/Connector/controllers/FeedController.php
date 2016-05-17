@@ -53,9 +53,9 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action
             Mage::app()->getTranslator()->init('frontend', true);
         }
 
-        $helper = Mage::helper('lengow_connector/security');
+        $security = Mage::helper('lengow_connector/security');
 
-        if ($helper->checkIp()) {
+        if ($security->checkIp()) {
             // config store
             Mage::app()->getStore()->setCurrentStore($storeId);
             // launch export process

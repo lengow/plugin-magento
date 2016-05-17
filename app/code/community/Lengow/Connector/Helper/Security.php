@@ -57,7 +57,7 @@ class Lengow_Connector_Helper_Security extends Mage_Core_Helper_Abstract
      */
     public function checkIP()
     {
-        $ips = Mage::getStoreConfig('lenexport/performances/valid_ip');
+        $ips = Mage::helper('lengow_connector/config')->get('authorized_ip');
         $ips = trim(str_replace(array("\r\n", ',', '-', '|', ' '), ';', $ips), ';');
         $ips = explode(';', $ips);
         $authorized_ips = array_merge($ips, self::$IPS_LENGOW);
@@ -66,26 +66,6 @@ class Lengow_Connector_Helper_Security extends Mage_Core_Helper_Abstract
             return true;
         }
         return false;
-    }
-
-    /**
-     * Check if Authorized Ip is Valid.
-     *
-     * @return boolean.
-     */
-    public function checkValidAuthorizedIP($authorizedIp)
-    {
-        $cleanIps = preg_replace('/\ /', '', $authorizedIp);
-        if (strlen($cleanIps) == 0) {
-            return false;
-        }
-        $ips = explode(',', $cleanIps);
-        foreach ($ips as $ip) {
-            if (!preg_match('/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/', $ip)) {
-                return false;
-            }
-        }
-        return true;
     }
 
     /**

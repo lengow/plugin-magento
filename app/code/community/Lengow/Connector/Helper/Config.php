@@ -70,6 +70,9 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
         'export_cron_enable' => array(
             'path' => 'lengow_export_options/advanced/export_cron_enable'
         ),
+        'last_export' => array(
+            'path' => 'lengow_export_options/advanced/export_last_export'
+        ),
         'days' => array(
             'path' => 'lengow_import_options/simple/import_days'
         ),

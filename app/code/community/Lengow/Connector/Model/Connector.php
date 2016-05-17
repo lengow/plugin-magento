@@ -289,7 +289,7 @@ class Lengow_Connector_Model_Connector
     {
         $config = Mage::helper('lengow_connector/config');
         if ($store_id) {
-            $account_id = $config->get('account_id', $store_id);
+            $account_id = (int)$config->get('account_id', $store_id);
             $access_token = $config->get('access_token', $store_id);
             $secret_token = $config->get('secret_token', $store_id);
         } else {
@@ -308,6 +308,23 @@ class Lengow_Connector_Model_Connector
         } else {
             return array(null, null, null);
         }
+    }
+
+    /**
+     * Get Connector by store
+     *
+     * @param integer $store_id Store Id
+     *
+     * @return boolean
+     */
+    public function getConnectorByStore($store_id = null)
+    {
+        list($account_id, $access_token, $secret_token) = $this->getAccessId($store_id);
+        $this->init($access_token, $secret_token);
+        if (!$this->isValidAuth($account_id)) {
+            return false;
+        }
+        return true;
     }
 
     /**

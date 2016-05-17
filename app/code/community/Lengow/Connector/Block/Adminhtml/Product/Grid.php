@@ -101,16 +101,16 @@ class Lengow_Connector_Block_Adminhtml_Product_Grid extends Mage_Adminhtml_Block
             'entity_id',
             array(
                 'header' => Mage::helper('catalog')->__('ID'),
-                'width' => '50px',
-                'type' => 'number',
-                'index' => 'entity_id',
+                'index'  => 'entity_id',
+                'width'  => '50px',
+                'type'   => 'number',
             )
         );
         $this->addColumn(
             'name',
             array(
                 'header' => Mage::helper('catalog')->__('Name'),
-                'index' => 'name',
+                'index'  => 'name',
             )
         );
         $store = $this->_getStore();
@@ -119,17 +119,17 @@ class Lengow_Connector_Block_Adminhtml_Product_Grid extends Mage_Adminhtml_Block
                 'custom_name',
                 array(
                     'header' => Mage::helper('catalog')->__('Name In %s', $store->getName()),
-                    'index' => 'custom_name',
+                    'index'  => 'custom_name',
                 )
             );
         }
         $this->addColumn(
             'type',
             array(
-                'header' => Mage::helper('catalog')->__('Type'),
-                'width' => '60px',
-                'index' => 'type_id',
-                'type' => 'options',
+                'header'  => Mage::helper('catalog')->__('Type'),
+                'index'   => 'type_id',
+                'width'   => '60px',
+                'type'    => 'options',
                 'options' => Mage::getSingleton('catalog/product_type')->getOptionArray(),
             )
         );
@@ -140,10 +140,10 @@ class Lengow_Connector_Block_Adminhtml_Product_Grid extends Mage_Adminhtml_Block
         $this->addColumn(
             'set_name',
             array(
-                'header' => Mage::helper('catalog')->__('Attrib. Set Name'),
-                'width' => '100px',
-                'index' => 'attribute_set_id',
-                'type' => 'options',
+                'header'  => Mage::helper('catalog')->__('Attrib. Set Name'),
+                'index'   => 'attribute_set_id',
+                'width'   => '100px',
+                'type'    => 'options',
                 'options' => $sets,
             )
         );
@@ -151,75 +151,74 @@ class Lengow_Connector_Block_Adminhtml_Product_Grid extends Mage_Adminhtml_Block
             'sku',
             array(
                 'header' => Mage::helper('catalog')->__('SKU'),
-                'width' => '80px',
-                'index' => 'sku',
+                'index'  => 'sku',
+                'width'  => '80px',
             )
         );
         $store = $this->_getStore();
         $this->addColumn(
             'price',
             array(
-                'header' => Mage::helper('catalog')->__('Price'),
-                'type' => 'price',
+                'header'        => Mage::helper('catalog')->__('Price'),
+                'index'         => 'price',
+                'type'          => 'price',
                 'currency_code' => $store->getBaseCurrency()->getCode(),
-                'index' => 'price',
             )
         );
         $this->addColumn(
             'qty',
             array(
                 'header' => Mage::helper('catalog')->__('Qty'),
-                'width' => '100px',
-                'type' => 'number',
-                'index' => 'qty',
+                'index'  => 'qty',
+                'width'  => '100px',
+                'type'   => 'number',
             )
         );
         $this->addColumn(
             'visibility',
             array(
-                'header' => Mage::helper('catalog')->__('Visibility'),
-                'width' => '70px',
-                'index' => 'visibility',
-                'type' => 'options',
+                'header'  => Mage::helper('catalog')->__('Visibility'),
+                'width'   => '70px',
+                'index'   => 'visibility',
+                'type'    => 'options',
                 'options' => Mage::getModel('catalog/product_visibility')->getOptionArray(),
             )
         );
         $this->addColumn(
             'status',
             array(
-                'header' => Mage::helper('catalog')->__('Status'),
-                'width' => '70px',
-                'index' => 'status',
-                'type' => 'options',
+                'header'  => Mage::helper('catalog')->__('Status'),
+                'width'   => '70px',
+                'index'   => 'status',
+                'type'    => 'options',
                 'options' => Mage::getSingleton('catalog/product_status')->getOptionArray(),
             )
-        );
-        $options = array(
-            0 => Mage::helper('catalog')->__('No'),
-            1 => Mage::helper('catalog')->__('Yes')
         );
         if (!Mage::app()->isSingleStoreMode()) {
             $this->addColumn(
                 'websites',
                 array(
-                    'header' => Mage::helper('catalog')->__('Websites'),
-                    'width' => '100px',
+                    'header'   => Mage::helper('catalog')->__('Websites'),
+                    'index'    => 'websites',
+                    'width'    => '100px',
                     'sortable' => false,
-                    'index' => 'websites',
-                    'type' => 'options',
-                    'options' => Mage::getModel('core/website')->getCollection()->toOptionHash(),
+                    'type'     => 'options',
+                    'options'  => Mage::getModel('core/website')->getCollection()->toOptionHash(),
                 )
             );
         }
         $this->addColumn(
             'lengow_product',
             array(
-                'header' => $this->helper('lengow_connector')->__('product.table.publish_on_lengow'),
-                'width' => '70px',
-                'index' => 'lengow_product',
-                'type' => 'options',
-                'options' => $options,
-                'renderer' => 'Lengow_Connector_Block_Adminhtml_Product_Renderer_Lengow'
+                'header'   => $this->helper('lengow_connector')->__('product.table.publish_on_lengow'),
+                'index'    => 'lengow_product',
+                'width'    => '70px',
+                'type'     => 'options',
+                'renderer' => 'Lengow_Connector_Block_Adminhtml_Product_Renderer_Lengow',
+                'options'  => array(
+                    0 => $this->helper('lengow_connector')->__('global.just_no'),
+                    1 => $this->helper('lengow_connector')->__('global.just_yes')
+                ),
             )
         );
         return parent::_prepareColumns();
@@ -230,21 +229,20 @@ class Lengow_Connector_Block_Adminhtml_Product_Grid extends Mage_Adminhtml_Block
         $this->setMassactionIdField('entity_id');
         $this->getMassactionBlock()->setFormFieldName('product');
         $this->getMassactionBlock()->setUseAjax(true);
-        $options = array(
-            0 => Mage::helper('catalog')->__('No'),
-            1 => Mage::helper('catalog')->__('Yes')
-        );
         $this->getMassactionBlock()->addItem('publish', array(
-            'label' => $this->__('Change Lengow\'s publication'),
-            'url' => $this->getUrl('*/*/massPublish', array('_current' => true)),
-            'complete' => 'reloadGrid',
+            'label'      => $this->helper('lengow_connector')->__('product.table.change_publication'),
+            'url'        => $this->getUrl('*/*/massPublish', array('_current' => true)),
+            'complete'   => 'reloadGrid',
             'additional' => array(
                 'visibility' => array(
-                    'name' => 'publish',
-                    'type' => 'select',
-                    'class' => 'required-entry',
-                    'label' => Mage::helper('catalog')->__('Publication'),
-                    'values' => $options
+                    'name'   => 'publish',
+                    'type'   => 'select',
+                    'class'  => 'required-entry',
+                    'label'  => $this->helper('lengow_connector')->__('product.table.publication'),
+                    'values' => array(
+                        0 => $this->helper('lengow_connector')->__('global.just_no'),
+                        1 => $this->helper('lengow_connector')->__('global.just_yes')
+                    )
                 )
             )
         ));
@@ -262,8 +260,8 @@ class Lengow_Connector_Block_Adminhtml_Product_Grid extends Mage_Adminhtml_Block
             return $this->getUrl(
                 '*/catalog_product/edit',
                 array(
-                'store'=>$this->getRequest()->getParam('store'),
-                'id'=>$row->getId()
+                    'store' => $this->getRequest()->getParam('store'),
+                    'id'    => $row->getId()
                 )
             );
         }

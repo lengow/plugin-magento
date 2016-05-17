@@ -92,11 +92,6 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
     protected $_order_lengow_id;
 
     /**
-     * @var date order date
-     */
-    protected $_order_date;
-
-    /**
      * @var string
      */
     protected $_order_state_marketplace;
@@ -194,7 +189,11 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
     public function importOrder()
     {
         // if log import exist and not finished
-        $import_log = $this->_model_order->orderIsInError($this->_marketplace_sku, $this->_delivery_address_id, 'import');
+        $import_log = $this->_model_order->orderIsInError(
+            $this->_marketplace_sku,
+            $this->_delivery_address_id,
+            'import'
+        );
         if ($import_log) {
             $decoded_message = $this->_helper->decodeLogMessage($import_log['message'], 'en_GB');
             $this->_helper->log(
@@ -284,14 +283,17 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
         $this->_order_amount = $this->_getOrderAmount();
         // load tracking data
         $this->_loadTrackingData();
-        // get customer name
+        // get customer name and email
         $customer_name = $this->_getCustomerName();
+        $customer_email = (string)$this->_order_data->billing_address->email;
         // update Lengow order with new informations
         $order_lengow->updateOrder(array(
             'currency'             => $this->_order_data->currency->iso_a3,
             'total_paid'           => $this->_order_amount,
             'order_item'           => $this->_order_items,
             'customer_name'        => $customer_name,
+            'customer_email'       => $customer_email,
+            'commission'           => (float) $this->_order_data->commission,
             'carrier'              => $this->_carrier_name,
             'method'               => $this->_carrier_method,
             'tracking'             => $this->_tracking_number,
@@ -370,7 +372,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
                     'order_process_state' => $this->_model_order->getOrderProcessState($this->_order_state_lengow),
                     'extra'               => json_encode($this->_order_data),
                     'order_lengow_state'  => $this->_order_state_lengow,
-                    'is_reimported'       => 0
+                    'is_in_error'         => 0
                 ));
                 $this->_helper->log(
                     'Import',
@@ -407,7 +409,6 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
             $order_lengow->updateOrder(array(
                 'extra'              => json_encode($this->_order_data),
                 'order_lengow_state' => $this->_order_state_lengow,
-                'is_reimported'      => 0
             ));
             return $this->_returnResult('error', $this->_order_lengow_id);
         }
@@ -804,6 +805,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
             'marketplace_lengow'         => (string)$this->_order_data->marketplace,
             'order_id_lengow'            => (string)$this->_marketplace_sku,
             'delivery_address_id_lengow' => (int)$this->_delivery_address_id,
+            'is_reimported_lengow'       => false,
             'global_currency_code'       => (string)$this->_order_data->currency->iso_a3,
             'base_currency_code'         => (string)$this->_order_data->currency->iso_a3,
             'store_currency_code'        => (string)$this->_order_data->currency->iso_a3,
@@ -824,8 +826,14 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
             );
         }
         // modify order dates to use actual dates
-        $order->setCreatedAt($this->_order_date);
-        $order->setUpdatedAt($this->_order_date);
+        // Get all params to create order
+        if (!is_null($this->_order_data->marketplace_order_date)) {
+            $order_date = (string)$this->_order_data->marketplace_order_date;
+        } else {
+            $order_date = (string)$this->_order_data->imported_at;
+        }
+        $order->setCreatedAt(date('Y-m-d H:i:s', strtotime($order_date)));
+        $order->setUpdatedAt(date('Y-m-d H:i:s', strtotime($order_date)));
         $order->save();
         // Re-ajuste cents for total and shipping cost
         // Conversion Tax Include > Tax Exclude > Tax Include maybe make 0.01 amount error
@@ -889,7 +897,6 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
         } else {
             $order_date = (string)$this->_order_data->imported_at;
         }
-        $this->_order_date = date('Y-m-d H:i:s', strtotime($order_date));
         $params = array(
             'store_id'            => (int)$this->_store_id,
             'marketplace_sku'     => $this->_marketplace_sku,
@@ -897,7 +904,8 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
             'marketplace_label'   => (string)$this->_marketplace_label,
             'delivery_address_id' => (int)$this->_delivery_address_id,
             'order_lengow_state'  => $this->_order_state_lengow,
-            'order_date'          => $this->_order_date
+            'order_date'          => date('Y-m-d H:i:s', strtotime($order_date)),
+            'is_in_error'         => 1
         );
         if (isset($this->_order_data->comments) && is_array($this->_order_data->comments)) {
             $params['message'] = join(',', $this->_order_data->comments);

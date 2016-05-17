@@ -80,50 +80,60 @@ if (!$from_lengow_customer) {
 // create attribute from_lengow for order
 $list_attribute = array();
 $list_attribute[] = array(
-    'name' => 'from_lengow',
-    'label' => 'From Lengow',
-    'type' => 'int',
-    'input' => 'select',
-    'source' => 'eav/entity_attribute_source_boolean',
+    'name'    => 'from_lengow',
+    'label'   => 'From Lengow',
+    'type'    => 'int',
+    'input'   => 'select',
+    'source'  => 'eav/entity_attribute_source_boolean',
     'default' => 0,
-    'grid' => true,
+    'grid'    => true,
 );
 $list_attribute[] = array(
-    'name' => 'order_id_lengow',
-    'label' => 'Lengow order ID',
-    'type' => 'text',
-    'input' => 'text',
-    'source' => '',
+    'name'    => 'order_id_lengow',
+    'label'   => 'Lengow order ID',
+    'type'    => 'text',
+    'input'   => 'text',
+    'source'  => '',
     'default' => '',
-    'grid' => true,
+    'grid'    => true,
 );
 $list_attribute[] = array(
-    'name' => 'feed_id_lengow',
-    'label' => 'Feed ID',
-    'type' => 'float',
-    'input' => 'text',
-    'source' => '',
+    'name'    => 'feed_id_lengow',
+    'label'   => 'Feed ID',
+    'type'    => 'float',
+    'input'   => 'text',
+    'source'  => '',
     'default' => 0,
-    'grid' => false,
+    'grid'    => false,
 );
 $list_attribute[] = array(
-    'name' => 'marketplace_lengow',
-    'label' => 'marketplace',
-    'type' => 'text',
-    'input' => 'text',
-    'source' => '',
+    'name'    => 'marketplace_lengow',
+    'label'   => 'marketplace',
+    'type'    => 'text',
+    'input'   => 'text',
+    'source'  => '',
     'default' => '',
-    'grid' => true,
+    'grid'    => true,
 );
 $list_attribute[] = array(
-    'name' => 'delivery_address_id_lengow',
-    'label' => 'Delivery address id lengow',
-    'type' => 'int',
-    'input' => 'text',
-    'source' => '',
+    'name'    => 'delivery_address_id_lengow',
+    'label'   => 'Delivery address id lengow',
+    'type'    => 'int',
+    'input'   => 'text',
+    'source'  => '',
     'default' => 0,
-    'grid' => false,
+    'grid'    => false,
 );
+$list_attribute[] = array(
+    'name'    => 'is_reimported_lengow',
+    'label'   => 'Is Reimported Lengow',
+    'type'    => 'int',
+    'input'   => 'select',
+    'source'  => 'eav/entity_attribute_source_boolean',
+    'default' => 0,
+    'grid'    => false,
+);
+
 foreach ($list_attribute as $attr) {
     $order_attribute = $installer->getAttribute('order', $attr['name']);
     if (!$order_attribute) {
@@ -267,6 +277,11 @@ if ($installer->getConnection()->isTableExists($tableName) != true) {
             'length'    => 255,
             'default'   => null
         ), 'Customer Name')
+        ->addColumn('customer_email', Varien_Db_Ddl_Table::TYPE_TEXT, 255, array(
+            'nullable'  => true,
+            'length'    => 255,
+            'default'   => null
+        ), 'Customer Email')
         ->addColumn('carrier', Varien_Db_Ddl_Table::TYPE_TEXT, 100, array(
             'nullable'  => true,
             'length'    => 100,
@@ -291,10 +306,10 @@ if ($installer->getConnection()->isTableExists($tableName) != true) {
             'nullable'  => false,
             'default'   => 0
         ), 'Sent Marketplace')
-        ->addColumn('is_reimported', Varien_Db_Ddl_Table::TYPE_BOOLEAN, null, array(
+        ->addColumn('is_in_error', Varien_Db_Ddl_Table::TYPE_BOOLEAN, null, array(
             'nullable'  => false,
             'default'   => 0
-        ), 'Is Reimported')
+        ), 'Is In Error')
         ->addColumn('message', Varien_Db_Ddl_Table::TYPE_TEXT, null, array(
             'nullable'  => true,
             'default'   => null

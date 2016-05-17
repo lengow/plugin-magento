@@ -17,17 +17,15 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
      */
     public static function getSyncData()
     {
-        $configHelper = Mage::helper('lengow_connector/config');
-
+        $config = Mage::helper('lengow_connector/config');
         $data = array();
         $data['domain_name'] = $_SERVER["SERVER_NAME"];
-        $data['token'] = $configHelper->getToken();
+        $data['token'] = $config->getToken();
         $data['type'] = 'magento';
         $data['version'] = Mage::getVersion();
         $data['plugin_version'] = (string)Mage::getConfig()->getNode()->modules->Lengow_Connector->version;
         $data['email'] = Mage::getSingleton('admin/session')->getUser()->getEmail();
         $data['return_url'] = 'http://'.$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
-
         foreach (Mage::app()->getWebsites() as $website) {
             foreach ($website->getGroups() as $group) {
                 $stores = $group->getStores();
@@ -35,7 +33,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
                     $export = Mage::getModel('lengow/export', array(
                         "store_id" => $store->getId(),
                     ));
-                    $data['shops'][$store->getId()]['token'] = $configHelper->getToken($store->getId());
+                    $data['shops'][$store->getId()]['token'] = $config->getToken($store->getId());
                     $data['shops'][$store->getId()]['name'] = $store->getName();
                     $data['shops'][$store->getId()]['domain'] = $store->getBaseUrl();
                     $data['shops'][$store->getId()]['feed_url'] = $export->getExportUrl();
@@ -54,12 +52,11 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
      */
     public static function sync($params)
     {
-        $configHelper = Mage::helper('lengow_connector/config');
-
+        $config = Mage::helper('lengow_connector/config');
         foreach ($params as $shop_token => $values) {
-            if ($store = $configHelper->getStoreByToken($shop_token)) {
+            if ($store = $config->getStoreByToken($shop_token)) {
                 $list_key = array(
-                    'account_id' => false,
+                    'account_id'   => false,
                     'access_token' => false,
                     'secret_token' => false
                 );
@@ -69,7 +66,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
                     }
                     if (strlen($v) > 0) {
                         $list_key[$k] = true;
-                        $configHelper->set($k, $v, $store->getId());
+                        $config->set($k, $v, $store->getId());
                     }
                 }
                 $findFalseValue = false;
@@ -80,9 +77,9 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
                     }
                 }
                 if (!$findFalseValue) {
-                    $configHelper->set('store_enable', true, $store->getId());
+                    $config->set('store_enable', true, $store->getId());
                 } else {
-                    $configHelper->set('store_enable', false, $store->getId());
+                    $config->set('store_enable', false, $store->getId());
                 }
             }
         }

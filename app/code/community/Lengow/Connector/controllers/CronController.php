@@ -16,8 +16,8 @@ class Lengow_Connector_CronController extends Mage_Core_Controller_Front_Action
      */
     public function indexAction()
     {
-        $helper = Mage::helper('lengow_connector/security');
-        if ($helper->checkIp()) {
+        $security = Mage::helper('lengow_connector/security');
+        if ($security->checkIp()) {
 
             // get sync action if exists
             $sync = $this->getRequest()->getParam('sync');

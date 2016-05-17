@@ -14,13 +14,13 @@ class Lengow_Connector_Block_Adminhtml_Product_Renderer_Lengow extends Mage_Admi
     public function render(Varien_Object $row)
     {
         $value =  $row->getData($this->getColumn()->getIndex());
-        if ($value==1) {
-            $value = $this->__('Yes');
+        if ($value == 1) {
+            $value = $this->helper('lengow_connector')->__('global.just_yes');
             $class = 'green';
         } else {
-            $value = $this->__('No');
+            $value = $this->helper('lengow_connector')->__('global.just_no');
             $class = 'red';
         }
-        return '<span class="publish_on_lengow '.$class.'">'.$value.'</span>';
+        return '<span class="publish-lgw '.$class.'">'.$value.'</span>';
     }
 }
