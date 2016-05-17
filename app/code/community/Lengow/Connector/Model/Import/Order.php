@@ -622,7 +622,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
                     'order_sku'            => $order->getIncrementId(),
                     'store_id'             => $order->getStoreId(),
                     'feed_id'              => $idFeed,
-                    'delivery_address_id'  => '',
+                    'delivery_address_id'  => $order->getDeliveryAddressIdLengow(),
                     'delivery_country_iso' => $countryIso,
                     'marketplace_sku'      => $marketplaceSku,
                     'marketplace_name'     => $marketplaceName,

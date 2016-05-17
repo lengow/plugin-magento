@@ -39,7 +39,7 @@ body.lengow-connector .middle {
 /*                PAGE PRODUCT                   */
 /*************************************************/
 
-span.publish_on_lengow {
+span.publish-lgw {
   text-align:center;
   display:block;
   width:auto;
@@ -47,11 +47,11 @@ span.publish_on_lengow {
   border-radius:10px;
 }
 
-span.publish_on_lengow.green {
+span.publish-lgw.green {
   background:#89B963;
 }
 
-span.publish_on_lengow.red {
+span.publish-lgw.red {
   background:#C4676B;
 }
 

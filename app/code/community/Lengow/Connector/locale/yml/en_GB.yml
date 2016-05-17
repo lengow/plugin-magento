@@ -7,6 +7,9 @@ en:
     help: "Help"
   module:
     name: "Lengow"
+  global:
+    just_yes: "Yes"
+    just_no: "No"
   log:
     screen:
       title: "Lengow logs"
@@ -19,12 +22,26 @@ en:
       title: "Export product"
     table:
       publish_on_lengow: "Publish on Lengow"
+      change_publication: "Change Lengow's publication"
+      publication: "Publication"
   order:
     screen:
       title: "Orders"
       button_import: "Import Order"
       button_migrate: "Migrate Old Data"
       lengow_information: "Lengow informations"
+      feed_id: "Feed ID"
+      delivery_address_id: "Delivery Address ID"
+      currency: "Currency"
+      commission: "Commission"
+      customer_email: "Customer email"
+      carrier: "Carrier from marketplace"
+      carrier_method: "Shipping method from marketplace"
+      carrier_tracking: "Tracking number"
+      carrier_id_relay: "ID relay"
+      sent_marketplace: "Shipped by marketplace"
+      message: "Message"
+      extra: "JSON format"
       not_lengow_order: "This order doesn't come from Lengow"
     table:
       lengow_action: "Actions"
@@ -38,7 +55,7 @@ en:
       customer_name: "Customer name"
       country: "Country"
       items: "Items"
-      total_paid: "Total"
+      total_paid: "Total Paid"
       action_success: "Success"
       action_error: "Error"
       order_not_imported: "Order hasn't been imported into Magento"

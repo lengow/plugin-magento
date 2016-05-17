@@ -172,16 +172,16 @@ class Lengow_Connector_Block_Adminhtml_Order_Grid extends Mage_Adminhtml_Block_W
         $this->getMassactionBlock()->addItem(
             'reimport',
             array(
-                'label' => $this->helper('lengow_connector')->__('order.table.button_reimport_order'),
-                'url' => $this->getUrl('*/*/massReImport'),
+                'label'    => $this->helper('lengow_connector')->__('order.table.button_reimport_order'),
+                'url'      => $this->getUrl('*/*/massReImport'),
                 'complete' => 'reloadGrid'
             )
         );
         $this->getMassactionBlock()->addItem(
             'resend',
             array(
-                'label' => $this->helper('lengow_connector')->__('order.table.button_resend_order'),
-                'url' => $this->getUrl('*/*/massReSend'),
+                'label'    => $this->helper('lengow_connector')->__('order.table.button_resend_order'),
+                'url'      => $this->getUrl('*/*/massReSend'),
                 'complete' => 'reloadGrid'
             )
         );

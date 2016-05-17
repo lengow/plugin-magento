@@ -90,24 +90,24 @@ class Lengow_Connector_Block_Adminhtml_Order_Tab extends Mage_Adminhtml_Block_Sa
             $message = $order_lengow->getData('message');
             $extra = $order_lengow->getData('extra');
         } else {
-            $marketplace_sku = $order->getData('marketplace_sku');
-            $marketplace_label = $order->getData('marketplace_sku');
-            $feed_id = $order->getData('marketplace_sku');
-            $delivery_address_id = $order->getData('marketplace_sku');
-            $currency = $order->getData('marketplace_sku');
-            $total_paid = $order->getData('marketplace_sku');
-            $commission = $order->getData('marketplace_sku');
-            $customer_name = $order->getData('marketplace_sku');
-            $customer_email = $order->getData('marketplace_sku');
-            $carrier = $order->getData('marketplace_sku');
-            $carrier_method = $order->getData('marketplace_sku');
-            $carrier_tracking = $order->getData('marketplace_sku');
-            $carrier_id_relay = $order->getData('marketplace_sku');
-            $sent_marketplace = $order->getData('marketplace_sku');
-            $message = $order->getData('marketplace_sku');
-            $extra = $order->getData('marketplace_sku');
+            $marketplace_sku = $order->getData('order_id_lengow');
+            $marketplace_label = $order->getData('marketplace_lengow');
+            $feed_id = $order->getData('feed_id_lengow');
+            $delivery_address_id = $order->getData('delivery_address_id_lengow');
+            $currency = $order->getData('base_currency_code');
+            $total_paid = $order->getData('total_paid_lengow');
+            $commission = $order->getData('fees_lengow');
+            $customer_name = $order->getData('customer_firstname').' '.$order->getData('customer_lastname');
+            $customer_email = $order->getData('customer_email');
+            $carrier = $order->getData('carrier_lengow');
+            $carrier_method = $order->getData('carrier_method_lengow');
+            $carrier_tracking = $order->getData('carrier_tracking_lengow');
+            $carrier_id_relay = $order->getData('carrier_id_relay_lengow');
+            $sent_marketplace = 0;
+            $message = $order->getData('message_lengow');
+            $extra = $order->getData('xml_node_lengow');
         }
-        $sent_marketplace = $sent_marketplace == 1 ? $helper->__('order.screen.yes') : $helper->__('order.screen.no');
+        $sent_marketplace = $sent_marketplace == 1 ? $helper->__('global.just_yes') : $helper->__('global.just_no');
         // Construct fields list
         $fields[] = array('label' => $helper->__('order.table.marketplace_sku'), 'value' => $marketplace_sku);
         $fields[] = array('label' => $helper->__('order.table.marketplace_name'), 'value' => $marketplace_label);
@@ -119,9 +119,9 @@ class Lengow_Connector_Block_Adminhtml_Order_Tab extends Mage_Adminhtml_Block_Sa
                 'value' => $delivery_address_id
             );
         }
-        $fields[] = array('label' => $helper->__('order.screen.currency'), 'value' => $currency);
         $fields[] = array('label' => $helper->__('order.table.total_paid'), 'value' => $total_paid);
         $fields[] = array('label' => $helper->__('order.screen.commission'), 'value' => $commission);
+        $fields[] = array('label' => $helper->__('order.screen.currency'), 'value' => $currency);
         $fields[] = array('label' => $helper->__('order.table.customer_name'), 'value' => $customer_name);
         $fields[] = array('label' => $helper->__('order.screen.customer_email'), 'value' => $customer_email);
         $fields[] = array('label' => $helper->__('order.screen.carrier'), 'value' => $carrier);
@@ -131,7 +131,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Tab extends Mage_Adminhtml_Block_Sa
         $fields[] = array('label' => $helper->__('order.screen.sent_marketplace'), 'value' => $sent_marketplace);
         $fields[] = array('label' => $helper->__('order.screen.message'), 'value' => $message);
         $fields[] = array(
-            'label' => $helper->__('Json Node'),
+            'label' => $helper->__('order.screen.extra'),
             'value' => '<textarea disabled="disabled">'.$extra.'</textarea>',
         );
 
