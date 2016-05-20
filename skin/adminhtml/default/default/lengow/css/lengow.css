@@ -26,6 +26,31 @@ body.lengow-connector .middle {
 }
 
 /*************************************************/
+/*                      BOXES                    */
+/*************************************************/
+
+body.lengow-connector .blue_frame{
+    border-radius:3px;
+    margin-bottom:15px;
+    padding:30px;
+    background: #cdf1ff;
+    border: 1px solid #00aeef;
+    color: #2e6592;
+}
+
+body.lengow-connector .grey_frame{
+  background:#f7f7f7;
+  padding:30px;
+  border:1px solid #d7d7d7;
+  border-radius:3px;
+  margin-bottom:15px;
+}
+
+body.lengow-connector .grey_frame input[type="text"]{
+    background:white;
+}
+
+/*************************************************/
 /*                    IFRAME                     */
 /*************************************************/
 
@@ -61,10 +86,15 @@ span.publish-lgw.red {
 }
 
 /*************************************************/
+/*                PAGE ORDER                     */
+/*************************************************/
+
+
+/*************************************************/
 /*                    TABLE                      */
 /*************************************************/
 
-.lgw-table-center {
+.lengow_table_center {
     line-height:50px;
 }
 
@@ -72,7 +102,7 @@ span.publish-lgw.red {
 /*                    LABELS                     */
 /*************************************************/
 
-.lgw-label{
+.lengow_label{
     font-size:13px;
     background:#ebebeb;
     color:#828282;
@@ -86,25 +116,25 @@ span.publish-lgw.red {
     white-space: nowrap;
 }
 
-.lgw-label_red,
-.lgw-label_canceled,
-.lgw-label.red{
+.lengow_label_red,
+.lengow_label_canceled,
+.lengow_label.red{
     color:white;
     background:#e55a4d;
 }
 
-.lgw-label.orange{
+.lengow_label.orange{
     color:white;
     background:#fbb829;
 }
 
-.lgw-label.green{
+.lengow_label.green{
     color:white;
     background:#7ac279;
 }
 
-.lgw-label_waiting_shipment,
-.lgw-label_accepted {
+.lengow_label_waiting_shipment,
+.lengow_label_accepted {
     border:1px solid #7ac279;
     color:#7ac279;
     background:transparent;
@@ -115,22 +145,22 @@ span.publish-lgw.red {
 /*                    TOOLTIP                    */
 /*************************************************/
 
-a.lgw-tooltip {
+a.lengow_tooltip {
     position:relative;
     color:#000;
     text-decoration:none;
 }
  
-a.lgw-tooltip:hover {
+a.lengow_tooltip:hover {
     z-index:1070;
     background-color:#FFF
 }
  
-a.lgw-tooltip span {
+a.lengow_tooltip span {
     display:none
 }
  
-a.lgw-tooltip:hover span {
+a.lengow_tooltip:hover span {
     display:block;
     position:absolute;
     background-color:#000;
@@ -148,13 +178,13 @@ a.lgw-tooltip:hover span {
     opacity:.9;
 }
 
-span.lgw-order-action {
+span.lengow_order_action {
     bottom:40px;
     left:-30px;
     width:150px;
 }
 
-span.lgw-order-country {
+span.lengow_order_country {
     bottom:20px;
     left:-15px;
 }
@@ -163,7 +193,7 @@ span.lgw-order-country {
 /*                    BUTTONS                    */
 /*************************************************/
 
-.lgw-btn{
+.lengow_btn{
     border-radius:3px;
     padding:8px 15px;
     margin:10px 0;
@@ -176,48 +206,49 @@ span.lgw-order-country {
     display:inline-block;
 }
 
-.lgw-btn:hover,
-.lgw-btn:active{
+.lengow_btn:hover,
+.lengow_btn:active{
     background:#019ce2;
     color:white;
 }
 
 /* RED */
 
-.lgw-btn-red{
+.lengow_btn_red{
     background:#e55a4d;
 }
-.lgw-btn-red:hover,
-.lgw-btn-red:focus{
+
+.lengow_btn_red:hover,
+.lengow_btn_red:focus{
     background:#da493b;
 }
 
 /* WHITE */
 
-.lgw-btn-white:hover,
-.lgw-btn-white{
+.lengow_btn_white:hover,
+.lengow_btn_white{
     background-color:#fff;
     border:1px solid #d7d7d7;
     color:#828282;
 }
 
-.lgw-btn-white:focus{
+.lengow_btn_white:focus{
     background-color:#f7f7f7;
     color:#555;
 }
 
 /* GREEN */
 
-.lgw-container .lgw-btn-green{
+.lengow_container .lengow_btn-green{
     background-color:#7ac279;
 }
 
-.lgw-btn-green:hover,
-.lgw-btn-green:focus{
+.lengow_btn_green:hover,
+.lengow_btn_green:focus{
     background-color:#66b165;
 }
 
-.lengow_toolbar .lgw-btn{
+.lengow_toolbar .lengow_btn{
     margin-right:15px;
 }
 

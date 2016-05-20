@@ -28,15 +28,15 @@ class Lengow_Connector_Block_Adminhtml_Order_Renderer_Action extends Mage_Adminh
             if ($error_type == 'import') {
                 $tootlip = $helper->decodeLogMessage('order.table.order_not_imported')
                     .'<br/>'.join('<br/>', $error_messages);
-                return '<a class="lgw-tooltip lgw-btn lgw-btn-white" href="#">'
+                return '<a class="lengow_tooltip lengow_btn lengow_btn_white" href="#">'
                     .$helper->decodeLogMessage('order.table.not_imported')
-                    .'<span class="lgw-order-action">'.$tootlip.'</span></a>';
+                    .'<span class="lengow_order_action">'.$tootlip.'</span></a>';
             } else {
                 $tootlip = $helper->decodeLogMessage('order.table.action_sent_not_work')
                     .'<br/>'.join('<br/>', $error_messages);
-                return '<a class="lgw-tooltip lgw-btn lgw-btn-white" href="#">'
+                return '<a class="lengow_tooltip lengow_btn lengow_btn_white" href="#">'
                     .$helper->decodeLogMessage('order.table.not_sent')
-                    .'<span class="lgw-order-action">'.$tootlip.'</span></a>';
+                    .'<span class="lengow_order_action">'.$tootlip.'</span></a>';
             }
         }
     }

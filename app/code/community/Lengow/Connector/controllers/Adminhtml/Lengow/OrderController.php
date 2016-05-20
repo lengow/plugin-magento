@@ -20,69 +20,27 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
 
     public function indexAction()
     {
-        $this->_initAction()->renderLayout();
-        return $this;
-    }
-
-    public function importAction()
-    {
-        $helper = Mage::helper('lengow_connector');
-        $params['type'] = 'manual';
-        // Import orders
-        $import = Mage::getModel('lengow/import', $params);
-        $results = $import->exec();
-        // Create messages
-        $this->_getSession()->addSuccess($helper->__('lengow_log.error.nb_order_imported', array(
-            'nb_order' => $results['order_new']
-        )));
-        $this->_getSession()->addSuccess($helper->__('lengow_log.error.nb_order_updated', array(
-            'nb_order' => $results['order_update']
-        )));
-        if ($results['order_error'] > 0) {
-            $this->_getSession()->addError($helper->__('lengow_log.error.nb_order_with_error', array(
-                'nb_order' => $results['order_error']
-            )));
-        } else {
-            $this->_getSession()->addSuccess($helper->__('lengow_log.error.nb_order_with_error', array(
-                'nb_order' => $results['order_error']
-            )));
-        }
-        if (isset($results['error'])) {
-            foreach ($results['error'] as $store_id => $values) {
-                if ((int)$store_id > 0) {
-                    $store = Mage::getModel('core/store')->load($store_id);
-                    $store_name = $store->getName().' ('.$store->getId().') : ';
-                } else {
-                    $store_name = '';
+        if ($this->getRequest()->getParam('isAjax')) {
+            $action = Mage::app()->getRequest()->getParam('action');
+            if ($action) {
+                switch ($action) {
+                    case 'import_all':
+                        $params =  array('type' => 'manual');
+                        $import = Mage::getModel('lengow/import', $params);
+                        $results = $import->exec();
+                        $messages = $this->getMessages($results);
+                        $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($messages));
+                        break;
+                    case 'migrate_order':
+                        $order = Mage::getModel('lengow/import_order');
+                        $order->migrateOldOrder();
+                        break;
                 }
-                if (is_array($values)) {
-                    $error_message = $store_name.join(', ', $helper->decodeLogMessage($values));
-                } else {
-                    $error_message = $store_name.$helper->decodeLogMessage($values);
-                }
-                $this->_getSession()->addError($error_message);
             }
+        } else {
+            $this->_initAction()->renderLayout();
+            return $this;
         }
-        $this->_redirect('*/*/index');
-    }
-
-    public function migrateAction()
-    {
-        $order = Mage::getModel('lengow/import_order');
-        $order->migrateOldOrder();
-        $this->_redirect('*/*/index');
-    }
-
-    public function massReImportAction()
-    {
-        $order_ids = $this->getRequest()->getParam('order');
-        $this->_redirect('*/*/index');
-    }
-
-    public function massReSendAction()
-    {
-        $order_ids = $this->getRequest()->getParam('order');
-        $this->_redirect('*/*/index');
     }
 
     /**
@@ -95,6 +53,16 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
         );
     }
 
+    public function massReImportAction()
+    {
+        $order_ids = $this->getRequest()->getParam('order');
+    }
+
+    public function massReSendAction()
+    {
+        $order_ids = $this->getRequest()->getParam('order');
+    }
+
     protected function _getSession()
     {
         return Mage::getSingleton('adminhtml/session');
@@ -103,5 +71,42 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
     protected function _isAllowed()
     {
         return Mage::getSingleton('admin/session')->isAllowed('lengow_connector/order');
+    }
+
+    public function getMessages($results)
+    {
+        $messages = array();
+        $helper = Mage::helper('lengow_connector');
+        if (isset($results['order_new'])) {
+            $messages[]= $helper->__('lengow_log.error.nb_order_imported', array(
+                'nb_order' => $results['order_new']
+            ));
+        }
+        if (isset($results['order_update'])) {
+            $messages[]= $helper->__('lengow_log.error.nb_order_updated', array(
+                'nb_order' => $results['order_update']
+            ));
+        }
+        if (isset($results['order_error'])) {
+            $messages[]= $helper->__('lengow_log.error.nb_order_with_error', array(
+                'nb_order' => $results['order_error']
+            ));
+        }
+        if (isset($results['error'])) {
+            foreach ($results['error'] as $store_id => $values) {
+                if ((int)$store_id > 0) {
+                    $store = Mage::getModel('core/store')->load($store_id);
+                    $store_name = $store->getName().' ('.$store->getId().') : ';
+                } else {
+                    $store_name = '';
+                }
+                if (is_array($values)) {
+                    $messages[] = $store_name.join(', ', $helper->decodeLogMessage($values));
+                } else {
+                    $messages[] = $store_name.$helper->decodeLogMessage($values);
+                }
+            }
+        }
+        return $messages;
     }
 }

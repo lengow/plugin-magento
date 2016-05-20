@@ -330,7 +330,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
             }
         }
         // Clear session
-        Mage::getSingleton('core/session')->clear();
+        Mage::getSingleton('core/session')->setIsFromlengow('false');
         if ($this->_import_one_order) {
             $result['error'] = $errors;
             return $result;
@@ -503,6 +503,9 @@ class Lengow_Connector_Model_Import extends Varien_Object
             }
             $nb_package = 0;
             $marketplace_sku = (string)$order_data->marketplace_order_id;
+            if ($marketplace_sku != '4334832-A') {
+                continue;
+            }
             if ($this->_preprod_mode) {
                 $marketplace_sku .= '--'.time();
             }

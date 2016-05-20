@@ -1,1 +1,15 @@
+<?php
+    $order = Mage::getModel('lengow/import_order');
+    $count_old_orders =$order->countNotMigrateOrder();
+?>
+
 <h1>TEST</h1>
+<button type="button" id="lengow_import_orders" class="lengow_btn" data-href="<?php echo Mage::helper('core/url')->getCurrentUrl(); ?>?isAjax=true" >
+    <?php echo Mage::helper('lengow_connector')->__('order.screen.button_import'); ?>
+</button>
+<?php if ($count_old_orders > 0) { ?>
+<button type="button" id="lengow_migrate_order" class="lengow_btn" data-href="<?php echo Mage::helper('core/url')->getCurrentUrl(); ?>?isAjax=true" >
+    <?php echo Mage::helper('lengow_connector')->__('order.screen.button_migrate'); ?>
+</button>
+<?php } ?>
+<div id="lengow_wrapper_messages" class="blue_frame" style="display:none;"></div>
