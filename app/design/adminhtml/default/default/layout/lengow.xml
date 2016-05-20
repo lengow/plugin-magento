@@ -3,6 +3,7 @@
   <default>
     <reference name="head">
       <action method="addCss"><stylesheet>lengow/css/lengow.css</stylesheet></action>
+      <action method="addItem"><type>skin_css</type><name>lengow/css/font-awesome.css</name></action>
       <action method="addItem"><type>skin_js</type><name>lengow/js/jquery-2.2.2.js</name></action>
       <action method="addItem"><type>skin_js</type><name>lengow/js/noconflict.js</name></action>
     </reference>
@@ -27,10 +28,8 @@
     <reference name="head">
       <action method="addCss"><stylesheet>lengow/css/bootstrap-3.3.6.css</stylesheet></action>
       <action method="addCss"><stylesheet>lengow/css/bootstrap-switch.min.css</stylesheet></action>
-      <action method="addCss"><stylesheet>lengow/css/select2.css</stylesheet></action>
       <action method="addItem"><type>skin_js</type><name>lengow/js/bootstrap.min.js</name></action>
       <action method="addItem"><type>skin_js</type><name>lengow/js/bootstrap-switch.js</name></action>
-      <action method="addItem"><type>skin_js</type><name>lengow/js/select2.js</name></action>
       <action method="addItem"><type>skin_js</type><name>lengow/js/product.js</name></action>
     </reference>
     <reference name="content">

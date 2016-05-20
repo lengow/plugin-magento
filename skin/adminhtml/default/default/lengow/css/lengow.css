@@ -85,6 +85,10 @@ span.publish-lgw.red {
   margin-right:10px;
 }
 
+#parent_total_products, #parent_exported_products {
+    display:inline-block;
+}
+
 /*************************************************/
 /*                PAGE ORDER                     */
 /*************************************************/

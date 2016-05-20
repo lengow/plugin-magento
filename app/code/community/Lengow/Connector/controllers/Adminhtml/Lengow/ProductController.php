@@ -22,25 +22,22 @@ class Lengow_Connector_Adminhtml_Lengow_ProductController extends Mage_Adminhtml
     {
         if ($this->getRequest()->getParam('isAjax')) {
             $action = Mage::app()->getRequest()->getParam('action');
-            $shopId = Mage::app()->getRequest()->getParam('shop_id');
             if ($action) {
                 switch ($action) {
                     case 'change_option_selected':
                         $state = Mage::app()->getRequest()->getParam('state');
-                        Mage::helper('lengow_connector/config')->set('selection_enable', $state, $shopId);
-                        if ($state == '1') {
-                            echo "lengow_jquery('#productGrid').show();";
-                        } else {
-                            echo "lengow_jquery('#productGrid').hide();";
+                        $shopId = Mage::app()->getRequest()->getParam('id_shop');
+                        if ($state !== null) {
+                            Mage::helper('lengow_connector/config')->set('selection_enable', $state, $shopId);
+                            $this->getResponse()->setBody($state);
                         }
                         break;
                     case 'change_option_product_out_of_stock':
+                        $shopId = Mage::app()->getRequest()->getParam('id_shop');
                         $state = Mage::app()->getRequest()->getParam('state');
-                        Mage::helper('lengow_connector/config')->set('out_stock', $state, $shopId);
-                        break;
-                    case 'change_option_type':
-                        $values = Mage::app()->getRequest()->getParam('types');
-                        Mage::helper('lengow_connector/config')->set('product_type', $values, $shopId);
+                        if ($state !== null) {
+                            Mage::helper('lengow_connector/config')->set('out_stock', $state, $shopId);
+                        }
                         break;
 
                 }
