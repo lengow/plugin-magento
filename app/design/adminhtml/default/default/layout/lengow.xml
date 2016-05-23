@@ -68,6 +68,7 @@
     <reference name="content">
       <block type="page/html" name="lengow_layout" template="lengow/layout/help.phtml" >
         <block type="page/html" name="lengow_content" template="lengow/help/index.phtml" />
+        <block type="page/html" name="lengow_footer" template="lengow/footer.phtml" />
       </block>
     </reference>
     <remove name="footer"/>
