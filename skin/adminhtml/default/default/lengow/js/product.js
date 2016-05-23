@@ -25,7 +25,7 @@
                     } else {
                         $('.lengow_check_shop').html("");
                         $('.lengow_check_shop').attr("id", "lengow_shop_no_sync");
-                        $('.lengow_check_shop').after("<a href='" + data + "'<span>sync</span></a>");
+                        $('.lengow_check_shop').after("<a href='#'<span>sync</span></a>");
                     }
                 }
             });
