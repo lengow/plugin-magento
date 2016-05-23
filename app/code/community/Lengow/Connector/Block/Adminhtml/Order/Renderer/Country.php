@@ -17,8 +17,8 @@ class Lengow_Connector_Block_Adminhtml_Order_Renderer_Country extends Mage_Admin
         if (!is_null($iso_code) && strlen($iso_code) === 2) {
             $filename = $this->getSkinUrl('lengow/images/flag').DS.strtoupper($iso_code).'.png';
             $country_name = Mage::getModel('directory/country')->loadByCode($iso_code)->getName();
-            return '<a class="lgw-tooltip" href="#"><img src="'.$filename.'" />
-                <span class="lgw-order-country">'.$country_name.'</span></a>';
+            return '<a class="lengow_tooltip" href="#"><img src="'.$filename.'" />
+                <span class="lengow_order_country">'.$country_name.'</span></a>';
         }
     }
 }

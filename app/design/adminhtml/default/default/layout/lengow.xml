@@ -47,7 +47,11 @@
   </adminhtml_lengow_product_index>
 
   <adminhtml_lengow_order_index>
+    <reference name="head">
+      <action method="addItem"><type>skin_js</type><name>lengow/js/order.js</name></action>
+    </reference>
     <reference name="content">
+      <update handle="formkey"/>
       <block type="page/html" name="lengow_layout" template="lengow/layout/order.phtml" >
         <block type="page/html" name="lengow_order" template="lengow/order/index.phtml" />
         <block type="lengow/adminhtml_order" name="lengow_content" />

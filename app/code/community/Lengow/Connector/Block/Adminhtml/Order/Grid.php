@@ -15,9 +15,9 @@ class Lengow_Connector_Block_Adminhtml_Order_Grid extends Mage_Adminhtml_Block_W
     public function __construct()
     {
         parent::__construct();
-        $this->setId('orderGrid');
+        $this->setId('lengowOrderGrid');
         $this->setDefaultSort('order_date');
-        $this->setDefaultDir('desc');
+        $this->setDefaultDir('DESC');
         $this->setSaveParametersInSession(true);
         $this->setUseAjax(true);
         $this->setVarNameFilter('order_filter');
@@ -72,7 +72,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Grid extends Mage_Adminhtml_Block_W
             array(
                 'header'           => $this->helper('lengow_connector')->__('order.table.marketplace_name'),
                 'index'            => 'marketplace_label',
-                'column_css_class' => 'lgw-table-center',
+                'column_css_class' => 'lengow_table_center',
             )
         );
         if (!Mage::app()->isSingleStoreMode()) {
@@ -92,7 +92,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Grid extends Mage_Adminhtml_Block_W
             array(
                 'header'           => $this->helper('lengow_connector')->__('order.table.marketplace_sku'),
                 'index'            => 'marketplace_sku',
-                'column_css_class' => 'lgw-table-center',
+                'column_css_class' => 'lengow_table_center',
             )
         );
         $this->addColumn(
@@ -100,7 +100,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Grid extends Mage_Adminhtml_Block_W
             array(
                 'header'           => $this->helper('lengow_connector')->__('order.table.magento_sku'),
                 'index'            => 'order_sku',
-                'column_css_class' => 'lgw-table-center',
+                'column_css_class' => 'lengow_table_center',
             )
         );
         $this->addColumn(
@@ -111,7 +111,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Grid extends Mage_Adminhtml_Block_W
                 'type'             => 'options',
                 'width'            => '150px',
                 'options'          => Mage::getSingleton('sales/order_config')->getStatuses(),
-                'column_css_class' => 'lgw-table-center',
+                'column_css_class' => 'lengow_table_center',
             )
         );
         $this->addColumn(
@@ -120,7 +120,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Grid extends Mage_Adminhtml_Block_W
                 'header'           => $this->helper('lengow_connector')->__('order.table.order_date'),
                 'index'            => 'order_date',
                 'type'             => 'datetime',
-                'column_css_class' => 'lgw-table-center',
+                'column_css_class' => 'lengow_table_center',
             )
         );
         $this->addColumn(
@@ -128,7 +128,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Grid extends Mage_Adminhtml_Block_W
             array(
                 'header'           => $this->helper('lengow_connector')->__('order.table.customer_name'),
                 'index'            => 'customer_name',
-                'column_css_class' => 'lgw-table-center',
+                'column_css_class' => 'lengow_table_center',
             )
         );
         $this->addColumn(
@@ -138,7 +138,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Grid extends Mage_Adminhtml_Block_W
                 'index'            => 'delivery_country_iso',
                 'renderer'         => 'Lengow_Connector_Block_Adminhtml_Order_Renderer_Country',
                 'width'            => '50px',
-                'column_css_class' => 'lgw-table-center',
+                'column_css_class' => 'lengow_table_center',
             )
         );
         $this->addColumn(
@@ -147,7 +147,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Grid extends Mage_Adminhtml_Block_W
                 'header'           => $this->helper('lengow_connector')->__('order.table.items'),
                 'index'            => 'order_item',
                 'width'            => '50px',
-                'column_css_class' => 'lgw-table-center',
+                'column_css_class' => 'lengow_table_center',
             )
         );
         $this->addColumn(
@@ -158,7 +158,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Grid extends Mage_Adminhtml_Block_W
                 'filter_index'     => 'main_table.total_paid',
                 'renderer'         => 'Lengow_Connector_Block_Adminhtml_Order_Renderer_Total',
                 'width'            => '100px',
-                'column_css_class' => 'lgw-table-center',
+                'column_css_class' => 'lengow_table_center',
             )
         );
         return parent::_prepareColumns();
@@ -173,7 +173,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Grid extends Mage_Adminhtml_Block_W
             'reimport',
             array(
                 'label'    => $this->helper('lengow_connector')->__('order.table.button_reimport_order'),
-                'url'      => $this->getUrl('*/*/massReImport'),
+                'url'      => $this->getUrl('*/*/massReImport', array('_current' => true)),
                 'complete' => 'reloadGrid'
             )
         );
@@ -181,7 +181,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Grid extends Mage_Adminhtml_Block_W
             'resend',
             array(
                 'label'    => $this->helper('lengow_connector')->__('order.table.button_resend_order'),
-                'url'      => $this->getUrl('*/*/massReSend'),
+                'url'      => $this->getUrl('*/*/massReSend', array('_current' => true)),
                 'complete' => 'reloadGrid'
             )
         );

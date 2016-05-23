@@ -17,6 +17,8 @@ product.table.publication|Publication
 order.screen.title|Orders
 order.screen.button_import|Import Order
 order.screen.button_migrate|Migrate Old Data
+order.screen.import_charge_first|Retrieving your orders...
+order.screen.import_charge_second|Please bear with us; this will not take long (2 min average waiting time)
 order.screen.lengow_information|Lengow informations
 order.screen.feed_id|Feed ID
 order.screen.delivery_address_id|Delivery Address ID

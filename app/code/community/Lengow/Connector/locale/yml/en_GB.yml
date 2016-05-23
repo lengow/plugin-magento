@@ -29,6 +29,8 @@ en:
       title: "Orders"
       button_import: "Import Order"
       button_migrate: "Migrate Old Data"
+      import_charge_first: "Retrieving your orders..."
+      import_charge_second: "Please bear with us; this will not take long (2 min average waiting time)"
       lengow_information: "Lengow informations"
       feed_id: "Feed ID"
       delivery_address_id: "Delivery Address ID"
