@@ -1,5 +1,4 @@
 <?php
-
 /**
  *
  * @category    Lengow
@@ -38,6 +37,11 @@ class Lengow_Connector_Adminhtml_Lengow_ProductController extends Mage_Adminhtml
                         if ($state !== null) {
                             Mage::helper('lengow_connector/config')->set('out_stock', $state, $shopId);
                         }
+                        break;
+                    case 'check_shop':
+                        $shopId = Mage::app()->getRequest()->getParam('id_shop');
+                        $checkShop = Mage::getModel('lengow/connector')->getConnectorByStore($shopId);
+                        $this->getResponse()->setBody($checkShop);
                         break;
 
                 }

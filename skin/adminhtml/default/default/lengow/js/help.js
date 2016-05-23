@@ -1,7 +1,7 @@
 (function( $ ) {
-    $(function() {
+    $(document).ready(function () {
 
-        $('#lengow-container').hide();
+        /*$('#lengow-container').hide();
         $('<iframe id="lengow-iframe">', {
             id:  'lengow-iframe',
             frameborder: 0,
@@ -23,8 +23,7 @@
                 });
             };
             //sync_iframe.src = 'http://cms.v3-inte.poney.io/help';
-            sync_iframe.src = '/skin/adminhtml/default/default/lengow/temp/help.html';
-        }
-    });
+            sync_iframe.src = '/skin/adminhtml/default/default/lengow/temp/help.html';*/
+        });
 })(lengow_jquery);
 
