@@ -163,7 +163,7 @@ class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
      *
      * @return boolean
      */
-    public static function finishOrderErrors($lengow_order_id, $type = 'import')
+    public function finishOrderErrors($order_lengow_id, $type = 'import')
     {
         $error_type = $this->getOrderErrorType($type);
         // get all order errors
@@ -182,5 +182,4 @@ class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
         }
         return false;
     }
-
 }

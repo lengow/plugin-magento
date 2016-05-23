@@ -5,7 +5,7 @@ $type = Mage::getModel('lengow/system_config_source_types')->toOptionArray();
 $type_selected = $config->get('product_type', $store_id);
 $arrayTypes = explode(",", $type_selected);
 $sync_data = Mage::helper('lengow_connector/sync')->getSyncData();
-$last_export = date('d/m/Y', $config->get('last_export', $store_id)) .' @ '. date('H:i:s', $config->get('last_export', $store_id));
+$last_export = date('d/m/Y @ H:i:s', $config->get('last_export', $store_id));
 ?>
 <?php if ($store_id != 0) { ?>
     <div><?php echo $this->getChildHtml('store_switcher'); ?></div>
@@ -16,7 +16,7 @@ $last_export = date('d/m/Y', $config->get('last_export', $store_id)) .' @ '. dat
     <a href="<?php echo $sync_data['shops'][$store_id]['feed_url'] ?>stream/1/">
         <i class="fa fa-download"></i>
     </a><br>
-    <p><?php if ($last_export != null) { ?>Last export <?php } else { ?>No Export <?php } ?><?php echo $last_export ?></p>
+    <p><?php if ($config->get('last_export', $store_id) != null) { ?>Last export <?php echo $last_export ?><?php } else { ?>No Export <?php } ?></p>
     <div id="parent_total_products">
         <span id="total_products"><?php echo $sync_data['shops'][$store_id]['nb_product_total'] ?></span>
     </div><span> total products</span><br>

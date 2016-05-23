@@ -284,6 +284,32 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
     }
 
     /**
+     * Re-import order lengow
+     *
+     * @param integer $order_lengow_id
+     *
+     * @return mixed
+     */
+    public function reImportOrder($order_lengow_id)
+    {
+        $order_lengow = Mage::getModel('lengow/import_order')->load($order_lengow_id);
+        if ($order_lengow->getData('order_process_state') == 0 && $order_lengow->getData('is_in_error') == 1) {
+            $params =  array(
+                'type'                => 'manual',
+                'order_lengow_id'     => $order_lengow_id,
+                'marketplace_sku'     => $order_lengow->getData('marketplace_sku'),
+                'marketplace_name'    => $order_lengow->getData('marketplace_name'),
+                'delivery_address_id' => $order_lengow->getData('delivery_address_id'),
+                'store_id'            => $order_lengow->getData('store_id')
+            );
+            $import = Mage::getModel('lengow/import', $params);
+            $result = $import->exec();
+            return $result;
+        }
+        return false;
+    }
+
+    /**
      * Get Magento equivalent to lengow order state
      *
      * @param  string $order_state_lengow lengow state
@@ -548,6 +574,30 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
             }
         }
         return true;
+    }
+
+    /**
+     * Count order lengow with error
+     */
+    public function countOrderWithError()
+    {
+        $results = $this->getCollection()
+            ->addFieldToFilter('is_in_error', 1)
+            ->addFieldToSelect('id')
+            ->getData();
+        return count($results);
+    }
+
+    /**
+     * Count order lengow to be sent
+     */
+    public function countOrderToBeSent()
+    {
+        $results = $this->getCollection()
+            ->addFieldToFilter('order_process_state', 1)
+            ->addFieldToSelect('id')
+            ->getData();
+        return count($results);
     }
 
     /**

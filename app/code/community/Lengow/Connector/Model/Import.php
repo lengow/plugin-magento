@@ -423,7 +423,9 @@ class Lengow_Connector_Model_Import extends Varien_Object
                             'marketplace_order_id' => $this->_marketplace_sku,
                             'marketplace'          => $this->_marketplace_name,
                             'account_id'           => $this->_account_id,
-                            'page'                 => $page
+                            'page'                 => $page,
+                            'updated_from'         => date('c', strtotime(date('Y-m-d').' -100days')),
+                            'updated_to'           => date('c'),
                         ),
                         'stream'
                     );
@@ -503,9 +505,6 @@ class Lengow_Connector_Model_Import extends Varien_Object
             }
             $nb_package = 0;
             $marketplace_sku = (string)$order_data->marketplace_order_id;
-            if ($marketplace_sku != '4334832-A') {
-                continue;
-            }
             if ($this->_preprod_mode) {
                 $marketplace_sku .= '--'.time();
             }

@@ -15,10 +15,15 @@ product.table.publish_on_lengow|Publish on Lengow
 product.table.change_publication|Change Lengow's publication
 product.table.publication|Publication
 order.screen.title|Orders
-order.screen.button_import|Import Order
-order.screen.button_migrate|Migrate Old Data
-order.screen.import_charge_first|Retrieving your orders...
-order.screen.import_charge_second|Please bear with us; this will not take long (2 min average waiting time)
+order.screen.button_import|Import orders
+order.screen.button_migrate|Migrate old orders
+order.screen.all_order_will_be_sent_to|All order issue reports will be sent by mail to
+order.screen.no_order_will_be_sent|No order issue reports will be sent by mail
+order.screen.change_this|Change this?
+order.screen.last_order_importation|Last order importation : %{last_importation}
+order.screen.no_order_importation|No order importation for now
+order.screen.order_with_error|You have %{nb_order} order(s) with errors
+order.screen.order_to_be_sent|You have %{nb_order} order(s) waiting to be sent
 order.screen.lengow_information|Lengow informations
 order.screen.feed_id|Feed ID
 order.screen.delivery_address_id|Delivery Address ID
