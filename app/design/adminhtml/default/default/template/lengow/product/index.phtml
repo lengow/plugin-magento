@@ -19,7 +19,8 @@ $last_export = date('d/m/Y', $config->get('last_export', $store_id)) .' @ '. dat
                data-href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_product/'); ?>?isAjax=true">
     </div>
     <br>
-    <a href="<?php echo $sync_data['shops'][$store_id]['feed_url'] ?>stream/1/">
+    <a href="<?php echo $sync_data['shops'][$store_id]['feed_url'] ?>stream/1/"
+       target="_blank">
         <i class="fa fa-download"></i>
     </a><br>
     <p><?php if ($config->get('last_export', $store_id) != null) { ?>Last export <?php echo $last_export ?><?php } else { ?>No Export <?php } ?></p>

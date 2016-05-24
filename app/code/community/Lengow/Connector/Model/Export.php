@@ -460,6 +460,9 @@ class Lengow_Connector_Model_Export extends Varien_Object
                 // Get content type if streamed feed
                 if ($this->_stream) {
                     header('Content-Type: '.$feed->getContentType().'; charset=UTF-8');
+                    if ($this->_fileFormat == 'csv'){
+                        header('Content-Disposition: attachment; filename=feed.csv');
+                    }
                 }
                 $feed->setFields($fields_header);
                 $this->_write($feed->makeHeader());
