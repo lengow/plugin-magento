@@ -122,6 +122,14 @@ lengow_setting.import_preprod_mode_enable_title|Preprod mode
 lengow_setting.import_preprod_mode_enable_comment|Only for preproduction's mode: no synchronisation orders with Lengow, import orders every time
 lengow_setting.import_cron_enable_title|Enable Magento cron
 lengow_setting.import_cron_enable_comment|Enable the scheduled task for import your order every 30 minutes
+help.screen.title|Get a little help from your support team !
+help.screen.contain_text_support|Ask us anything about Lengow or share your feedback at 
+help.screen.mail_lengow_support|support@lengow.com.
+help.screen.mailto_subject|Magento%20Lengow%20Plugin%20#Need%20assistance
+help.screen.need_some_help|Need some help?
+help.screen.contain_text_support_hour|We’ll do our best to get back to you during regular business hours (Monday to Friday – 9am to 6pm / France Timezone).
+help.screen.find_answer|You can also find answers in our 
+help.screen.link_prestashop_guide|PrestaShop dedicated guide
 lengow_log.error.nb_order_imported|%{nb_order} order(s) imported
 lengow_log.error.nb_order_updated|%{nb_order} order(s) updated
 lengow_log.error.nb_order_with_error|%{nb_order} order(s) with errors

@@ -1,15 +1,12 @@
+<?php $sync = Mage::helper('lengow_connector/sync')->getMailTo(); ?>
 <div class="lgw-box lengow_help_wrapper text-center">
     <img src="<?php echo $this->getBaseUrl(); ?>/skin/adminhtml/default/default/lengow/images/cosmo-yoga.png" class="img-circle" alt="lengow">
 
-    <h2>Get a little help from your support team !</h2>
-    <p>
-        Ask us anything about Lengow or share your feedback at <a href="mailto:chose@bidule.fr?subject=Hey%20Dude. %20You're%20Cool.&subject=Le%20sujet%20du%20mail&body=ID%20account%3A%20tata%0D%0AModule%20type%3A%20Prestashop%0D%0AModule%20version%3A%201.5.3.2%0D%0APlugin%20type%3A%206.5%0D%0A" title="Need some help?">support@lengow.com</a>.
-        <br>
-        We’ll do our best to get back to you during regular business hours (Monday to Friday – 9am to 6pm / France Timezone).
-
-    </p>
-    <p>
-        You can also find answers in our <a href="https://en.knowledgeowl.com/help/article/link/prestashopv2" class="sub-link" target="_blank" title="Help Center">PrestaShop dedicated guide</a>.
-
-    </p>
+    <h2><?php echo Mage::helper('lengow_connector')->__('help.screen.title'); ?></h2>
+    <p><?php echo Mage::helper('lengow_connector')->__('help.screen.contain_text_support'); echo $sync;  ?></p>
+    <p><?php echo Mage::helper('lengow_connector')->__('help.screen.contain_text_support_hour'); ?></p>
+    <p><?php echo Mage::helper('lengow_connector')->__('help.screen.find_answer'); ?>
+        <a href="https://en.knowledgeowl.com/help/article/link/prestashopv2" class="sub-link" target="_blank" title="Help Center">
+            <?php echo Mage::helper('lengow_connector')->__('help.screen.link_prestashop_guide'); ?></a>.</p>
 </div>
+

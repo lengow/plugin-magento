@@ -1,5 +1,5 @@
 <?php
-
+ini_set('display_errors', 1);
 /**
  *
  * @category    Lengow
@@ -15,7 +15,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
      * Get Sync Data (Inscription / Update)
      * @return array
      */
-    public static function getSyncData()
+    public function getSyncData()
     {
         $config = Mage::helper('lengow_connector/config');
         $data = array();
@@ -25,6 +25,8 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
         $data['version'] = Mage::getVersion();
         $data['plugin_version'] = (string)Mage::getConfig()->getNode()->modules->Lengow_Connector->version;
         $data['email'] = Mage::getSingleton('admin/session')->getUser()->getEmail();
+        $result = Mage::getModel('lengow/connector')->queryApi('get', '/v3.0/cms');
+        $data['common_account'] = $result->cms->common_account;
         $data['return_url'] = 'http://'.$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
         foreach (Mage::app()->getWebsites() as $website) {
             foreach ($website->getGroups() as $group) {
@@ -83,5 +85,41 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
                 }
             }
         }
+    }
+
+    public function getMailTo() {
+        $mailto = $this->getSyncData();
+        $mail = 'support.lengow.zendesk@lengow.com';
+        $subject = Mage::helper('lengow_connector')->__('help.screen.mailto_subject');
+        $body = '';
+        foreach ($mailto as $key => $value ) {
+            if ($key == 'domain_name' || $key == 'token' || $key == 'return_url' || $key == 'shops' ){
+                continue;
+            }
+            $body .= $key.' : '. $value . '%0D%0A';
+
+        }
+
+        $shops = $mailto['shops'];
+        $i = 1;
+        foreach ($shops as $shop) {
+            foreach ($shop as $item => $value) {
+                if ($item == 'name' ) {
+                    $body .= 'Store '. $i .' : ' . $value . '%0D%0A';
+                } else if ( $item == 'feed_url') {
+                    $body .= $value . '%0D%0A';
+                }
+            }
+            $i++;
+        }
+        $html = '<a href="mailto:'. $mail;
+        $html.= '?subject='. $subject;
+        $html.= '&body='. $body .'" ';
+        $html.= 'title="'.Mage::helper('lengow_connector')->__('help.screen.need_some_help').'">';
+        $html.= Mage::helper('lengow_connector')->__('help.screen.mail_lengow_support');
+        $html.= '</a>';
+        
+        return $html;
+
     }
 }
