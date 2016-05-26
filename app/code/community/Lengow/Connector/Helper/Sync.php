@@ -1,5 +1,5 @@
 <?php
-
+ini_set('display_errors', 1);
 /**
  *
  * @category    Lengow
@@ -15,7 +15,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
      * Get Sync Data (Inscription / Update)
      * @return array
      */
-    public static function getSyncData()
+    public function getSyncData()
     {
         $config = Mage::helper('lengow_connector/config');
         $data = array();
@@ -83,5 +83,46 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
                 }
             }
         }
+    }
+
+    /**
+     * Generate mailto for help page
+     */
+    public function getMailTo()
+    {
+        $mailto = $this->getSyncData();
+        $mail = 'support.lengow.zendesk@lengow.com';
+        $subject = Mage::helper('lengow_connector')->__('help.screen.mailto_subject');
+        $result = Mage::getModel('lengow/connector')->queryApi('get', '/v3.0/cms');
+        if (isset($result->cms)) {
+            $body = 'commun_account : '.$result->cms->common_account;
+        } else {
+            $body = '';
+        }
+        foreach ($mailto as $key => $value) {
+            if ($key == 'domain_name' || $key == 'token' || $key == 'return_url' || $key == 'shops') {
+                continue;
+            }
+            $body .= $key.' : '.$value.'%0D%0A';
+        }
+        $shops = $mailto['shops'];
+        $i = 1;
+        foreach ($shops as $shop) {
+            foreach ($shop as $item => $value) {
+                if ($item == 'name') {
+                    $body .= 'Store '.$i.' : '.$value.'%0D%0A';
+                } elseif ($item == 'feed_url') {
+                    $body .= $value . '%0D%0A';
+                }
+            }
+            $i++;
+        }
+        $html = '<a href="mailto:'. $mail;
+        $html.= '?subject='. $subject;
+        $html.= '&body='. $body .'" ';
+        $html.= 'title="'.Mage::helper('lengow_connector')->__('help.screen.need_some_help').'" target="_blank">';
+        $html.= Mage::helper('lengow_connector')->__('help.screen.mail_lengow_support');
+        $html.= '</a>';
+        return $html;
     }
 }

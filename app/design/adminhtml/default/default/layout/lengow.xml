@@ -37,6 +37,7 @@
         <block type="page/html" name="lengow_product" template="lengow/product/index.phtml" >
           <block type="adminhtml/store_switcher" name="store_switcher" as="store_switcher">
             <action method="setUseConfirm"><params>0</params></action>
+            <action method="setDefaultStoreName"><params>Default Store</params></action>
           </block>
         </block>
         <block type="lengow/adminhtml_product" name="lengow_content" />
