@@ -1,4 +1,5 @@
 <?php
+$helper = Mage::helper('lengow_connector');
 $default_store = Mage::app()->getWebsite(true)->getDefaultGroup()->getDefaultStoreId();
 $current_store = (integer)$this->getRequest()->getParam('store', Mage::app()->getStore()->getId());
 $store_id = $current_store == 0 ? $default_store : $current_store;
