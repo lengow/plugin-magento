@@ -1,14 +1,22 @@
-<?php $sync = Mage::helper('lengow_connector/sync')->getMailTo(); ?>
+<?php 
+    $sync = Mage::helper('lengow_connector/sync')->getMailTo();
+    $helper = Mage::helper('lengow_connector');
+?>
 <div class="lgw-box lengow_help_wrapper text-center">
     <img src="<?php echo $this->getSkinUrl('lengow/images/') ?>cosmo-yoga.png" class="img-circle" alt="lengow">
-
-    <h2><?php echo Mage::helper('lengow_connector')->__('help.screen.title'); ?></h2>
-    <p><?php echo Mage::helper('lengow_connector')->__('help.screen.contain_text_support'); echo $sync;  ?></p>
-    <p><?php echo Mage::helper('lengow_connector')->__('help.screen.contain_text_support_hour'); ?></p>
-    <p><?php echo Mage::helper('lengow_connector')->__('help.screen.find_answer'); ?>
-        <a href="https://en.knowledgeowl.com/help/article/link/prestashopv2" class="sub-link" target="_blank" title="Help Center">
-            <?php echo Mage::helper('lengow_connector')->__('help.screen.link_prestashop_guide'); ?>
+    <h2><?php echo $helper->__('help.screen.title'); ?></h2>
+    <p>
+        <?php echo $helper->__('help.screen.contain_text_support');
+        echo $sync;
+        ?>
+    </p>
+    <p><?php echo $helper->__('help.screen.contain_text_support_hour'); ?></p>
+    <p><?php echo $helper->__('help.screen.find_answer'); ?>
+        <a href="https://en.knowledgeowl.com/help/article/link/prestashopv2"
+            class="sub-link"
+            target="_blank"
+            title="Help Center">
+            <?php echo $helper->__('help.screen.link_prestashop_guide'); ?>
         </a>
     </p>
 </div>
-
