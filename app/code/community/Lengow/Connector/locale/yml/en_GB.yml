@@ -20,6 +20,12 @@ en:
   product:
     screen:
       title: "Export product"
+      nb_exported: "products exported"
+      nb_available: "products available"
+      include_out_of_stock: "Include out of stock products"
+      include_specific_product: "Include specific products"
+      last_export: "Last export"
+      no_export: "No export"
     table:
       publish_on_lengow: "Publish on Lengow"
       change_publication: "Change Lengow's publication"

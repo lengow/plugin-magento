@@ -1,63 +1,66 @@
 <?php
-$store_id = (integer)$this->getRequest()->getParam('store', Mage::app()->getStore()->getId());
+$default_store = Mage::app()->getWebsite(true)->getDefaultGroup()->getDefaultStoreId();
+$current_store = (integer)$this->getRequest()->getParam('store', Mage::app()->getStore()->getId());
+$store_id = $current_store == 0 ? $default_store : $current_store;
 $config = Mage::helper('lengow_connector/config');
 $type = Mage::getModel('lengow/system_config_source_types')->toOptionArray();
 $type_selected = $config->get('product_type', $store_id);
 $arrayTypes = explode(",", $type_selected);
 $sync_data = Mage::helper('lengow_connector/sync')->getSyncData();
-$last_export = date('d/m/Y', $config->get('last_export', $store_id)) .' @ '. date('H:i:s', $config->get('last_export', $store_id));
+$last_export = date('d/m/Y', $config->get('last_export', $store_id)) . ' @ ' . date('H:i:s', $config->get('last_export', $store_id));
 ?>
-<?php if ($store_id != 0) { ?>
-    <div><?php echo $this->getChildHtml('store_switcher'); ?></div>
-    <h2 id="lengow_product_store_name"><?php echo $sync_data['shops'][$store_id]['name'] ?> ( <?php echo $store_id ?> )</h2>
-    <a href="<?php echo $sync_data['shops'][$store_id]['domain'] ?>">
-        <?php echo $sync_data['shops'][$store_id]['domain'] ?>
-    </a>
-    <br>
-    <div class="lengow_check_shop lengow_link_tooltip"
-               data-id_shop="<?php echo $store_id ?>"
-               data-href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_product/'); ?>?isAjax=true">
-    </div>
-    <br>
-    <a href="<?php echo $sync_data['shops'][$store_id]['feed_url'] ?>stream/1/"
-       target="_blank">
-        <i class="fa fa-download"></i>
-    </a><br>
-    <p><?php if ($config->get('last_export', $store_id) != null) { ?>Last export <?php echo $last_export ?><?php } else { ?>No Export <?php } ?></p>
-    <div id="parent_total_products">
-        <span id="total_products"><?php echo $sync_data['shops'][$store_id]['nb_product_total'] ?></span>
-    </div><span> total products</span><br>
-    <div id="parent_exported_products">
-        <span id="exported_products"><?php echo $sync_data['shops'][$store_id]['nb_product_exported'] ?></span>
-    </div><span> exported products</span><br>
-    <br>
-    <input
-        type="checkbox"
-        data-size="mini"
-        data-on-text="yes"
-        data-off-text="no"
-        name="lengow_export_selection" class="lengow_switch lengow_switch_option"
-        data-href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_product/'); ?>?isAjax=true"
-        data-action="change_option_product_out_of_stock"
-        data-id_shop="<?php echo $store_id ?>"
-        value="1" <?php if ($config->get('out_stock', $store_id) == '1'): ?> checked="checked" <?php endif; ?>>
-    <span class="lengow_select_text">include out of stock products</span>
-    <br/>
-    <input
-        type="checkbox"
-        data-size="mini"
-        data-on-text="yes"
-        data-off-text="no"
-        name="lengow_export_selection" class="lengow_switch lengow_switch_option"
-        id="change_option_selected"
-        data-href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_product/'); ?>?isAjax=true"
-        data-action="change_option_selected"
-        data-id_shop="<?php echo $store_id ?>"
-        value="1"  <?php if ($config->get('selection_enable', $store_id) == '1'): ?> checked="checked" <?php endif; ?>>
-    <span class="lengow_select_text">include specific products</span>
-    <br/>
-    <br/>
+<div><?php echo $this->getChildHtml('store_switcher'); ?></div>
+<h2 id="lengow_product_store_name"><?php echo $sync_data['shops'][$store_id]['name'] ?> ( <?php echo $store_id ?> )</h2>
+<a href="<?php echo $sync_data['shops'][$store_id]['domain'] ?>">
+    <?php echo $sync_data['shops'][$store_id]['domain'] ?>
+</a>
+<br>
+<div class="lengow_check_shop lengow_link_tooltip"
+     data-id_shop="<?php echo $store_id ?>"
+     data-href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_product/'); ?>?isAjax=true">
+</div>
+<br>
+<a href="<?php echo $sync_data['shops'][$store_id]['feed_url'] ?>stream/1/"
+   target="_blank">
+    <i class="fa fa-download"></i>
+</a><br>
+<p><?php if ($config->get('last_export', $store_id) != null) { ?>
+        <?php echo Mage::helper('lengow_connector')->__('product.screen.last_export') ?>
+        <?php echo $last_export ?>
     <?php } else { ?>
-    <div><?php echo $this->getChildHtml('store_switcher'); ?></div>
-    <p>For display export information, please choose a store view.</p>
-<?php } ?>
+        <?php echo Mage::helper('lengow_connector')->__('product.screen.no_export') ?><?php } ?></p>
+<div id="parent_total_products">
+    <span id="total_products"><?php echo $sync_data['shops'][$store_id]['nb_product_total'] ?></span>
+</div><span> <?php echo Mage::helper('lengow_connector')->__('product.screen.nb_available') ?></span><br>
+<div id="parent_exported_products">
+    <span id="exported_products"><?php echo $sync_data['shops'][$store_id]['nb_product_exported'] ?></span>
+</div><span> <?php echo Mage::helper('lengow_connector')->__('product.screen.nb_exported') ?></span><br>
+<br>
+<input
+    type="checkbox"
+    data-size="mini"
+    data-on-text="yes"
+    data-off-text="no"
+    name="lengow_export_selection" class="lengow_switch lengow_switch_option"
+    data-href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_product/'); ?>?isAjax=true"
+    data-action="change_option_product_out_of_stock"
+    data-id_shop="<?php echo $store_id ?>"
+    value="1" <?php if ($config->get('out_stock', $store_id) == '1'): ?> checked="checked" <?php endif; ?>>
+<span
+    class="lengow_select_text"><?php echo Mage::helper('lengow_connector')->__('product.screen.include_out_of_stock') ?></span>
+<br/>
+<input
+    type="checkbox"
+    data-size="mini"
+    data-on-text="yes"
+    data-off-text="no"
+    name="lengow_export_selection" class="lengow_switch lengow_switch_option"
+    id="change_option_selected"
+    data-href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_product/'); ?>?isAjax=true"
+    data-action="change_option_selected"
+    data-id_shop="<?php echo $store_id ?>"
+    value="1" <?php if ($config->get('selection_enable', $store_id) == '1'): ?> checked="checked" <?php endif; ?>>
+<span
+    class="lengow_select_text"><?php echo Mage::helper('lengow_connector')->__('product.screen.include_specific_product') ?></span>
+<br/>
+<br/>

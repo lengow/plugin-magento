@@ -11,6 +11,12 @@ log.table.id|Id
 log.table.date|Date
 log.table.message|Message
 product.screen.title|Export product
+product.screen.nb_exported|products exported
+product.screen.nb_available|products available
+product.screen.include_out_of_stock|Include out of stock products
+product.screen.include_specific_product|Include specific products
+product.screen.last_export|Last export
+product.screen.no_export|No export
 product.table.publish_on_lengow|Publish on Lengow
 product.table.change_publication|Change Lengow's publication
 product.table.publication|Publication
@@ -125,8 +131,8 @@ lengow_setting.import_cron_enable_comment|Enable the scheduled task for import y
 help.screen.title|Get a little help from your support team !
 help.screen.contain_text_support|Ask us anything about Lengow or share your feedback at 
 help.screen.mail_lengow_support|support@lengow.com.
-help.screen.mailto_subject|Magento%20Lengow%20Plugin%20#Need%20assistance
-help.screen.need_some_help|Need some help?
+help.screen.mailto_subject|Magento Lengow Plugin #Need assistance
+help.screen.need_some_help|Need some help ?
 help.screen.contain_text_support_hour|We’ll do our best to get back to you during regular business hours (Monday to Friday – 9am to 6pm / France Timezone).
 help.screen.find_answer|You can also find answers in our 
 help.screen.link_prestashop_guide|PrestaShop dedicated guide
