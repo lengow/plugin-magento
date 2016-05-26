@@ -145,6 +145,20 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * Get date in local date
+     *
+     * @return integer $timestamp
+     */
+    public function getDateInLocalDate($timestamp)
+    {
+        $server_timezone = date_default_timezone_get();
+        date_default_timezone_set(Mage::getStoreConfig('general/locale/timezone'));
+        $date = date('l d F Y @ H:i', $timestamp);
+        date_default_timezone_set($server_timezone);
+        return $date;
+    }
+
+    /**
      * Convert specials chars to html chars
      * Clean None utf-8 characters
      *

@@ -285,7 +285,10 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
         $this->_loadTrackingData();
         // get customer name and email
         $customer_name = $this->_getCustomerName();
-        $customer_email = (string)$this->_order_data->billing_address->email;
+        $customer_email = (!is_null($this->_order_data->billing_address->email)
+            ? (string)$this->_order_data->billing_address->email
+            : (string)$this->_package_data->delivery->email
+        );
         // update Lengow order with new informations
         $order_lengow->updateOrder(array(
             'currency'             => $this->_order_data->currency->iso_a3,

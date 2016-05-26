@@ -109,6 +109,9 @@ span.publish-lgw.red {
 /*                PAGE ORDER                     */
 /*************************************************/
 
+a.lengow_action {
+    cursor: pointer;
+}
 
 /*************************************************/
 /*                    TABLE                      */
@@ -165,22 +168,23 @@ span.publish-lgw.red {
 /*                    TOOLTIP                    */
 /*************************************************/
 
-a.lengow_tooltip {
+.lengow_tooltip {
     position:relative;
     color:#000;
     text-decoration:none;
+    font-weight:bold;
 }
  
-a.lengow_tooltip:hover {
+.lengow_tooltip:hover {
     z-index:1070;
     background-color:#FFF
 }
  
-a.lengow_tooltip span {
+.lengow_tooltip span {
     display:none
 }
  
-a.lengow_tooltip:hover span {
+.lengow_tooltip:hover span {
     display:block;
     position:absolute;
     background-color:#000;
