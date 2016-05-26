@@ -10,8 +10,9 @@
     $sync_data = Mage::helper('lengow_connector/sync')->getSyncData();
     $last_export = $helper->getDateInCorrectFormat($config->get('last_export', $store_id));
 ?>
+<h2><?php echo $helper->__('menu.products'); ?></h2>
 <div><?php echo $this->getChildHtml('store_switcher'); ?></div>
-<h2 id="lengow_product_store_name"><?php echo $sync_data['shops'][$store_id]['name'] ?> ( <?php echo $store_id ?> )</h2>
+<h3 id="lengow_product_store_name"><?php echo $sync_data['shops'][$store_id]['name'] ?> (<?php echo $store_id ?>)</h3>
 <a href="<?php echo $sync_data['shops'][$store_id]['domain'] ?>">
     <?php echo $sync_data['shops'][$store_id]['domain'] ?>
 </a>
@@ -25,17 +26,24 @@
    target="_blank">
     <i class="fa fa-download"></i>
 </a><br>
-<p><?php if ($config->get('last_export', $store_id) != null) { ?>
-        <?php echo Mage::helper('lengow_connector')->__('product.screen.last_export') ?>
-        <?php echo $last_export ?>
-    <?php } else { ?>
-        <?php echo Mage::helper('lengow_connector')->__('product.screen.no_export') ?><?php } ?></p>
+<p>
+    <?php
+    if ($config->get('last_export', $store_id) != null) {
+        echo $helper->__('product.screen.last_export').' ';
+        echo $last_export;
+    } else {
+        echo $helper->__('product.screen.no_export');
+    }
+    ?>
+</p>
 <div id="parent_total_products">
     <span id="total_products"><?php echo $sync_data['shops'][$store_id]['nb_product_total'] ?></span>
-</div><span> <?php echo Mage::helper('lengow_connector')->__('product.screen.nb_available') ?></span><br>
+</div>
+<span> <?php echo $helper->__('product.screen.nb_available') ?></span><br>
 <div id="parent_exported_products">
     <span id="exported_products"><?php echo $sync_data['shops'][$store_id]['nb_product_exported'] ?></span>
-</div><span> <?php echo Mage::helper('lengow_connector')->__('product.screen.nb_exported') ?></span><br>
+</div>
+<span> <?php echo $helper->__('product.screen.nb_exported') ?></span><br>
 <br>
 <input
     type="checkbox"
@@ -47,8 +55,7 @@
     data-action="change_option_product_out_of_stock"
     data-id_shop="<?php echo $store_id ?>"
     value="1" <?php if ($config->get('out_stock', $store_id) == '1'): ?> checked="checked" <?php endif; ?>>
-<span
-    class="lengow_select_text"><?php echo Mage::helper('lengow_connector')->__('product.screen.include_out_of_stock') ?></span>
+<span class="lengow_select_text"><?php echo $helper->__('product.screen.include_out_of_stock') ?></span>
 <br/>
 <input
     type="checkbox"
@@ -61,7 +68,6 @@
     data-action="change_option_selected"
     data-id_shop="<?php echo $store_id ?>"
     value="1" <?php if ($config->get('selection_enable', $store_id) == '1'): ?> checked="checked" <?php endif; ?>>
-<span
-    class="lengow_select_text"><?php echo Mage::helper('lengow_connector')->__('product.screen.include_specific_product') ?></span>
+<span class="lengow_select_text"><?php echo $helper->__('product.screen.include_specific_product') ?></span>
 <br/>
 <br/>
