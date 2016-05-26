@@ -373,7 +373,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
                     'order_id'            => $order->getId(),
                     'order_sku'           => $order->getIncrementId(),
                     'order_process_state' => $this->_model_order->getOrderProcessState($this->_order_state_lengow),
-                    'extra'               => json_encode($this->_order_data),
+                    'extra'               => Mage::helper('core')->jsonEncode($this->_order_data),
                     'order_lengow_state'  => $this->_order_state_lengow,
                     'is_in_error'         => 0
                 ));
@@ -410,7 +410,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
                 $this->_marketplace_sku
             );
             $order_lengow->updateOrder(array(
-                'extra'              => json_encode($this->_order_data),
+                'extra'              => Mage::helper('core')->jsonEncode($this->_order_data),
                 'order_lengow_state' => $this->_order_state_lengow,
             ));
             return $this->_returnResult('error', $this->_order_lengow_id);
@@ -835,8 +835,8 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
         } else {
             $order_date = (string)$this->_order_data->imported_at;
         }
-        $order->setCreatedAt(date('Y-m-d H:i:s', strtotime($order_date)));
-        $order->setUpdatedAt(date('Y-m-d H:i:s', strtotime($order_date)));
+        $order->setCreatedAt(Mage::getModel('core/date')->date('Y-m-d H:i:s', strtotime($order_date)));
+        $order->setUpdatedAt(Mage::getModel('core/date')->date('Y-m-d H:i:s', strtotime($order_date)));
         $order->save();
         // Re-ajuste cents for total and shipping cost
         // Conversion Tax Include > Tax Exclude > Tax Include maybe make 0.01 amount error
@@ -907,7 +907,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
             'marketplace_label'   => (string)$this->_marketplace_label,
             'delivery_address_id' => (int)$this->_delivery_address_id,
             'order_lengow_state'  => $this->_order_state_lengow,
-            'order_date'          => date('Y-m-d H:i:s', strtotime($order_date)),
+            'order_date'          => Mage::getModel('core/date')->date('Y-m-d H:i:s', strtotime($order_date)),
             'is_in_error'         => 1
         );
         if (isset($this->_order_data->comments) && is_array($this->_order_data->comments)) {

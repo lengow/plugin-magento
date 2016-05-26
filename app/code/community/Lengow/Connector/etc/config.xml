@@ -77,6 +77,30 @@
                     </events_after_save>
                 </observers>
             </model_save_after>
+            <sales_order_shipment_save_after>
+                <observers>
+                    <lengow_shipment_save_after>
+                        <class>Lengow_Connector_Model_Observer</class>
+                        <method>salesOrderShipmentSaveAfter</method>
+                    </lengow_shipment_save_after>
+                </observers>
+            </sales_order_shipment_save_after>
+            <sales_order_shipment_track_save_after>
+                <observers>
+                    <lengow_shipment_track_save_after>
+                        <class>Lengow_Connector_Model_Observer</class>
+                        <method>salesOrderShipmentTrackSaveAfter</method>
+                    </lengow_shipment_track_save_after>
+                </observers>
+            </sales_order_shipment_track_save_after>
+            <sales_order_payment_cancel>
+                <observers>
+                    <lengow_payment_cancel>
+                        <class>Lengow_Connector_Model_Observer</class>
+                        <method>salesOrderPaymentCancel</method>
+                    </lengow_payment_cancel>
+                </observers>
+            </sales_order_payment_cancel>
         </events>
         <blocks>
             <lengow>

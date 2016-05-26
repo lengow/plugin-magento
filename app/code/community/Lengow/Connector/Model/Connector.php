@@ -159,6 +159,7 @@ class Lengow_Connector_Model_Connector
 
     public function post($method, $array = array(), $format = 'json')
     {
+        print_r($array);
         return $this->call($method, $array, 'POST', $format);
     }
 
@@ -184,7 +185,7 @@ class Lengow_Connector_Model_Connector
 
     private function _callAction($api, $args, $type, $format = 'json')
     {
-        $result = $this->_makeRequest($type, self::LENGOW_API_URL . $api, $args, $this->_token);
+        $result = $this->_makeRequest($type, self::LENGOW_API_URL.$api, $args, $this->_token);
         return $this->_format($result, $format);
     }
 
@@ -219,9 +220,9 @@ class Lengow_Connector_Model_Connector
                 'Authorization: ' . $token
             );
         }
-        $url = $url['scheme'] . '://' . $url['host'] . $url['path'];
+        $url = $url['scheme'].'://'.$url['host'].$url['path'];
         if ($type == 'GET') {
-            $opts[CURLOPT_URL] = $url . '?' . http_build_query($args);
+            $opts[CURLOPT_URL] = $url.'?'.http_build_query($args);
             $helper->log(
                 'Connector',
                 $helper->setLogMessage('log.connector.call_api', array('curl_url' => $opts[CURLOPT_URL]))

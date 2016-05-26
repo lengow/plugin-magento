@@ -523,7 +523,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
                 ))
             );
         }
-        $this->_config_helper->set('last_export', time(), $this->_storeId);
+        $this->_config_helper->set('last_export', Mage::getModel('core/date')->gmtTimestamp(), $this->_storeId);
         $time_end = $this->_microtimeFloat();
         $time = $time_end - $time_start;
         Mage::helper('lengow_connector')->log(

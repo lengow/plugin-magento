@@ -4,7 +4,7 @@
     $import_helper = Mage::helper('lengow_connector/import');
 
     $last_import = $import_helper->getLastImport();
-    $last_import_date = $helper->getDateInLocalDate($last_import['timestamp']);
+    $last_import_date = $helper->getDateInCorrectFormat($last_import['timestamp']);
 
     $report_mail_active = (bool)$config_helper->get('report_mail_enable');
     $report_mail_link = Mage::helper('adminhtml')
@@ -55,7 +55,7 @@
     data-href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_order/'); ?>?isAjax=true" >
     <?php echo $helper->__('order.screen.button_import'); ?>
 </button>
-<?php if ($old_orders == 0) { ?>
+<?php if ($old_orders > 0) { ?>
     <button
         type="button" 
         id="lengow_migrate_order"

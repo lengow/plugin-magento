@@ -509,8 +509,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
                 $marketplace_sku .= '--'.time();
             }
             // set current order to cancel hook updateOrderStatus
-            // TODO
-            // $this->_import_helper::$current_order = $marketplace_sku;
+            Mage::getSingleton('core/session')->setCurrentOrderLengow($marketplace_sku);
             // if order contains no package
             if (count($order_data->packages) == 0) {
                 $this->_helper->log(
@@ -627,8 +626,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
                     }
                 }
                 // clean process
-                // TODO
-                // $this->_import_helper::$current_order = -1;
+                Mage::getSingleton('core/session')->setCurrentOrderLengow(false);
                 unset($import_order);
                 unset($order);
                 // if limit is set

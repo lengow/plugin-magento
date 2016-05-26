@@ -34,6 +34,7 @@ class Lengow_Connector_Model_Log extends Mage_Core_Model_Abstract
      *
      * @param array $params
      *
+     * @return Lengow_Connector_Model_Log
      */
     public function createLog($params = array())
     {
@@ -45,7 +46,7 @@ class Lengow_Connector_Model_Log extends Mage_Core_Model_Abstract
         foreach ($params as $key => $value) {
             $this->setData($key, $value);
         }
-        $this->setData('date', Mage::getModel('core/date')->date('Y-m-d H:i:s'));
+        $this->setData('date', Mage::getModel('core/date')->gmtDate('Y-m-d H:i:s'));
         return $this->save();
     }
 }

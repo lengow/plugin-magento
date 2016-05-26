@@ -123,10 +123,10 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
             $nbDays = self::LOG_LIFE;
         }
         $resource = Mage::getSingleton('core/resource');
-        $writeConnection = $resource->getConnection('core_write');
+        $write_connection = $resource->getConnection('core_write');
         $table = $resource->getTableName('lengow/log');
         $query = "DELETE FROM ".$table." WHERE `date` < DATE_SUB(NOW(),INTERVAL ".$nbDays." DAY)";
-        $writeConnection->query($query);
+        $write_connection->query($query);
     }
 
     /**
@@ -147,15 +147,11 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Get date in local date
      *
-     * @return integer $timestamp
+     * @return integer $timestamp in gmt format
      */
-    public function getDateInLocalDate($timestamp)
+    public function getDateInCorrectFormat($timestamp)
     {
-        $server_timezone = date_default_timezone_get();
-        date_default_timezone_set(Mage::getStoreConfig('general/locale/timezone'));
-        $date = date('l d F Y @ H:i', $timestamp);
-        date_default_timezone_set($server_timezone);
-        return $date;
+        return Mage::getModel('core/date')->date('l d F Y @ H:i', $timestamp);
     }
 
     /**

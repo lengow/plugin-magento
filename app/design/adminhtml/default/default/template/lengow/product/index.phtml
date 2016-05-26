@@ -6,7 +6,7 @@
     $type_selected = $config->get('product_type', $store_id);
     $arrayTypes = explode(",", $type_selected);
     $sync_data = Mage::helper('lengow_connector/sync')->getSyncData();
-    $last_export = $helper->getDateInLocalDate($config->get('last_export', $store_id));
+    $last_export = $helper->getDateInCorrectFormat($config->get('last_export', $store_id));
 ?>
 <?php if ($store_id != 0) { ?>
     <div><?php echo $this->getChildHtml('store_switcher'); ?></div>

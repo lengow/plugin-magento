@@ -48,6 +48,7 @@ class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
      *
      * @param array $params
      *
+     * @return Lengow_Connector_Model_Import_Ordererror
      */
     public function createOrderError($params = array())
     {
@@ -62,7 +63,7 @@ class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
             }
             $this->setData($key, $value);
         }
-        $this->setData('created_at', Mage::getModel('core/date')->date('Y-m-d H:i:s'));
+        $this->setData('created_at', Mage::getModel('core/date')->gmtDate('Y-m-d H:i:s'));
         return $this->save();
     }
 
@@ -71,6 +72,7 @@ class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
      *
      * @param array $params
      *
+     * @return Lengow_Connector_Model_Import_Ordererror
      */
     public function updateOrderError($params = array())
     {
@@ -83,7 +85,7 @@ class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
                 $this->setData($key, $value);
             }
         }
-        $this->setData('updated_at', Mage::getModel('core/date')->date('Y-m-d H:i:s'));
+        $this->setData('updated_at', Mage::getModel('core/date')->gmtDate('Y-m-d H:i:s'));
         return $this->save();
     }
 
@@ -91,7 +93,6 @@ class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
      * Get updated fields
      *
      * @return array
-     *
      */
     public function getUpdatedFields()
     {
@@ -109,7 +110,7 @@ class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
      *
      * @param string $type Type (import or send)
      *
-     * @return mixed
+     * @return integer
      */
     public function getOrderErrorType($type = null)
     {

@@ -143,9 +143,9 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
     public function updateDateImport($type)
     {
         if ($type === 'cron') {
-            $this->_config->set('last_import_cron', time());
+            $this->_config->set('last_import_cron', Mage::getModel('core/date')->gmtTimestamp());
         } else {
-            $this->_config->set('last_import_manual', time());
+            $this->_config->set('last_import_manual', Mage::getModel('core/date')->gmtTimestamp());
         }
     }
 

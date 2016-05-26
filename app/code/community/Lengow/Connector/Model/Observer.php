@@ -30,6 +30,11 @@ class Lengow_Connector_Model_Observer
     );
 
     /**
+     * Order already shipped
+     */
+    protected $_alreadyShipped = array();
+
+    /**
      * Display Lengow Menu on demand
      */
     public function updateAdminMenu()
@@ -43,11 +48,11 @@ class Lengow_Connector_Model_Observer
     /**
      * Save Change on lengow data
      *
-     * @param $obj
+     * @param $observer
      */
-    public function onAfterSave($obj)
+    public function onAfterSave(Varien_Event_Observer $observer)
     {
-        $object = $obj->getEvent()->getObject();
+        $object = $observer->getEvent()->getObject();
         if (is_a($object, 'Mage_Core_Model_Config_Data')) {
             $pathExplode = explode("/", $object['path']);
             if (isset($pathExplode[0]) && in_array($pathExplode[0], $this->_lengow_options)) {
@@ -79,5 +84,64 @@ class Lengow_Connector_Model_Observer
                 }
             }
         }
+    }
+
+    /**
+     * Sending a call WSDL for a new order shipment
+     *
+     * @param $observer
+     */
+    public function salesOrderShipmentSaveAfter(Varien_Event_Observer $observer)
+    {
+        $shipment = $observer->getEvent()->getShipment();
+        $order = $shipment->getOrder();
+        if ($order->getData('from_lengow') == 1
+            && Mage::getSingleton('core/session')->getCurrentOrderLengow() != $order->getData('order_id_lengow')
+            && !array_key_exists($order->getData('order_id_lengow'), $this->_alreadyShipped)
+        ) {
+            $order_lengow = Mage::getModel('lengow/import_order');
+            $order_lengow->callAction('ship', $order, $shipment);
+            $this->_alreadyShipped[$order->getData('order_id_lengow')] = true;
+        }
+        return $this;
+    }
+
+    /**
+     * Sending a call WSDL for a new tracking
+     *
+     * @param $observer
+     */
+    public function salesOrderShipmentTrackSaveAfter(Varien_Event_Observer $observer)
+    {
+        $track = $observer->getEvent()->getTrack();
+        $shipment = $track->getShipment();
+        $order = $shipment->getOrder();
+        if ($order->getData('from_lengow') == 1
+            && Mage::getSingleton('core/session')->getCurrentOrderLengow() != $order->getData('order_id_lengow')
+            && !array_key_exists($order->getData('order_id_lengow'), $this->_alreadyShipped)
+        ) {
+            $order_lengow = Mage::getModel('lengow/import_order');
+            $order_lengow->callAction('ship', $order, $shipment);
+            $this->_alreadyShipped[$order->getData('order_id_lengow')] = true;
+        }
+        return $this;
+    }
+
+    /**
+     * Sending a call for a cancellation of order
+     *
+     * @param $observer
+     */
+    public function salesOrderPaymentCancel(Varien_Event_Observer $observer)
+    {
+        $payment = $observer->getEvent()->getPayment();
+        $order = $payment->getOrder();
+        if ($order->getData('from_lengow') == 1
+            && Mage::getSingleton('core/session')->getCurrentOrderLengow() != $order->getData('order_id_lengow')
+        ) {
+            $order_lengow = Mage::getModel('lengow/import_order');
+            $order_lengow->callAction('cancel', $order);
+        }
+        return $this;
     }
 }

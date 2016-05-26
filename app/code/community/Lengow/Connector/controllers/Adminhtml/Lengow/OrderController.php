@@ -142,7 +142,7 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
         $informations = array();
         $helper = Mage::helper('lengow_connector');
         $last_import = Mage::helper('lengow_connector/import')->getLastImport();
-        $last_import_date = $helper->getDateInLocalDate(time());
+        $last_import_date = $helper->getDateInCorrectFormat(time());
         $order = Mage::getModel('lengow/import_order');
         $informations['order_with_error'] = $helper->__('order.screen.order_with_error', array(
             'nb_order' => $order->countOrderWithError(),

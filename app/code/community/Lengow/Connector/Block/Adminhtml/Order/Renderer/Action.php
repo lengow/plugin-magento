@@ -13,8 +13,8 @@ class Lengow_Connector_Block_Adminhtml_Order_Renderer_Action extends Mage_Adminh
 {
     public function render(Varien_Object $row)
     {
+        $helper = $this->helper('lengow_connector');
         if ($row->getData('is_in_error') == 1) {
-            $helper = $this->helper('lengow_connector');
             $order_lengow_id = $row->getData('id');
             $error_type = $row->getData('order_process_state') == 0 ? 'import' : 'send';
             $url = Mage::helper('adminhtml')->getUrl('adminhtml/lengow_order/').'?isAjax=true';
@@ -43,6 +43,19 @@ class Lengow_Connector_Block_Adminhtml_Order_Renderer_Action extends Mage_Adminh
                     onclick="makeLengowActions(\''.$url.'\', \'re_send\', \''.$order_lengow_id.'\')">'
                     .$helper->decodeLogMessage('order.table.not_sent')
                     .'<span class="lengow_order_action">'.$tootlip.'</span>&nbsp<i class="fa fa-refresh"></i></a>';
+            }
+        } else {
+            //check if order actions in progress
+            if (!is_null($row->getData('order_id')) && $row->getData('order_process_state') == 1) {
+                $actions = Mage::getModel('lengow/import_action')
+                    ->getOrderActiveAction($row->getData('order_id'), 'ship');
+                if ($actions) {
+                    return '<a class="lengow_action lengow_tooltip lengow_btn lengow_btn_white">'
+                        .$helper->decodeLogMessage('order.table.action_sent')
+                        .'<span class="lengow_order_action">'
+                        .$helper->decodeLogMessage('order.table.action_waiting_return')
+                        .'</span></a>';
+                }
             }
         }
     }

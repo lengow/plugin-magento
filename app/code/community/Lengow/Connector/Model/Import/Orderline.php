@@ -35,6 +35,7 @@ class Lengow_Connector_Model_Import_Orderline extends Mage_Core_Model_Abstract
      *
      * @param array $params
      *
+     * @return Lengow_Connector_Model_Import_Orderline
      */
     public function createOrderLine($params = array())
     {
@@ -47,5 +48,24 @@ class Lengow_Connector_Model_Import_Orderline extends Mage_Core_Model_Abstract
             $this->setData($key, $value);
         }
         return $this->save();
+    }
+
+    /**
+     * Get all order line id by order id
+     *
+     * @param integer $order_id Magento order id
+     *
+     * @return mixed
+     */
+    public function getOrderLineByOrderID($order_id)
+    {
+        $results = $this->getCollection()
+            ->addFieldToFilter('order_id', $order_id)
+            ->addFieldToSelect('order_line_id')
+            ->getData();
+        if (count($results) > 0) {
+            return $results;
+        }
+        return false;
     }
 }

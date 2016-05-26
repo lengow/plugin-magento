@@ -50,6 +50,7 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
      *
      * @param array $params
      *
+     * @return Lengow_Connector_Model_Import_Action
      */
     public function createAction($params = array())
     {
@@ -62,7 +63,7 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
             $this->setData($key, $value);
         }
         $this->setData('state', self::STATE_NEW);
-        $this->setData('created_at', Mage::getModel('core/date')->date('Y-m-d H:i:s'));
+        $this->setData('created_at', Mage::getModel('core/date')->gmtDate('Y-m-d H:i:s'));
         return $this->save();
     }
 
@@ -71,10 +72,14 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
      *
      * @param array $params
      *
+     * @return Lengow_Connector_Model_Import_Action
      */
     public function updateAction($params = array())
     {
         if (!$this->id) {
+            return false;
+        }
+        if ((int)$this->getData('state') != self::STATE_NEW) {
             return false;
         }
         $updated_fields = $this->getUpdatedFields();
@@ -83,7 +88,8 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
                 $this->setData($key, $value);
             }
         }
-        $this->setData('updated_at', Mage::getModel('core/date')->date('Y-m-d H:i:s'));
+        $this->setData('retry', (int)$this->getData('retry') + 1);
+        $this->setData('updated_at', Mage::getModel('core/date')->gmtDate('Y-m-d H:i:s'));
         return $this->save();
     }
 
@@ -91,7 +97,6 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
      * Get updated fields
      *
      * @return array
-     *
      */
     public function getUpdatedFields()
     {
@@ -102,5 +107,93 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
             }
         }
         return $updated_fields;
+    }
+
+    /**
+     * Get ID from API action ID
+     *
+     * @param integer $action_id action id from API
+     *
+     * @return mixed
+     */
+    public function getIdByActionId($action_id)
+    {
+        $results = $this->getCollection()
+            ->addFieldToFilter('action_id', $action_id)
+            ->addFieldToSelect('id')
+            ->getData();
+        if (count($results) > 0) {
+            return (int)$results[0]['id'];
+        }
+        return false;
+    }
+
+    /**
+     * Find actions by order id
+     *
+     * @param integer $order_id
+     * @param string  $action_type (ship or cancel)
+     *
+     * @return mixed
+     */
+    public function getOrderActiveAction($order_id, $action_type)
+    {
+        $results = $this->getCollection()
+            ->addFieldToFilter('order_id', $order_id)
+            ->addFieldToFilter('action_type', $action_type)
+            ->getData();
+        if (count($results) > 0) {
+            return $results;
+        }
+        return false;
+    }
+
+    /**
+     * Check if active actions are finished
+     *
+     * @return bool
+     */
+    public static function checkFinishAction()
+    {
+        if (!(bool)Mage::helper('lengow_connector/config')->get('preprod_mode_enable')) {
+            return false;
+        }
+
+        $shops = LengowShop::findAll();
+        foreach ($shops as $shop) {
+            $actions = LengowAction::getActiveActionByShop('ship', $shop['id_shop'], false);
+            foreach ($actions as $action) {
+                $result = LengowConnector::queryApi(
+                    'get',
+                    '/v3.0/orders/actions/',
+                    $shop['id_shop'],
+                    array('id' => $action['id'])
+                );
+                if (isset($result->id) && isset($result->processed) && isset($result->queued)) {
+                    if ((int)$result->id > 0 && $result->queued == false) {
+                        //update actions
+                        Db::getInstance()->autoExecute(
+                            _DB_PREFIX_ . 'lengow_actions',
+                            array(
+                                'state'         => (int)LengowAction::STATE_FINISH,
+                                'updated_at'    => date('Y-m-d h:m:i'),
+                            ),
+                            'UPDATE',
+                            'id = '.(int)$action['id']
+                        );
+                        if ($result->processed) {
+                            $id_order_lengow = LengowOrder::findByOrder($action['id_order']);
+                            LengowOrder::updateOrderLengow($id_order_lengow, array(
+                                'order_process_state' => 2
+                            ));
+                        }
+                    }
+                }
+                if (!LengowMain::inTest()) {
+                    usleep(250000);
+                }
+            }
+        }
+        return true;
     }
 }

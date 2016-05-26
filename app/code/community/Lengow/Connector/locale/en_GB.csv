@@ -150,6 +150,12 @@ lengow_log.exception.timeout_api|API call was blocked by a timeout
 lengow_log.exception.marketplace_not_present|the marketplace %{markeplace_name} does not feature in the marketplace list
 lengow_log.exception.order_failed_with_quote|service unable to create order based on given quote
 lengow_log.exception.order_is_empty|order could not be saved
+lengow_log.exception.order_line_required|order Line require, but not found in order
+lengow_log.exception.action_not_valid|action %{action} is not valid
+lengow_log.exception.marketplace_action_not_present|marketplace actions %{action} are not present
+lengow_log.exception.store_id_require|store ID is required
+lengow_log.exception.marketplace_name_require|marketplace name is required
+lengow_log.exception.arg_is_required|can't ship order: %{arg_name} is required
 log.export.start|## start export ##
 log.export.end|## end export ##
 log.export.start_for_shop|start export in shop %{name_shop} (%{id_shop})
@@ -200,6 +206,8 @@ log.import.error_wrong_package_number|import order failed - wrong package number
 log.import.error_no_delivery_address|import order failed - no delivery address in the order
 log.import.order_synchronized_with_lengow|order successfully synchronised with Lengow webservice (ORDER ID %{order_id})
 log.import.order_not_synchronized_with_lengow|WARNING ! Order could NOT be synchronised with Lengow webservice (ORDER ID %{order_id})
+log.order_action.call_tracking|call tracking : %{parameters}
+log.order_action.call_action_failed|order action failed - %{decoded_message}
 log.connector.call_api|call %{curl_url}
 log.connector.error_api|call api failed - %{error_code}
 log.setting.setting_change|%{key} - old value %{old_value} change by %{value}
