@@ -93,6 +93,7 @@ a.lengow_check_shop {
     padding-left: 3px;
     padding-right: 13px;
     margin-right: 5px;
+    margin-bottom: 5px;
     border-radius: 8px;
 }
 
@@ -101,6 +102,10 @@ a.lengow_check_shop {
 }
 #lengow_shop_no_sync {
     background-color: #e55a4d;
+}
+
+#lengow_check_shop {
+    margin-bottom: 5px;
 }
 
 /*************************************************/
