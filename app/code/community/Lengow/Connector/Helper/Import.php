@@ -8,7 +8,6 @@
  * @copyright   2016 Lengow SAS
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-
 class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
 {
     /**
@@ -183,6 +182,32 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
      */
     public function sendMailAlert($log_output = false)
     {
-        
+        //TODO: sendmail + lengow_log
+
+        $helper = Mage::helper('lengow_connector');
+        $subject = 'Lengow imports logs';
+        $mail_body = '';
+        $errors = Mage::getModel('lengow/import_ordererror')->getImportErrors();
+        if (empty($errors)) {
+            return true;
+        }
+        foreach ($errors as $error) {
+            $mail_body .= '<li>'.$helper->decodeLogMessage('lengow_log.mail_report.order', null, array(
+                    'marketplace_sku' => $error['marketplace_sku']
+                ));
+            if ($error['message'] != '') {
+                $mail_body .= ' - '.$helper->decodeLogMessage($error['message']);
+            } else {
+                $mail_body .= ' - '.$helper->decodeLogMessage('lengow_log.mail_report.no_error_in_report_mail');
+            }
+            $mail_body .= '</li>';
+            $order_error = Mage::getModel('lengow/import_ordererror')
+                ->load($error['id']);
+            //comment for tests
+                //->updateOrderError(array('mail' => 1));
+            unset($order_error);
+        }
+
+
     }
 }

@@ -173,6 +173,8 @@ lengow_log.exception.marketplace_action_not_present|marketplace actions %{action
 lengow_log.exception.store_id_require|store ID is required
 lengow_log.exception.marketplace_name_require|marketplace name is required
 lengow_log.exception.arg_is_required|can't ship order: %{arg_name} is required
+lengow_log.mail_report.order|Order %{marketplace_sku}
+lengow_log.mail_report.no_error_in_report_mail|no error message, contact support via https://supportlengow.zendesk.com/agent/
 log.export.start|## start export ##
 log.export.end|## end export ##
 log.export.start_for_shop|start export in shop %{name_shop} (%{id_shop})

@@ -192,3 +192,6 @@ en:
       store_id_require: "store ID is required"
       marketplace_name_require: "marketplace name is required"
       arg_is_required: "can't ship order: %{arg_name} is required"
+    mail_report:
+      order: "Order %{marketplace_sku}"
+      no_error_in_report_mail: "no error message, contact support via https://supportlengow.zendesk.com/agent/"
