@@ -170,6 +170,7 @@ class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
         // get all order errors
         $results = $this->getCollection()
             ->addFieldToFilter('order_lengow_id', $order_lengow_id)
+            ->addFieldToFilter('is_finished', 0)
             ->addFieldToFilter('type', $error_type)
             ->addFieldToSelect('id')
             ->getData();

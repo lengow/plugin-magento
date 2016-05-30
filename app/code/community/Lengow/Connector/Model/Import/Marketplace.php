@@ -319,7 +319,8 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
                         $order_action_id = Mage::getModel('lengow/import_action')->getIdByActionId($row->id);
                         if ($order_action_id) {
                             $order_action = Mage::getModel('lengow/import_action')->load($order_action_id);
-                            $order_action->updateAction();
+                            $retry = (int)$order_action->getData('retry') + 1;
+                            $order_action->updateAction(array('retry' => $retry));
                         }
                     }
                 } else {
@@ -351,10 +352,6 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
                         $order->getData('order_id_lengow')
                     );
                 }
-                // Update order lengow if is in error
-                if ($order_lengow) {
-                    $order_lengow->updateOrder(array('is_in_error' => 0));
-                }
             }
             return true;
         } catch (Lengow_Connector_Model_Exception $e) {
@@ -364,14 +361,15 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
         }
         if (isset($error_message)) {
             if ($order_lengow) {
-                $order_lengow->updateOrder(array('is_in_error' => 1));
-                $order_error = Mage::getModel('lengow/import_ordererror');
-                $order_error->finishOrderErrors($order_lengow_id, 'send');
-                $order_error->createOrderError(array(
-                    'order_lengow_id' => $order_lengow_id,
-                    'message'         => $error_message,
-                    'type'            => 'send'
-                ));
+                if ((int)$order_lengow->getData('order_process_state') != 2) {
+                    $order_lengow->updateOrder(array('is_in_error' => 1));
+                    $order_error = Mage::getModel('lengow/import_ordererror');
+                    $order_error->createOrderError(array(
+                        'order_lengow_id' => $order_lengow_id,
+                        'message'         => $error_message,
+                        'type'            => 'send'
+                    ));
+                }
             }
             $decoded_message = $helper->decodeLogMessage($error_message, 'en_GB');
             $helper->log(

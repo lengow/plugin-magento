@@ -461,14 +461,14 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
             $this->_marketplace_sku
         );
         $order_lengow_id = $this->_model_order->getLengowOrderIdWithOrderId($order_id);
-        if ($order_lengow_id) {
-            $order_lengow = $this->_model_order->load($order_lengow_id);
-            $result = array('order_lengow_id' => $order_lengow->getId());
-        } else {
-            $result = array('order_lengow_id' => false);
-        }
-        // try to update magento order
-        $order_updated = $this->_model_order->updateState($order, $this->_order_state_lengow, $this->_package_data);
+        $result = array('order_lengow_id' => $order_lengow_id);
+        // try to update magento order, lengow order and finish actions if necessary
+        $order_updated = $this->_model_order->updateState(
+            $order,
+            $this->_order_state_lengow,
+            $this->_package_data,
+            $order_lengow_id
+        );
         if ($order_updated) {
             $result['update'] = true;
             $this->_helper->log(
@@ -477,11 +477,6 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
                 $this->_log_output,
                 $this->_marketplace_sku
             );
-            if ($order_lengow_id) {
-                // update lengow order state
-                $order_lengow->updateOrder(array('order_lengow_state' => $this->_order_state_lengow));
-                unset($order_lengow);
-            }
         }
         unset($order);
         return $result;

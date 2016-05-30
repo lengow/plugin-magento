@@ -59,7 +59,7 @@ order.table.total_paid|Total Paid
 order.table.action_success|Success
 order.table.action_error|Error
 order.table.order_not_imported|Order hasn't been imported into Magento
-order.table.action_sent|action sent
+order.table.action_sent|action %{action_type} sent
 order.table.not_imported|not imported
 order.table.not_sent|not sent
 order.table.action_waiting_return|Action sent, waiting returns
@@ -170,6 +170,7 @@ lengow_log.exception.marketplace_action_not_present|marketplace actions %{action
 lengow_log.exception.store_id_require|store ID is required
 lengow_log.exception.marketplace_name_require|marketplace name is required
 lengow_log.exception.arg_is_required|can't ship order: %{arg_name} is required
+lengow_log.exception.action_is_too_old|order action is too old. Please retry the call
 log.export.start|## start export ##
 log.export.end|## end export ##
 log.export.start_for_shop|start export in shop %{name_shop} (%{id_shop})
@@ -220,7 +221,7 @@ log.import.error_wrong_package_number|import order failed - wrong package number
 log.import.error_no_delivery_address|import order failed - no delivery address in the order
 log.import.order_synchronized_with_lengow|order successfully synchronised with Lengow webservice (ORDER ID %{order_id})
 log.import.order_not_synchronized_with_lengow|WARNING ! Order could NOT be synchronised with Lengow webservice (ORDER ID %{order_id})
-log.order_action.call_tracking|call tracking : %{parameters}
+log.order_action.call_tracking|call tracking with parameters: %{parameters}
 log.order_action.call_action_failed|order action failed - %{decoded_message}
 log.connector.call_api|call %{curl_url}
 log.connector.error_api|call api failed - %{error_code}

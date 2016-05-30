@@ -59,7 +59,8 @@ class Lengow_Connector_CronController extends Mage_Core_Controller_Front_Action
 
             // sync action between Lengow and Prestashop
             if (is_null($sync) || $sync === 'action') {
-                // TODO
+                $action = Mage::getModel('lengow/import_action');
+                $action->checkFinishAction();
             }
 
             // sync options between Lengow and Prestashop

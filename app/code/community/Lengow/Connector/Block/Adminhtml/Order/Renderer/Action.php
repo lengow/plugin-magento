@@ -47,11 +47,13 @@ class Lengow_Connector_Block_Adminhtml_Order_Renderer_Action extends Mage_Adminh
         } else {
             //check if order actions in progress
             if (!is_null($row->getData('order_id')) && $row->getData('order_process_state') == 1) {
-                $actions = Mage::getModel('lengow/import_action')
-                    ->getOrderActiveAction($row->getData('order_id'), 'ship');
-                if ($actions) {
+                $action = Mage::getModel('lengow/import_action');
+                $last_action_type = $action->getLastOrderActionType($row->getData('order_id'));
+                if ($last_action_type) {
                     return '<a class="lengow_action lengow_tooltip lengow_btn lengow_btn_white">'
-                        .$helper->decodeLogMessage('order.table.action_sent')
+                        .$helper->decodeLogMessage('order.table.action_sent', null, array(
+                            'action_type' => $last_action_type
+                        ))
                         .'<span class="lengow_order_action">'
                         .$helper->decodeLogMessage('order.table.action_waiting_return')
                         .'</span></a>';

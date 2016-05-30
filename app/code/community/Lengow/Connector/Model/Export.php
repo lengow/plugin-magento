@@ -243,6 +243,9 @@ class Lengow_Connector_Model_Export extends Varien_Object
             !$this->_stream
         );
 
+        // modulo for export counter
+        $modulo_export = (int)($total_product / 10);
+        $modulo_export = $modulo_export < 100 ? 100 : $modulo_export;
         // Product counter
         $count_simple = 0;
         $count_simple_disabled = 0;
@@ -460,7 +463,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
                 // Get content type if streamed feed
                 if ($this->_stream) {
                     header('Content-Type: '.$feed->getContentType().'; charset=UTF-8');
-                    if ($this->_fileFormat == 'csv'){
+                    if ($this->_fileFormat == 'csv') {
                         header('Content-Disposition: attachment; filename=feed.csv');
                     }
                 }
@@ -469,7 +472,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
                 $first = false;
             }
             $this->_write($feed->makeData($array_data, array('last' => $last)));
-            if ($pi % 50 == 0) {
+            if ($pi % $modulo_export == 0) {
                 Mage::helper('lengow_connector')->log(
                     'Export',
                     Mage::helper('lengow_connector')->__('log.export.count_product', array(

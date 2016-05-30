@@ -312,6 +312,31 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
     }
 
     /**
+     * Re-send order lengow
+     *
+     * @param integer $order_lengow_id
+     *
+     * @return mixed
+     */
+    public function reSendOrder($order_lengow_id)
+    {
+        $order_lengow = Mage::getModel('lengow/import_order')->load($order_lengow_id);
+        if ($order_lengow->getData('order_process_state') == 1 && $order_lengow->getData('is_in_error') == 1) {
+            $order_id = $order_lengow->getData('order_id');
+            if (!is_null($order_id)) {
+                $action = Mage::getModel('lengow/import_action')->getLastOrderActionType($order_id);
+                $action = $action ? $action : 'ship';
+                $order = Mage::getModel('sales/order')->load($order_id);
+                $shipment = $order->getShipmentsCollection()->getFirstItem();
+                $result = $this->callAction($action, $order, $shipment);
+                return $result;
+            }
+        }
+        return false;
+    }
+
+
+    /**
      * Get Magento equivalent to lengow order state
      *
      * @param  string $order_state_lengow lengow state
@@ -431,12 +456,38 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
      * @param Mage_Sales_Model_Order $order              Magento Order
      * @param string                 $order_state_lengow lengow status
      * @param mixed                  $package_data       package data
+     * @param mixed                  $order_lengow_id    lengow order id or false
      *
      * @return bool true if order has been updated
      */
-    public function updateState($order, $order_state_lengow, $package_data)
+    public function updateState($order, $order_state_lengow, $package_data, $order_lengow_id)
     {
-        // Update order's status only if in process, shipped, or canceled
+        // Finish actions if lengow order is shipped, closed or cancel
+        $order_process_state = $this->getOrderProcessState($order_state_lengow);
+        if ($order_process_state == self::PROCESS_STATE_FINISH) {
+            Mage::getModel('lengow/import_action')->finishActions($order->getId());
+        }
+        // Update Lengow order if necessary
+        if ($order_lengow_id) {
+            $order_lengow = Mage::getModel('lengow/import_order')->load($order_lengow_id);
+            $params = array();
+            if ($order_lengow->getData('order_lengow_state') != $order_state_lengow) {
+                $params['order_lengow_state'] = $order_state_lengow;
+            }
+            if ($order_process_state == self::PROCESS_STATE_FINISH) {
+                if ((int)$order_lengow->getData('order_process_state') != $order_process_state) {
+                    $params['order_process_state'] = $order_process_state;
+                }
+                if ((int)$order_lengow->getData('is_in_error') != 0) {
+                    $params['is_in_error'] = $order_state_lengow;
+                }
+            }
+            if (count($params) > 0) {
+                $order_lengow->updateOrder($params);
+            }
+            unset($order_lengow);
+        }
+        // Update Magento order's status only if in accepted, waiting_shipment, shipped, closed or cancel
         if ($order->getState() != $this->getOrderState($order_state_lengow) && $order->getData('from_lengow') == 1) {
             if ($order->getState() == $this->getOrderState('new')
                 && ($order_state_lengow == 'accepted' || $order_state_lengow == 'waiting_shipment')
@@ -588,6 +639,15 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
         }
         $helper = Mage::helper('lengow_connector/data');
         $order_lengow_id = $this->getLengowOrderIdWithOrderId($order->getId());
+        // Finish all order errors before API call
+        if ($order_lengow_id) {
+            $order_error = Mage::getModel('lengow/import_ordererror');
+            $order_error->finishOrderErrors($order_lengow_id, 'send');
+            $order_lengow = Mage::getModel('lengow/import_order')->load($order_lengow_id);
+            if ($order_lengow->getData('is_in_error') == 1) {
+                $order_lengow->updateOrder(array('is_in_error' => 0));
+            }
+        }
         try {
             // compatibility V2
             if ($order->getData('feed_id_lengow') != 0) {
@@ -624,15 +684,15 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
         }
         if (isset($error_message)) {
             if ($order_lengow_id) {
-                $order_lengow = Mage::getModel('lengow/import_order')->load($order_lengow_id);
-                $order_lengow->updateOrder(array('is_in_error' => 1));
-                $order_error = Mage::getModel('lengow/import_ordererror');
-                $order_error->finishOrderErrors($order_lengow_id, 'send');
-                $order_error->createOrderError(array(
-                    'order_lengow_id' => $order_lengow_id,
-                    'message'         => $error_message,
-                    'type'            => 'send'
-                ));
+                if ((int)$order_lengow->getData('order_process_state') != self::PROCESS_STATE_FINISH) {
+                    $order_lengow->updateOrder(array('is_in_error' => 1));
+                    $order_error->createOrderError(array(
+                        'order_lengow_id' => $order_lengow_id,
+                        'message'         => $error_message,
+                        'type'            => 'send'
+                    ));
+                }
+                unset($order_lengow);
             }
             $decoded_message = $helper->decodeLogMessage($error_message, 'en_GB');
             $helper->log(

@@ -45,7 +45,11 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
                         break;
                     case 're_send':
                         $order_lengow_id = Mage::app()->getRequest()->getParam('order_lengow_id');
-                        // TODO
+                        if (!is_null($order_lengow_id)) {
+                            $order_lengow = Mage::getModel('lengow/import_order');
+                            $result = $order_lengow->reSendOrder((int)$order_lengow_id);
+                            $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($result));
+                        }
                         break;
                     case 'migrate_order':
                         $order = Mage::getModel('lengow/import_order');
@@ -86,8 +90,13 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
 
     public function massReSendAction()
     {
-        $order_ids = $this->getRequest()->getParam('order');
-        // TODO
+        $order_lengow_ids = $this->getRequest()->getParam('order');
+        if (count($order_lengow_ids) > 0) {
+            $order_lengow = Mage::getModel('lengow/import_order');
+            foreach ($order_lengow_ids as $order_lengow_id) {
+                $order_lengow->reSendOrder((int)$order_lengow_id);
+            }
+        }
     }
 
     protected function _getSession()
