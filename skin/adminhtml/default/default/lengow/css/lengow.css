@@ -89,13 +89,12 @@ span.publish-lgw.red {
     display:inline-block;
 }
 
-.lengow_check_shop {
-    margin-right: 15px;
-    margin-top: 4px;
-    width: 5px;
-    height: 5px;
-    padding:5px;
-    border-radius: 10px;
+a.lengow_check_shop {
+    padding-left: 3px;
+    padding-right: 13px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    border-radius: 8px;
 }
 
 #lengow_shop_sync {
@@ -103,6 +102,10 @@ span.publish-lgw.red {
 }
 #lengow_shop_no_sync {
     background-color: #e55a4d;
+}
+
+#lengow_check_shop {
+    margin-bottom: 5px;
 }
 
 /*************************************************/

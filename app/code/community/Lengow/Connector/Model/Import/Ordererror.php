@@ -184,4 +184,29 @@ class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
         }
         return false;
     }
+
+    /**
+     * Get error import logs never send by mail
+     *
+     * @return mixed
+     */
+    public function getImportErrors() {
+        $results = $this->getCollection()
+            ->join(
+                array('order'=> 'lengow/import_order'),
+                'order.id=main_table.order_lengow_id',
+                array('marketplace_sku' => 'marketplace_sku'),
+                array('message' => 'message'),
+                array('id' => 'id')
+            )
+            ->addFieldToFilter('mail', array('eq' => 0))
+            ->addFieldToFilter('is_finished', array('eq' => 0))
+            ->addFieldToSelect('message')
+            ->addFieldToSelect('id')
+            ->getData();
+        if (count($results) == 0) {
+            return false;
+        }
+        return $results;
+    }
 }

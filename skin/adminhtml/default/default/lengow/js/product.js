@@ -10,22 +10,19 @@
         function checkShop() {
             var href = $('.lengow_check_shop').attr('data-href'),
                 id_shop = $(this).attr('data-id_shop');
-            $.ajax({
+            $.getJSON({
                 url: href,
                 method: 'POST',
                 data: {action: 'check_shop', id_shop: id_shop, form_key: FORM_KEY},
-                dataType: 'script',
+                dataType: 'json',
                 beforeSend: function () {
                     $('.lengow_check_shop').html('<i class="fa fa-circle-o-notch fa-spin"></i>');
                 },
                 success: function (data) {
-                    if (data == "1") {
-                        $('.lengow_check_shop').html("");
-                        $('.lengow_check_shop').attr("id", "lengow_shop_sync");
-                    } else {
-                        $('.lengow_check_shop').html("");
-                        $('.lengow_check_shop').attr("id", "lengow_shop_no_sync");
-                        $('.lengow_check_shop').after("<a href='#'<span>sync</span></a>");
+                    $('.lengow_check_shop').html("<span>" + data.message + "</span>");
+                    $('.lengow_check_shop').attr("id", data.id);
+                    if (data.result == false) {
+                        $('.lengow_check_shop').after("<a href='#'><span>sync</span></a>");
                     }
                 }
             });

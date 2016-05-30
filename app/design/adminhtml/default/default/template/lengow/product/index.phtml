@@ -17,14 +17,14 @@
     <?php echo $sync_data['shops'][$store_id]['domain'] ?>
 </a>
 <br>
-<div class="lengow_check_shop lengow_link_tooltip"
+<div id="lengow_check_shop">
+<a class="lengow_check_shop lengow_tooltip"
      data-id_shop="<?php echo $store_id ?>"
      data-href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_product/'); ?>?isAjax=true">
-</div>
-<br>
+</a></div>
 <a href="<?php echo $sync_data['shops'][$store_id]['feed_url'] ?>stream/1/"
    target="_blank">
-    <i class="fa fa-download"></i>
+    <i class="fa fa-download"></i> Download
 </a><br>
 <p>
     <?php

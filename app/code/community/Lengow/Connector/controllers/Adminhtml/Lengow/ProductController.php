@@ -40,8 +40,17 @@ class Lengow_Connector_Adminhtml_Lengow_ProductController extends Mage_Adminhtml
                         break;
                     case 'check_shop':
                         $shopId = Mage::app()->getRequest()->getParam('id_shop');
-                        $checkShop = Mage::getModel('lengow/connector')->getConnectorByStore($shopId);
-                        $this->getResponse()->setBody($checkShop);
+                        $sync = Mage::getModel('lengow/connector')->getConnectorByStore($shopId);
+                        $checkShop = array();
+                        $checkShop['result'] = $sync;
+                        if ($sync == true) {
+                            $checkShop['message'] = Mage::helper('lengow_connector')->__('product.screen.lengow_shop_sync');
+                            $checkShop['id'] = 'lengow_shop_sync';
+                        } else {
+                            $checkShop['message'] = Mage::helper('lengow_connector')->__('product.screen.lengow_shop_no_sync');
+                            $checkShop['id'] = 'lengow_shop_no_sync';
+                        }
+                        $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($checkShop));
                         break;
 
                 }

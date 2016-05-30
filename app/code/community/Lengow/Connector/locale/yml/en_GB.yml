@@ -26,6 +26,8 @@ en:
       include_specific_product: "Include specific products"
       last_export: "Last export"
       no_export: "No export"
+      lengow_shop_sync: "Synchronized"
+      lengow_shop_no_sync: "Not synchronized"
     table:
       publish_on_lengow: "Publish on Lengow"
       change_publication: "Change Lengow's publication"
@@ -152,6 +154,7 @@ en:
       title: "Get a little help from your support team !"
       contain_text_support: "Ask us anything about Lengow or share your feedback at "
       mail_lengow_support: "support@lengow.com."
+      mail_lengow_support_title: "Account Information :"
       mailto_subject: "Magento Lengow Plugin #Need assistance"
       need_some_help: "Need some help ?"
       contain_text_support_hour: "We’ll do our best to get back to you during regular business hours (Monday to Friday – 9am to 6pm / France Timezone)."
@@ -190,3 +193,6 @@ en:
       marketplace_name_require: "marketplace name is required"
       arg_is_required: "can't ship order: %{arg_name} is required"
       action_is_too_old: "order action is too old. Please retry the call"
+    mail_report:
+      order: "Order %{marketplace_sku}"
+      no_error_in_report_mail: "no error message, contact support via https://supportlengow.zendesk.com/agent/"
