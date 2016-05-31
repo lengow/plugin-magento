@@ -293,13 +293,21 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
     public function checkFinishAction()
     {
         $config = Mage::helper('lengow_connector/config');
+        $helper = Mage::helper('lengow_connector/data');
         if ((bool)$config->get('preprod_mode_enable')) {
             return false;
         }
-        // get all shops for import
+        // get all store to check active actions
         $store_collection = Mage::getResourceModel('core/store_collection')->addFieldToFilter('is_active', 1);
         foreach ($store_collection as $store) {
             if ($config->get('store_enable', (int)$store->getId())) {
+                $helper->log(
+                    'API-OrderAction',
+                    $helper->setLogMessage('log.order_action.start_for_store', array(
+                        'store_name' => $store->getName(),
+                        'store_id'   => $store->getId()
+                    ))
+                );
                 // Get all active actions by store
                 $store_actions = $this->getActiveActionByStore((int)$store->getId());
                 // If no active action, do nothing
@@ -372,14 +380,11 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
                                             'type'            => 'send',
                                         ));
                                         $order_lengow->updateOrder(array('is_in_error' => 1));
-                                        Mage::helper('lengow_connector/data')->log(
+                                        $helper->log(
                                             'API-OrderAction',
-                                            Mage::helper('lengow_connector/data')->setLogMessage(
-                                                'log.order_action.call_action_failed',
-                                                array(
-                                                    'decoded_message' => $api_actions[$action['action_id']]->errors
-                                                )
-                                            ),
+                                            $helper->setLogMessage('log.order_action.call_action_failed', array(
+                                                'decoded_message' => $api_actions[$action['action_id']]->errors
+                                            )),
                                             false,
                                             $order_lengow->getData('marketplace_sku')
                                         );

@@ -22,7 +22,7 @@ class Lengow_Connector_CronController extends Mage_Core_Controller_Front_Action
             // get sync action if exists
             $sync = $this->getRequest()->getParam('sync');
 
-            // sync orders between Lengow and Prestashop
+            // sync orders between Lengow and Magento
             if (is_null($sync) || $sync === 'order') {
                 // array of params for import order
                 $params = array();
@@ -57,13 +57,12 @@ class Lengow_Connector_CronController extends Mage_Core_Controller_Front_Action
                 $import->exec();
             }
 
-            // sync action between Lengow and Prestashop
+            // sync action between Lengow and Magento
             if (is_null($sync) || $sync === 'action') {
-                $action = Mage::getModel('lengow/import_action');
-                $action->checkFinishAction();
+                Mage::getModel('lengow/import_action')->checkFinishAction();
             }
 
-            // sync options between Lengow and Prestashop
+            // sync options between Lengow and Magento
             if (is_null($sync) || $sync === 'option') {
                 // TODO
             }

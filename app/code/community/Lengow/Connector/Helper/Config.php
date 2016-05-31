@@ -214,4 +214,18 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
             }
         }
     }
+
+    /**
+     * Get all report mails
+     *
+     * @return array
+     */
+    public function getReportEmailAddress()
+    {
+        $emails = explode(';', $this->get('report_mail_address'));
+        if ($emails[0] == '') {
+            $emails[0] = Mage::getStoreConfig('trans_email/ident_general/email');
+        }
+        return $emails;
+    }
 }

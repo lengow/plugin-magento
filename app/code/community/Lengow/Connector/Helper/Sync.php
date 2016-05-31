@@ -24,7 +24,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
         $data['type'] = 'magento';
         $data['version'] = Mage::getVersion();
         $data['plugin_version'] = (string)Mage::getConfig()->getNode()->modules->Lengow_Connector->version;
-        $data['email'] = Mage::getSingleton('admin/session')->getUser()->getEmail();
+        $data['email'] = Mage::getStoreConfig('trans_email/ident_general/email');
         $data['return_url'] = 'http://'.$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
         foreach (Mage::app()->getWebsites() as $website) {
             foreach ($website->getGroups() as $group) {
@@ -94,7 +94,8 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
         $mail = 'support.lengow.zendesk@lengow.com';
         $subject = Mage::helper('lengow_connector')->__('help.screen.mailto_subject');
         $result = Mage::getModel('lengow/connector')->queryApi('get', '/v3.0/cms');
-        $body = '%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A'. Mage::helper('lengow_connector')->__('help.screen.mail_lengow_support_title').'%0D%0A';
+        $body = '%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A'
+            .Mage::helper('lengow_connector')->__('help.screen.mail_lengow_support_title').'%0D%0A';
         if (isset($result->cms)) {
             $body .= 'commun_account : '.$result->cms->common_account.'%0D%0A';
         }

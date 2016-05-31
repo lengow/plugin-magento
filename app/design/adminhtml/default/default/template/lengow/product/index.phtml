@@ -23,9 +23,7 @@
      data-href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_product/'); ?>?isAjax=true">
 </a></div>
 <a href="<?php echo $sync_data['shops'][$store_id]['feed_url'] ?>stream/1/"
-   target="_blank">
-    <i class="fa fa-download"></i> Download
-</a><br>
+    target="_blank"><i class="fa fa-download"></i></a><br>
 <p>
     <?php
     if ($config->get('last_export', $store_id) != null) {

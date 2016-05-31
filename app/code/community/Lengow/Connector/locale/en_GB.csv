@@ -174,11 +174,12 @@ lengow_log.exception.store_id_require|store ID is required
 lengow_log.exception.marketplace_name_require|marketplace name is required
 lengow_log.exception.arg_is_required|can't ship order: %{arg_name} is required
 lengow_log.exception.action_is_too_old|order action is too old. Please retry the call
+lengow_log.mail_report.subject_report_mail|Lengow import errors
 lengow_log.mail_report.order|Order %{marketplace_sku}
 lengow_log.mail_report.no_error_in_report_mail|no error message, contact support via https://supportlengow.zendesk.com/agent/
 log.export.start|## start export ##
 log.export.end|## end export ##
-log.export.start_for_shop|start export in shop %{name_shop} (%{id_shop})
+log.export.start_for_store|start export in store %{store_name} (%{store_id})
 log.export.feed_already_launch|feed already launch
 log.export.nb_product_found|%{nb_product} product(s) found
 log.export.count_product|%{product_count} products exported
@@ -186,7 +187,7 @@ log.export.total_product_exported|%{nb_product} product(s) exported (%{nb_simple
 log.export.memory_usage|memory usage: %{memory} Mb
 log.export.execution_time|execution time: %{seconds} seconds
 log.export.your_feed_available_here|your feed is available here: <a href='%{feed_url}' target='_blank'>%{feed_url}</a>
-log.export.generate_feed_available_here|export of the store %{name_shop} (%{id_shop}) generated a file here : %{feed_url}
+log.export.generate_feed_available_here|export of the store %{store_name} (%{store_id}) generated a file here : %{feed_url}
 log.export.unauthorised_ip|unauthorised IP : %{ip}
 log.export.error_configurable_product_disabled|WARNING ! %{nb_product} simple product(s) are associated with configurable products disabled
 log.export.error_folder_not_created|can't create folder %{folder_path}
@@ -195,7 +196,7 @@ log.import.not_valid_action|Action: %{action} is not a valid action
 log.import.preprod_mode_active|warning ! Preprod mode is activated
 log.import.start|## start %{type} import ##
 log.import.end|## end %{type} import ##
-log.import.start_for_shop|start import in shop %{name_shop} (%{id_shop})
+log.import.start_for_store|start import in store %{store_name} (%{store_id})
 log.import.connector_get_order|get order with order id: %{marketplace_sku} and marketplace: %{markeplace_name}
 log.import.connector_get_all_order|get orders between %{date_from} and %{date_to} with account ID: %{account_id}
 log.import.find_one_order|%{nb_order} order found for order ID: %{marketplace_sku} and markeplace: %{markeplace_name} with account ID: %{account_id}
@@ -226,9 +227,12 @@ log.import.error_wrong_package_number|import order failed - wrong package number
 log.import.error_no_delivery_address|import order failed - no delivery address in the order
 log.import.order_synchronized_with_lengow|order successfully synchronised with Lengow webservice (ORDER ID %{order_id})
 log.import.order_not_synchronized_with_lengow|WARNING ! Order could NOT be synchronised with Lengow webservice (ORDER ID %{order_id})
+log.mail_report.send_mail_to|report email sent to %{email}
+log.mail_report.unable_send_mail_to|unable to send report email to %{email}
+log.order_action.start_for_store|check finish actions in store %{store_name} (%{store_id})
 log.order_action.call_tracking|call tracking with parameters: %{parameters}
 log.order_action.call_action_failed|order action failed - %{decoded_message}
 log.connector.call_api|call %{curl_url}
 log.connector.error_api|call api failed - %{error_code}
 log.setting.setting_change|%{key} - old value %{old_value} change by %{value}
-log.setting.setting_change_for_shop|%{key} - old value %{old_value} change by %{value} for shop %{shop_id}
+log.setting.setting_change_for_store|%{key} - old value %{old_value} change by %{value} for store %{store_id}

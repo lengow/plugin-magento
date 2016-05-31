@@ -151,7 +151,7 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
     /**
      * Get last import (type and timestamp)
      *
-     * @return mixed
+     * @return array
      */
     public function getLastImport()
     {
@@ -177,37 +177,54 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
      * Check logs table and send mail for order not imported correctly
      *
      * @param  boolean $log_output See log or not
-     *
-     * @return void
      */
     public function sendMailAlert($log_output = false)
     {
-        //TODO: sendmail + lengow_log
-
         $helper = Mage::helper('lengow_connector');
-        $subject = 'Lengow imports logs';
-        $mail_body = '';
+        $subject = '<h2>'.$helper->decodeLogMessage('lengow_log.mail_report.subject_report_mail').'</h2>';
+        $mail_body = '<p><ul>';
         $errors = Mage::getModel('lengow/import_ordererror')->getImportErrors();
-        if (empty($errors)) {
-            return true;
-        }
-        foreach ($errors as $error) {
-            $mail_body .= '<li>'.$helper->decodeLogMessage('lengow_log.mail_report.order', null, array(
-                    'marketplace_sku' => $error['marketplace_sku']
-                ));
-            if ($error['message'] != '') {
-                $mail_body .= ' - '.$helper->decodeLogMessage($error['message']);
-            } else {
-                $mail_body .= ' - '.$helper->decodeLogMessage('lengow_log.mail_report.no_error_in_report_mail');
+        if ($errors) {
+            foreach ($errors as $error) {
+                $mail_body .= '<li>'.$helper->decodeLogMessage('lengow_log.mail_report.order', null, array(
+                        'marketplace_sku' => $error['marketplace_sku']
+                    ));
+                if ($error['message'] != '') {
+                    $mail_body .= ' - '.$helper->decodeLogMessage($error['message']);
+                } else {
+                    $mail_body .= ' - '.$helper->decodeLogMessage('lengow_log.mail_report.no_error_in_report_mail');
+                }
+                $mail_body .= '</li>';
+                $order_error = Mage::getModel('lengow/import_ordererror')->load($error['id']);
+                $order_error->updateOrderError(array('mail' => 1));
+                unset($order_error);
             }
-            $mail_body .= '</li>';
-            $order_error = Mage::getModel('lengow/import_ordererror')
-                ->load($error['id']);
-            //comment for tests
-                //->updateOrderError(array('mail' => 1));
-            unset($order_error);
+            $mail_body .=  '</ul></p>';
+            $emails = Mage::helper('lengow_connector/config')->getReportEmailAddress();
+            foreach ($emails as $email) {
+                $mail = Mage::getModel('core/email');
+                $mail->setToEmail($email);
+                $mail->setBody($mail_body);
+                $mail->setSubject($subject);
+                $mail->setFromEmail(Mage::getStoreConfig('trans_email/ident_general/email'));
+                $mail->setFromName("Lengow");
+                $mail->setType('html');
+                try {
+                    $mail->send();
+                    $helper->log(
+                        'MailReport',
+                        $helper->setLogMessage('log.mail_report.send_mail_to', array('email' => $email)),
+                        $log_output
+                    );
+                } catch (Exception $e) {
+                    $helper->log(
+                        'MailReport',
+                        $helper->setLogMessage('log.mail_report.unable_send_mail_to', array('email' => $email)),
+                        $log_output
+                    );
+                }
+                unset($mail);
+            }
         }
-
-
     }
 }

@@ -27,6 +27,7 @@ class Lengow_Connector_Model_Observer
         'import_in_progress',
         'last_import_manual',
         'last_import_cron',
+        'export_last_export'
     );
 
     /**
@@ -54,19 +55,19 @@ class Lengow_Connector_Model_Observer
     {
         $object = $observer->getEvent()->getObject();
         if (is_a($object, 'Mage_Core_Model_Config_Data')) {
-            $pathExplode = explode("/", $object['path']);
-            if (isset($pathExplode[0]) && in_array($pathExplode[0], $this->_lengow_options)) {
+            $path_explode = explode("/", $object['path']);
+            if (isset($path_explode[0]) && in_array($path_explode[0], $this->_lengow_options)) {
                 if ($object['scope'] == 'stores' || $object['scope'] == 'default') {
-                    $oldValue = Mage::getStoreConfig($object['path'], $object['scope_id']);
-                    if ($oldValue != $object['value'] && !in_array($pathExplode[2], $this->_exclude_options)) {
+                    $old_value = Mage::getStoreConfig($object['path'], $object['scope_id']);
+                    if ($old_value != $object['value'] && !in_array($path_explode[2], $this->_exclude_options)) {
                         if ($object['scope'] == 'stores') {
                             $message = Mage::helper('lengow_connector/translation')->t(
-                                'log.setting.setting_change_for_shop',
+                                'log.setting.setting_change_for_store',
                                 array(
                                     'key'       => $object['path'],
-                                    'old_value' => $oldValue,
+                                    'old_value' => $old_value,
                                     'value'     => $object['value'],
-                                    'shop_id'   => $object['scope_id']
+                                    'store_id'  => $object['scope_id']
                                 )
                             );
                         } else {
@@ -74,7 +75,7 @@ class Lengow_Connector_Model_Observer
                                 'log.setting.setting_change',
                                 array(
                                     'key'       => $object['path'],
-                                    'old_value' => $oldValue,
+                                    'old_value' => $old_value,
                                     'value'     => $object['value'],
                                 )
                             );

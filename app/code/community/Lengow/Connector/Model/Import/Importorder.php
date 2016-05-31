@@ -423,7 +423,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
      *
      * @param string    $type_result        Type of result (new, update, error)
      * @param integer   $order_lengow_id    ID of the lengow order record
-     * @param integer   $order_id           Order ID Prestashop
+     * @param integer   $order_id           Order ID Magento
      *
      * @return array
      */
@@ -445,7 +445,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
      /**
      * Check the command and updates data if necessary
      *
-     * @param integer $order_id Order ID Prestashop
+     * @param integer $order_id Order ID Magento
      *
      * @return boolean
      */

@@ -194,5 +194,6 @@ en:
       arg_is_required: "can't ship order: %{arg_name} is required"
       action_is_too_old: "order action is too old. Please retry the call"
     mail_report:
+      subject_report_mail: "Lengow import errors"
       order: "Order %{marketplace_sku}"
       no_error_in_report_mail: "no error message, contact support via https://supportlengow.zendesk.com/agent/"

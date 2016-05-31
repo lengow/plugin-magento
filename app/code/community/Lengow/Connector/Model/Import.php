@@ -199,7 +199,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
             }
             // udpate last import date
             $this->_import_helper->updateDateImport($this->_type_import);
-            // get all shops for import
+            // get all store for import
             $store_collection = Mage::getResourceModel('core/store_collection')->addFieldToFilter('is_active', 1);
             foreach ($store_collection as $store) {
                 if (!is_null($this->_store_id) && (int)$store->getId() != $this->_store_id) {
@@ -208,9 +208,9 @@ class Lengow_Connector_Model_Import extends Varien_Object
                 if ($this->_config->get('store_enable', (int)$store->getId())) {
                     $this->_helper->log(
                         'Import',
-                        $this->_helper->setLogMessage('log.import.start_for_shop', array(
-                            'name_shop' => $store->getName(),
-                            'id_shop'   => (int)$store->getId()
+                        $this->_helper->setLogMessage('log.import.start_for_store', array(
+                            'store_name' => $store->getName(),
+                            'store_id'   => (int)$store->getId()
                         )),
                         $this->_log_output
                     );
@@ -255,7 +255,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
                             $lengow_order_error = Mage::getModel('lengow/import_ordererror');
                             $lengow_order_error->finishOrderErrors($this->_order_lengow_id);
                         }
-                        // import orders in prestashop
+                        // import orders in Magento
                         $result = $this->_importOrders($orders, (int)$store->getId());
                         if (!$this->_import_one_order) {
                             $order_new    += $result['order_new'];
@@ -325,8 +325,10 @@ class Lengow_Connector_Model_Import extends Varien_Object
             );
             // sending email in error for orders
             if ($this->_config->get('report_mail_enable') && !$this->_preprod_mode && !$this->_import_one_order) {
-                // TODO
-                // $this->_import_helper->sendMailAlert($this->log_output);
+                $this->_import_helper->sendMailAlert($this->_log_output);
+            }
+            if (!$this->_preprod_mode && !$this->_import_one_order && $this->_type_import == 'manual') {
+                Mage::getModel('lengow/import_action')->checkFinishAction();
             }
         }
         // Clear session
@@ -634,11 +636,6 @@ class Lengow_Connector_Model_Import extends Varien_Object
                     $import_finished = true;
                     break;
                 }
-
-                //check if order action is finish (Ship / Cancel)
-                // TODO
-                // LengowMarketplace::checkFinishAction();
-
             }
             if ($import_finished) {
                 break;

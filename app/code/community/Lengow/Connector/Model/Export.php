@@ -62,7 +62,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
     /**
      * integer Store Id
      */
-    protected $_storeId;
+    protected $_store_id;
 
     /**
      * object
@@ -128,7 +128,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
 
         $storeId = isset($params['store_id']) ? (int)$params['store_id'] : false;
         $this->_store = Mage::app()->getStore($storeId);
-        $this->_storeId = $this->_store->getId();
+        $this->_store_id = $this->_store->getId();
 
         $format = isset($params['format']) ? $params['format'] : null;
         if (is_null($format) || !in_array($format, $this->_available_formats)) {
@@ -138,7 +138,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
         }
         $stream = isset($params['stream']) ? (boolean)$params['stream'] : null;
         if (is_null($stream)) {
-            $this->_stream = $this->_config_helper->get('file_enable', $this->_storeId) ? false : true;
+            $this->_stream = $this->_config_helper->get('file_enable', $this->_store_id) ? false : true;
         } else {
             $this->_stream = $stream;
         }
@@ -146,16 +146,16 @@ class Lengow_Connector_Model_Export extends Varien_Object
         $this->_config['mode'] = isset($params['mode']) ? $params['mode'] : '';
         $this->_config['types'] = isset($params['types'])
             ? $params['types']
-            : $this->_config_helper->get('product_type', $this->_storeId);
+            : $this->_config_helper->get('product_type', $this->_store_id);
         $this->_config['status'] = isset($params['status'])
             ? (string)$params['status']
-            : (string)$this->_config_helper->get('product_status', $this->_storeId);
+            : (string)$this->_config_helper->get('product_status', $this->_store_id);
         $this->_config['out_of_stock'] = isset($params['out_of_stock'])
             ? (boolean)$params['out_of_stock']
-            : $this->_config_helper->get('out_stock', $this->_storeId);
+            : $this->_config_helper->get('out_stock', $this->_store_id);
         $this->_config['selected_products'] = isset($params['selected_products'])
             ? (boolean)$params['selected_products']
-            : $this->_config_helper->get('selection_enable', $this->_storeId);
+            : $this->_config_helper->get('selection_enable', $this->_store_id);
         $this->_config['offset'] = isset($params['offset']) ? (int)$params['offset'] : '';
         $this->_config['limit'] = isset($params['limit']) ? (int)$params['limit'] : '';
         $this->_config['product_ids'] = isset($params['product_ids']) ? $params['product_ids'] : '';
@@ -214,15 +214,15 @@ class Lengow_Connector_Model_Export extends Varien_Object
         );
         Mage::helper('lengow_connector')->log(
             'Export',
-            Mage::helper('lengow_connector')->__('log.export.start_for_shop', array(
-                'name_shop' => $this->_store->getName(),
-                'id_shop' => $this->_storeId
+            Mage::helper('lengow_connector')->__('log.export.start_for_store', array(
+                'store_name' => $this->_store->getName(),
+                'store_id'   => $this->_store_id
             )),
             !$this->_stream
         );
 
         // Gestion des attributs à exporter
-        $attributes_to_export = $this->_config_helper->getSelectedAttributes($this->_storeId);
+        $attributes_to_export = $this->_config_helper->getSelectedAttributes($this->_store_id);
         $this->_attrs = array();
 
         // set feed format
@@ -262,7 +262,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
                 $last = true;
             }
             $product = Mage::getModel('lengow/export_catalog_product')
-                ->setStoreId($this->_storeId)
+                ->setStoreId($this->_store_id)
                 ->setOriginalCurrency($this->getOriginalCurrency())
                 ->setCurrentCurrencyCode($this->getCurrentCurrencyCode())
                 ->load($p['entity_id']);
@@ -283,7 +283,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
                 $variations = $product_temp
                     ->setOriginalCurrency($this->getOriginalCurrency())
                     ->setCurrentCurrencyCode($this->getCurrentCurrencyCode())
-                    ->setStoreId($this->_storeId)
+                    ->setStoreId($this->_store_id)
                     ->getTypeInstance(true)
                     ->getConfigurableAttributesAsArray($product);
                 if ($variations) {
@@ -319,7 +319,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
                     $product_temporary = Mage::getModel('catalog/product')
                         ->setOriginalCurrency($this->getOriginalCurrency())
                         ->setCurrentCurrencyCode($this->getCurrentCurrencyCode())
-                        ->setStoreId($this->_storeId)
+                        ->setStoreId($this->_store_id)
                         ->load($childrenId);
                     $qtys[] = $product_temporary->getData('stock_item')->getQty();
                     unset($product_temporary);
@@ -373,7 +373,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
                 $temp_instance = Mage::getModel('catalog/product')
                     ->setOriginalCurrency($this->getOriginalCurrency())
                     ->setCurrentCurrencyCode($this->getCurrentCurrencyCode())
-                    ->setStoreId($this->_storeId)
+                    ->setStoreId($this->_store_id)
                     ->getCollection()
                     ->addAttributeToFilter('type_id', 'grouped')
                     ->addAttributeToFilter('entity_id', array('in' => $parents))
@@ -395,15 +395,15 @@ class Lengow_Connector_Model_Export extends Varien_Object
                 : 'Enabled';
             $array_data = array_merge(
                 $array_data,
-                $product->getCategories($product, $parent_instance, $this->_storeId, $this->_cacheCategory)
+                $product->getCategories($product, $parent_instance, $this->_store_id, $this->_cacheCategory)
             );
             $array_data = array_merge(
                 $array_data,
-                $product->getPrices($product, $this->_storeId, $configurable_instance)
+                $product->getPrices($product, $this->_store_id, $configurable_instance)
             );
-            $array_data = array_merge($array_data, $product->getShippingInfo($product, $this->_storeId));
+            $array_data = array_merge($array_data, $product->getShippingInfo($product, $this->_store_id));
             // Images, gestion de la fusion parent / enfant
-            if ($this->_config_helper->get('parent_image', $this->_storeId) &&
+            if ($this->_config_helper->get('parent_image', $this->_store_id) &&
                 isset($parent_instance) && $parent_instance !== false) {
                 $array_data = array_merge(
                     $array_data,
@@ -436,7 +436,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
             $array_data['image_default'] = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA)
                 .'catalog/product'.$product->getImage();
             $array_data['child_name'] = $this->_helper->cleanData($product->getName());
-            // Selected attributes to export with Frond End value of current shop
+            // Selected attributes to export with Frond End value of current store
             if (!empty($attributes_to_export)) {
                 foreach ($attributes_to_export as $field => $attr) {
                     if (!in_array($field, $this->_excludes) && !isset($array_data[$field])) {
@@ -523,13 +523,13 @@ class Lengow_Connector_Model_Export extends Varien_Object
             Mage::helper('lengow_connector')->log(
                 'Export',
                 Mage::helper('lengow_connector')->__('log.export.generate_feed_available_here', array(
-                    'name_shop' => $this->_store->getName(),
-                    'id_shop'   => $this->_storeId,
-                    'feed_url'  => $url_file
+                    'store_name' => $this->_store->getName(),
+                    'store_id'   => $this->_store_id,
+                    'feed_url'   => $url_file
                 ))
             );
         }
-        $this->_config_helper->set('last_export', Mage::getModel('core/date')->gmtTimestamp(), $this->_storeId);
+        $this->_config_helper->set('last_export', Mage::getModel('core/date')->gmtTimestamp(), $this->_store_id);
         $time_end = $this->_microtimeFloat();
         $time = $time_end - $time_start;
         Mage::helper('lengow_connector')->log(
@@ -565,7 +565,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
         $this->_clear_parent_cache++;
         if (!isset($this->_cacheParentProducts[$parent_id])) {
             $parent = Mage::getModel('lengow/export_catalog_product')
-                ->setStoreId($this->_storeId)
+                ->setStoreId($this->_store_id)
                 ->setOriginalCurrency($this->getOriginalCurrency())
                 ->setCurrentCurrencyCode($this->getCurrentCurrencyCode())
                 ->load($parent_id);
@@ -600,15 +600,15 @@ class Lengow_Connector_Model_Export extends Varien_Object
         // Search product to export
         $productCollection = Mage::getModel('catalog/product')
             ->getCollection()
-            ->setStoreId($this->_storeId)
-            ->addStoreFilter($this->_storeId)
+            ->setStoreId($this->_store_id)
+            ->addStoreFilter($this->_store_id)
             ->addAttributeToFilter('type_id', array('in' => $_types))
             ->joinField(
                 'store_id',
                 Mage::getConfig()->getTablePrefix().'catalog_category_product_index',
                 'store_id',
                 'product_id=entity_id',
-                '{{table}}.store_id = '.$this->_storeId,
+                '{{table}}.store_id = '.$this->_store_id,
                 'left'
             );
         // Filter status
@@ -652,14 +652,14 @@ class Lengow_Connector_Model_Export extends Varien_Object
         // Search product to export
         $productCollection = Mage::getModel('catalog/product')
             ->getCollection()
-            ->setStoreId($this->_storeId)
-            ->addStoreFilter($this->_storeId)
+            ->setStoreId($this->_store_id)
+            ->addStoreFilter($this->_store_id)
             ->joinField(
                 'store_id',
                 Mage::getConfig()->getTablePrefix().'catalog_category_product_index',
                 'store_id',
                 'product_id=entity_id',
-                '{{table}}.store_id = '.$this->_storeId,
+                '{{table}}.store_id = '.$this->_store_id,
                 'left'
             );
         $productCollection = clone $productCollection;
@@ -823,6 +823,6 @@ class Lengow_Connector_Model_Export extends Varien_Object
      */
     public function getExportUrl()
     {
-        return Mage::getUrl('lengow/feed', array('store' => $this->_storeId));
+        return Mage::getUrl('lengow/feed', array('store' => $this->_store_id));
     }
 }
