@@ -21,8 +21,8 @@ product.screen.lengow_shop_sync|Synchronized
 product.screen.lengow_shop_no_sync|Not synchronized
 product.screen.sync_your_shop|Synchronize my shop with Lengow
 product.screen.button_download|Download
-product.screen.shop_last_indexation|Last indexation
-product.screen.shop_not_index|Not indexed yet
+product.screen.store_last_indexation|Last indexation
+product.screen.store_not_index|Not indexed yet
 product.table.publish_on_lengow|Publish on Lengow
 product.table.change_publication|Change Lengow's publication
 product.table.publication|Publication

@@ -22,15 +22,15 @@ $last_export = $helper->getDateInCorrectFormat($config->get('last_export', $stor
        data-id_shop="<?php echo $store_id ?>"
        data-href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_product/'); ?>?isAjax=true">
     </a></div>
-<a href="<?php echo $sync_data['shops'][$store_id]['feed_url'] ?>stream/1/"
+<a href="<?php echo $sync_data['shops'][$store_id]['feed_url'] ?>stream/1/update_export_date/0"
    target="_blank"><i class="fa fa-download lengow_tooltip"><span> <?php echo $helper->__('product.screen.button_download') ?></span></i></a><br>
 <p>
     <?php
     if ($config->get('last_export', $store_id) != null) {
-        echo $helper->__('product.screen.shop_last_indexation') . ' ';
+        echo $helper->__('product.screen.store_last_indexation') . ' ';
         echo $last_export;
     } else {
-        echo $helper->__('product.screen.shop_not_index');
+        echo $helper->__('product.screen.store_not_index');
     }
     ?>
 </p>

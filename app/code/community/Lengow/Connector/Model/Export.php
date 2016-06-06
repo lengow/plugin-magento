@@ -95,6 +95,11 @@ class Lengow_Connector_Model_Export extends Varien_Object
     protected $_fileFormat;
 
     /**
+     * boolean update export date or not
+     */
+    protected $_update_export_date;
+
+    /**
      * object
      */
     protected $_helper;
@@ -142,6 +147,8 @@ class Lengow_Connector_Model_Export extends Varien_Object
         } else {
             $this->_stream = $stream;
         }
+        $this->_update_export_date = isset($params['update_export_date']) ? (bool)$params['update_export_date'] : true;
+       
 
         $this->_config['mode'] = isset($params['mode']) ? $params['mode'] : '';
         $this->_config['types'] = isset($params['types'])
@@ -529,7 +536,10 @@ class Lengow_Connector_Model_Export extends Varien_Object
                 ))
             );
         }
-        $this->_config_helper->set('last_export', Mage::getModel('core/date')->gmtTimestamp(), $this->_store_id);
+        // Update last export date
+        if ($this->_update_export_date) {
+            $this->_config_helper->set('last_export', Mage::getModel('core/date')->gmtTimestamp(), $this->_store_id);
+        }
         $time_end = $this->_microtimeFloat();
         $time = $time_end - $time_start;
         Mage::helper('lengow_connector')->log(

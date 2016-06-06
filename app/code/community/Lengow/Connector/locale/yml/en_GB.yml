@@ -30,8 +30,8 @@ en:
       lengow_shop_no_sync: "Not synchronized"
       sync_your_shop: "Synchronize my shop with Lengow"
       button_download: "Download"
-      shop_last_indexation: "Last indexation"
-      shop_not_index: "Not indexed yet"
+      store_last_indexation: "Last indexation"
+      store_not_index: "Not indexed yet"
     table:
       publish_on_lengow: "Publish on Lengow"
       change_publication: "Change Lengow's publication"
