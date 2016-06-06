@@ -50,6 +50,8 @@ class Lengow_Connector_Adminhtml_Lengow_ProductController extends Mage_Adminhtml
                         } else {
                             $checkShop['message'] = Mage::helper('lengow_connector')
                                 ->__('product.screen.lengow_shop_no_sync');
+                            $checkShop['link'] = Mage::helper('lengow_connector')
+                                ->__('product.screen.sync_your_shop');
                             $checkShop['id'] = 'lengow_shop_no_sync';
                         }
                         $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($checkShop));

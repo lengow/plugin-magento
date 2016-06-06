@@ -26,10 +26,6 @@
 
   <adminhtml_lengow_product_index>
     <reference name="head">
-      <action method="addCss"><stylesheet>lengow/css/bootstrap-3.3.6.css</stylesheet></action>
-      <action method="addCss"><stylesheet>lengow/css/bootstrap-switch.min.css</stylesheet></action>
-      <action method="addItem"><type>skin_js</type><name>lengow/js/bootstrap.min.js</name></action>
-      <action method="addItem"><type>skin_js</type><name>lengow/js/bootstrap-switch.js</name></action>
       <action method="addItem"><type>skin_js</type><name>lengow/js/product.js</name></action>
     </reference>
     <reference name="content">
