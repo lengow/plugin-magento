@@ -210,6 +210,10 @@ span.lengow_out_of_stock_suuport{
     width:150px;
 }
 
+.lengow_product_store_name span {
+    width:200px;
+}
+
 span.lengow_order_action {
     bottom:40px;
     left:-30px;

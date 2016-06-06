@@ -12,11 +12,10 @@ $last_export = $helper->getDateInCorrectFormat($config->get('last_export', $stor
 ?>
 <h2><?php echo $helper->__('menu.products'); ?></h2>
 <div><?php echo $this->getChildHtml('store_switcher'); ?></div>
-<a class="lengow_tooltip">
-    <h3 id="lengow_product_store_name"><?php echo $sync_data['shops'][$store_id]['name'] ?></h3>
+    <h3 id="lengow_product_store_name" class="lengow_product_store_name lengow_tooltip"><?php echo $sync_data['shops'][$store_id]['name'] ?>
         <span><?php echo $sync_data['shops'][$store_id]['name'] ?> (<?php echo $store_id ?>)
             <?php echo $sync_data['shops'][$store_id]['domain'] ?></span>
-</a>
+    </h3>
 <br>
 <div id="lengow_check_shop">
     <a class="lengow_check_shop lengow_tooltip"
