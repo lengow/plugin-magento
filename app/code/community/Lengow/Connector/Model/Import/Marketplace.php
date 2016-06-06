@@ -303,27 +303,28 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
             $params['marketplace_order_id'] = $order->getData('order_id_lengow');
             $params['marketplace'] = $order->getData('marketplace_lengow');
             $params['action_type'] = $action;
-            if (!(bool)Mage::helper('lengow_connector/config')->get('preprod_mode_enable')) {
-                $connector = Mage::getModel('lengow/connector');
-                $results = $connector->queryApi(
-                    'get',
-                    '/v3.0/orders/actions/',
-                    $order->getStore()->getId(),
-                    array_merge($params, array("queued" => "True"))
-                );
-                if (isset($results->error) && isset($results->error->message)) {
-                    throw new Lengow_Connector_Model_Exception($results->error->message);
-                }
-                if (isset($results->count) && $results->count > 0) {
-                    foreach ($results->results as $row) {
-                        $order_action_id = Mage::getModel('lengow/import_action')->getIdByActionId($row->id);
-                        if ($order_action_id) {
-                            $order_action = Mage::getModel('lengow/import_action')->load($order_action_id);
-                            $retry = (int)$order_action->getData('retry') + 1;
-                            $order_action->updateAction(array('retry' => $retry));
-                        }
+
+            $connector = Mage::getModel('lengow/connector');
+            $results = $connector->queryApi(
+                'get',
+                '/v3.0/orders/actions/',
+                $order->getStore()->getId(),
+                array_merge($params, array("queued" => "True"))
+            );
+            if (isset($results->error) && isset($results->error->message)) {
+                throw new Lengow_Connector_Model_Exception($results->error->message);
+            }
+            if (isset($results->count) && $results->count > 0) {
+                foreach ($results->results as $row) {
+                    $order_action_id = Mage::getModel('lengow/import_action')->getIdByActionId($row->id);
+                    if ($order_action_id) {
+                        $order_action = Mage::getModel('lengow/import_action')->load($order_action_id);
+                        $retry = (int)$order_action->getData('retry') + 1;
+                        $order_action->updateAction(array('retry' => $retry));
                     }
-                } else {
+                }
+            } else {
+                if (!(bool)Mage::helper('lengow_connector/config')->get('preprod_mode_enable')) {
                     $results = $connector->queryApi(
                         'post',
                         '/v3.0/orders/actions/',
@@ -340,18 +341,18 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
                             'parameters'     => Mage::helper('core')->jsonEncode($params)
                         ));
                     }
-                    // Create log for call action
-                    $param_list = false;
-                    foreach ($params as $param => $value) {
-                        $param_list.= !$param_list ? '"'.$param.'": '.$value : ' -- "'.$param.'": '.$value;
-                    }
-                    $helper->log(
-                        'API-OrderAction',
-                        $helper->setLogMessage('log.order_action.call_tracking', array('parameters' => $param_list)),
-                        false,
-                        $order->getData('order_id_lengow')
-                    );
                 }
+                // Create log for call action
+                $param_list = false;
+                foreach ($params as $param => $value) {
+                    $param_list.= !$param_list ? '"'.$param.'": '.$value : ' -- "'.$param.'": '.$value;
+                }
+                $helper->log(
+                    'API-OrderAction',
+                    $helper->setLogMessage('log.order_action.call_tracking', array('parameters' => $param_list)),
+                    false,
+                    $order->getData('order_id_lengow')
+                );
             }
             return true;
         } catch (Lengow_Connector_Model_Exception $e) {
@@ -361,7 +362,8 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
         }
         if (isset($error_message)) {
             if ($order_lengow) {
-                if ((int)$order_lengow->getData('order_process_state') != 2) {
+                $process_state_finish = $order_lengow->getOrderProcessState('closed');
+                if ((int)$order_lengow->getData('order_process_state') != $process_state_finish) {
                     $order_lengow->updateOrder(array('is_in_error' => 1));
                     $order_error = Mage::getModel('lengow/import_ordererror');
                     $order_error->createOrderError(array(

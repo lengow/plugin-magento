@@ -388,6 +388,8 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
                     $this->_helper->setLogMessage('lengow_log.exception.order_is_empty')
                 );
             }
+            // Inactivate quote (Test)
+            $quote->setIsActive(false)->save();
         } catch (Lengow_Connector_Model_Exception $e) {
             $error_message = $e->getMessage();
         } catch (Exception $e) {
@@ -466,6 +468,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
         $order_updated = $this->_model_order->updateState(
             $order,
             $this->_order_state_lengow,
+            $this->_order_data,
             $this->_package_data,
             $order_lengow_id
         );
@@ -934,13 +937,19 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
     {
         $order_line_saved = false;
         foreach ($this->_package_data->cart as $product) {
-            $order_line_id =  (string)$product->marketplace_order_line_id;
-            $order_line = Mage::getModel('lengow/import_orderline');
-            $order_line->createOrderLine(array(
-                'order_id'      => (int)$order->getId(),
-                'order_line_id' => $order_line_id
-            ));
-            $order_line_saved .= (!$order_line_saved ? $order_line_id : ' / '.$order_line_id);
+            if (!is_null($product->marketplace_status)) {
+                $state_product = $this->_marketplace->getStateLengow((string)$product->marketplace_status);
+                if ($state_product == 'canceled' || $state_product == 'refused') {
+                    continue;
+                }
+                $order_line_id =  (string)$product->marketplace_order_line_id;
+                $order_line = Mage::getModel('lengow/import_orderline');
+                $order_line->createOrderLine(array(
+                    'order_id'      => (int)$order->getId(),
+                    'order_line_id' => $order_line_id
+                ));
+                $order_line_saved .= (!$order_line_saved ? $order_line_id : ' / '.$order_line_id);
+            }
         }
         return $order_line_saved;
     }

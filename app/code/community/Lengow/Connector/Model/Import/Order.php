@@ -335,7 +335,6 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
         return false;
     }
 
-
     /**
      * Get Magento equivalent to lengow order state
      *
@@ -455,17 +454,19 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
      *
      * @param Mage_Sales_Model_Order $order              Magento Order
      * @param string                 $order_state_lengow lengow status
+     * @param mixed                  $order_data         order data
      * @param mixed                  $package_data       package data
      * @param mixed                  $order_lengow_id    lengow order id or false
      *
-     * @return bool true if order has been updated
+     * @return mixed (Processing, Complete, Canceled or false)
      */
-    public function updateState($order, $order_state_lengow, $package_data, $order_lengow_id)
+    public function updateState($order, $order_state_lengow, $order_data, $package_data, $order_lengow_id)
     {
         // Finish actions if lengow order is shipped, closed or cancel
         $order_process_state = $this->getOrderProcessState($order_state_lengow);
+        $trackings = $package_data->delivery->trackings;
         if ($order_process_state == self::PROCESS_STATE_FINISH) {
-            Mage::getModel('lengow/import_action')->finishActions($order->getId());
+            Mage::getModel('lengow/import_action')->finishAllActions($order->getId());
         }
         // Update Lengow order if necessary
         if ($order_lengow_id) {
@@ -473,13 +474,15 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
             $params = array();
             if ($order_lengow->getData('order_lengow_state') != $order_state_lengow) {
                 $params['order_lengow_state'] = $order_state_lengow;
+                $params['extra'] = Mage::helper('core')->jsonEncode($order_data);
+                $params['tracking'] = count($trackings) > 0 ? (string)$trackings[0]->number : null;
             }
             if ($order_process_state == self::PROCESS_STATE_FINISH) {
                 if ((int)$order_lengow->getData('order_process_state') != $order_process_state) {
                     $params['order_process_state'] = $order_process_state;
                 }
                 if ((int)$order_lengow->getData('is_in_error') != 0) {
-                    $params['is_in_error'] = $order_state_lengow;
+                    $params['is_in_error'] = 0;
                 }
             }
             if (count($params) > 0) {
@@ -503,7 +506,6 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
                 if ($order->getState() == $this->getOrderState('new')) {
                     $this->toInvoice();
                 }
-                $trackings = $package_data->delivery->trackings;
                 $this->toShip(
                     $order,
                     (count($trackings) > 0 ? (string)$trackings[0]->carrier : null),
@@ -729,7 +731,6 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
             array(
                 'marketplace_order_id' => $order->getData('order_id_lengow'),
                 'marketplace'          => $order->getData('marketplace_lengow'),
-                'account_id'           => $account_id,
                 'updated_from'         => date('c', strtotime(date('Y-m-d').' -100days')),
                 'updated_to'           => date('c'),
             )

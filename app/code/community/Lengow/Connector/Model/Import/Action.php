@@ -200,7 +200,7 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
      *
      * @return boolean
      */
-    public function finishActions($order_id, $action_type = null)
+    public function finishAllActions($order_id, $action_type = null)
     {
         // get all order action
         $collection = $this->getCollection()
@@ -222,7 +222,7 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
     }
 
     /**
-     * Removes all actions for one order Magento
+     * Remove old actions > 3 days
      *
      * @param string  $action_type  type (null, ship or cancel)
      *
@@ -334,7 +334,9 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
                     }
                     // Construct array actions
                     foreach ($results->results as $action) {
-                        $api_actions[$action->id] = $action;
+                        if (isset($action->id)) {
+                            $api_actions[$action->id] = $action;
+                        }
                     }
                     $page++;
                 } while ($results->next != null);
@@ -355,7 +357,7 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
                             $lengow_action = Mage::getModel('lengow/import_action')->load($action['id']);
                             $lengow_action->updateAction(array('state' => self::STATE_FINISH));
                             $order_lengow_id = Mage::getModel('lengow/import_order')
-                                    ->getLengowOrderIdWithOrderId($order_id);
+                                ->getLengowOrderIdWithOrderId($action['order_id']);
                             // if lengow order not exist do nothing (compatibility v2)
                             if ($order_lengow_id) {
                                 $order_error = Mage::getModel('lengow/import_ordererror');
@@ -366,12 +368,12 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
                                 }
                                 $process_state_finish = $order_lengow->getOrderProcessState('closed');
                                 if ((int)$order_lengow->getData('order_process_state') != $process_state_finish) {
-                                    // If action is accepted -> close order and finish all order errors
+                                    // If action is accepted -> close order and finish all order actions
                                     if ($api_actions[$action['action_id']]->processed == true) {
-                                        $order_error->finishOrderErrors($order_lengow_id, 'send');
                                         $order_lengow->updateOrder(array(
                                             'order_process_state' => $process_state_finish
                                         ));
+                                        $this->finishAllActions($action['order_id']);
                                     } else {
                                         // If action is denied -> create order error
                                         $order_error->createOrderError(array(
