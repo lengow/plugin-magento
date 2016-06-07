@@ -661,7 +661,8 @@ class Lengow_Connector_Model_Export extends Varien_Object
                 'product_id=entity_id',
                 '{{table}}.store_id = '.$this->_store_id,
                 'left'
-            );
+            )
+            ->addAttributeToFilter('type_id', array('nlike' => 'bundle'));
         $productCollection = clone $productCollection;
         $productCollection->getSelect()->columns('COUNT(DISTINCT e.entity_id) As total');
         return $productCollection->getFirstItem()->getTotal();

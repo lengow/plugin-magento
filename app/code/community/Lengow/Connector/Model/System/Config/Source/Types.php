@@ -20,7 +20,7 @@ class Lengow_Connector_Model_System_Config_Source_Types extends Mage_Core_Model_
         return array(
             array('value' => 'configurable', 'label' => Mage::helper('adminhtml')->__('Configurable')),
             array('value' => 'simple', 'label' => Mage::helper('adminhtml')->__('Simple')),
-            array('value' => 'bundle', 'label' => Mage::helper('adminhtml')->__('Bundle')),
+            array('value' => 'downloadable', 'label' => Mage::helper('adminhtml')->__('Downloadable')),
             array('value' => 'grouped', 'label' => Mage::helper('adminhtml')->__('Grouped')),
             array('value' => 'virtual', 'label' => Mage::helper('adminhtml')->__('Virtual'))
         );
