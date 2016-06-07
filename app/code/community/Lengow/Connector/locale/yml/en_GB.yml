@@ -17,6 +17,9 @@ en:
       id: "Id"
       date: "Date"
       message: "Message"
+  footer:
+      legals: "Legals"
+      copyright_lengow: "Copyright Lengow"
   product:
     screen:
       title: "Export product"

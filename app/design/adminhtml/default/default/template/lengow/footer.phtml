@@ -1,5 +1,9 @@
+<?php $helper = Mage::helper('lengow_connector');
+?>
 <div id="footer">
     <div class="container">
-        <p class="text-muted">Lengow Magento Module <a href="http://www.lengow.com">Lengow.com</a></p>
+        <a href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_legal/'); ?>" class="sub-link" title="Legal">
+            <?php echo $helper->__('footer.legals') ?>
+        </a>| <?php echo $helper->__('footer.copyright_lengow') ?>
     </div>
 </div>
