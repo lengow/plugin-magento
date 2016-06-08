@@ -50,7 +50,9 @@ class Lengow_Connector_Block_Adminhtml_Product_Grid extends Mage_Adminhtml_Block
                 'product_id=entity_id',
                 '{{table}}.stock_id=1',
                 'left'
-            );
+            )
+            ->addAttributeToFilter('type_id', array('nlike' => 'bundle'));
+
         if ($store->getId()) {
             $collection->setStoreId($store->getId());
             $collection->addStoreFilter($store);
@@ -102,6 +104,12 @@ class Lengow_Connector_Block_Adminhtml_Product_Grid extends Mage_Adminhtml_Block
 
     protected function _prepareColumns()
     {
+        //create type filter without bundle type product
+        $types = Mage::getModel('lengow/system_config_source_types')->toOptionArray();
+        foreach ($types as $value) {
+            $type[$value['value']] = $value['label'];
+        }
+
         $this->addColumn(
             'entity_id',
             array(
@@ -135,7 +143,7 @@ class Lengow_Connector_Block_Adminhtml_Product_Grid extends Mage_Adminhtml_Block
                 'index'   => 'type_id',
                 'width'   => '60px',
                 'type'    => 'options',
-                'options' => Mage::getSingleton('catalog/product_type')->getOptionArray(),
+                'options' => $type,
             )
         );
         $sets = Mage::getResourceModel('eav/entity_attribute_set_collection')

@@ -89,4 +89,17 @@
             </action>
         </reference>
     </adminhtml_sales_order_view>
+
+  <adminhtml_lengow_legal_index>
+    <reference name="head">
+      <action method="addItem"><type>skin_js</type><name>lengow/js/legal.js</name></action>
+    </reference>
+    <reference name="content">
+      <block type="page/html" name="lengow_layout" template="lengow/layout/legal.phtml" >
+        <block type="page/html" name="lengow_content" template="lengow/legal/index.phtml" />
+        <block type="page/html" name="lengow_footer" template="lengow/footer.phtml" />
+      </block>
+    </reference>
+    <remove name="footer"/>
+  </adminhtml_lengow_legal_index>
 </layout>
