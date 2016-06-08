@@ -189,7 +189,7 @@ log.export.start_for_store|start export in store %{store_name} (%{store_id})
 log.export.feed_already_launch|feed already launch
 log.export.nb_product_found|%{nb_product} product(s) found
 log.export.count_product|%{product_count} products exported
-log.export.total_product_exported|%{nb_product} product(s) exported (%{nb_simple} simple product(s), %{nb_configurable} configurable product(s), %{nb_bundle} bundle product(s), %{nb_grouped} grouped product(s), %{nb_virtual} virtual product(s))
+log.export.total_product_exported|%{nb_product} product(s) exported (%{nb_simple} simple product(s), %{nb_configurable} configurable product(s), %{nb_grouped} grouped product(s), %{nb_virtual} virtual product(s), %{nb_downloadable} downloadable product(s))
 log.export.memory_usage|memory usage: %{memory} Mb
 log.export.execution_time|execution time: %{seconds} seconds
 log.export.your_feed_available_here|your feed is available here: <a href='%{feed_url}' target='_blank'>%{feed_url}</a>

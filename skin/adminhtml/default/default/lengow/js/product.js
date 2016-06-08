@@ -2,9 +2,9 @@
     $(document).ready(function () {
 
         if ($('#change_option_selected').is(':checked')){
-            $('#productGrid').show();
+            $('#lengow_product_grid').show();
         } else {
-            $('#productGrid').hide();
+            $('#lengow_product_grid').hide();
         }
 
         function checkShop() {
@@ -49,9 +49,9 @@
                     $("#parent_total_products").load(location.href + " #total_products");
                     $("#parent_exported_products").load(location.href + " #exported_products");
                     if (action === 'change_option_selected' && data == "1") {
-                        $('#productGrid').show();
+                        $('#lengow_product_grid').show();
                     } else if (action === 'change_option_selected'){
-                        $('#productGrid').hide();
+                        $('#lengow_product_grid').hide();
                     }
                 }
             });

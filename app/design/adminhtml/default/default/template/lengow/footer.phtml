@@ -1,8 +1,8 @@
-<?php $helper = Mage::helper('lengow_connector');
-?>
+<?php $helper = Mage::helper('lengow_connector'); ?>
 <div id="footer">
     <div class="container">
-        <a href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_legal/'); ?>" class="sub-link" title="Legal">
+        <a href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_legal/'); ?>"
+            class="sub-link" title="<?php echo $helper->__('footer.legals') ?>">
             <?php echo $helper->__('footer.legals') ?>
         </a>| <?php echo $helper->__('footer.copyright_lengow') ?>
     </div>

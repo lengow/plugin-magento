@@ -7,7 +7,7 @@ en:
       feed_already_launch: "feed already launch"
       nb_product_found: "%{nb_product} product(s) found"
       count_product: "%{product_count} products exported"
-      total_product_exported: "%{nb_product} product(s) exported (%{nb_simple} simple product(s), %{nb_configurable} configurable product(s), %{nb_bundle} bundle product(s), %{nb_grouped} grouped product(s), %{nb_virtual} virtual product(s))"
+      total_product_exported: "%{nb_product} product(s) exported (%{nb_simple} simple product(s), %{nb_configurable} configurable product(s), %{nb_grouped} grouped product(s), %{nb_virtual} virtual product(s), %{nb_downloadable} downloadable product(s))"
       memory_usage: "memory usage: %{memory} Mb"
       execution_time: "execution time: %{seconds} seconds"
       your_feed_available_here: "your feed is available here: <a href='%{feed_url}' target='_blank'>%{feed_url}</a>"

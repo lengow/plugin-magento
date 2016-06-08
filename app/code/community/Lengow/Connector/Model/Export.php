@@ -257,9 +257,9 @@ class Lengow_Connector_Model_Export extends Varien_Object
         $count_simple = 0;
         $count_simple_disabled = 0;
         $count_configurable = 0;
-        $count_bundle = 0;
         $count_grouped = 0;
         $count_virtual = 0;
+        $count_downloadable = 0;
         // Generate data
         foreach ($products as $p) {
             $array_data = array();
@@ -274,7 +274,6 @@ class Lengow_Connector_Model_Export extends Varien_Object
                 ->setCurrentCurrencyCode($this->getCurrentCurrencyCode())
                 ->load($p['entity_id']);
             $data = $product->getData();
-
             // Load first parent if exist
             $parents = null;
             $parent_instance = null;
@@ -300,20 +299,21 @@ class Lengow_Connector_Model_Export extends Varien_Object
                     $variation_name = rtrim($variation_name, ',');
                 }
             }
+            // Virtual product
             if ($product->getTypeId() == 'virtual') {
                 $count_virtual++;
                 $product_type = 'virtual';
             }
-            // Grouped and Bundle products
-            if ($product->getTypeId() == 'grouped' || $product->getTypeId() == 'bundle') {
-                if ($product->getTypeId() == 'bundle') {
-                    $count_bundle++;
-                    $product_type = 'bundle';
-                } else {
-                    $count_grouped++;
-                    $product_type = 'grouped';
-                }
-                // get quantity for bundle or grouped products
+            // Downloadable products
+            if ($product->getTypeId() == 'downloadable') {
+                $count_downloadable++;
+                $product_type = 'downloadable';
+            }
+            // Grouped products
+            if ($product->getTypeId() == 'grouped') {
+                $count_grouped++;
+                $product_type = 'grouped';
+                // get quantity for grouped products
                 $qtys = array();
                 $childrenIds = array_reduce(
                     $product->getTypeInstance(true)->getChildrenIds($product->getId()),
@@ -394,7 +394,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
             $array_data['qty'] = (integer)$qty->getQty();
             //we dont send qty ordered (old settings : without_product_ordering)
             $array_data['qty'] = $array_data['qty'] - (integer)$qty->getQtyOrdered();
-            if ($product->getTypeId() == 'grouped' || $product->getTypeId() == 'bundle') {
+            if ($product->getTypeId() == 'grouped') {
                 $array_data['qty'] = (integer)$qty_temp;
             }
             $array_data['status'] = $product->getStatus() == Mage_Catalog_Model_Product_Status::STATUS_DISABLED
@@ -496,16 +496,16 @@ class Lengow_Connector_Model_Export extends Varien_Object
         $this->_write($feed->makeFooter());
         // Product counter
         $total_simple = $count_simple - $count_simple_disabled;
-        $total = $count_configurable + $count_grouped + $count_bundle + $count_virtual + $total_simple;
+        $total = $count_configurable + $count_grouped + $count_downloadable + $count_virtual + $total_simple;
         Mage::helper('lengow_connector')->log(
             'Export',
             Mage::helper('lengow_connector')->__('log.export.total_product_exported', array(
                 'nb_product'      => $total,
                 'nb_simple'       => $total_simple,
                 'nb_configurable' => $count_configurable,
-                'nb_bundle'       => $count_bundle,
                 'nb_grouped'      => $count_grouped,
-                'nb_virtual'      => $count_virtual
+                'nb_virtual'      => $count_virtual,
+                'nb_downloadable' => $count_downloadable,
             )),
             !$this->_stream
         );
