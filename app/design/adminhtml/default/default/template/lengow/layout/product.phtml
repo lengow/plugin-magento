@@ -1,4 +1,5 @@
-<?php
-echo $this->getChildHtml("lengow_product");
-echo $this->getChildHtml("lengow_content");
-echo $this->getChildHtml("lengow_footer");
+<?php echo $this->getChildHtml("lengow_product"); ?>
+<div id="lengow_product_grid">
+    <?php echo $this->getChildHtml("lengow_content"); ?>
+</div>
+<?php echo $this->getChildHtml("lengow_footer"); ?>

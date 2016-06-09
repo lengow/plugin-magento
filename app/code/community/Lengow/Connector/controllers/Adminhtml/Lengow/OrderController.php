@@ -113,33 +113,39 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
     {
         $messages = array();
         $helper = Mage::helper('lengow_connector');
-        if (isset($results['order_new'])) {
+        // if global error return this
+        if (isset($results['error'][0])) {
+            $messages[] = $helper->decodeLogMessage($results['error'][0]);
+            return $messages;
+        }
+        if (isset($results['order_new']) && $results['order_new'] > 0) {
             $messages[]= $helper->__('lengow_log.error.nb_order_imported', array(
                 'nb_order' => $results['order_new']
             ));
         }
-        if (isset($results['order_update'])) {
+        if (isset($results['order_update']) && $results['order_update'] > 0) {
             $messages[]= $helper->__('lengow_log.error.nb_order_updated', array(
                 'nb_order' => $results['order_update']
             ));
         }
-        if (isset($results['order_error'])) {
+        if (isset($results['order_error']) && $results['order_error'] > 0) {
             $messages[]= $helper->__('lengow_log.error.nb_order_with_error', array(
                 'nb_order' => $results['order_error']
             ));
+        }
+        if (count($messages) == 0) {
+            $messages[]= $helper->__('lengow_log.error.no_notification');
         }
         if (isset($results['error'])) {
             foreach ($results['error'] as $store_id => $values) {
                 if ((int)$store_id > 0) {
                     $store = Mage::getModel('core/store')->load($store_id);
                     $store_name = $store->getName().' ('.$store->getId().') : ';
-                } else {
-                    $store_name = '';
-                }
-                if (is_array($values)) {
-                    $messages[] = $store_name.join(', ', $helper->decodeLogMessage($values));
-                } else {
-                    $messages[] = $store_name.$helper->decodeLogMessage($values);
+                    if (is_array($values)) {
+                        $messages[] = $store_name.join(', ', $helper->decodeLogMessage($values));
+                    } else {
+                        $messages[] = $store_name.$helper->decodeLogMessage($values);
+                    }
                 }
             }
         }

@@ -10,27 +10,30 @@ $arrayTypes = explode(",", $type_selected);
 $sync_data = Mage::helper('lengow_connector/sync')->getSyncData();
 $last_export = $helper->getDateInCorrectFormat($config->get('last_export', $store_id));
 ?>
-<h2><?php echo $helper->__('menu.products'); ?></h2>
+
 <div><?php echo $this->getChildHtml('store_switcher'); ?></div>
     <h3 id="lengow_product_store_name" class="lengow_product_store_name lengow_tooltip"><?php echo $sync_data['shops'][$store_id]['name'] ?>
-        <span><?php echo $sync_data['shops'][$store_id]['name'] ?> (<?php echo $store_id ?>)
-            <?php echo $sync_data['shops'][$store_id]['domain'] ?></span>
+        <span>
+            <?php echo $sync_data['shops'][$store_id]['name'] ?> (<?php echo $store_id ?>)
+            <?php echo $sync_data['shops'][$store_id]['domain'] ?>
+        </span>
     </h3>
 <br>
 <div id="lengow_check_shop">
     <a class="lengow_check_shop lengow_tooltip"
        data-id_shop="<?php echo $store_id ?>"
        data-href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_product/'); ?>?isAjax=true">
-    </a></div>
-<a href="<?php echo $sync_data['shops'][$store_id]['feed_url'] ?>stream/1/"
+    </a>
+</div>
+<a href="<?php echo $sync_data['shops'][$store_id]['feed_url'] ?>stream/1/update_export_date/0"
    target="_blank"><i class="fa fa-download lengow_tooltip"><span> <?php echo $helper->__('product.screen.button_download') ?></span></i></a><br>
 <p>
     <?php
     if ($config->get('last_export', $store_id) != null) {
-        echo $helper->__('product.screen.shop_last_indexation') . ' ';
+        echo $helper->__('product.screen.store_last_indexation').' ';
         echo $last_export;
     } else {
-        echo $helper->__('product.screen.shop_not_index');
+        echo $helper->__('product.screen.store_not_index');
     }
     ?>
 </p>

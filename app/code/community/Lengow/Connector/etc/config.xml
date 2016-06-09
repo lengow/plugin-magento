@@ -225,6 +225,26 @@
             </controller_action_layout_render_before>
         </events>
     </adminhtml>
+    <crontab>
+        <jobs>
+            <export_cron_lengow>
+                <schedule>
+                    <cron_expr>* */4 * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>lengow/observer::exportCron</model>
+                </run>
+            </export_cron_lengow>
+            <import_cron_lengow>
+                <schedule>
+                    <cron_expr>*/30 * * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>lengow/observer::importCron</model>
+                </run>
+            </import_cron_lengow>
+        </jobs>
+    </crontab>
     <phpunit>
         <suite>
             <modules>

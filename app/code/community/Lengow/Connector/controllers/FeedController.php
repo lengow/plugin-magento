@@ -11,8 +11,6 @@
 
 class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action
 {
-    //todo: clean old log (20 days) $log->cleanLog();
-    
     /**
      * Exports products for each store
      */
@@ -20,7 +18,6 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action
     {
         set_time_limit(0);
         ini_set('memory_limit', '1G');
-
         //get params data
         $mode = $this->getRequest()->getParam('mode');
         $format = $this->getRequest()->getParam('format', null);
@@ -34,7 +31,7 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action
         $offset = $this->getRequest()->getParam('offset', null);
         $ids_product = $this->getRequest()->getParam('ids_product', null);
         $currency = $this->getRequest()->getParam('currency', null);
-
+        $update_export_date = $this->getRequest()->getParam('update_export_date', null);
         //get store data
         $storeCode = $this->getRequest()->getParam('code', null);
         if ($storeCode) {
@@ -43,7 +40,6 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action
             $storeId = (integer) $this->getRequest()->getParam('store', Mage::app()->getStore()->getId());
         }
         $storeName = Mage::app()->getStore($storeId)->getName();
-
         if ($locale = $this->getRequest()->getParam('locale', null)) {
             // changing locale works!
             Mage::app()->getLocale()->setLocale($locale);
@@ -52,28 +48,35 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action
             // translation now works
             Mage::app()->getTranslator()->init('frontend', true);
         }
-
+        $helper = Mage::helper('lengow_connector');
         $security = Mage::helper('lengow_connector/security');
-
         if ($security->checkIp()) {
-            // config store
-            Mage::app()->getStore()->setCurrentStore($storeId);
-            // launch export process
-            $export = Mage::getModel('lengow/export', array(
-                'store_id'          => $storeId,
-                'format'            => $format,
-                'mode'              => $mode,
-                'types'             => $types,
-                'status'            => $status,
-                'out_of_stock'      => $out_of_stock,
-                'selected_products' => $selected_products,
-                'stream'            => $stream,
-                'limit'             => $limit,
-                'offset'            => $offset,
-                'product_ids'       => $ids_product,
-                'currency'          => $currency,
-            ));
-            $export->exec();
+            try {
+                // config store
+                Mage::app()->getStore()->setCurrentStore($storeId);
+                // launch export process
+                $export = Mage::getModel('lengow/export', array(
+                    'store_id'           => $storeId,
+                    'format'             => $format,
+                    'mode'               => $mode,
+                    'types'              => $types,
+                    'status'             => $status,
+                    'out_of_stock'       => $out_of_stock,
+                    'selected_products'  => $selected_products,
+                    'stream'             => $stream,
+                    'limit'              => $limit,
+                    'offset'             => $offset,
+                    'product_ids'        => $ids_product,
+                    'currency'           => $currency,
+                    'update_export_date' => $update_export_date,
+                ));
+                $export->exec();
+            } catch (Exception $e) {
+                $error_message = '[Magento error] "'.$e->getMessage().'" '.$e->getFile().' line '.$e->getLine();
+                $helper->log('Export', $error_message);
+                $this->getResponse()->setHeader('HTTP/1.1', '500 Internal Server Error');
+                $this->getResponse()->setBody($error_message);
+            }
         } else {
             $this->getResponse()->setHeader('HTTP/1.1', '403 Forbidden');
             $this->getResponse()->setBody(
