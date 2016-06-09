@@ -18,10 +18,8 @@ class Lengow_Connector_CronController extends Mage_Core_Controller_Front_Action
     {
         $security = Mage::helper('lengow_connector/security');
         if ($security->checkIp()) {
-
             // get sync action if exists
             $sync = $this->getRequest()->getParam('sync');
-
             // sync orders between Lengow and Magento
             if (is_null($sync) || $sync === 'order') {
                 // array of params for import order
@@ -56,17 +54,14 @@ class Lengow_Connector_CronController extends Mage_Core_Controller_Front_Action
                 $import = Mage::getModel('lengow/import', $params);
                 $import->exec();
             }
-
             // sync action between Lengow and Magento
             if (is_null($sync) || $sync === 'action') {
                 Mage::getModel('lengow/import_action')->checkFinishAction();
             }
-
             // sync options between Lengow and Magento
             if (is_null($sync) || $sync === 'option') {
                 // TODO
             }
-
             // sync option is not valid
             if ($sync && ($sync !== 'order' && $sync !== 'action' && $sync !== 'option')) {
                 $this->getResponse()->setHeader('HTTP/1.1', '400 Bad Request');

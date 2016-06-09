@@ -11,8 +11,6 @@
 
 class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action
 {
-    //todo: clean old log (20 days) $log->cleanLog();
-    
     /**
      * Exports products for each store
      */
@@ -50,27 +48,35 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action
             // translation now works
             Mage::app()->getTranslator()->init('frontend', true);
         }
+        $helper = Mage::helper('lengow_connector');
         $security = Mage::helper('lengow_connector/security');
         if ($security->checkIp()) {
-            // config store
-            Mage::app()->getStore()->setCurrentStore($storeId);
-            // launch export process
-            $export = Mage::getModel('lengow/export', array(
-                'store_id'           => $storeId,
-                'format'             => $format,
-                'mode'               => $mode,
-                'types'              => $types,
-                'status'             => $status,
-                'out_of_stock'       => $out_of_stock,
-                'selected_products'  => $selected_products,
-                'stream'             => $stream,
-                'limit'              => $limit,
-                'offset'             => $offset,
-                'product_ids'        => $ids_product,
-                'currency'           => $currency,
-                'update_export_date' => $update_export_date,
-            ));
-            $export->exec();
+            try {
+                // config store
+                Mage::app()->getStore()->setCurrentStore($storeId);
+                // launch export process
+                $export = Mage::getModel('lengow/export', array(
+                    'store_id'           => $storeId,
+                    'format'             => $format,
+                    'mode'               => $mode,
+                    'types'              => $types,
+                    'status'             => $status,
+                    'out_of_stock'       => $out_of_stock,
+                    'selected_products'  => $selected_products,
+                    'stream'             => $stream,
+                    'limit'              => $limit,
+                    'offset'             => $offset,
+                    'product_ids'        => $ids_product,
+                    'currency'           => $currency,
+                    'update_export_date' => $update_export_date,
+                ));
+                $export->exec();
+            } catch (Exception $e) {
+                $error_message = '[Magento error] "'.$e->getMessage().'" '.$e->getFile().' line '.$e->getLine();
+                $helper->log('Export', $error_message);
+                $this->getResponse()->setHeader('HTTP/1.1', '500 Internal Server Error');
+                $this->getResponse()->setBody($error_message);
+            }
         } else {
             $this->getResponse()->setHeader('HTTP/1.1', '403 Forbidden');
             $this->getResponse()->setBody(

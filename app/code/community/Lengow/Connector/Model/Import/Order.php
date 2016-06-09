@@ -140,9 +140,9 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
     /**
      * if order is already Imported
      *
-     * @param string    $lengow_id              Lengow order id
-     * @param string    $markeplace_name        marketplace name
-     * @param integer   $delivery_address_id    delivery address id
+     * @param string  $lengow_id           Lengow order id
+     * @param string  $markeplace_name     marketplace name
+     * @param integer $delivery_address_id delivery address id
      *
      * @return mixed
      */
@@ -171,9 +171,9 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
     /**
      * Check if an order has an error
      *
-     * @param string    $marketplace_sku        Lengow order id
-     * @param integer   $delivery_address_id    Id delivery address
-     * @param string    $type                   Type (import or send)
+     * @param string  $marketplace_sku     Lengow order id
+     * @param integer $delivery_address_id Id delivery address
+     * @param string  $type                Type (import or send)
      *
      * @return mixed
      */
@@ -205,8 +205,8 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
     /**
      * Get Lengow ID with order ID Magento and delivery address ID
      *
-     * @param integer   $order_id               magento order id
-     * @param string    $delivery_address_id    delivery address id
+     * @param integer $order_id            magento order id
+     * @param string  $delivery_address_id delivery address id
      *
      * @return mixed
      */
@@ -248,8 +248,8 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
     /**
      * Get ID record from lengow orders table
      *
-     * @param string   $marketplace_sku         marketplace sku
-     * @param integer  $delivery_address_id     delivery address id
+     * @param string  $marketplace_sku     marketplace sku
+     * @param integer $delivery_address_id delivery address id
      *
      * @return mixed
      */
@@ -530,8 +530,8 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
     /**
      * Synchronize order with Lengow API
      *
-     * @param Mage_Sales_Model_Order           $order      Magento Order
-     * @param Lengow_Connector_Model_Connector $connector  Lengow Connector for API calls
+     * @param Mage_Sales_Model_Order           $order     Magento Order
+     * @param Lengow_Connector_Model_Connector $connector Lengow Connector for API calls
      *
      * @return boolean
      */
@@ -630,9 +630,9 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
     /**
      * Send Order action
      *
-     * @param string                            $action     Lengow Actions (ship or cancel)
-     * @param Mage_Sales_Model_Order            $order      Magento Order
-     * @param Mage_Sales_Model_Order_Shipment   $shipment   Magento Shipment
+     * @param string                          $action   Lengow Actions (ship or cancel)
+     * @param Mage_Sales_Model_Order          $order    Magento Order
+     * @param Mage_Sales_Model_Order_Shipment $shipment Magento Shipment
      */
     public function callAction($action, $order, $shipment = null)
     {
@@ -730,9 +730,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
             $store_id,
             array(
                 'marketplace_order_id' => $order->getData('order_id_lengow'),
-                'marketplace'          => $order->getData('marketplace_lengow'),
-                'updated_from'         => date('c', strtotime(date('Y-m-d').' -100days')),
-                'updated_to'           => date('c'),
+                'marketplace'          => $order->getData('marketplace_lengow')
             )
         );
         if (isset($results->count) && $results->count == 0) {

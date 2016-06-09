@@ -6,10 +6,6 @@ menu.help|Help
 module.name|Lengow
 global.just_yes|Yes
 global.just_no|No
-log.screen.title|Lengow logs
-log.table.id|Id
-log.table.date|Date
-log.table.message|Message
 footer.legals|Legals
 footer.copyright_lengow|Copyright Lengow
 product.screen.title|Export product
@@ -81,6 +77,27 @@ order.table.status_refunded|Refunded
 order.table.status_canceled|Canceled
 order.table.button_reimport_order|Re-import Orders
 order.table.button_resend_order|Resend Orders
+log.screen.title|Lengow logs
+log.table.id|Id
+log.table.date|Date
+log.table.message|Message
+help.screen.title|Get a little help from your support team !
+help.screen.contain_text_support|Ask us anything about Lengow or share your feedback at 
+help.screen.mail_lengow_support|support@lengow.com.
+help.screen.mail_lengow_support_title|Account Information :
+help.screen.mailto_subject|Magento Lengow Plugin #Need assistance
+help.screen.need_some_help|Need some help ?
+help.screen.contain_text_support_hour|We’ll do our best to get back to you during regular business hours (Monday to Friday – 9am to 6pm / France Timezone).
+help.screen.find_answer|You can also find answers in our 
+help.screen.link_prestashop_guide|PrestaShop dedicated guide
+legals.screen.simplified_company|Simplified limited liability company
+legals.screen.social_capital|Social capital:
+legals.screen.cnil_declaration|CNIL declaration:
+legals.screen.company_registration_number|Company Registration Number, Nantes:
+legals.screen.vat_identification_number|VAT identification number:
+legals.screen.address|Adress
+legals.screen.contact|Contact
+legals.screen.hosting|Hosting
 lengow_setting.global_setting|Global settings
 lengow_setting.global_plugin_version_title|Plugin's version
 lengow_setting.global_magento_version_title|Magento's version
@@ -141,19 +158,11 @@ lengow_setting.import_preprod_mode_enable_title|Preprod mode
 lengow_setting.import_preprod_mode_enable_comment|Only for preproduction's mode: no synchronisation orders with Lengow, import orders every time
 lengow_setting.import_cron_enable_title|Enable Magento cron
 lengow_setting.import_cron_enable_comment|Enable the scheduled task for import your order every 30 minutes
-help.screen.title|Get a little help from your support team !
-help.screen.contain_text_support|Ask us anything about Lengow or share your feedback at 
-help.screen.mail_lengow_support|support@lengow.com.
-help.screen.mail_lengow_support_title|Account Information :
-help.screen.mailto_subject|Magento Lengow Plugin #Need assistance
-help.screen.need_some_help|Need some help ?
-help.screen.contain_text_support_hour|We’ll do our best to get back to you during regular business hours (Monday to Friday – 9am to 6pm / France Timezone).
-help.screen.find_answer|You can also find answers in our 
-help.screen.link_prestashop_guide|PrestaShop dedicated guide
 lengow_log.error.nb_order_imported|%{nb_order} order(s) imported
 lengow_log.error.nb_order_updated|%{nb_order} order(s) updated
 lengow_log.error.nb_order_with_error|%{nb_order} order(s) with errors
-lengow_log.error.rest_time_to_import|import has already started. Please wait %{rest_time} seconds before re-importing orders
+lengow_log.error.no_notification|No new notification on order
+lengow_log.error.rest_time_to_import|Import has already started. Please wait %{rest_time} seconds before re-importing orders
 lengow_log.error.account_id_empty|id account, access token or secret is empty in store %{store_name} (%{store_id})
 lengow_log.error.account_id_already_used|account ID %{account_id} is already used by store %{store_name} (%{store_id})
 lengow_log.error.order_not_found|Order can't be found in lengow feed
@@ -183,8 +192,8 @@ lengow_log.exception.action_is_too_old|order action is too old. Please retry the
 lengow_log.mail_report.subject_report_mail|Lengow import errors
 lengow_log.mail_report.order|Order %{marketplace_sku}
 lengow_log.mail_report.no_error_in_report_mail|no error message, contact support via https://supportlengow.zendesk.com/agent/
-log.export.start|## start export ##
-log.export.end|## end export ##
+log.export.start|## start %{type} export ##
+log.export.end|## end %{type} export ##
 log.export.start_for_store|start export in store %{store_name} (%{store_id})
 log.export.feed_already_launch|feed already launch
 log.export.nb_product_found|%{nb_product} product(s) found
@@ -192,7 +201,6 @@ log.export.count_product|%{product_count} products exported
 log.export.total_product_exported|%{nb_product} product(s) exported (%{nb_simple} simple product(s), %{nb_configurable} configurable product(s), %{nb_grouped} grouped product(s), %{nb_virtual} virtual product(s), %{nb_downloadable} downloadable product(s))
 log.export.memory_usage|memory usage: %{memory} Mb
 log.export.execution_time|execution time: %{seconds} seconds
-log.export.your_feed_available_here|your feed is available here: <a href='%{feed_url}' target='_blank'>%{feed_url}</a>
 log.export.generate_feed_available_here|export of the store %{store_name} (%{store_id}) generated a file here : %{feed_url}
 log.export.unauthorised_ip|unauthorised IP : %{ip}
 log.export.error_configurable_product_disabled|WARNING ! %{nb_product} simple product(s) are associated with configurable products disabled

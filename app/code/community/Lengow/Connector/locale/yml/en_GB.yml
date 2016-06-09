@@ -10,13 +10,6 @@ en:
   global:
     just_yes: "Yes"
     just_no: "No"
-  log:
-    screen:
-      title: "Lengow logs"
-    table:
-      id: "Id"
-      date: "Date"
-      message: "Message"
   footer:
       legals: "Legals"
       copyright_lengow: "Copyright Lengow"
@@ -95,6 +88,34 @@ en:
       status_canceled: "Canceled"
       button_reimport_order: "Re-import Orders"
       button_resend_order: "Resend Orders"
+  log:
+    screen:
+      title: "Lengow logs"
+    table:
+      id: "Id"
+      date: "Date"
+      message: "Message"
+  help:
+    screen:
+      title: "Get a little help from your support team !"
+      contain_text_support: "Ask us anything about Lengow or share your feedback at "
+      mail_lengow_support: "support@lengow.com."
+      mail_lengow_support_title: "Account Information :"
+      mailto_subject: "Magento Lengow Plugin #Need assistance"
+      need_some_help: "Need some help ?"
+      contain_text_support_hour: "We’ll do our best to get back to you during regular business hours (Monday to Friday – 9am to 6pm / France Timezone)."
+      find_answer: "You can also find answers in our "
+      link_prestashop_guide: "PrestaShop dedicated guide"
+  legals:
+    screen:
+      simplified_company: "Simplified limited liability company"
+      social_capital: "Social capital:"
+      cnil_declaration: "CNIL declaration:"
+      company_registration_number: "Company Registration Number, Nantes:"
+      vat_identification_number: "VAT identification number:"
+      address: "Adress"
+      contact: "Contact"
+      hosting: "Hosting"
   lengow_setting:
     global_setting: "Global settings"
     global_plugin_version_title: "Plugin's version"
@@ -156,23 +177,13 @@ en:
     import_preprod_mode_enable_comment: "Only for preproduction's mode: no synchronisation orders with Lengow, import orders every time"
     import_cron_enable_title: "Enable Magento cron"
     import_cron_enable_comment: "Enable the scheduled task for import your order every 30 minutes"
-  help:
-    screen:
-      title: "Get a little help from your support team !"
-      contain_text_support: "Ask us anything about Lengow or share your feedback at "
-      mail_lengow_support: "support@lengow.com."
-      mail_lengow_support_title: "Account Information :"
-      mailto_subject: "Magento Lengow Plugin #Need assistance"
-      need_some_help: "Need some help ?"
-      contain_text_support_hour: "We’ll do our best to get back to you during regular business hours (Monday to Friday – 9am to 6pm / France Timezone)."
-      find_answer: "You can also find answers in our "
-      link_prestashop_guide: "PrestaShop dedicated guide"
   lengow_log:
     error:
       nb_order_imported: "%{nb_order} order(s) imported"
       nb_order_updated: "%{nb_order} order(s) updated"
       nb_order_with_error: "%{nb_order} order(s) with errors"
-      rest_time_to_import: "import has already started. Please wait %{rest_time} seconds before re-importing orders"
+      no_notification: "No new notification on order"
+      rest_time_to_import: "Import has already started. Please wait %{rest_time} seconds before re-importing orders"
       account_id_empty: "id account, access token or secret is empty in store %{store_name} (%{store_id})"
       account_id_already_used: "account ID %{account_id} is already used by store %{store_name} (%{store_id})"
       order_not_found: "Order can't be found in lengow feed"

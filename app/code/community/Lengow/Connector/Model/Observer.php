@@ -145,4 +145,60 @@ class Lengow_Connector_Model_Observer
         }
         return $this;
     }
+
+    /**
+     * Exports products for each store with cron job
+     *
+     * @param $observer
+     */
+    public function exportCron(Varien_Event_Observer $observer)
+    {
+        $config = Mage::helper('lengow_connector/config');
+        if ((bool)$config->get('export_cron_enable')) {
+            set_time_limit(0);
+            ini_set('memory_limit', '1G');
+            $store_collection = Mage::getResourceModel('core/store_collection')->addFieldToFilter('is_active', 1);
+            foreach ($store_collection as $store) {
+                $store_id = (int)$store->getId();
+                if ($config->get('store_enable', $store_id)) {
+                    try {
+                        // config store
+                        Mage::app()->getStore()->setCurrentStore($store_id);
+                        // launch export process
+                        $export = Mage::getModel('lengow/export', array(
+                            'store_id'           => $store_id,
+                            'stream'             => false,
+                            'update_export_date' => false,
+                            'type'               => 'magento cron'
+                        ));
+                        $export->exec();
+                    } catch (Exception $e) {
+                        $error_message = '[Magento error] "'.$e->getMessage().'" '.$e->getFile().' line '.$e->getLine();
+                        Mage::helper('lengow_connector')->log('Export', $error_message);
+                    }
+                }
+            }
+        }
+        return $this;
+    }
+
+    /**
+     * Imports orders for each store with cron job
+     *
+     * @param $observer
+     */
+    public function importCron(Varien_Event_Observer $observer)
+    {
+        $config = Mage::helper('lengow_connector/config');
+        if ((bool)$config->get('import_cron_enable')) {
+            // sync orders between Lengow and Magento
+            $import = Mage::getModel('lengow/import', array('type' => 'magento cron'));
+            $import->exec();
+            // sync action between Lengow and Magento
+            Mage::getModel('lengow/import_action')->checkFinishAction();
+            // sync options between Lengow and Magento
+            // TODO
+        }
+        return $this;
+    }
 }

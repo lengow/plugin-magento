@@ -57,7 +57,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
     protected $_limit = 0;
 
     /**
-     * @var string type import (manual or cron)
+     * @var string type import (manual, cron or magento cron)
      */
     protected $_type_import;
 
@@ -161,7 +161,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
         $order_error  = 0;
         $errors       = array();
         $global_error = false;
-        // clean logs
+        // clean logs > 20 days
         $this->_helper->cleanLog();
         if ($this->_import_helper->importIsInProcess() && !$this->_preprod_mode && !$this->_import_one_order) {
             $global_error = $this->_helper->setLogMessage('lengow_log.error.rest_time_to_import', array(
@@ -286,7 +286,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
                             )),
                             $this->_log_output
                         );
-                        $errors[(int)$store->getId()] = $e->getMessage();
+                        $errors[(int)$store->getId()] = $error_message;
                         unset($error_message);
                         continue;
                     }
@@ -425,9 +425,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
                             'marketplace_order_id' => $this->_marketplace_sku,
                             'marketplace'          => $this->_marketplace_name,
                             'account_id'           => $this->_account_id,
-                            'page'                 => $page,
-                            'updated_from'         => date('c', strtotime(date('Y-m-d').' -100days')),
-                            'updated_to'           => date('c'),
+                            'page'                 => $page
                         ),
                         'stream'
                     );
