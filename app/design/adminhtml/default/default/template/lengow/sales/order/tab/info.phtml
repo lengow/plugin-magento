@@ -6,6 +6,7 @@
 ?>
 <?php
 $fields = $this->getFields();
+$order = $this->getOrder()->getData();
 ?>
 <div class="entry-edit">
     <div class="entry-edit-head">
@@ -36,6 +37,21 @@ $fields = $this->getFields();
             ?>
         </tbody>
     </table>
+        <button
+            type="button"
+            id=""
+            class="lengow_btn">
+            <a href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_order/synchronize/', array('order_id'=>$order['entity_id'])); ?>">
+            Synchronization
+            </a>
+        </button>
+        <button
+            type="button"
+            id=""
+            class="lengow_btn"
+            data-href="#" >
+            Cancel and re-import
+        </button>
     <?php
     } else {
         echo '<p>'.Mage::helper('lengow_connector')->__('order.screen.not_lengow_order').'</p>';

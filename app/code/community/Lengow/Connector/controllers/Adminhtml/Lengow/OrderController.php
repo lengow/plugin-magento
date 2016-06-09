@@ -1,5 +1,5 @@
 <?php
-
+ini_set('display_errors', 1);
 /**
  *
  * @category    Lengow
@@ -167,5 +167,12 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
             $informations['last_importation'] = $helper->__('order.screen.no_order_importation');
         }
         return $informations;
+    }
+
+    public function synchronizeAction(){
+        $orderId = $this->getRequest()->getParam('order_id');
+        $order = Mage::getModel('sales/order')->load($orderId);
+        Mage::getModel('lengow/import_order')->synchronizeOrder($order);
+        Mage::app()->getResponse()->setRedirect(Mage::helper('adminhtml')->getUrl("adminhtml/sales_order/view", array('order_id'=>$orderId)));
     }
 }

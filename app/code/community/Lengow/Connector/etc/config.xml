@@ -77,6 +77,23 @@
                     </events_after_save>
                 </observers>
             </model_save_after>
+            <sales>
+                <order>
+                    <statuses>
+                        <lengow_technical_error translate="label">
+                            <label>Lengow Technical Error</label>
+                        </lengow_technical_error>
+                    </statuses>
+                    <states>
+                        <lengow_technical_error translate="label">
+                            <label>Lengow Technical Error</label>
+                            <statuses>
+                                <lengow_technical_error default="1"/>
+                            </statuses>
+                        </lengow_technical_error>
+                    </states>
+                </order>
+            </sales>
             <sales_order_shipment_save_after>
                 <observers>
                     <lengow_shipment_save_after>

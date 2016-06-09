@@ -64,12 +64,12 @@ class Lengow_Connector_Model_Connector
     /**
      * @var string URL of the API Lengow
      */
-    const LENGOW_API_URL = 'http://10.100.1.242:8081';
+    const LENGOW_API_URL = 'http://10.100.1.82:8081';
 
     /**
      * @var string URL of the SANDBOX Lengow
      */
-    const LENGOW_API_SANDBOX_URL = 'http://10.100.1.242:8081';
+    const LENGOW_API_SANDBOX_URL = 'http://10.100.1.82:8081';
 
     
     
@@ -140,8 +140,8 @@ class Lengow_Connector_Model_Connector
      */
     public function call($method, $array = array(), $type = 'GET', $format = 'json')
     {
-        $this->connect();
         try {
+            $this->connect();
             if (!array_key_exists('account_id', $array)) {
                 $array['account_id'] = $this->_account_id;
             }

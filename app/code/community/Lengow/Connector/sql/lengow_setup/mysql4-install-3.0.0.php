@@ -461,6 +461,39 @@ if ($installer->getConnection()->isTableExists($tableName) != true) {
     $installer->getConnection()->createTable($table);
 }
 
+
+// create new order state and status 'Lengow technical error'
+$statusTable = $installer->getTable('sales/order_status');
+$statusStateTable = $installer->getTable('sales/order_status_state');
+
+// Insert statuses
+$installer->getConnection()->insertArray(
+    $statusTable,
+    array(
+        'status',
+        'label'
+    ),
+    array(
+        array('status' => 'lengow_technical_error', 'label' => 'Lengow Technical Error')
+    )
+);
+
+// Insert states and mapping of statuses to states
+$installer->getConnection()->insertArray(
+    $statusStateTable,
+    array(
+        'status',
+        'state',
+        'is_default'
+    ),
+    array(
+        array(
+            'status' => 'lengow_technical_error',
+            'state' => 'lengow_technical_error',
+            'is_default' => 1
+        )
+    )
+);
 $installer->endSetup();
 
 // *********************************************************
