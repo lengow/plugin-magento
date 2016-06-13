@@ -472,7 +472,24 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
             $this->_package_data,
             $order_lengow_id
         );
-        if ($order_updated) {
+
+        // Lengow -> Cancel and reimport order
+        if ($order->getData('is_reimported_lengow') == 1) {
+            $this->_helper->log(
+                'Import',
+                $this->_helper->setLogMessage('log.import.order_ready_to_reimport', array(
+                    'order_id' => $order->getIncrementId()
+                )),
+                $this->_log_output,
+                $this->_marketplace_sku
+            );
+
+            $this->_is_reimported = true;
+
+            return false;
+
+        } elseif ($order_updated) {
+
             $result['update'] = true;
             $this->_helper->log(
                 'Import',

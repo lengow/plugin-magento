@@ -152,6 +152,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
         $results = Mage::getModel('sales/order')->getCollection()
             ->addAttributeToFilter('order_id_lengow', $marketplace_sku)
             ->addAttributeToFilter('marketplace_lengow', $marketplace_name)
+            ->addAttributeToFilter('follow_by_lengow', 1)
             ->addAttributeToSelect('entity_id')
             ->addAttributeToSelect('delivery_address_id_lengow')
             ->addAttributeToSelect('feed_id_lengow')
@@ -237,6 +238,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
         $results = Mage::getModel('sales/order')->getCollection()
             ->addAttributeToFilter('order_id_lengow', $marketplace_sku)
             ->addAttributeToFilter('marketplace_lengow', $marketplace_name)
+            ->addAttributeToFilter('follow_by_lengow', 1)
             ->addAttributeToSelect('entity_id')
             ->getData();
         if (count($results) > 0) {
@@ -875,5 +877,63 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
                 ));
             }
         }
+    }
+
+    /**
+     * Cancel and re-import order
+     *
+     * @return mixed
+     */
+    public function cancelAndreImportOrder($order)
+    {
+        if (!$this->isReimported($order)) {
+            return false;
+        }
+
+        $params =  array(
+            'marketplace_sku'     => $order->getData('order_id_lengow'),
+            'marketplace_name'    => $order->getData('marketplace_lengow'),
+            'delivery_address_id' => $order->getData('delivery_address_id_lengow'),
+            'store_id'            => $order->getData('store_id')
+        );
+        $import = Mage::getModel('lengow/import', $params);
+        $result = $import->exec();
+
+        if ((isset($result['order_id']) && $result['order_id'] != $order->getData('order_id'))
+            && (isset($result['order_new']) && $result['order_new'])
+        ) {
+            $order->addData(array(
+                'is_reimported_lengow' => 0,
+                'follow_by_lengow' => 0
+            ));
+            $order->setState('lengow_technical_error', true);
+            $order->setData('status', 'lengow_technical_error');
+            $order->save();
+            return (int)$result['order_id'];
+        }
+        $order->addData(array(
+            'is_reimported_lengow' => 0
+        ));
+        $order->save();
+        return false;
+    }
+
+    /**
+     * Mark order as is_reimported in sales_flat_order table
+     *
+     * @return boolean
+     */
+    public function isReimported($order)
+    {
+        $order->addData(array(
+            'is_reimported_lengow' => 1
+        ));
+        $order->save();
+
+        //check success update in BDD
+        if ($order->getData('is_reimported_lengow') == 1) {
+            return true;
+        }
+        return false;
     }
 }

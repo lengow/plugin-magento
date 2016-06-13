@@ -242,6 +242,11 @@ span.lengow_order_country {
     display:inline-block;
 }
 
+.lengow_btn a {
+    color:white;
+    text-decoration: none;
+}
+
 .lengow_btn:hover,
 .lengow_btn:active{
     background:#019ce2;
