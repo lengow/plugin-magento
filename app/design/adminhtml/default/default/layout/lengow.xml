@@ -17,7 +17,9 @@
         </reference>
         <reference name="content">
               <block type="page/html" name="lengow_layout" template="lengow/layout/home.phtml" >
-                    <block type="page/html" name="lengow_content" template="lengow/home/index.phtml" />
+                    <block type="page/html" name="lengow_dashboard" template="lengow/home/dashboard.phtml" />
+                    <block type="page/html" name="lengow_new" template="lengow/home/new.phtml" />
+                    <block type="page/html" name="lengow_footer" template="lengow/footer.phtml" />
               </block>
         </reference>
     </adminhtml_lengow_home_index>

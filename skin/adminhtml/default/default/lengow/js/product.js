@@ -19,10 +19,10 @@
                     $('.lengow_check_shop').html('<i class="fa fa-circle-o-notch fa-spin"></i>');
                 },
                 success: function (data) {
-                    $('.lengow_check_shop').html("<span>" + data.message + "</span>");
+                    $('.lengow_check_shop').html("<span>"+data.message+"</span>");
                     $('.lengow_check_shop').attr("id", data.id);
                     if (data.result == false) {
-                        $('.lengow_check_shop').after("<a href='#'><span>" + data.link + "</span></a>");
+                        $('.lengow_check_shop').after("<a href="+data.link_href+"><span>"+data.link_title+"</span></a>");
                     }
                 }
             });

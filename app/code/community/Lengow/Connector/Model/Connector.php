@@ -51,16 +51,6 @@ class Lengow_Connector_Model_Connector
      */
     protected $_request;
 
-    // /**
-    //  * @var string Lengow API url
-    //  */
-    // const LENGOW_API_URL = 'http://api.lengow.io:80';
-
-    // /**
-    //  * @var string Lengow SANDBOX url
-    //  */
-    // const LENGOW_API_SANDBOX_URL = 'http://api.lengow.net:80';
-
     /**
      * @var string URL of the API Lengow
      */
@@ -71,8 +61,6 @@ class Lengow_Connector_Model_Connector
      */
     const LENGOW_API_SANDBOX_URL = 'http://10.100.1.82:8081';
 
-    
-    
     /**
      * Default options for curl.
      */
@@ -113,8 +101,8 @@ class Lengow_Connector_Model_Connector
             '/access/get_token',
             array(
                 'access_token' => $this->_access_token,
-                'secret' => $this->_secret,
-                'user_token' => $user_token
+                'secret'       => $this->_secret,
+                'user_token'   => $user_token
             ),
             'POST'
         );
@@ -138,57 +126,141 @@ class Lengow_Connector_Model_Connector
      *
      * @return array The formated data response
      */
-    public function call($method, $array = array(), $type = 'GET', $format = 'json')
+    public function call($method, $array = array(), $type = 'GET', $format = 'json', $body = '')
     {
         try {
             $this->connect();
             if (!array_key_exists('account_id', $array)) {
                 $array['account_id'] = $this->_account_id;
             }
-            $data = $this->_callAction($method, $array, $type, $format);
+            $data = $this->_callAction($method, $array, $type, $format, $body);
         } catch (Lengow_Connector_Model_Exception $e) {
             return $e->getMessage();
         }
         return $data;
     }
 
-    public function get($method, $array = array(), $format = 'json')
+    /**
+     * Get API call
+     *
+     * @param string $method Lengow method API call
+     * @param array  $array  Lengow method API parameters
+     * @param string $format return format of API
+     * @param string $body
+     *
+     * @return array The formated data response
+     */
+    public function get($method, $array = array(), $format = 'json', $body = '')
     {
-        return $this->call($method, $array, 'GET', $format);
+        return $this->call($method, $array, 'GET', $format, $body);
     }
 
-    public function post($method, $array = array(), $format = 'json')
+    /**
+     * Post API call
+     *
+     * @param string $method Lengow method API call
+     * @param array  $array  Lengow method API parameters
+     * @param string $format return format of API
+     * @param string $body
+     *
+     * @return array The formated data response
+     */
+    public function post($method, $array = array(), $format = 'json', $body = '')
     {
         print_r($array);
-        return $this->call($method, $array, 'POST', $format);
+        return $this->call($method, $array, 'POST', $format, $body);
     }
 
-    public function head($method, $array = array(), $format = 'json')
+    /**
+     * Head API call
+     *
+     * @param string $method Lengow method API call
+     * @param array  $array  Lengow method API parameters
+     * @param string $format return format of API
+     * @param string $body
+     *
+     * @return array The formated data response
+     */
+    public function head($method, $array = array(), $format = 'json', $body = '')
     {
-        return $this->call($method, $array, 'HEAD', $format);
+        return $this->call($method, $array, 'HEAD', $format, $body);
     }
 
-    public function put($method, $array = array(), $format = 'json')
+    /**
+     * Put API call
+     *
+     * @param string $method Lengow method API call
+     * @param array  $array  Lengow method API parameters
+     * @param string $format return format of API
+     * @param string $body
+     *
+     * @return array The formated data response
+     */
+    public function put($method, $array = array(), $format = 'json', $body = '')
     {
-        return $this->call($method, $array, 'PUT', $format);
+        return $this->call($method, $array, 'PUT', $format, $body);
     }
 
-    public function delete($method, $array = array(), $format = 'json')
+    /**
+     * Delete API call
+     *
+     * @param string $method Lengow method API call
+     * @param array  $array  Lengow method API parameters
+     * @param string $format return format of API
+     * @param string $body
+     *
+     * @return array The formated data response
+     */
+    public function delete($method, $array = array(), $format = 'json', $body = '')
     {
-        return $this->call($method, $array, 'DELETE', $format);
+        return $this->call($method, $array, 'DELETE', $format, $body);
     }
 
-    public function patch($method, $array = array(), $format = 'json')
+    /**
+     * Patch API call
+     *
+     * @param string $method Lengow method API call
+     * @param array  $array  Lengow method API parameters
+     * @param string $format return format of API
+     * @param string $body
+     *
+     * @return array The formated data response
+     */
+    public function patch($method, $array = array(), $format = 'json', $body = '')
     {
-        return $this->call($method, $array, 'PATCH', $format);
+        return $this->call($method, $array, 'PATCH', $format, $body);
     }
 
-    private function _callAction($api, $args, $type, $format = 'json')
+    /**
+     * Call API action
+     *
+     * @param string $api    Lengow method API call
+     * @param array  $args   Lengow method API parameters
+     * @param string $type   type of request GET|POST|PUT|HEAD|DELETE|PATCH
+     * @param string $format return format of API
+     * @param string $body
+     *
+     * @return array The formated data response
+     */
+    private function _callAction($api, $args, $type, $format = 'json', $body = '')
     {
-        $result = $this->_makeRequest($type, self::LENGOW_API_URL.$api, $args, $this->_token);
+        if ($api == '/v3.0/numbers') {
+            $url = 'http://10.100.1.82:8082';
+        } else {
+            $url = self::LENGOW_API_URL;
+        }
+        $result = $this->_makeRequest($type, $url.$api, $args, $this->_token, $body);
         return $this->_format($result, $format);
     }
 
+    /**
+     * Get data in specific format
+     *
+     * @param mixed  $data
+     * @param string $format
+     *
+     * @return array The formated data response
+     */
     private function _format($data, $format)
     {
         switch ($format) {
@@ -203,7 +275,18 @@ class Lengow_Connector_Model_Connector
         }
     }
 
-    protected function _makeRequest($type, $url, $args, $token)
+    /**
+     * Make Curl request
+     *
+     * @param string $type  Lengow method API call
+     * @param string $url   Lengow API url
+     * @param array  $args  Lengow method API parameters
+     * @param string $token temporary access token
+     * @param string $body
+     *
+     * @return array The formated data response
+     */
+    protected function _makeRequest($type, $url, $args, $token, $body = '')
     {
         $helper = Mage::helper('lengow_connector/data');
         $ch = curl_init();
@@ -221,16 +304,27 @@ class Lengow_Connector_Model_Connector
             );
         }
         $url = $url['scheme'].'://'.$url['host'].$url['path'];
-        if ($type == 'GET') {
-            $opts[CURLOPT_URL] = $url.'?'.http_build_query($args);
-            $helper->log(
-                'Connector',
-                $helper->setLogMessage('log.connector.call_api', array('curl_url' => $opts[CURLOPT_URL]))
-            );
-        } else {
-            $opts[CURLOPT_URL] = $url;
-            $opts[CURLOPT_POST] = count($args);
-            $opts[CURLOPT_POSTFIELDS] = http_build_query($args);
+        switch ($type) {
+            case "GET":
+                $opts[CURLOPT_URL] = $url.'?'.http_build_query($args);
+                $helper->log(
+                    'Connector',
+                    $helper->setLogMessage('log.connector.call_api', array('curl_url' => $opts[CURLOPT_URL]))
+                );
+                break;
+            case "PUT":
+                $opts[CURLOPT_HTTPHEADER] = array_merge($opts[CURLOPT_HTTPHEADER], array(
+                    'Content-Type: application/json',
+                    'Content-Length: '.strlen($body)
+                ));
+                $opts[CURLOPT_URL] = $url.'?'.http_build_query($args);
+                $opts[CURLOPT_POSTFIELDS] = $body;
+                break;
+            default:
+                $opts[CURLOPT_URL] = $url;
+                $opts[CURLOPT_POST] = count($args);
+                $opts[CURLOPT_POSTFIELDS] = http_build_query($args);
+                break;
         }
         // Exectute url request
         curl_setopt_array($ch, $opts);
@@ -255,11 +349,6 @@ class Lengow_Connector_Model_Connector
             throw new Lengow_Connector_Model_Exception($error);
         }
         return $data;
-    }
-
-    public function getAccountId()
-    {
-        return $this->_account_id;
     }
 
     /**
@@ -329,18 +418,19 @@ class Lengow_Connector_Model_Connector
     }
 
     /**
-     * Query Api
+     * Get result for a query Api
      *
-     * @param string    $type       (get/post)
-     * @param string    $url        to query
-     * @param integer   $store_id   Store Id
+     * @param string    $type     (GET / POST / PUT / PATCH)
+     * @param string    $url
+     * @param integer   $store_id
      * @param array     $params
+     * @param string  $body
      *
      * @return api result as array
      */
-    public function queryApi($type, $url, $store_id = null, $params = array())
+    public function queryApi($type, $url, $store_id = null, $params = array(), $body = '')
     {
-        if (!in_array($type, array('get', 'post'))) {
+        if (!in_array($type, array('get', 'post', 'put', 'patch'))) {
             return false;
         }
         try {
@@ -349,7 +439,8 @@ class Lengow_Connector_Model_Connector
             $results = $this->$type(
                 $url,
                 array_merge(array('account_id' => $account_id), $params),
-                'stream'
+                'stream',
+                $body
             );
         } catch (Lengow_Connector_Model_Exception $e) {
             return false;

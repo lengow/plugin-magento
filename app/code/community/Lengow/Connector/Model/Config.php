@@ -28,6 +28,8 @@ class Lengow_Connector_Model_Config extends Mage_Core_Model_Config
         'last_import_manual',
         'last_import_cron',
         'export_last_export',
+        'last_statistic_update',
+        'order_statistic',
     );
 
     /**

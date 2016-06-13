@@ -27,7 +27,9 @@ class Lengow_Connector_Model_Observer
         'import_in_progress',
         'last_import_manual',
         'last_import_cron',
-        'export_last_export'
+        'export_last_export',
+        'last_statistic_update',
+        'order_statistic',
     );
 
     /**
@@ -40,9 +42,11 @@ class Lengow_Connector_Model_Observer
      */
     public function updateAdminMenu()
     {
+        $is_new_merchant = Mage::helper('lengow_connector/sync')->isNewMerchant();
+        $update_value = $is_new_merchant ? 1 : 0;
         $menu = Mage::getSingleton('admin/config')->getAdminhtmlConfig()->getNode('menu/lengowtab/children');
         foreach ($menu->children() as $childName => $child) {
-            $menu->setNode($childName.'/disabled', '0');
+            $menu->setNode($childName.'/disabled', $update_value);
         }
     }
 
