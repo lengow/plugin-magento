@@ -464,15 +464,6 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
         );
         $order_lengow_id = $this->_model_order->getLengowOrderIdWithOrderId($order_id);
         $result = array('order_lengow_id' => $order_lengow_id);
-        // try to update magento order, lengow order and finish actions if necessary
-        $order_updated = $this->_model_order->updateState(
-            $order,
-            $this->_order_state_lengow,
-            $this->_order_data,
-            $this->_package_data,
-            $order_lengow_id
-        );
-
         // Lengow -> Cancel and reimport order
         if ($order->getData('is_reimported_lengow') == 1) {
             $this->_helper->log(
@@ -483,20 +474,26 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
                 $this->_log_output,
                 $this->_marketplace_sku
             );
-
             $this->_is_reimported = true;
-
             return false;
-
-        } elseif ($order_updated) {
-
-            $result['update'] = true;
-            $this->_helper->log(
-                'Import',
-                $this->_helper->setLogMessage('log.import.order_state_updated', array('state_name' => $order_updated)),
-                $this->_log_output,
-                $this->_marketplace_sku
+        } else {
+            // try to update magento order, lengow order and finish actions if necessary
+            $order_updated = $this->_model_order->updateState(
+                $order,
+                $this->_order_state_lengow,
+                $this->_order_data,
+                $this->_package_data,
+                $order_lengow_id
             );
+            if ($order_updated) {
+                $result['update'] = true;
+                $this->_helper->log(
+                    'Import',
+                    $this->_helper->setLogMessage('log.import.order_state_updated', array('state_name' => $order_updated)),
+                    $this->_log_output,
+                    $this->_marketplace_sku
+                );
+            }
         }
         unset($order);
         return $result;

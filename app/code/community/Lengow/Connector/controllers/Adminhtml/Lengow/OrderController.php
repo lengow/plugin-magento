@@ -177,41 +177,35 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
 
     public function synchronizeAction()
     {
-        $orderId = $this->getRequest()->getParam('order_id');
-        $order = Mage::getModel('sales/order')->load($orderId);
+        $order_id = $this->getRequest()->getParam('order_id');
+        $order = Mage::getModel('sales/order')->load($order_id);
         $marketplace_sku = $order->getData('order_id_lengow');
         $synchro = Mage::getModel('lengow/import_order')->synchronizeOrder($order);
         if ($synchro) {
-            Mage::helper('lengow_connector/data')->log(
-                'Import',
-                Mage::helper('lengow_connector/data')->setLogMessage('log.import.order_synchronized_with_lengow', array(
-                    'order_id' => $order->getIncrementId()
-                )),
-                false,
-                $marketplace_sku
+            $synchro_message =  Mage::helper('lengow_connector/data')->setLogMessage(
+                'log.import.order_synchronized_with_lengow',
+                array('order_id' => $order->getIncrementId())
             );
         } else {
-            Mage::helper('lengow_connector/data')->log(
-                'Import',
-                Mage::helper('lengow_connector/data')->setLogMessage('log.import.order_not_synchronized_with_lengow', array(
-                    'order_id' => $order->getIncrementId()
-                )),
-                false,
-                $marketplace_sku
+            $synchro_message =  Mage::helper('lengow_connector/data')->setLogMessage(
+                'log.import.order_not_synchronized_with_lengow',
+                array('order_id' => $order->getIncrementId())
             );
         }
-        Mage::app()->getResponse()->setRedirect(Mage::helper('adminhtml')->getUrl("adminhtml/sales_order/view", array('order_id'=>$orderId)));
+        Mage::helper('lengow_connector/data')->log('Import', $synchro_message, false, $marketplace_sku);
+        $url = Mage::helper('adminhtml')->getUrl("adminhtml/sales_order/view", array('order_id' => $order_id));
+        Mage::app()->getResponse()->setRedirect($url);
     }
 
     public function cancelAndreImportOrderAction()
     {
-        $orderId = $this->getRequest()->getParam('order_id');
-        $order = Mage::getModel('sales/order')->load($orderId);
-        $new_id_order = Mage::getModel('lengow/import_order')->cancelAndreImportOrder($order);
-        if (!$new_id_order) {
-            $new_id_order = $orderId;
+        $order_id = $this->getRequest()->getParam('order_id');
+        $order = Mage::getModel('sales/order')->load($order_id);
+        $new_order_id = Mage::getModel('lengow/import_order')->cancelAndreImportOrder($order);
+        if (!$new_order_id) {
+            $new_order_id = $order_id;
         }
-
-        Mage::app()->getResponse()->setRedirect(Mage::helper('adminhtml')->getUrl("adminhtml/sales_order/view", array('order_id'=>$new_id_order)));
+        $url = Mage::helper('adminhtml')->getUrl("adminhtml/sales_order/view", array('order_id' => $new_order_id));
+        Mage::app()->getResponse()->setRedirect($url);
     }
 }

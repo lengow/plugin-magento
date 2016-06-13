@@ -470,41 +470,34 @@ if ($installer->getConnection()->isTableExists($tableName) != true) {
     $installer->getConnection()->createTable($table);
 }
 
+// *********************************************************
+//            Create Lengow technical error status
+// *********************************************************
+
 //check if order state and status 'Lengow technical error' exists
 $collections = Mage::getModel('sales/order_status')->getCollection()->toOptionArray();
 $lengow_technical_exists = false;
-
 foreach ($collections as $value) {
     if ($value['value'] == 'lengow_technical_error') {
         $lengow_technical_exists = true;
     }
 }
-
 // if not exists create new order state and status 'Lengow technical error'
 $statusTable = $installer->getTable('sales/order_status');
 $statusStateTable = $installer->getTable('sales/order_status_state');
-
 if (!$lengow_technical_exists) {
-// Insert statuses
+    // Insert statuses
     $installer->getConnection()->insertArray(
         $statusTable,
-        array(
-            'status',
-            'label'
-        ),
+        array('status', 'label'),
         array(
             array('status' => 'lengow_technical_error', 'label' => 'Lengow Technical Error')
         )
     );
-
-// Insert states and mapping of statuses to states
+    // Insert states and mapping of statuses to states
     $installer->getConnection()->insertArray(
         $statusStateTable,
-        array(
-            'status',
-            'state',
-            'is_default'
-        ),
+        array('status', 'state', 'is_default'),
         array(
             array(
                 'status' => 'lengow_technical_error',

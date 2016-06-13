@@ -77,6 +77,9 @@ en:
       message: "Message"
       extra: "JSON format"
       not_lengow_order: "This order doesn't come from Lengow"
+      cancel_and_reimport: "Cancel and re-import order"
+      check_cancel_and_reimport: "Do you really want to cancel and re-import the order?"
+      synchronize_id: "Synchronize ID"
     table:
       lengow_action: "Actions"
       lengow_state: "Lengow State"
