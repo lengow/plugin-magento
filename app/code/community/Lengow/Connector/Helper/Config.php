@@ -70,6 +70,9 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
         'parent_image' => array(
             'path' => 'lengow_export_options/advanced/export_parent_image'
         ),
+        'legacy_enable' => array(
+            'path' => 'lengow_export_options/advanced/export_legacy_enable'
+        ),
         'file_enable' => array(
             'path' => 'lengow_export_options/advanced/export_file_enable'
         ),

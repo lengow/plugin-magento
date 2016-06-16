@@ -100,12 +100,12 @@ class Lengow_Connector_Model_Observer
     {
         $shipment = $observer->getEvent()->getShipment();
         $order = $shipment->getOrder();
+        $helper = Mage::helper('lengow_connector');
         if ($order->getData('from_lengow') == 1
             && Mage::getSingleton('core/session')->getCurrentOrderLengow() != $order->getData('order_id_lengow')
             && !array_key_exists($order->getData('order_id_lengow'), $this->_alreadyShipped)
         ) {
-            $order_lengow = Mage::getModel('lengow/import_order');
-            $order_lengow->callAction('ship', $order, $shipment);
+            $this->_prepareCallRequest('ship', $order, $shipment);
             $this->_alreadyShipped[$order->getData('order_id_lengow')] = true;
         }
         return $this;
@@ -121,12 +121,12 @@ class Lengow_Connector_Model_Observer
         $track = $observer->getEvent()->getTrack();
         $shipment = $track->getShipment();
         $order = $shipment->getOrder();
+        $helper = Mage::helper('lengow_connector');
         if ($order->getData('from_lengow') == 1
             && Mage::getSingleton('core/session')->getCurrentOrderLengow() != $order->getData('order_id_lengow')
             && !array_key_exists($order->getData('order_id_lengow'), $this->_alreadyShipped)
         ) {
-            $order_lengow = Mage::getModel('lengow/import_order');
-            $order_lengow->callAction('ship', $order, $shipment);
+            $this->_prepareCallRequest('ship', $order, $shipment);
             $this->_alreadyShipped[$order->getData('order_id_lengow')] = true;
         }
         return $this;
@@ -141,13 +141,48 @@ class Lengow_Connector_Model_Observer
     {
         $payment = $observer->getEvent()->getPayment();
         $order = $payment->getOrder();
+        $helper = Mage::helper('lengow_connector');
         if ($order->getData('from_lengow') == 1
             && Mage::getSingleton('core/session')->getCurrentOrderLengow() != $order->getData('order_id_lengow')
         ) {
-            $order_lengow = Mage::getModel('lengow/import_order');
-            $order_lengow->callAction('cancel', $order);
+            $this->_prepareCallRequest('cancel', $order);
         }
         return $this;
+    }
+
+    /**
+     * Prepare call request and add logs
+     *
+     * @param string                          $action
+     * @param Mage_Sales_Model_Order          $order
+     * @param Mage_Sales_Model_Order_Shipment $shipment
+     */
+    protected function _prepareCallRequest($action, $order, $shipment = null)
+    {
+        $helper = Mage::helper('lengow_connector');
+        $helper->log(
+            'API-OrderAction',
+            $helper->setLogMessage('log.order_action.try_to_send_action', array(
+                'action'   => $action,
+                'order_id' => $order->getIncrementId()
+            )),
+            false,
+            $order->getData('order_id_lengow')
+        );
+        $order_lengow = Mage::getModel('lengow/import_order');
+        $result = $order_lengow->callAction($action, $order, $shipment);
+        if ($result) {
+            $message = $helper->setLogMessage('log.order_action.action_send', array(
+                'action'   => $action,
+                'order_id' => $order->getIncrementId()
+            ));
+        } else {
+            $message = $helper->setLogMessage('log.order_action.action_not_send', array(
+                'action'   => $action,
+                'order_id' => $order->getIncrementId()
+            ));
+        }
+        $helper->log('API-OrderAction', $message, false, $order->getData('order_id_lengow'));
     }
 
     /**

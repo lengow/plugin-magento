@@ -366,7 +366,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
                 'follow_by_lengow'     => 0
             ));
             // if state != STATE_COMPLETE or != STATE_CLOSED
-            $order->setState('lengow_technical_error', true);
+            $order->setState('lengow_technical_error', 'lengow_technical_error');
             $order->setData('status', 'lengow_technical_error');
             $order->save();
             return (int)$result['order_id'];

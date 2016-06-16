@@ -25,10 +25,15 @@ class Lengow_Connector_Model_Export_Feed_Yaml extends Lengow_Connector_Model_Exp
 
     public function makeData($array, $args = array())
     {
+        if ($args['max_character'] % 2 == 1) {
+            $max_character = $args['max_character'] + 1;
+        } else {
+            $max_character = $args['max_character'] + 2;
+        }
         $line = '  '.'"product":' . "\r\n";
         foreach ($this->_fields as $name) {
             $line .= '    '.'"'.$name.'":'.
-                $this->_addSpaces($name, 22).(isset($array[$name]) ? $array[$name] : '')."\r\n";
+                $this->_addSpaces($name, $max_character).(isset($array[$name]) ? $array[$name] : '')."\r\n";
         }
         return $line;
     }

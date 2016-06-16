@@ -178,6 +178,8 @@ en:
     export_default_shipping_method_comment: "Default shipping method to calculate shipping cost"
     export_default_shipping_price_label: "Shipping cost"
     export_default_shipping_price_comment: "Default shipping cost if matching find"
+    export_legacy_enable_label: "Export with legacy feed"
+    export_legacy_enable_comment: "Compatibility for old lengow versions"
     export_file_enable_label: "Save feed on file"
     export_file_enable_comment: "Save the feed on a file"
     export_cron_enable_lable: "Enable Magento cron"

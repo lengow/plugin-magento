@@ -274,6 +274,7 @@
                 <export_default_shipping_country>FR</export_default_shipping_country>
                 <export_default_shipping_method>flatrate_flatrate</export_default_shipping_method>
                 <export_parent_image>0</export_parent_image>
+                <export_legacy_enable>0</export_legacy_enable>
                 <export_file_enable>0</export_file_enable>
                 <export_cron_enable>0</export_cron_enable>
             </advanced>
