@@ -12,6 +12,11 @@
 class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
 {
     /**
+     * Get Statistic with all store
+     */
+    protected $_cache_time = 10800;
+
+    /**
      * Get Sync Data (Inscription / Update)
      * @return array
      */
@@ -48,9 +53,10 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
 
     /**
      * Sync Lengow Information
+     *
      * @param $params
      */
-    public static function sync($params)
+    public function sync($params)
     {
         $config = Mage::helper('lengow_connector/config');
         foreach ($params as $shop_token => $values) {
@@ -60,29 +66,51 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
                     'access_token' => false,
                     'secret_token' => false
                 );
-                foreach ($values as $k => $v) {
-                    if (!in_array($k, array_keys($list_key))) {
+                foreach ($values as $key => $value) {
+                    if (!in_array($key, array_keys($list_key))) {
                         continue;
                     }
-                    if (strlen($v) > 0) {
-                        $list_key[$k] = true;
-                        $config->set($k, $v, $store->getId());
+                    if (strlen($value) > 0) {
+                        $list_key[$key] = true;
+                        $config->set($key, $value, $store->getId());
                     }
                 }
-                $findFalseValue = false;
-                foreach ($list_key as $k => $v) {
-                    if (!$v) {
-                        $findFalseValue = true;
+                $find_false_value = false;
+                foreach ($list_key as $key => $value) {
+                    if (!$value) {
+                        $find_false_value = true;
                         break;
                     }
                 }
-                if (!$findFalseValue) {
+                if (!$find_false_value) {
                     $config->set('store_enable', true, $store->getId());
                 } else {
                     $config->set('store_enable', false, $store->getId());
                 }
             }
         }
+    }
+
+    /**
+     * Check if is a new marchant
+     *
+     * @return boolean
+     */
+    public function isNewMerchant()
+    {
+        $config = Mage::helper('lengow_connector/config');
+        foreach (Mage::app()->getWebsites() as $website) {
+            foreach ($website->getGroups() as $group) {
+                $stores = $group->getStores();
+                foreach ($stores as $store) {
+                    $account_id = $config->get('account_id', $store->getId());
+                    if (strlen($account_id) > 0) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     /**
@@ -124,5 +152,74 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
         $html.= Mage::helper('lengow_connector')->__('help.screen.mail_lengow_support');
         $html.= '</a>';
         return $html;
+    }
+
+    /**
+     * Get Statistic with all store
+     *
+     * @param boolean $force Force cache Update
+     *
+     * @return array
+     */
+    public function getStatistic($force = false)
+    {
+        $config = Mage::helper('lengow_connector/config');
+        if (!$force) {
+            $updated_at = $config->get('last_statistic_update');
+            if (!is_null($updated_at) && (time() - strtotime($updated_at)) < $this->_cache_time) {
+                return json_decode($config->get('order_statistic'));
+            }
+        }
+        $return = array();
+        $return['total_order'] = 0;
+        $return['nb_order'] = 0;
+        $return['average_order'] = 0;
+        $return['currency'] = '';
+        // get stats by shop
+        $store_collection = Mage::getResourceModel('core/store_collection')->addFieldToFilter('is_active', 1);
+        $i = 0;
+        $all_currencies = array();
+        foreach ($store_collection as $store) {
+            $connector = Mage::getModel('lengow/connector');
+            $result = $connector->queryApi(
+                'get',
+                '/v3.0/numbers',
+                $store->getId()
+            );
+            if (isset($result->revenues)) {
+                $return['total_order'] += $result->revenues;
+                $return['nb_order'] += $result->transactions;
+                $return['average_order'] += $result->average_order;
+                $return['currency'] = $result->currency->iso_a3;
+            }
+            $i++;
+            // Get store currencies
+            $store_currencies = Mage::app()->getStore($store->getId())->getAvailableCurrencyCodes();
+            if (is_array($store_currencies)) {
+                foreach ($store_currencies as $currency) {
+                    if (!in_array($currency, $all_currencies)) {
+                        $all_currencies[] = $currency;
+                    }
+                }
+            }
+        }
+        if ($i > 0) {
+            $return['average_order'] = round($return['average_order'] / $i, 2);
+        }
+        if ($return['currency'] && in_array($return['currency'], $all_currencies)) {
+                $return['total_order'] = Mage::app()->getLocale()
+                    ->currency($return['currency'])
+                    ->toCurrency($return['total_order']);
+                $return['average_order'] = Mage::app()->getLocale()
+                    ->currency($return['currency'])
+                    ->toCurrency($return['average_order']);
+        } else {
+            $return['total_order'] = number_format($return['total_order'], 2, ',', ' ');
+            $return['average_order'] = number_format($return['average_order'], 2, ',', ' ');
+        }
+        $return['nb_order'] = (int)$return['nb_order'];
+        $config->set('order_statistic', Mage::helper('core')->jsonEncode($return));
+        $config->set('last_statistic_update', date('Y-m-d H:i:s'));
+        return $return;
     }
 }

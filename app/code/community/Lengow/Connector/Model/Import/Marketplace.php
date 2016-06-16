@@ -187,10 +187,10 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
      /**
      * Call Action with marketplace
      *
-     * @param action                            $action
-     * @param Mage_Sales_Model_Order            $order
-     * @param Mage_Sales_Model_Order_Shipment   $shipment
-     * @param string                            $order_line_id
+     * @param string                          $action
+     * @param Mage_Sales_Model_Order          $order
+     * @param Mage_Sales_Model_Order_Shipment $shipment
+     * @param string                          $order_line_id
      *
      * @return bool
      */

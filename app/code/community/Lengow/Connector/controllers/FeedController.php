@@ -30,8 +30,10 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action
         $limit = $this->getRequest()->getParam('limit', null);
         $offset = $this->getRequest()->getParam('offset', null);
         $ids_product = $this->getRequest()->getParam('ids_product', null);
+        $legacy_fields = $this->getRequest()->getParam('legacy_fields', null);
         $currency = $this->getRequest()->getParam('currency', null);
         $update_export_date = $this->getRequest()->getParam('update_export_date', null);
+        $log_output = $this->getRequest()->getParam('log_output', null);
         //get store data
         $storeCode = $this->getRequest()->getParam('code', null);
         if ($storeCode) {
@@ -68,7 +70,9 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action
                     'offset'             => $offset,
                     'product_ids'        => $ids_product,
                     'currency'           => $currency,
+                    'legacy_fields'      => $legacy_fields,
                     'update_export_date' => $update_export_date,
+                    'log_output'         => $log_output,
                 ));
                 $export->exec();
             } catch (Exception $e) {

@@ -196,9 +196,9 @@ class Lengow_Connector_Model_Import extends Varien_Object
             }
             if (!$this->_import_one_order) {
                 $this->_import_helper->setImportInProcess();
+                // udpate last import date
+                $this->_import_helper->updateDateImport($this->_type_import);
             }
-            // udpate last import date
-            $this->_import_helper->updateDateImport($this->_type_import);
             // get all store for import
             $store_collection = Mage::getResourceModel('core/store_collection')->addFieldToFilter('is_active', 1);
             foreach ($store_collection as $store) {
@@ -592,24 +592,17 @@ class Lengow_Connector_Model_Import extends Varien_Object
                         $this->_connector
                     );
                     if ($synchro) {
-                        $this->_helper->log(
-                            'Import',
-                            $this->_helper->setLogMessage('log.import.order_synchronized_with_lengow', array(
-                                'order_id' => $magento_order->getIncrementId()
-                            )),
-                            $this->_log_output,
-                            $marketplace_sku
+                        $synchro_message = $this->_helper->setLogMessage(
+                            'log.import.order_synchronized_with_lengow',
+                            array('order_id' => $magento_order->getIncrementId())
                         );
                     } else {
-                        $this->_helper->log(
-                            'Import',
-                            $this->_helper->setLogMessage('log.import.order_not_synchronized_with_lengow', array(
-                                'order_id' => $magento_order->getIncrementId()
-                            )),
-                            $this->_log_output,
-                            $marketplace_sku
+                        $synchro_message = $this->_helper->setLogMessage(
+                            'log.import.order_not_synchronized_with_lengow',
+                            array('order_id' => $magento_order->getIncrementId())
                         );
                     }
+                    $this->_helper->log('Import', $synchro_message, $this->_log_output, $marketplace_sku);
                     unset($magento_order);
                 }
                 // if re-import order -> return order informations

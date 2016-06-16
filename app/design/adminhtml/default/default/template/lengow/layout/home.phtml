@@ -1,7 +1,11 @@
-<div id="lengow-container">
-    <h1>Home Page</h1>
-    <?php
-        echo $this->getChildHtml("lengow_content");
-    ?>
-</div>
-<div id="lengow-iframe-container"></div>
+<?php
+$is_new_merchant = Mage::helper('lengow_connector/sync')->isNewMerchant();
+$is_sync = Mage::app()->getRequest()->getParam('isSync');
+if ($is_new_merchant || $is_sync) {
+    echo $this->getChildHtml("lengow_new");
+    echo '<input type="hidden" id="lengow_sync_link" value="'.$is_sync.'">';
+} else {
+    echo $this->getChildHtml("lengow_dashboard");
+}
+echo $this->getChildHtml("lengow_footer");
+

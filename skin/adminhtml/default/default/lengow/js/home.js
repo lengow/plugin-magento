@@ -1,13 +1,14 @@
 (function( $ ) {
     $(function() {
 
+        var sync_link = $('#lengow_sync_link').val();
+
         $('#lengow-container').hide();
         $('<iframe id="lengow-iframe">', {
             id:  'lengow-iframe',
             frameborder: 0,
             scrolling: 'no'
         }).appendTo('#lengow-iframe-container');
-        $('#lengow-iframe').show();
 
         var sync_iframe = document.getElementById('lengow-iframe');
         if (sync_iframe) {
@@ -22,8 +23,17 @@
                     }
                 });
             };
-            //sync_iframe.src = 'http://cms.v3-inte.poney.io';
-            sync_iframe.src = '/skin/adminhtml/default/default/lengow/temp/home.html';
+
+            if (sync_link) {
+                // synchronisation des boutiques, à modifier lorsque l'API sera disponible
+                // sync_iframe.src = 'http://cms.lengow.io/sync/';
+                sync_iframe.src = 'http://cms.lengow.int/sync/';
+            } else {
+                // sync_iframe.src = 'http://cms.lengow.io/';
+                sync_iframe.src = 'http://cms.lengow.int/';
+            }
+
+            $('#lengow-iframe').show();
         }
 
         window.addEventListener("message", receiveMessage, false);
@@ -34,7 +44,7 @@
 
             switch (event.data.function) {
                 case 'sync':
-                    //Store lengow information into prestashop :
+                    //Store lengow information into magento :
                     // account_id
                     // access_token
                     // secret_token
@@ -45,7 +55,7 @@
                     });
                     break;
                 case 'sync_and_reload':
-                    //Store lengow information into prestashop and reload it
+                    //Store lengow information into magento and reload it
                     // account_id
                     // access_token
                     // secret_token

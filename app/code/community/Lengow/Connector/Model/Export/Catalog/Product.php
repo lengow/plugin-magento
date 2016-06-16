@@ -37,22 +37,23 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
      */
     public function getShippingInfo($product_instance, $storeId)
     {
-        $data['shipping-name'] = '';
-        $data['shipping-price'] = '';
+        $datas = array();
+        $datas['shipping_method'] = '';
+        $datas['shipping_cost'] = '';
         $carrier = $this->_config_helper->get('shipping_method', $storeId);
         if (empty($carrier)) {
-            return $data;
+            return $datas;
         }
         $carrierTab = explode('_', $carrier);
         list($carrierCode, $methodCode) = $carrierTab;
-        $data['shipping-name'] = ucfirst($methodCode);
+        $datas['shipping_method'] = ucfirst($methodCode);
         $countryCode = $this->_config_helper->get('shipping_country', $storeId);
         $shippingPrice = $this->_getShippingPrice($product_instance, $carrier, $countryCode);
         if (!$shippingPrice) {
             $shippingPrice = $this->_config_helper->get('shipping_price', $storeId);
         }
-        $data['shipping-price'] = $shippingPrice;
-        return $data;
+        $datas['shipping_cost'] = $shippingPrice;
+        return $datas;
     }
 
     /**
@@ -198,16 +199,6 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
                     $price += $product->getPrice();
                     $final_price += $product->getFinalPrice();
                 }
-                $price_including_tax = Mage::helper('tax')->getPrice(
-                    $product_instance->setTaxPercent(null),
-                    $price,
-                    true
-                );
-                $final_price_including_tax = Mage::helper('tax')->getPrice(
-                    $product_instance->setTaxPercent(null),
-                    $final_price,
-                    true
-                );
             } else {
                 $price = $product_instance->getPrice();
                 $final_price = $product_instance->getFinalPrice();
@@ -215,9 +206,11 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
         }
         if (!$config) {
             $price_including_tax = $price + $calculator->calcTaxAmount($price, $taxPercent, false);
+            $final_price_excluding_tax = $final_price;
             $final_price_including_tax = $final_price + $calculator->calcTaxAmount($final_price, $taxPercent, false);
         } else {
             $price_including_tax = $price;
+            $final_price_excluding_tax = Mage::helper('tax')->getPrice($product_instance, $price);
             $final_price_including_tax = $final_price;
         }
         // get currency for convert
@@ -226,11 +219,14 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
         } else {
             $toCurrency = Mage::getModel('directory/currency')->load($this->getCurrentCurrencyCode());
         }
+        $datas = array();
+        $datas['currency'] = $toCurrency->getCode();
         // get prices with or without convertion
         if ($this->getOriginalCurrency() == $toCurrency->getCode()) {
             $discount_amount = $price_including_tax - $final_price_including_tax;
-            $data['price-ttc'] = round($final_price_including_tax, 2);
-            $data['price-before-discount'] = round($price_including_tax, 2);
+            $datas['price_excl_tax'] = round($final_price_excluding_tax, 2);
+            $datas['price_incl_tax'] = round($final_price_including_tax, 2);
+            $datas['price_before_discount'] = round($price_including_tax, 2);
         } else {
             $discount_amount = Mage::helper('directory')->currencyConvert(
                 $price_including_tax,
@@ -241,23 +237,28 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
                 $this->getOriginalCurrency(),
                 $this->getCurrentCurrencyCode()
             );
-            $data['price-ttc'] = round(Mage::helper('directory')->currencyConvert(
+            $datas['price_excl_tax'] = round(Mage::helper('directory')->currencyConvert(
+                $final_price_excluding_tax,
+                $this->getOriginalCurrency(),
+                $this->getCurrentCurrencyCode()
+            ), 2);
+            $datas['price_incl_tax'] = round(Mage::helper('directory')->currencyConvert(
                 $final_price_including_tax,
                 $this->getOriginalCurrency(),
                 $this->getCurrentCurrencyCode()
             ), 2);
-            $data['price-before-discount'] = round(Mage::helper('directory')->currencyConvert(
+            $datas['price_before_discount'] = round(Mage::helper('directory')->currencyConvert(
                 $price_including_tax,
                 $this->getOriginalCurrency(),
                 $this->getCurrentCurrencyCode()
             ), 2);
         }
-        $data['discount-amount'] = $discount_amount > 0 ? round($discount_amount, 2) : '0';
-        $data['discount-percent'] = $discount_amount > 0
+        $datas['discount_amount'] = $discount_amount > 0 ? round($discount_amount, 2) : '0';
+        $datas['discount_percent'] = $discount_amount > 0
             ? round(($discount_amount * 100) / $price_including_tax, 0)
             : '0';
-        $data['start-date-discount'] = $product_instance->getSpecialFromDate();
-        $data['end-date-discount'] = $product_instance->getSpecialToDate();
+        $datas['discount_start_date'] = $product_instance->getSpecialFromDate();
+        $datas['discount_end_date'] = $product_instance->getSpecialToDate();
         // retrieving promotions
         $dateTs = Mage::app()->getLocale()->storeTimeStamp($product_instance->getStoreId());
         if (method_exists(Mage::getResourceModel('catalogrule/rule'), 'getRulesFromProduct')) {
@@ -287,10 +288,10 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
             } else {
                 $to = $promo['to_date'];
             }
-            $data['start-date-discount'] = date('Y-m-d H:i:s', strtotime($from));
-            $data['end-date-discount'] = is_null($to) ? '' : date('Y-m-d H:i:s', strtotime($to));
+            $datas['discount_start_date'] = date('Y-m-d H:i:s', strtotime($from));
+            $datas['discount_end_date'] = is_null($to) ? '' : date('Y-m-d H:i:s', strtotime($to));
         }
-        return $data;
+        return $datas;
     }
 
     /**
@@ -338,11 +339,12 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
         } else {
             $categories = array();
         }
-        $data['category'] = '';
-        $data['category-url'] = '';
+        $datas = array();
+        $datas['category'] = '';
+        $datas['category_url'] = '';
         for ($i = 1; $i <= $max_level; $i++) {
-            $data['category-sub-'.($i)] = '';
-            $data['category-url-sub-'.($i)] = '';
+            $datas['category_sub_'.($i)] = '';
+            $datas['category_url_sub_'.($i)] = '';
         }
         $i = 0;
         $ariane = array();
@@ -353,13 +355,13 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
             if ($c->getId() != 1) {
                 // No root category
                 if ($i == 0) {
-                    $data['category'] = $c->getName();
-                    $data['category-url'] = $c->getUrl();
+                    $datas['category'] = $c->getName();
+                    $datas['category_url'] = $c->getUrl();
                     $ariane[] = $c->getName();
                 } elseif ($i <= $max_level) {
                     $ariane[] = $c->getName();
-                    $data['category-sub-'.$i] = $c->getName();
-                    $data['category-url-sub-'.$i] = $c->getUrl();
+                    $datas['category_sub_'.$i] = $c->getName();
+                    $datas['category_url_sub_'.$i] = $c->getUrl();
                 }
                 $i++;
             }
@@ -367,14 +369,14 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
                 $c->clearInstance();
             }
         }
-        $data['category-breadcrumb'] = implode(' > ', $ariane);
+        $datas['breadcrumb'] = implode(' > ', $ariane);
         $maxDimension = count($categories) - 1;
         if ($maxDimension >= 0) {
-            $categoryCache[$categories[count($categories) - 1]] = $data;
+            $categoryCache[$categories[count($categories) - 1]] = $datas;
         }
         unset($categories, $category, $ariane);
 
-        return $data;
+        return $datas;
     }
 
     /**
@@ -403,12 +405,12 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
         // old config value #max_images
         $max_image = 10;
         for ($i = 1; $i < $max_image + 1; $i++) {
-            $data['image-url-'.$i] = '';
+            $data['image_url_'.$i] = '';
         }
         $c = 1;
         foreach ($images as $i) {
             $url = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).'catalog/product'.$i['file'];
-            $data['image-url-'.$c++] = $url;
+            $data['image_url_'.$c++] = $url;
             if ($i == $max_image + 1) {
                 break;
             }

@@ -87,6 +87,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Tab extends Mage_Adminhtml_Block_Sa
             $carrier_tracking = $order_lengow->getData('carrier_tracking');
             $carrier_id_relay = $order_lengow->getData('carrier_id_relay');
             $sent_marketplace = $order_lengow->getData('sent_marketplace');
+            $imported_at = $helper->getDateInCorrectFormat(strtotime($order_lengow->getData('created_at')));
             $message = $order_lengow->getData('message');
             $extra = $order_lengow->getData('extra');
         } else {
@@ -104,7 +105,8 @@ class Lengow_Connector_Block_Adminhtml_Order_Tab extends Mage_Adminhtml_Block_Sa
             $carrier_tracking = $order->getData('carrier_tracking_lengow');
             $carrier_id_relay = $order->getData('carrier_id_relay_lengow');
             $sent_marketplace = 0;
-            $message = $order->getData('message_lengow');
+            $imported_at = $helper->getDateInCorrectFormat(strtotime($order->getData('carrier_id_relay_lengow')));
+            $message = $order->getData('created_at');
             $extra = $order->getData('xml_node_lengow');
         }
         $sent_marketplace = $sent_marketplace == 1 ? $helper->__('global.just_yes') : $helper->__('global.just_no');
@@ -130,6 +132,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Tab extends Mage_Adminhtml_Block_Sa
         $fields[] = array('label' => $helper->__('order.screen.carrier_id_relay'), 'value' => $carrier_id_relay);
         $fields[] = array('label' => $helper->__('order.screen.sent_marketplace'), 'value' => $sent_marketplace);
         $fields[] = array('label' => $helper->__('order.screen.message'), 'value' => $message);
+        $fields[] = array('label' => $helper->__('order.screen.imported_at'), 'value' => $imported_at);
         $fields[] = array(
             'label' => $helper->__('order.screen.extra'),
             'value' => '<textarea disabled="disabled">'.$extra.'</textarea>',

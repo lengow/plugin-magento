@@ -14,18 +14,97 @@ class Lengow_Connector_Model_Export extends Varien_Object
     /**
      * Default fields
      */
-    public static $DEFAULT_FIELDS = array(
-        'sku'               => 'sku',
-        'entity_id'         => 'product-id',
-        'parent-id'         => 'parent-id',
-        'qty'               => 'qty',
-        'name'              => 'name',
-        'description'       => 'description',
-        'short_description' => 'short_description',
-        'price-ttc'         => 'price-ttc',
-        'shipping-name'     => 'shipping-name',
-        'image-url-1'       => 'image-url-1',
-        'product-url'       => 'product-url'
+    protected $_default_fields;
+
+    /**
+     * New fields for v3
+     */
+    protected $_new_fields = array(
+        'id'                    => 'id',
+        'sku'                   => 'sku',
+        'name'                  => 'name',
+        'child_name'            => 'child_name',
+        'quantity'              => 'quantity',
+        'status'                => 'active',
+        'breadcrumb'            => 'breadcrumb',
+        'url'                   => 'url',
+        'price_excl_tax'        => 'price_excl_tax',
+        'price_incl_tax'        => 'price_incl_tax',
+        'price_before_discount' => 'price_before_discount',
+        'discount_amount'       => 'discount_amount',
+        'discount_percent'      => 'discount_percent',
+        'discount_start_date'   => 'discount_start_date',
+        'discount_end_date'     => 'discount_end_date',
+        'shipping_method'       => 'shipping_method',
+        'shipping_cost'         => 'shipping_cost',
+        'currency'              => 'currency',
+        'image_default'         => 'image_default',
+        'image_url_1'           => 'image_url_1',
+        'image_url_2'           => 'image_url_2',
+        'image_url_3'           => 'image_url_3',
+        'image_url_4'           => 'image_url_4',
+        'image_url_5'           => 'image_url_5',
+        'image_url_6'           => 'image_url_6',
+        'image_url_7'           => 'image_url_7',
+        'image_url_8'           => 'image_url_8',
+        'image_url_9'           => 'image_url_9',
+        'image_url_10'          => 'image_url_10',
+        'type'                  => 'type',
+        'parent_id'             => 'parent_id',
+        'variation'             => 'variation',
+        'language'              => 'language',
+        'description'           => 'description',
+        'description_short'     => 'description_short',
+    );
+
+    /**
+     * Legacy fields for retro-compatibility
+     */
+    protected $_legacy_fields = array(
+        'sku'                   => 'sku',
+        'product_id'            => 'id',
+        'qty'                   => 'quantity',
+        'status'                => 'active',
+        'category-breadcrumb'   => 'breadcrumb',
+        'category'              => 'category',
+        'category-url'          => 'category_url',
+        'category-sub-1'        => 'category_sub_1',
+        'category-url-sub-1'    => 'category_url_sub_1',
+        'category-sub-2'        => 'category_sub_2',
+        'category-url-sub-2'    => 'category_url_sub_2',
+        'category-sub-3'        => 'category_sub_3',
+        'category-url-sub-3'    => 'category_url_sub_3',
+        'category-sub-4'        => 'category_sub_4',
+        'category-url-sub-4'    => 'category_url_sub_4',
+        'category-sub-5'        => 'category_sub_5',
+        'category-url-sub-5'    => 'category_url_sub_5',
+        'price-ttc'             => 'price_incl_tax',
+        'price-before-discount' => 'price_before_discount',
+        'discount-amount'       => 'discount_amount',
+        'discount-percent'      => 'discount_percent',
+        'start-date-discount'   => 'discount_start_date',
+        'end-date-discount'     => 'discount_end_date',
+        'shipping-name'         => 'shipping_method',
+        'shipping-price'        => 'shipping_cost',
+        'image-url-1'           => 'image_url_1',
+        'image-url-2'           => 'image_url_2',
+        'image-url-3'           => 'image_url_3',
+        'image-url-4'           => 'image_url_4',
+        'image-url-5'           => 'image_url_5',
+        'image-url-6'           => 'image_url_6',
+        'image-url-7'           => 'image_url_7',
+        'image-url-8'           => 'image_url_8',
+        'image-url-9'           => 'image_url_9',
+        'image-url-10'          => 'image_url_10',
+        'product-url'           => 'url',
+        'name'                  => 'name',
+        'description'           => 'description',
+        'short_description'     => 'description_short',
+        'parent_id'             => 'parent_id',
+        'product_type'          => 'type',
+        'product_variation'     => 'variation',
+        'image_default'         => 'image_default',
+        'child_name'            => 'child_name',
     );
 
     /**
@@ -36,7 +115,10 @@ class Lengow_Connector_Model_Export extends Varien_Object
         'tier_price',
         'short_description',
         'description',
-        'quantity'
+        'quantity',
+        'price',
+        'lengow_product',
+        'status',
     );
 
     /**
@@ -114,6 +196,9 @@ class Lengow_Connector_Model_Export extends Varien_Object
      */
     protected $_helper;
 
+    /**
+     * Export cache
+     */
     protected $_cacheParentProducts = array();
     protected $_clear_parent_cache = 0;
     protected $_cacheCategory = array();
@@ -121,21 +206,21 @@ class Lengow_Connector_Model_Export extends Varien_Object
     /**
      * Construct the export manager
      * @param array params optional options
-     * integer $id_store ID of store
-     * varchar $mode The mode of export
-     *     size : display only count of products to export
-     *     full : export simple product + configured product
-     *     xxx,yyy : export xxx type product + yyy type product
-     * varchar $format Format of export
-     * varchar $types Type(s) of product
-     * varchar $status Status of product to export
-     * boolean $out_of_stock Export product out of stock
-     * boolean $selected_products Export selected product
-     * boolean $stream Export in file or not
-     * integer $limit The number of product to be exported
-     * integer $offset From what product export
-     * array $ids_product Ids product to export
-     *
+     * integer $store_id          ID of store
+     * integer $limit             The number of product to be exported
+     * integer $offset            From what product export
+     * string  $mode              The mode of export = size : display only count of products to export
+     * string  $format            Export Format (csv|yaml|xml|json)
+     * string  $types             Type(s) of product
+     * string  $type              Type of export (manual, cron or magento cron)
+     * string  $status            Status of product to export
+     * string  $currency          Currency for export
+     * string  $product_ids       Ids product to export
+     * boolean $out_of_stock      Export product in stock and out stock (1) | Export Only in stock product (0)
+     * boolean $selected_products Export selected product (1) | Export all products (0)
+     * boolean $stream            Display file when call script (1) | Save File (0)
+     * boolean $legacy_fields     Export with legacy fields (1) | Export with new fields (0)
+     * boolean $log_output        See logs (only when stream = 0) (1) | no logs (0)
      */
     public function __construct($params)
     {
@@ -160,6 +245,12 @@ class Lengow_Connector_Model_Export extends Varien_Object
         } else {
             $this->_stream = $stream;
         }
+        // Get legacy fields or new fields
+        $legacy_fields = isset($params['legacy_fields']) ? (boolean)$params['legacy_fields'] : null;
+        if (is_null($legacy_fields)) {
+            $legacy_fields = $this->_config_helper->get('legacy_enable', $this->_store_id) ? true : false;
+        }
+        $this->_default_fields = $legacy_fields ? $this->_legacy_fields : $this->_new_fields ;
         $this->_update_export_date = isset($params['update_export_date']) ? (bool)$params['update_export_date'] : true;
         // See logs or not (only when stream = 0)
         $this->_log_output = (!$this->_stream && isset($params['log_output'])) ? (bool)$params['log_output'] : false;
@@ -275,7 +366,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
         $count_downloadable = 0;
         // Generate data
         foreach ($products as $p) {
-            $array_data = array();
+            $datas = array();
             $parent = false;
             $pi++;
             if ($total_product < $pi) {
@@ -366,7 +457,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
                                 $parent_instance->clearInstance();
                             }
                         }
-                        unset($array_data);
+                        unset($datas);
                         continue;
                     }
                     if ($parent_instance
@@ -402,71 +493,78 @@ class Lengow_Connector_Model_Export extends Varien_Object
             }
             $qty = $product->getData('stock_item');
             // Default data
-            $array_data['sku'] = $product->getSku();
-            $array_data['product_id'] = $product->getId();
-            $array_data['qty'] = (integer)$qty->getQty();
+            $datas['sku'] = $product->getSku();
+            $datas['id'] = $product->getId();
+            $datas['quantity'] = (integer)$qty->getQty();
             //we dont send qty ordered (old settings : without_product_ordering)
-            $array_data['qty'] = $array_data['qty'] - (integer)$qty->getQtyOrdered();
+            $datas['quantity'] = $datas['quantity'] - (integer)$qty->getQtyOrdered();
             if ($product->getTypeId() == 'grouped') {
-                $array_data['qty'] = (integer)$qty_temp;
+                $datas['quantity'] = (integer)$qty_temp;
             }
-            $array_data['status'] = $product->getStatus() == Mage_Catalog_Model_Product_Status::STATUS_DISABLED
+            $datas['active'] = $product->getStatus() == Mage_Catalog_Model_Product_Status::STATUS_DISABLED
                 ? 'Disabled'
                 : 'Enabled';
-            $array_data = array_merge(
-                $array_data,
+            $datas = array_merge(
+                $datas,
                 $product->getCategories($product, $parent_instance, $this->_store_id, $this->_cacheCategory)
             );
-            $array_data = array_merge(
-                $array_data,
+            $datas = array_merge(
+                $datas,
                 $product->getPrices($product, $this->_store_id, $configurable_instance)
             );
-            $array_data = array_merge($array_data, $product->getShippingInfo($product, $this->_store_id));
+            $datas = array_merge($datas, $product->getShippingInfo($product, $this->_store_id));
             // Images, gestion de la fusion parent / enfant
             if ($this->_config_helper->get('parent_image', $this->_store_id) &&
                 isset($parent_instance) && $parent_instance !== false) {
-                $array_data = array_merge(
-                    $array_data,
+                $datas = array_merge(
+                    $datas,
                     $product->getImages($data['media_gallery']['images'], $parent_instance->getData('media_gallery'))
                 );
             } else {
-                $array_data = array_merge($array_data, $product->getImages($data['media_gallery']['images']));
+                $datas = array_merge($datas, $product->getImages($data['media_gallery']['images']));
             }
             if ($product->getVisibility() == Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE
                 && isset($parent_instance)
             ) {
-                $array_data['product-url'] = $parent_instance->getUrlInStore()
+                $datas['url'] = $parent_instance->getUrlInStore()
                     ? $parent_instance->getUrlInStore()
                     : $parent_instance->getProductUrl();
-                $array_data['name'] = $this->_helper->cleanData($parent_instance->getName());
-                $array_data['description'] = $this->_helper->cleanData($parent_instance->getDescription());
-                $array_data['short_description'] = $this->_helper->cleanData($parent_instance->getShortDescription());
+                $datas['name'] = $this->_helper->cleanData($parent_instance->getName());
+                $datas['description'] = $this->_helper->cleanData($parent_instance->getDescription());
+                $datas['description_short'] = $this->_helper->cleanData($parent_instance->getShortDescription());
             } else {
-                $array_data['product-url'] = $product->getUrlInStore()
+                $datas['url'] = $product->getUrlInStore()
                     ? $product->getUrlInStore()
                     : $product->getProductUrl();
-                $array_data['name'] = $this->_helper->cleanData($product->getName());
-                $array_data['description'] = $this->_helper->cleanData($product->getDescription());
-                $array_data['short_description'] = $this->_helper->cleanData($product->getShortDescription());
+                $datas['name'] = $this->_helper->cleanData($product->getName());
+                $datas['description'] = $this->_helper->cleanData($product->getDescription());
+                $datas['description_short'] = $this->_helper->cleanData($product->getShortDescription());
             }
-            $array_data['parent_id'] = $parent_id;
+            $datas['parent_id'] = $parent_id;
             // Product variation
-            $array_data['product_type'] = $product_type;
-            $array_data['product_variation'] = $variation_name;
-            $array_data['image_default'] = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA)
+            $datas['type'] = $product_type;
+            $datas['variation'] = $variation_name;
+            $datas['image_default'] = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA)
                 .'catalog/product'.$product->getImage();
-            $array_data['child_name'] = $this->_helper->cleanData($product->getName());
+            $datas['child_name'] = $this->_helper->cleanData($product->getName());
+            $datas['language'] = Mage::app()->getLocale()->getLocaleCode();
+            // get correct feed
+            $product_datas = array();
+            foreach ($this->_default_fields as $key => $value) {
+                $product_datas[$key] = $datas[$value];
+            }
+            unset($datas);
             // Selected attributes to export with Frond End value of current store
             if (!empty($attributes_to_export)) {
                 foreach ($attributes_to_export as $field => $attr) {
-                    if (!in_array($field, $this->_excludes) && !isset($array_data[$field])) {
+                    if (!in_array($field, $this->_excludes) && !isset($product_datas[$field])) {
                         if ($product->getData($field) === null) {
-                            $array_data[$attr] = '';
+                            $product_datas[$attr] = '';
                         } else {
                             if (is_array($product->getData($field))) {
-                                $array_data[$attr] = implode(',', $product->getData($field));
+                                $product_datas[$attr] = implode(',', $product->getData($field));
                             } else {
-                                $array_data[$attr] = $this->_helper->cleanData(
+                                $product_datas[$attr] = $this->_helper->cleanData(
                                     $product->getResource()->getAttribute($field)->getFrontend()->getValue($product)
                                 );
                             }
@@ -474,10 +572,17 @@ class Lengow_Connector_Model_Export extends Varien_Object
                     }
                 }
             }
+            // Get the maximum of character for yaml format
+            $max_character = 0;
+            foreach ($product_datas as $key => $value) {
+                if (strlen($key) > $max_character) {
+                    $max_character = strlen($key);
+                }
+            }
             // Get header of feed
             if ($first) {
                 $fields_header = array();
-                foreach ($array_data as $name => $value) {
+                foreach ($product_datas as $name => $value) {
                     $fields_header[] = $name;
                 }
                 // Get content type if streamed feed
@@ -491,7 +596,10 @@ class Lengow_Connector_Model_Export extends Varien_Object
                 $this->_write($feed->makeHeader());
                 $first = false;
             }
-            $this->_write($feed->makeData($array_data, array('last' => $last)));
+            $this->_write($feed->makeData($product_datas, array(
+                'last'          => $last,
+                'max_character' => $max_character
+            )));
             if ($pi % $modulo_export == 0) {
                 Mage::helper('lengow_connector')->log(
                     'Export',
@@ -504,7 +612,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
             if (method_exists($product, 'clearInstance')) {
                 $product->clearInstance();
             }
-            unset($array_data);
+            unset($product_datas);
         }
         $this->_write($feed->makeFooter());
         // Product counter

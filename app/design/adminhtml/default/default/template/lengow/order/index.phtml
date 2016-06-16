@@ -2,15 +2,12 @@
     $helper = Mage::helper('lengow_connector');
     $config_helper = Mage::helper('lengow_connector/config');
     $import_helper = Mage::helper('lengow_connector/import');
-
     $last_import = $import_helper->getLastImport();
     $last_import_date = $helper->getDateInCorrectFormat($last_import['timestamp']);
-
     $report_mail_active = (bool)$config_helper->get('report_mail_enable');
     $report_mail_link = Mage::helper('adminhtml')
         ->getUrl('adminhtml/system_config/edit/section/lengow_import_options/');
     $report_mails = $config_helper->getReportEmailAddress();
-
     $order = Mage::getModel('lengow/import_order');
     $old_orders = $order->countNotMigrateOrder();
     $order_with_error = $order->countOrderWithError();

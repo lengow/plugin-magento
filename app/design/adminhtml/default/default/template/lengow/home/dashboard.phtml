@@ -1,0 +1,87 @@
+<?php 
+$helper = Mage::helper('lengow_connector');
+$stats = Mage::helper('lengow_connector/sync')->getStatistic();
+$total_order = isset($stats->total_order) ? $stats->total_order : 0;
+$nb_order = isset($stats->nb_order) ? $stats->nb_order : 0;
+$average_order = isset($stats->average_order) ? $stats->average_order : 0;
+$order_to_be_sent = Mage::getModel('lengow/import_order')->countOrderToBeSent();
+?>
+
+<div class="lgw-container">
+    <div class="lgw-box lgw-home-header text-center">
+        <img src="<?php echo $this->getSkinUrl('lengow/images/') ?>lengow-white-big.png" alt="lengow">
+        <h1><?php echo $helper->__('dashboard.screen.welcome_back'); ?></h1>
+        <a href="http://solution.lengow.com" class="lgw-btn" target="_blank" title="<?php echo $helper->__('dashboard.screen.go_to_lengow'); ?>">
+            <?php echo $helper->__('dashboard.screen.go_to_lengow'); ?>
+        </a>
+    </div>
+    <div class="lgw-row lgw-home-menu text-center">
+        <div class="lgw-col-4">
+            <a href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_product/'); ?>" class="lgw-box-link" title="<?php echo $helper->__('dashboard.screen.products_title'); ?>">
+                <div class="lgw-box">
+                    <img src="<?php echo $this->getSkinUrl('lengow/images/') ?>home-products.png" class="img-responsive">
+                    <h2><?php echo $helper->__('dashboard.screen.products_title'); ?></h2>
+                    <p><?php echo $helper->__('dashboard.screen.products_text'); ?></p>
+                </div>
+            </a>
+        </div>
+        <div class="lgw-col-4">
+            <a href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_order/'); ?>" class="lgw-box-link" title="<?php echo $helper->__('dashboard.screen.orders_title'); ?>">
+                <div class="lgw-box">
+                    <img src="<?php echo $this->getSkinUrl('lengow/images/') ?>home-orders.png" class="img-responsive">
+                    <h2>
+                        <?php echo $helper->__('dashboard.screen.orders_title'); ?>
+                        <span class="lgw-label lgw-label_red"><?php echo $order_to_be_sent; ?></span>
+                    </h2>
+                    <p><?php echo $helper->__('dashboard.screen.orders_text'); ?></p>
+                </div>
+            </a>
+        </div>
+        <div class="lgw-col-4">
+            <a href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/system_config/edit/section/lengow_global_options'); ?>" class="lgw-box-link" title="<?php echo $helper->__('dashboard.screen.settings_title'); ?>">
+                <div class="lgw-box">
+                    <img src="<?php echo $this->getSkinUrl('lengow/images/') ?>home-settings.png" class="img-responsive">
+                    <h2><?php echo $helper->__('dashboard.screen.settings_title'); ?></h2>
+                    <p><?php echo $helper->__('dashboard.screen.settings_text'); ?></p>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="lgw-box text-center">
+        <h2><?php echo $helper->__('dashboard.screen.partner_business'); ?></h2>
+        <div class="lgw-row lgw-home-stats">
+            <div class="lgw-col-4">
+                <h5><?php echo $helper->__('dashboard.screen.stat_turnover'); ?></h5>
+                <span class="stats-big-value"><?php echo $total_order; ?></span>
+            </div>
+            <div class="lgw-col-4">
+                <h5><?php echo $helper->__('dashboard.screen.stat_nb_orders'); ?></h5>
+                <span class="stats-big-value"><?php echo $nb_order; ?></span>
+            </div>
+            <div class="lgw-col-4">
+                <h5><?php echo $helper->__('dashboard.screen.stat_avg_order'); ?></h5>
+                <span class="stats-big-value"><?php echo $average_order; ?></span>
+            </div>
+        </div>
+        <p>
+            <a href="http://solution.lengow.com" target="_blank"
+                title="<?php echo $helper->__('dashboard.screen.stat_more_stats'); ?>" class="lgw-btn lgw-btn-white">
+                <?php echo $helper->__('dashboard.screen.stat_more_stats'); ?>
+            </a>
+        </p>
+    </div>
+    <div class="lgw-box">
+        <h2><?php echo $helper->__('dashboard.screen.some_help_title'); ?></h2>
+        <p>
+            <a href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_help/'); ?>"
+                title="<?php echo $helper->__('dashboard.screen.get_in_touch'); ?>">
+                <?php echo $helper->__('dashboard.screen.get_in_touch'); ?>
+            </a>
+        </p>
+        <p>
+            <a href="https://en.knowledgeowl.com/help/article/link/prestashopv2" target="_blank"
+                title="<?php echo $helper->__('dashboard.screen.visit_help_center'); ?>"><?php echo $helper->__('dashboard.screen.visit_help_center'); ?></a>
+            <?php echo $helper->__('dashboard.screen.configure_plugin'); ?>
+        </p>
+    </div>
+</div>

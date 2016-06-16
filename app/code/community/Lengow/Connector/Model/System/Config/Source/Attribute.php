@@ -15,7 +15,10 @@ class Lengow_Connector_Model_System_Config_Source_Attribute extends Mage_Core_Mo
         'tier_price',
         'short_description',
         'description',
-        'quantity'
+        'quantity',
+        'price',
+        'lengow_product',
+        'status',
     );
 
     /**
