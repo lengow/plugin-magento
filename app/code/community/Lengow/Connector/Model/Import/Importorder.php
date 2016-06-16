@@ -334,7 +334,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
 
             if ($order) {
                 // Save order line id in lengow_order_line table
-                $order_line_saved = $this->_saveLengowOrderLine($order);
+                $order_line_saved = $this->_saveLengowOrderLine($order, $quote);
                 $this->_helper->log(
                     'Import',
                     $this->_helper->setLogMessage('log.import.lengow_order_line_saved', array(
@@ -734,16 +734,16 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
             if ($quote->getGrandTotal() != $this->_order_amount) {
                 $quote_items = $quote->getAllItems();
                 foreach ($quote_items as $item) {
-                    $row_total_lengow = (float)$quote->getRowTotalLengow((string)$item->getProduct()->getId());
-                    if ($row_total_lengow != $item->getRowTotalInclTax()) {
-                        $diff = $row_total_lengow - $item->getRowTotalInclTax();
+                    $lengow_product = $quote->getLengowProducts((string)$item->getProduct()->getId());
+                    if ($lengow_product['amount'] != $item->getRowTotalInclTax()) {
+                        $diff = $lengow_product['amount'] - $item->getRowTotalInclTax();
                         $item->setPriceInclTax($item->getPriceInclTax() + ($diff / $item->getQty()));
                         $item->setBasePriceInclTax($item->getPriceInclTax());
                         $item->setPrice($item->getPrice() + ($diff / $item->getQty()));
                         $item->setOriginalPrice($item->getPrice());
                         $item->setRowTotal($item->getRowTotal() + $diff);
                         $item->setBaseRowTotal($item->getRowTotal());
-                        $item->setRowTotalInclTax($row_total_lengow);
+                        $item->setRowTotalInclTax($lengow_product['amount']);
                         $item->setBaseRowTotalInclTax($item->getRowTotalInclTax());
                     }
                 }
@@ -944,26 +944,21 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
      * Save order line in lengow orders line table
      *
      * @param Mage_Sales_Model_Order $order Magento order
+     * @param Mage_Sales_Model_Quote $quote Magento quote
      *
      * @return string
      */
-    protected function _saveLengowOrderLine($order)
+    protected function _saveLengowOrderLine($order, $quote)
     {
         $order_line_saved = false;
-        foreach ($this->_package_data->cart as $product) {
-            if (!is_null($product->marketplace_status)) {
-                $state_product = $this->_marketplace->getStateLengow((string)$product->marketplace_status);
-                if ($state_product == 'canceled' || $state_product == 'refused') {
-                    continue;
-                }
-                $order_line_id =  (string)$product->marketplace_order_line_id;
-                $order_line = Mage::getModel('lengow/import_orderline');
-                $order_line->createOrderLine(array(
-                    'order_id'      => (int)$order->getId(),
-                    'order_line_id' => $order_line_id
-                ));
-                $order_line_saved .= (!$order_line_saved ? $order_line_id : ' / '.$order_line_id);
-            }
+        $lengow_products = $quote->getLengowProducts();
+        foreach ($lengow_products as $product) {
+            $order_line = Mage::getModel('lengow/import_orderline');
+            $order_line->createOrderLine(array(
+                'order_id'      => (int)$order->getId(),
+                'order_line_id' => $product['order_line_id']
+            ));
+            $order_line_saved .= (!$order_line_saved ? $product['order_line_id'] : ' / '.$product['order_line_id']);
         }
         return $order_line_saved;
     }

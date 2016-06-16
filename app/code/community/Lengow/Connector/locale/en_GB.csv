@@ -62,6 +62,7 @@ order.screen.carrier_method|Shipping method from marketplace
 order.screen.carrier_tracking|Tracking number
 order.screen.carrier_id_relay|ID relay
 order.screen.sent_marketplace|Shipped by marketplace
+order.screen.imported_at|Imported at
 order.screen.message|Message
 order.screen.extra|JSON format
 order.screen.not_lengow_order|This order doesn't come from Lengow

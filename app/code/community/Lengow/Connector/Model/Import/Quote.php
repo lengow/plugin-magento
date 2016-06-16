@@ -14,7 +14,7 @@ class Lengow_Connector_Model_Import_Quote extends Mage_Sales_Model_Quote
     /**
      * @var array row total Lengow
      */
-    protected $_rowTotalLengow = array();
+    protected $_lengow_products = array();
 
     /**
      * Add products from API to current quote
@@ -63,7 +63,14 @@ class Lengow_Connector_Model_Import_Quote extends Mage_Sales_Model_Quote
                     // get unit price with tax
                     $price = (float)($product_line->amount / $product_line->quantity);
                     // save total row Lengow for each product
-                    $this->_rowTotalLengow[(string)$product->getId()] = (float)$product_line->amount;
+                    $this->_lengow_products[(string)$product->getId()] = array(
+                        'sku'           => (string)$product->getSku(),
+                        'title'         => (string)$product_line->title,
+                        'amount'        => (float)$product_line->amount,
+                        'price_unit'    => $price,
+                        'quantity'      => (int)$product_line->quantity,
+                        'order_line_id' => $order_lineid,
+                    );
                     // if price not include tax -> get shipping cost without tax
                     if (!$price_include_tax) {
                         $basedOn = Mage::getStoreConfig(
@@ -187,14 +194,18 @@ class Lengow_Connector_Model_Import_Quote extends Mage_Sales_Model_Quote
     }
 
     /**
-     * Get row Total from Lengow
+     * Get Lengow Products
      *
      * @param string $product_id product id
      *
      * @return string
      */
-    public function getRowTotalLengow($product_id)
+    public function getLengowProducts($product_id = null)
     {
-        return $this->_rowTotalLengow[$product_id];
+        if (is_null($product_id)) {
+            return $this->_lengow_products;
+        } else {
+            return $this->_lengow_products[$product_id];
+        }
     }
 }
