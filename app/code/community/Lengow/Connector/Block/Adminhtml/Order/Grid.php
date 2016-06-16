@@ -100,6 +100,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Grid extends Mage_Adminhtml_Block_W
             array(
                 'header'           => $this->helper('lengow_connector')->__('order.table.magento_sku'),
                 'index'            => 'order_sku',
+                'renderer'         => 'Lengow_Connector_Block_Adminhtml_Order_Renderer_Ordersku',
                 'column_css_class' => 'lengow_table_center',
             )
         );

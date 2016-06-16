@@ -310,11 +310,33 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </import_report_mail_address>
+                        <import_ship_mp_enabled>
+                            <label>lengow_setting.import_ship_mp_enabled_title</label>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                        </import_ship_mp_enabled>
+                        <import_stock_ship_mp>
+                            <label>lengow_setting.import_stock_ship_mp_title</label>
+                            <comment>lengow_setting.import_stock_ship_mp_comment</comment>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <depends>
+                                <import_ship_mp_enabled>1</import_ship_mp_enabled>
+                            </depends>
+                        </import_stock_ship_mp>
                         <import_preprod_mode_enable>
                             <label>lengow_setting.import_preprod_mode_enable_title</label>
                             <comment>lengow_setting.import_preprod_mode_enable_comment</comment>
                             <frontend_type>select</frontend_type>
-                            <sort_order>3</sort_order>
+                            <sort_order>5</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
@@ -324,7 +346,7 @@
                             <label>lengow_setting.import_cron_enable_title</label>
                             <comment>lengow_setting.import_cron_enable_comment</comment>
                             <frontend_type>select</frontend_type>
-                            <sort_order>4</sort_order>
+                            <sort_order>6</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>

@@ -74,6 +74,7 @@ order.table.status_waiting_shipment|Waiting shipment
 order.table.status_shipped|Shipped
 order.table.status_closed|Closed
 order.table.status_refunded|Refunded
+order.table.status_shipped_by_mkp|Shipped by Marketplace
 order.table.status_canceled|Canceled
 order.table.button_reimport_order|Re-import Orders
 order.table.button_resend_order|Resend Orders
@@ -154,6 +155,9 @@ lengow_setting.import_report_mail_enable_title|I would like to be notified when 
 lengow_setting.import_report_mail_enable_comment|We will send you this once a day
 lengow_setting.import_report_mail_address_title|Mail for the report email
 lengow_setting.import_report_mail_address_comment|Email separated by ;
+lengow_setting.import_ship_mp_enabled_title|Import orders shipped by marketplaces
+lengow_setting.import_stock_ship_mp_title|I want to decrease my stock
+lengow_setting.import_stock_ship_mp_comment|Use this option to take into account your marketplaces orders on your stock in your PrestaShop backoffice
 lengow_setting.import_preprod_mode_enable_title|Preprod mode
 lengow_setting.import_preprod_mode_enable_comment|Only for preproduction's mode: no synchronisation orders with Lengow, import orders every time
 lengow_setting.import_cron_enable_title|Enable Magento cron
@@ -241,6 +245,8 @@ log.import.error_wrong_package_number|import order failed - wrong package number
 log.import.error_no_delivery_address|import order failed - no delivery address in the order
 log.import.order_synchronized_with_lengow|order successfully synchronised with Lengow webservice (ORDER ID %{order_id})
 log.import.order_not_synchronized_with_lengow|WARNING ! Order could NOT be synchronised with Lengow webservice (ORDER ID %{order_id})
+log.import.quantity_back_reimported_order|adding quantity back to stock (order is re-imported)
+log.import.quantity_back_shipped_by_marketplace|adding quantity back to stock (order shipped by marketplace)
 log.mail_report.send_mail_to|report email sent to %{email}
 log.mail_report.unable_send_mail_to|unable to send report email to %{email}
 log.order_action.start_for_store|check finish actions in store %{store_name} (%{store_id})

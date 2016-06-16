@@ -88,6 +88,12 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
         'report_mail_address' => array(
             'path' => 'lengow_import_options/advanced/import_report_mail_address'
         ),
+        'import_ship_mp_enabled' => array(
+            'path' =>  'lengow_import_options/advanced/import_ship_mp_enabled'
+        ),
+        'import_stock_ship_mp' => array(
+            'path' =>  'lengow_import_options/advanced/import_stock_ship_mp'
+        ),
         'preprod_mode_enable' => array(
             'path' => 'lengow_import_options/advanced/import_preprod_mode_enable'
         ),

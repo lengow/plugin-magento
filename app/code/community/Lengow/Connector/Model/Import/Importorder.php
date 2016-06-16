@@ -47,6 +47,11 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
     protected $_log_output = false;
 
     /**
+     * @var array valid products lengow
+     */
+    protected $_lengow_products;
+
+    /**
      * @var Lengow_Connector_Model_Import_Marketplace
      */
     protected $_marketplace;
@@ -181,6 +186,25 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
         $this->_order_state_lengow = $this->_marketplace->getStateLengow($this->_order_state_marketplace);
     }
 
+    protected function _getLengowProducts()
+    {
+        foreach ($this->_package_data->cart as $key => $product) {
+            if (!is_null($product->marketplace_status)) {
+                $state_product = $this->_marketplace->getStateLengow((string)$product->marketplace_status);
+                if ($state_product == 'canceled' || $state_product == 'refused') {
+                    continue;
+                }
+                $this->_lengow_products[$product->marketplace_product_id] = array(
+                    'marketplace_order_line_id' => $product->marketplace_order_line_id,
+                    'quantity' => $product->quantity,
+                    'marketplace_status' => $product->marketplace_status,
+                    'lengow_status' => $product->lengow_status
+                    );
+
+            }
+        }
+        return $this->_lengow_products;
+    }
     /**
      * Create or update order
      *
@@ -316,7 +340,15 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
                     $this->_log_output,
                     $this->_marketplace_sku
                 );
-                return false;
+                if (!$this->_config->get('import_ship_mp_enabled', $this->_store_id)) {
+                    $order_lengow->updateOrder(
+                        array(
+                            'order_process_state'   => 2,
+                            'extra'                 => Mage::helper('core')->jsonEncode($this->_order_data)
+                        )
+                    );
+                    return false;
+                }
             }
             // Create or Update customer with addresses
             $customer = Mage::getModel('lengow/import_customer');
@@ -388,6 +420,25 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
                     $this->_helper->setLogMessage('lengow_log.exception.order_is_empty')
                 );
             }
+
+            if ($this->_is_reimported
+                || ($this->_shipped_by_mp && !$this->_config->get('import_stock_ship_mp', $this->_store_id))
+            ) {
+                if ($this->_is_reimported) {
+                    $log_message = $this->_helper->setLogMessage('log.import.quantity_back_reimported_order');
+                } else {
+                    $log_message = $this->_helper->setLogMessage('log.import.quantity_back_shipped_by_marketplace');
+                }
+                $this->_helper->log(
+                    'Import',
+                    $log_message,
+                    $this->_log_output,
+                    $this->_marketplace_sku);
+
+                $this->_getLengowProducts();
+                $this->addQuantityBack($this->_lengow_products);
+            }
+
             // Inactivate quote (Test)
             $quote->setIsActive(false)->save();
         } catch (Lengow_Connector_Model_Exception $e) {
@@ -418,6 +469,21 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
             return $this->_returnResult('error', $this->_order_lengow_id);
         }
         return $this->_returnResult('new', $this->_order_lengow_id, $order->getId());
+    }
+
+    /**
+     * Add quantity back to stock
+     * @param array     $products   list of products
+     *
+     * @return boolean
+     */
+    protected function addQuantityBack($products)
+    {
+        foreach ($products as $sku => $product) {
+            Mage::getModel('cataloginventory/stock')->backItemQty($sku,$product['quantity']);
+        }
+
+        return $this;
     }
 
     /**
@@ -970,4 +1036,5 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
         }
         return $order_line_saved;
     }
+
 }
