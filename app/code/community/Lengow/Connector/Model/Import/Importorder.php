@@ -186,25 +186,6 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
         $this->_order_state_lengow = $this->_marketplace->getStateLengow($this->_order_state_marketplace);
     }
 
-    protected function _getLengowProducts()
-    {
-        foreach ($this->_package_data->cart as $key => $product) {
-            if (!is_null($product->marketplace_status)) {
-                $state_product = $this->_marketplace->getStateLengow((string)$product->marketplace_status);
-                if ($state_product == 'canceled' || $state_product == 'refused') {
-                    continue;
-                }
-                $this->_lengow_products[$product->marketplace_product_id] = array(
-                    'marketplace_order_line_id' => $product->marketplace_order_line_id,
-                    'quantity' => $product->quantity,
-                    'marketplace_status' => $product->marketplace_status,
-                    'lengow_status' => $product->lengow_status
-                    );
-
-            }
-        }
-        return $this->_lengow_products;
-    }
     /**
      * Create or update order
      *
@@ -435,8 +416,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
                     $this->_log_output,
                     $this->_marketplace_sku);
 
-                $this->_getLengowProducts();
-                $this->addQuantityBack($this->_lengow_products);
+                $this->addQuantityBack($quote);
             }
 
             // Inactivate quote (Test)
@@ -475,12 +455,14 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
      * Add quantity back to stock
      * @param array     $products   list of products
      *
-     * @return boolean
+     * @return this
      */
-    protected function addQuantityBack($products)
+    protected function addQuantityBack($quote)
     {
-        foreach ($products as $sku => $product) {
-            Mage::getModel('cataloginventory/stock')->backItemQty($sku,$product['quantity']);
+        $products = $quote->getLengowProduct();
+
+        foreach ($products as $productId => $product) {
+            Mage::getModel('cataloginventory/stock')->backItemQty($productId,$product['quantity']);
         }
 
         return $this;
