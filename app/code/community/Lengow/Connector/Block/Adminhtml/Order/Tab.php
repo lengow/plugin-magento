@@ -148,6 +148,16 @@ class Lengow_Connector_Block_Adminhtml_Order_Tab extends Mage_Adminhtml_Block_Sa
      */
     public function isLengowOrder()
     {
-        return $this->getOrder()->getData('from_lengow');
+        return (bool)$this->getOrder()->getData('from_lengow');
+    }
+
+    /**
+     * Check if Magento order is follow by Lengow
+     *
+     * @return boolean
+     */
+    public function isFollowByLengow()
+    {
+        return (bool)$this->getOrder()->getData('follow_by_lengow');
     }
 }

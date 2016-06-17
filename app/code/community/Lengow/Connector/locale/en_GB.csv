@@ -66,6 +66,7 @@ order.screen.imported_at|Imported at
 order.screen.message|Message
 order.screen.extra|JSON format
 order.screen.not_lengow_order|This order doesn't come from Lengow
+order.screen.not_follow_by_lengow|Due a reimportation, this order is not followed by Lengow
 order.screen.cancel_and_reimport|Cancel and re-import order
 order.screen.check_cancel_and_reimport|Do you really want to cancel and re-import the order?
 order.screen.synchronize_id|Synchronize ID
