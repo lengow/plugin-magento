@@ -47,11 +47,6 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
     protected $_log_output = false;
 
     /**
-     * @var array valid products lengow
-     */
-    protected $_lengow_products;
-
-    /**
      * @var Lengow_Connector_Model_Import_Marketplace
      */
     protected $_marketplace;
@@ -416,7 +411,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
                     $this->_log_output,
                     $this->_marketplace_sku);
 
-                $this->addQuantityBack($quote);
+                $this->_addQuantityBack($quote);
             }
 
             // Inactivate quote (Test)
@@ -457,14 +452,12 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
      *
      * @return this
      */
-    protected function addQuantityBack($quote)
+    protected function _addQuantityBack($quote)
     {
-        $products = $quote->getLengowProduct();
-
+        $products = $quote->getLengowProducts();
         foreach ($products as $productId => $product) {
             Mage::getModel('cataloginventory/stock')->backItemQty($productId,$product['quantity']);
         }
-
         return $this;
     }
 
