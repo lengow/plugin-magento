@@ -9,7 +9,9 @@
         ->getUrl('adminhtml/system_config/edit/section/lengow_import_options/');
     $report_mails = $config_helper->getReportEmailAddress();
     $order = Mage::getModel('lengow/import_order');
-    $old_orders = $order->countNotMigrateOrder();
+    $see_migrate_block = (bool)$config_helper->get('see_migrate_block');
+    $nb_order_imported = $order->countOrderImportedByLengow();
+    $order_not_migrate = $order->countNotMigrateOrder(false);
     $order_with_error = $order->countOrderWithError();
     $order_to_be_sent = $order->countOrderToBeSent();
 ?>
@@ -50,14 +52,19 @@
     data-href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_order/'); ?>?isAjax=true" >
     <?php echo $helper->__('order.screen.button_import'); ?>
 </button>
-<?php if ($old_orders > 0) { ?>
-    <button
-        type="button" 
-        id="lengow_migrate_order"
-        class="lengow_btn"
-        data-href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_order/'); ?>?isAjax=true" >
-        <?php echo $helper->__('order.screen.button_migrate'); ?>
-    </button>
+<?php if ($see_migrate_block && $order_not_migrate > 0) { ?>
+    <div id="lengow_migrate_order" class="blue_frame">
+        <p><?php echo $helper->__('order.screen.nb_old_order_imported', array('nb_order' => $nb_order_imported)); ?></p>
+        <p><?php echo $helper->__('order.screen.order_visible_in_page', array('nb_order' => $order_to_be_sent)); ?></p>
+        <p><?php echo $helper->__('order.screen.where_see_old_order'); ?></p>
+        <button
+            type="button" 
+            id="lengow_migrate_fade"
+            class="lengow_btn"
+            data-href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_order/'); ?>?isAjax=true" >
+            <?php echo $helper->__('order.screen.button_migrate'); ?>
+        </button>
+    </div>
 <?php } ?>
 
 <div id="lengow_wrapper_messages" class="blue_frame" style="display:none;"></div>

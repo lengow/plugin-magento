@@ -627,7 +627,6 @@ $new_settings = array(
         'store' => false
     )
 );
-
 // All the settings to delete
 $delete_settings = array(
     'lentracker/general/version3',
@@ -654,10 +653,8 @@ $delete_settings = array(
     'lensync/orders/fake_email',
     'lensync/hidden/last_synchro',
 );
-
 // Get Store collection
 $store_collection = Mage::getResourceModel('core/store_collection')->addFieldToFilter('is_active', 1);
-
 // Update settings
 foreach ($new_settings as $setting) {
     if ($setting['store']) {
@@ -684,7 +681,6 @@ foreach ($new_settings as $setting) {
         Mage::getModel('core/config')->deleteConfig($setting['old_path']);
     }
 }
-
 // Delete settings
 foreach ($delete_settings as $setting_path) {
     foreach ($store_collection as $store) {
@@ -695,4 +691,14 @@ foreach ($delete_settings as $setting_path) {
     if (!is_null(Mage::getStoreConfig($setting_path))) {
         Mage::getModel('core/config')->deleteConfig($setting_path);
     }
+}
+
+// *********************************************************
+//          Order Migration (only for processing)
+// *********************************************************
+
+Mage::getModel('lengow/import_order')->migrateOldOrder();
+$see_migrate_block = Mage::helper('lengow_connector/config')->get('see_migrate_block');
+if (is_null($see_migrate_block)) {
+    Mage::helper('lengow_connector/config')->set('see_migrate_block', 1);
 }

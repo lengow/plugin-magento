@@ -43,7 +43,10 @@ product.table.change_publication|Change Lengow's publication
 product.table.publication|Publication
 order.screen.title|Orders
 order.screen.button_import|Import orders
-order.screen.button_migrate|Migrate old orders
+order.screen.button_migrate|Don't show this message again
+order.screen.nb_old_order_imported|With Lengow you have already imported and processed %{nb_order} orders
+order.screen.order_visible_in_page|%{nb_order} orders are waiting to be sent and are visible in this page
+order.screen.where_see_old_order|Other orders already processed are visible in the Magento order screen
 order.screen.all_order_will_be_sent_to|All order issue reports will be sent by mail to
 order.screen.no_order_will_be_sent|No order issue reports will be sent by mail
 order.screen.change_this|Change this?

@@ -51,9 +51,8 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
                             $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($result));
                         }
                         break;
-                    case 'migrate_order':
-                        $order = Mage::getModel('lengow/import_order');
-                        $order->migrateOldOrder();
+                    case 'migrate_button_fade':
+                        Mage::helper('lengow_connector/config')->set('see_migrate_block', 0);
                         break;
                     case 'load_information':
                         $informations = $this->getInformations();
