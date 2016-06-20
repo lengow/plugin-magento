@@ -18,24 +18,24 @@
                     <sort_order>2</sort_order>
                     <disabled>1</disabled>
                 </order>
-                <setting module="lengow_connector" translate="title">
-                    <title>menu.settings</title>
-                    <action>adminhtml/system_config/edit/section/lengow_global_options</action>
+                <help module="lengow_connector" translate="title">
+                    <title>menu.help</title>
+                    <action>adminhtml/lengow_help</action>
                     <sort_order>3</sort_order>
                     <disabled>1</disabled>
-                </setting>
+                </help>
                 <log module="lengow_connector" translate="title">
                     <title>menu.logs</title>
                     <action>adminhtml/lengow_log</action>
                     <sort_order>4</sort_order>
                     <disabled>1</disabled>
                 </log>
-                <help module="lengow_connector" translate="title">
-                    <title>menu.help</title>
-                    <action>adminhtml/lengow_help</action>
+                <setting module="lengow_connector" translate="title">
+                    <title>menu.settings</title>
+                    <action>adminhtml/system_config/edit/section/lengow_global_options</action>
                     <sort_order>5</sort_order>
                     <disabled>1</disabled>
-                </help>
+                </setting>
             </children>
         </lengowtab>
     </menu>

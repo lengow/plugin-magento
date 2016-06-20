@@ -17,6 +17,7 @@
         </reference>
         <reference name="content">
               <block type="page/html" name="lengow_layout" template="lengow/layout/home.phtml" >
+                    <block type="page/html" name="lengow_header" template="lengow/header.phtml" />
                     <block type="page/html" name="lengow_dashboard" template="lengow/home/dashboard.phtml" />
                     <block type="page/html" name="lengow_new" template="lengow/home/new.phtml" />
                     <block type="page/html" name="lengow_footer" template="lengow/footer.phtml" />
@@ -29,6 +30,7 @@
         </reference>
         <reference name="content">
             <block type="page/html" name="lengow_layout" template="lengow/layout/product.phtml" >
+                <block type="page/html" name="lengow_header" template="lengow/header.phtml" />
                 <block type="page/html" name="lengow_product" template="lengow/product/index.phtml" >
                     <block type="adminhtml/store_switcher" name="store_switcher" as="store_switcher">
                         <action method="setUseConfirm"><params>0</params></action>
@@ -47,6 +49,7 @@
         <reference name="content">
             <update handle="formkey"/>
             <block type="page/html" name="lengow_layout" template="lengow/layout/order.phtml" >
+                <block type="page/html" name="lengow_header" template="lengow/header.phtml" />
                 <block type="page/html" name="lengow_order" template="lengow/order/index.phtml" />
                 <block type="lengow/adminhtml_order" name="lengow_content" />
                 <block type="page/html" name="lengow_footer" template="lengow/footer.phtml" />
@@ -59,6 +62,7 @@
         </reference>
         <reference name="content">
             <block type="page/html" name="lengow_layout" template="lengow/layout/help.phtml" >
+                <block type="page/html" name="lengow_header" template="lengow/header.phtml" />
                 <block type="page/html" name="lengow_content" template="lengow/help/index.phtml" />
                 <block type="page/html" name="lengow_footer" template="lengow/footer.phtml" />
             </block>
@@ -67,6 +71,7 @@
     <adminhtml_lengow_log_index>
         <reference name="content">
             <block type="page/html" name="lengow_layout" template="lengow/layout/log.phtml" >
+                <block type="page/html" name="lengow_header" template="lengow/header.phtml" />
                 <block type="lengow/adminhtml_log" name="lengow_content" />
                 <block type="page/html" name="lengow_footer" template="lengow/footer.phtml" />
             </block>
@@ -78,6 +83,7 @@
         </reference>
         <reference name="content">
             <block type="page/html" name="lengow_layout" template="lengow/layout/legal.phtml" >
+                <block type="page/html" name="lengow_header" template="lengow/header.phtml" />
                 <block type="page/html" name="lengow_content" template="lengow/legal/index.phtml" />
                 <block type="page/html" name="lengow_footer" template="lengow/footer.phtml" />
             </block>

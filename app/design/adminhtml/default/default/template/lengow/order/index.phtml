@@ -16,6 +16,11 @@
     $order_to_be_sent = $order->countOrderToBeSent();
 ?>
 
+<?php if ((bool)$config_helper->get('preprod_mode_enable')) { ?>
+    <p class="blue_frame" style="line-height: 20px;">
+        <?php echo $helper->__('order.screen.preprod_warning_message', array('url' => $report_mail_link)); ?>
+    </p>
+<?php } ?>
 <p id="lengow_order_with_error">
     <?php echo $helper->__('order.screen.order_with_error', array('nb_order' => $order_with_error)); ?>
 </p>
