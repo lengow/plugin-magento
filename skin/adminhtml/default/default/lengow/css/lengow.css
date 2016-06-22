@@ -10,6 +10,20 @@ body.lengow-connector .middle {
   padding:0px;
 }
 
+.clear {
+    clear: both;
+}
+
+/* PREPROD */
+#lgw-preprod{
+  color:white;
+  background:#e55a4d;
+  padding:5px 10px;
+  margin-bottom: 15px;
+  font-size:12px;
+  display: inline-block;
+}
+
 /*************************************************/
 /*                     PAGES                     */
 /*************************************************/

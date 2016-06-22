@@ -1,0 +1,6 @@
+<?php if ((bool)Mage::helper('lengow_connector/config')->get('preprod_mode_enable')) { ?>
+        <span id="lgw-preprod">
+            <?php echo Mage::helper('lengow_connector')->__('header.preprod_active'); ?>
+        </span>
+        <div class="clear"></div>
+<?php } ?>

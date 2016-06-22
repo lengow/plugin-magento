@@ -20,14 +20,14 @@ document.observe("dom:loaded", function() {
         });
     });
 
-    if ($('lengow_migrate_order') != null) {
-        $('lengow_migrate_order').observe('click', function() {
+    if ($('lengow_migrate_fade') != null) {
+        $('lengow_migrate_fade').observe('click', function() {
             var url = $(this).readAttribute('data-href');
             new Ajax.Request(url,{
                 method: 'post',
-                parameters: {action: 'migrate_order', form_key: FORM_KEY},
+                parameters: {action: 'migrate_button_fade', form_key: FORM_KEY},
                 onSuccess: function(response) {
-                    lengowOrderGridJsObject.reload();
+                    $('lengow_migrate_order').fade({ duration: 0.250 });
                 }
             });
         });

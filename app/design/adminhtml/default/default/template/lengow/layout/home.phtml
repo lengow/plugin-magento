@@ -5,6 +5,7 @@ if ($is_new_merchant || $is_sync) {
     echo $this->getChildHtml("lengow_new");
     echo '<input type="hidden" id="lengow_sync_link" value="'.$is_sync.'">';
 } else {
+    echo $this->getChildHtml("lengow_header");
     echo $this->getChildHtml("lengow_dashboard");
 }
 echo $this->getChildHtml("lengow_footer");

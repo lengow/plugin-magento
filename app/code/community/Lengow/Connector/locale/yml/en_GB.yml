@@ -10,9 +10,11 @@ en:
   global:
     just_yes: "Yes"
     just_no: "No"
+  header:
+    preprod_active: "Pre-production mode"
   footer:
-      legals: "Legals"
-      copyright_lengow: "Copyright Lengow"
+    legals: "Legals"
+    copyright_lengow: "Copyright Lengow"
   dashboard:
     screen:
       welcome_back: "Hi! Welcome back!"
@@ -55,7 +57,11 @@ en:
     screen:
       title: "Orders"
       button_import: "Import orders"
-      button_migrate: "Migrate old orders"
+      button_migrate: "Don't show this message again"
+      preprod_warning_message: "You are in pre-production mode. You can import orders, but no interaction with Lengow is possible. <a href=%{url}>Change this</a>"
+      nb_old_order_imported: "With Lengow you have already imported and processed %{nb_order} orders"
+      order_visible_in_page: "%{nb_order} orders are waiting to be sent and are visible in this page"
+      where_see_old_order: "Other orders already processed are visible in the Magento order screen"
       all_order_will_be_sent_to : "All order issue reports will be sent by mail to"
       no_order_will_be_sent : "No order issue reports will be sent by mail"
       change_this: "Change this?"

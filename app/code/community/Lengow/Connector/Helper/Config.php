@@ -118,6 +118,9 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
         'last_import_cron' => array(
             'path' => 'lengow_import_options/advanced/last_import_cron'
         ),
+        'see_migrate_block' => array(
+            'path' => 'lengow_import_options/advanced/see_migrate_block'
+        ),
     );
 
     /**
