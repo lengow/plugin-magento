@@ -54,7 +54,7 @@ $store_id = $current_store == 0 ? $default_store : $current_store;
                     </a>
                 </button>
             <?php endif;
-            if ($this->canReSendAction()) :?>
+            if ($this->canReSendAction() && !Mage::getModel('import/action')->getActiveActionByOrderId($order['entity_id'])) :?>
             <button type="button" class="lengow_btn">
                 <a href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_order/reSend/', array('order_id' => $order['entity_id'], 'action' => $order['status'])); ?>"
                    onclick="return confirm('<?php echo Mage::helper('lengow_connector')->__('order.screen.check_resend_action', array('action' => $order['status'])); ?>')">
