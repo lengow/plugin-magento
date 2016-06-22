@@ -78,9 +78,12 @@ en:
       message: "Message"
       extra: "JSON format"
       not_lengow_order: "This order doesn't come from Lengow"
+      not_follow_by_lengow: "Due a reimportation, this order is not followed by Lengow"
       cancel_and_reimport: "Cancel and re-import order"
       check_cancel_and_reimport: "Do you really want to cancel and re-import the order?"
       synchronize_id: "Synchronize ID"
+      resend_action: "Resend Action"
+      check_resend_action: "Do you really want to %{action} the order?"
     table:
       lengow_action: "Actions"
       lengow_state: "Lengow State"

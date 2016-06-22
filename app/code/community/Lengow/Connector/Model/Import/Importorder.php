@@ -317,12 +317,10 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
                     $this->_marketplace_sku
                 );
                 if (!$this->_config->get('import_ship_mp_enabled', $this->_store_id)) {
-                    $order_lengow->updateOrder(
-                        array(
-                            'order_process_state'   => 2,
-                            'extra'                 => Mage::helper('core')->jsonEncode($this->_order_data)
-                        )
-                    );
+                    $order_lengow->updateOrder(array(
+                        'order_process_state' => 2,
+                        'extra'               => Mage::helper('core')->jsonEncode($this->_order_data)
+                    ));
                     return false;
                 }
             }
@@ -339,7 +337,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
             $quote = $this->_createQuote($customer);
             // Create Magento order
             $order = $this->_makeOrder($quote);
-
+            // If order is succesfully imported
             if ($order) {
                 // Save order line id in lengow_order_line table
                 $order_line_saved = $this->_saveLengowOrderLine($order, $quote);
@@ -396,7 +394,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
                     $this->_helper->setLogMessage('lengow_log.exception.order_is_empty')
                 );
             }
-
+            // add quantity back for re-import order and order shipped by marketplace
             if ($this->_is_reimported
                 || ($this->_shipped_by_mp && !$this->_config->get('import_stock_ship_mp', $this->_store_id))
             ) {
@@ -405,15 +403,9 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
                 } else {
                     $log_message = $this->_helper->setLogMessage('log.import.quantity_back_shipped_by_marketplace');
                 }
-                $this->_helper->log(
-                    'Import',
-                    $log_message,
-                    $this->_log_output,
-                    $this->_marketplace_sku);
-
+                $this->_helper->log('Import', $log_message, $this->_log_output, $this->_marketplace_sku);
                 $this->_addQuantityBack($quote);
             }
-
             // Inactivate quote (Test)
             $quote->setIsActive(false)->save();
         } catch (Lengow_Connector_Model_Exception $e) {
@@ -444,21 +436,6 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
             return $this->_returnResult('error', $this->_order_lengow_id);
         }
         return $this->_returnResult('new', $this->_order_lengow_id, $order->getId());
-    }
-
-    /**
-     * Add quantity back to stock
-     * @param array     $products   list of products
-     *
-     * @return this
-     */
-    protected function _addQuantityBack($quote)
-    {
-        $products = $quote->getLengowProducts();
-        foreach ($products as $productId => $product) {
-            Mage::getModel('cataloginventory/stock')->backItemQty($productId,$product['quantity']);
-        }
-        return $this;
     }
 
     /**
@@ -848,6 +825,22 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
     }
 
     /**
+     * Add quantity back to stock
+     *
+     * @param Lengow_Connector_Model_Import_Quote $quote
+     *
+     * @return this
+     */
+    protected function _addQuantityBack($quote)
+    {
+        $lengow_products = $quote->getLengowProducts();
+        foreach ($lengow_products as $product_id => $product) {
+            Mage::getModel('cataloginventory/stock')->backItemQty($product_id, $product['quantity']);
+        }
+        return $this;
+    }
+
+    /**
      * Create order
      *
      * @param Lengow_Connector_Model_Import_Quote $quote
@@ -1003,5 +996,4 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
         }
         return $order_line_saved;
     }
-
 }
