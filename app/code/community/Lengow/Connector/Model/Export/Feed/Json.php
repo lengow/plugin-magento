@@ -10,19 +10,36 @@
  */
 class Lengow_Connector_Model_Export_Feed_Json extends Lengow_Connector_Model_Export_Feed_Abstract
 {
-
+    /**
+     * Content type
+     */
     protected $_content_type = 'application/json';
 
+    /**
+     * Get content type
+     *
+     * @return string
+     */
     public function getContentType()
     {
         return $this->_content_type;
     }
 
+    /**
+     * Make header
+     *
+     * @return string
+     */
     public function makeHeader()
     {
         return '{"catalog":[';
     }
 
+    /**
+     * Make each data
+     *
+     * @return string
+     */
     public function makeData($array, $args = array())
     {
         foreach ($this->_fields as $name) {
@@ -32,6 +49,11 @@ class Lengow_Connector_Model_Export_Feed_Json extends Lengow_Connector_Model_Exp
         return $line;
     }
 
+    /**
+     * Make footer
+     *
+     * @return string
+     */
     public function makeFooter()
     {
         return ']}';

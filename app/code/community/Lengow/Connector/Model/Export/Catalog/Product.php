@@ -8,10 +8,8 @@
  * @copyright   2016 Lengow SAS
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-
 class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_Product
 {
-
     /**
      * Config model export
      *
@@ -32,25 +30,26 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
      * Get Shipping info
      *
      * @param Mage_Catalog_Model_Product $product_instance
-     * @param integer $storeId
+     * @param integer                    $store_id
+     *
      * @return array
      */
-    public function getShippingInfo($product_instance, $storeId)
+    public function getShippingInfo($product_instance, $store_id)
     {
         $datas = array();
         $datas['shipping_method'] = '';
         $datas['shipping_cost'] = '';
-        $carrier = $this->_config_helper->get('shipping_method', $storeId);
+        $carrier = $this->_config_helper->get('shipping_method', $store_id);
         if (empty($carrier)) {
             return $datas;
         }
         $carrierTab = explode('_', $carrier);
         list($carrierCode, $methodCode) = $carrierTab;
         $datas['shipping_method'] = ucfirst($methodCode);
-        $countryCode = $this->_config_helper->get('shipping_country', $storeId);
+        $countryCode = $this->_config_helper->get('shipping_country', $store_id);
         $shippingPrice = $this->_getShippingPrice($product_instance, $carrier, $countryCode);
         if (!$shippingPrice) {
-            $shippingPrice = $this->_config_helper->get('shipping_price', $storeId);
+            $shippingPrice = $this->_config_helper->get('shipping_price', $store_id);
         }
         $datas['shipping_cost'] = $shippingPrice;
         return $datas;
@@ -95,7 +94,7 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
      * Get Shipping rate request
      *
      * @param Mage_Catalog_Model_Product $product_instance
-     * @param string $countryCode
+     * @param string                     $countryCode
      *
      * @return Mage_Shipping_Model_Rate_Request
      */
@@ -134,15 +133,15 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
     /**
      * Get price
      *
-     * @param Mage_Catalog_Model_Product    $product_instance
-     * @param integer                       $id_store
-     * @param Mage_Catalog_Model_Product    $configurable_instance
+     * @param Mage_Catalog_Model_Product $product_instance
+     * @param integer                    $store_id
+     * @param Mage_Catalog_Model_Product $configurable_instance
      *
      * @return array
      */
-    public function getPrices($product_instance, $id_store, $configurable_instance = null)
+    public function getPrices($product_instance, $store_id, $configurable_instance = null)
     {
-        $store = Mage::app()->getStore($id_store);
+        $store = Mage::app()->getStore($store_id);
         $config = Mage::helper('tax')->priceIncludesTax($store);
         $calculator = Mage::getSingleton('tax/calculation');
         $taxClassId = $product_instance->getTaxClassId();
@@ -299,13 +298,14 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
      *
      * @param Mage_Catalog_Model_Product $product_instance
      * @param Mage_Catalog_Model_Product $parent_instance
-     * @param integer $id_store
+     * @param integer                    $store_id
+     * @param array                      $categoryCache
      *
      * @return array
      */
-    public function getCategories($product_instance, $parent_instance, $id_store, &$categoryCache = array())
+    public function getCategories($product_instance, $parent_instance, $store_id, &$categoryCache = array())
     {
-        $id_root_category = Mage::app()->getStore($id_store)->getRootCategoryId();
+        $id_root_category = Mage::app()->getStore($store_id)->getRootCategoryId();
         if ($product_instance->getVisibility() == Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE
             && isset($parent_instance)
         ) {
@@ -320,7 +320,6 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
         if (isset($categoryCache[key($categories)])) {
             return $categoryCache[key($categories)];
         }
-
         //old config value #levelcategory
         $max_level = 5;
         $current_level = 0;
@@ -350,7 +349,7 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
         $ariane = array();
         foreach ($categories as $cid) {
             $c = Mage::getModel('catalog/category')
-                ->setStoreId($id_store)
+                ->setStoreId($store_id)
                 ->load($cid);
             if ($c->getId() != 1) {
                 // No root category
@@ -369,21 +368,21 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
                 $c->clearInstance();
             }
         }
-        $datas['breadcrumb'] = implode(' > ', $ariane);
+        $datas['category_breadcrum'] = implode(' > ', $ariane);
         $maxDimension = count($categories) - 1;
         if ($maxDimension >= 0) {
             $categoryCache[$categories[count($categories) - 1]] = $datas;
         }
         unset($categories, $category, $ariane);
-
         return $datas;
     }
 
     /**
-     * Merge images child with images' parents.
+     * Merge images child with images' parents
      *
-     * @param array $images of child's product
+     * @param array $images       of child's product
      * @param array $parentimages of parent's product
+     *
      * @return array images merged
      */
     public function getImages($images, $parentimages = false)

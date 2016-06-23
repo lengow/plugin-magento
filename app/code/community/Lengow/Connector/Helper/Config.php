@@ -8,10 +8,8 @@
  * @copyright   2016 Lengow SAS
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-
 class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
 {
-
     /**
      * All Lengow Options Path
      */
@@ -146,32 +144,32 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
     /**
      * Get Value
      *
-     * @param $key
-     * @param $storeId
+     * @param string  $key      Lengow setting key
+     * @param integer $store_id Store id
      *
      * @return null
      */
-    public function get($key, $storeId = 0)
+    public function get($key, $store_id = 0)
     {
         if (!array_key_exists($key, $this->options)) {
             return null;
         }
-        $value = Mage::getStoreConfig($this->options[$key]['path'], $storeId);
+        $value = Mage::getStoreConfig($this->options[$key]['path'], $store_id);
         return $value;
     }
 
     /**
      * Set Value
      *
-     * @param $key
-     * @param $value
-     * @param $storeId
+     * @param string  $key      Lengow setting key
+     * @param mixed   $value    Lengow setting value
+     * @param integer $store_id Store id
      *
      * @return null
      */
-    public function set($key, $value, $storeId = 0)
+    public function set($key, $value, $store_id = 0)
     {
-        if ($storeId == 0) {
+        if ($store_id == 0) {
             Mage::getModel('core/config')->saveConfig(
                 $this->options[$key]['path'],
                 $value,
@@ -183,21 +181,23 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
                 $this->options[$key]['path'],
                 $value,
                 'stores',
-                $storeId
+                $store_id
             );
         }
     }
 
     /**
      * Get Selected attributes
-     * @param int $id_store
+     *
+     * @param integer $store_id store id
+     *
      * @return array
      */
-    public function getSelectedAttributes($id_store = null)
+    public function getSelectedAttributes($store_id = null)
     {
         $tab = array();
         $attributeSelected = array();
-        $val = $this->get('export_attribute', $id_store);
+        $val = $this->get('export_attribute', $store_id);
         if (!empty($val)) {
             $tab = explode(',', $val);
             $attributeSelected = array_flip($tab);
@@ -213,18 +213,18 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
     /**
      * Generate token
      *
-     * @param integer $storeId
+     * @param integer $store_id store id
      *
      * @return array
      */
-    public function getToken($storeId = null)
+    public function getToken($store_id = null)
     {
-        $token = $this->get('token', $storeId);
+        $token = $this->get('token', $store_id);
         if ($token && strlen($token) > 0) {
             return $token;
         } else {
             $token = bin2hex(openssl_random_pseudo_bytes(16));
-            $this->set('token', $token, $storeId);
+            $this->set('token', $token, $store_id);
         }
         return $token;
     }
@@ -270,7 +270,7 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
     /**
      * Get Values by store or global
      *
-     * @param integer $store_id
+     * @param integer $store_id store id
      *
      * @return array
      */

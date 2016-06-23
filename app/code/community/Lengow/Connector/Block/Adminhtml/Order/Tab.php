@@ -1,17 +1,18 @@
 <?php
 
 /**
- * Lengow sync block adminhtml order tab
  *
  * @category    Lengow
- * @package     Lengow_Sync
- * @author      Team Connector <team-connector@lengow.com>
- * @copyright   2015 Lengow SAS
+ * @package     Lengow_Connector
+ * @author      Team module <team-module@lengow.com>
+ * @copyright   2016 Lengow SAS
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class Lengow_Connector_Block_Adminhtml_Order_Tab extends Mage_Adminhtml_Block_Sales_Order_Abstract implements Mage_Adminhtml_Block_Widget_Tab_Interface
 {
-
+    /**
+     * Construct
+     */
     protected function _construct()
     {
         $this->setTemplate('lengow/sales/order/tab/info.phtml');
@@ -37,22 +38,41 @@ class Lengow_Connector_Block_Adminhtml_Order_Tab extends Mage_Adminhtml_Block_Sa
         return $this->getOrder();
     }
 
-
+    /**
+     * Get tab label
+     *
+     * @return string
+     */
     public function getTabLabel()
     {
         return Mage::helper('sales')->__('Lengow');
     }
 
+    /**
+     * Get tab title
+     *
+     * @return string
+     */
     public function getTabTitle()
     {
         return Mage::helper('sales')->__('Lengow');
     }
 
+    /**
+     * Can show tab
+     *
+     * @return boolean
+     */
     public function canShowTab()
     {
         return true;
     }
 
+    /**
+     * Tab is hidden
+     *
+     * @return boolean
+     */
     public function isHidden()
     {
         return false;

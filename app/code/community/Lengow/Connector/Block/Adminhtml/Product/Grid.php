@@ -8,10 +8,11 @@
  * @copyright   2016 Lengow SAS
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-
 class Lengow_Connector_Block_Adminhtml_Product_Grid extends Mage_Adminhtml_Block_Widget_Grid
 {
-
+    /**
+     * Construct
+     */
     public function __construct()
     {
         parent::__construct();
@@ -23,6 +24,9 @@ class Lengow_Connector_Block_Adminhtml_Product_Grid extends Mage_Adminhtml_Block
         $this->setVarNameFilter('product_filter');
     }
 
+    /**
+     * Get store
+     */
     protected function _getStore()
     {
 
@@ -34,6 +38,9 @@ class Lengow_Connector_Block_Adminhtml_Product_Grid extends Mage_Adminhtml_Block
         return Mage::app()->getStore($store_id);
     }
 
+    /**
+     * Prepare collection
+     */
     protected function _prepareCollection()
     {
         $store = $this->_getStore();
@@ -52,7 +59,6 @@ class Lengow_Connector_Block_Adminhtml_Product_Grid extends Mage_Adminhtml_Block
                 'left'
             )
             ->addAttributeToFilter('type_id', array('nlike' => 'bundle'));
-
         if ($store->getId()) {
             $collection->setStoreId($store->getId());
             $collection->addStoreFilter($store);
@@ -85,6 +91,9 @@ class Lengow_Connector_Block_Adminhtml_Product_Grid extends Mage_Adminhtml_Block
         return $this;
     }
 
+    /**
+     * Add filter to collection
+     */
     protected function _addColumnFilterToCollection($column)
     {
         if ($this->getCollection()) {
@@ -102,14 +111,16 @@ class Lengow_Connector_Block_Adminhtml_Product_Grid extends Mage_Adminhtml_Block
         return parent::_addColumnFilterToCollection($column);
     }
 
+    /**
+     * Prepare columns
+     */
     protected function _prepareColumns()
     {
-        //create type filter without bundle type product
+        // create type filter without bundle type product
         $types = Mage::getModel('lengow/system_config_source_types')->toOptionArray();
         foreach ($types as $value) {
             $type[$value['value']] = $value['label'];
         }
-
         $this->addColumn(
             'entity_id',
             array(
@@ -237,6 +248,9 @@ class Lengow_Connector_Block_Adminhtml_Product_Grid extends Mage_Adminhtml_Block
         return parent::_prepareColumns();
     }
 
+    /**
+     * Prepare mass action buttons
+     */
     protected function _prepareMassaction()
     {
         $this->setMassactionIdField('entity_id');
@@ -262,11 +276,17 @@ class Lengow_Connector_Block_Adminhtml_Product_Grid extends Mage_Adminhtml_Block
         return $this;
     }
 
+    /**
+     * Get grid url
+     */
     public function getGridUrl()
     {
         return $this->getUrl('*/*/grid', array('_current' => true));
     }
 
+    /**
+     * Get row url
+     */
     public function getRowUrl($row)
     {
         if (Mage::getSingleton('admin/session')->isAllowed('catalog_product/actions/edit')) {

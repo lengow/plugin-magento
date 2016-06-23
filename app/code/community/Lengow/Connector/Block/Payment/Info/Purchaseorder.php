@@ -11,7 +11,6 @@
 
 class Lengow_Connector_Block_Payment_Info_Purchaseorder extends Mage_Payment_Block_Info
 {
-
     protected function _construct()
     {
         parent::_construct();

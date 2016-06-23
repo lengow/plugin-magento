@@ -10,19 +10,36 @@
  */
 class Lengow_Connector_Model_Export_Feed_Yaml extends Lengow_Connector_Model_Export_Feed_Abstract
 {
-
+    /**
+     * Content type
+     */
     protected $_content_type = 'text/x-yaml';
 
+    /**
+     * Get content type
+     *
+     * @return string
+     */
     public function getContentType()
     {
         return $this->_content_type;
     }
 
+    /**
+     * Make header
+     *
+     * @return string
+     */
     public function makeHeader()
     {
         return '"catalog":'."\r\n";
     }
 
+    /**
+     * Make each data
+     *
+     * @return string
+     */
     public function makeData($array, $args = array())
     {
         if ($args['max_character'] % 2 == 1) {
@@ -38,13 +55,18 @@ class Lengow_Connector_Model_Export_Feed_Yaml extends Lengow_Connector_Model_Exp
         return $line;
     }
 
+    /**
+     * Make footer
+     *
+     * @return string
+     */
     public function makeFooter()
     {
         return '';
     }
 
     /**
-     * For YAML, add spaces to have good indentation.
+     * For YAML, add spaces to have good indentation
      *
      * @param string $name The fielname
      * @param string $size The max spaces

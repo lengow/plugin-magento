@@ -8,7 +8,6 @@
  * @copyright   2016 Lengow SAS
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-
 class Lengow_Connector_Model_Observer
 {
     /**
@@ -30,6 +29,7 @@ class Lengow_Connector_Model_Observer
         'export_last_export',
         'last_statistic_update',
         'order_statistic',
+        'see_migrate_block',
     );
 
     /**
@@ -63,14 +63,19 @@ class Lengow_Connector_Model_Observer
             if (isset($path_explode[0]) && in_array($path_explode[0], $this->_lengow_options)) {
                 if ($object['scope'] == 'stores' || $object['scope'] == 'default') {
                     $old_value = Mage::getStoreConfig($object['path'], $object['scope_id']);
-                    if ($old_value != $object['value'] && !in_array($path_explode[2], $this->_exclude_options)) {
+                    $value = $object['value'];
+                    if ($old_value != $value && !in_array($path_explode[2], $this->_exclude_options)) {
+                        if ($path_explode[2] == 'global_access_token' || $path_explode[2] == 'global_secret_token') {
+                            $value = preg_replace("/[a-zA-Z0-9]/", '*', $value);
+                            $old_value = preg_replace("/[a-zA-Z0-9]/", '*', $old_value);
+                        }
                         if ($object['scope'] == 'stores') {
                             $message = Mage::helper('lengow_connector/translation')->t(
                                 'log.setting.setting_change_for_store',
                                 array(
                                     'key'       => $object['path'],
                                     'old_value' => $old_value,
-                                    'value'     => $object['value'],
+                                    'value'     => $value,
                                     'store_id'  => $object['scope_id']
                                 )
                             );
@@ -80,7 +85,7 @@ class Lengow_Connector_Model_Observer
                                 array(
                                     'key'       => $object['path'],
                                     'old_value' => $old_value,
-                                    'value'     => $object['value'],
+                                    'value'     => $value,
                                 )
                             );
                         }

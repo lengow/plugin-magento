@@ -8,7 +8,6 @@
  * @copyright   2016 Lengow SAS
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-
 class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
 {
      /**
@@ -78,9 +77,8 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
      * Construct a new Markerplace instance
      *
      * @param array params options
-     *
-     * integer  store_id  Store Id for current order
-     * string   name      Marketplace name
+     * integer store_id Store Id for current order
+     * string  name     Marketplace name
      */
     public function __construct($params = array())
     {

@@ -8,7 +8,6 @@
  * @copyright   2016 Lengow SAS
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-
 class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Customer
 {
     /**
@@ -124,7 +123,7 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
      * @param array  $data
      * @param string $type
      *
-     * @return  Mage_Customer_Model_Address
+     * @return Mage_Customer_Model_Address
      */
     protected function _convertAddress(array $data, $type = 'billing')
     {

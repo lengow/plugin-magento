@@ -25,13 +25,26 @@ class Lengow_Connector_Model_Export_Feed_Csv extends Lengow_Connector_Model_Expo
      */
     public static $CSV_EOL = "\r\n";
 
+    /**
+     * Content type
+     */
     protected $_content_type = 'text/csv';
 
+    /**
+     * Get content type
+     *
+     * @return string
+     */
     public function getContentType()
     {
         return $this->_content_type;
     }
 
+    /**
+     * Make header
+     *
+     * @return string
+     */
     public function makeHeader()
     {
         $head = '';
@@ -43,6 +56,11 @@ class Lengow_Connector_Model_Export_Feed_Csv extends Lengow_Connector_Model_Expo
         return rtrim($head, self::$CSV_SEPARATOR) . self::$CSV_EOL;
     }
 
+    /**
+     * Make each data
+     *
+     * @return string
+     */
     public function makeData($array, $args = array())
     {
         $line = '';
@@ -56,6 +74,11 @@ class Lengow_Connector_Model_Export_Feed_Csv extends Lengow_Connector_Model_Expo
         return rtrim($line, self::$CSV_SEPARATOR) . self::$CSV_EOL;
     }
 
+    /**
+     * Make footer
+     *
+     * @return string
+     */
     public function makeFooter()
     {
         return '';

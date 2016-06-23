@@ -10,7 +10,6 @@
  */
 class Lengow_Connector_Model_Export extends Varien_Object
 {
-    
     /**
      * Default fields
      */
@@ -26,7 +25,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
         'child_name'            => 'child_name',
         'quantity'              => 'quantity',
         'status'                => 'active',
-        'breadcrumb'            => 'breadcrumb',
+        'category'              => 'category_breadcrum',
         'url'                   => 'url',
         'price_excl_tax'        => 'price_excl_tax',
         'price_incl_tax'        => 'price_incl_tax',
@@ -65,7 +64,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
         'product_id'            => 'id',
         'qty'                   => 'quantity',
         'status'                => 'active',
-        'category-breadcrumb'   => 'breadcrumb',
+        'category-breadcrumb'   => 'category_breadcrum',
         'category'              => 'category',
         'category-url'          => 'category_url',
         'category-sub-1'        => 'category_sub_1',
@@ -283,7 +282,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
     }
 
     /**
-     * Excute export
+     * Execute export
      */
     public function exec()
     {

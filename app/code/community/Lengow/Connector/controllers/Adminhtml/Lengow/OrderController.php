@@ -1,5 +1,5 @@
 <?php
-ini_set('display_errors', 1);
+
 /**
  *
  * @category    Lengow
@@ -8,16 +8,20 @@ ini_set('display_errors', 1);
  * @copyright   2016 Lengow SAS
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-
 class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_Controller_Action
 {
-
+    /**
+     * Init action
+     */
     protected function _initAction()
     {
         $this->loadLayout()->_setActiveMenu('lengowtab');
         return $this;
     }
 
+    /**
+     * Index Action
+     */
     public function indexAction()
     {
         if ($this->getRequest()->getParam('isAjax')) {
@@ -76,6 +80,9 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
         );
     }
 
+    /**
+     * Synchronize order action
+     */
     public function synchronizeAction()
     {
         $order_id = $this->getRequest()->getParam('order_id');
@@ -98,6 +105,9 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
         Mage::app()->getResponse()->setRedirect($url);
     }
 
+    /**
+     * Cancel and re-import order action
+     */
     public function cancelAndReImportOrderAction()
     {
         $order_id = $this->getRequest()->getParam('order_id');
@@ -110,28 +120,9 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
         Mage::app()->getResponse()->setRedirect($url);
     }
 
-    public function massReImportAction()
-    {
-        $order_lengow_ids = $this->getRequest()->getParam('order');
-        if (count($order_lengow_ids) > 0) {
-            $order_lengow = Mage::getModel('lengow/import_order');
-            foreach ($order_lengow_ids as $order_lengow_id) {
-                $order_lengow->reImportOrder((int)$order_lengow_id);
-            }
-        }
-    }
-
-    public function massReSendAction()
-    {
-        $order_lengow_ids = $this->getRequest()->getParam('order');
-        if (count($order_lengow_ids) > 0) {
-            $order_lengow = Mage::getModel('lengow/import_order');
-            foreach ($order_lengow_ids as $order_lengow_id) {
-                $order_lengow->reSendOrder((int)$order_lengow_id);
-            }
-        }
-    }
-
+    /**
+     * Re-send action
+     */
     public function reSendAction()
     {
         $order_id = $this->getRequest()->getParam('order_id');
@@ -145,16 +136,57 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
         Mage::app()->getResponse()->setRedirect($url);
     }
 
+    /**
+     * Mass re-import order action
+     */
+    public function massReImportAction()
+    {
+        $order_lengow_ids = $this->getRequest()->getParam('order');
+        if (count($order_lengow_ids) > 0) {
+            $order_lengow = Mage::getModel('lengow/import_order');
+            foreach ($order_lengow_ids as $order_lengow_id) {
+                $order_lengow->reImportOrder((int)$order_lengow_id);
+            }
+        }
+    }
+
+    /**
+     * Mass re-send order action
+     */
+    public function massReSendAction()
+    {
+        $order_lengow_ids = $this->getRequest()->getParam('order');
+        if (count($order_lengow_ids) > 0) {
+            $order_lengow = Mage::getModel('lengow/import_order');
+            foreach ($order_lengow_ids as $order_lengow_id) {
+                $order_lengow->reSendOrder((int)$order_lengow_id);
+            }
+        }
+    }
+
+    /**
+     * Get session
+     */
     protected function _getSession()
     {
         return Mage::getSingleton('adminhtml/session');
     }
 
+    /**
+     * Is allowed
+     */
     protected function _isAllowed()
     {
         return Mage::getSingleton('admin/session')->isAllowed('lengow_connector/order');
     }
 
+    /**
+     * Get Messages
+     *
+     * @param array $results results from import process
+     *
+     * @return array
+     */
     public function getMessages($results)
     {
         $messages = array();
@@ -198,6 +230,11 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
         return $messages;
     }
 
+    /**
+     * Get all order informations
+     *
+     * @return array
+     */
     public function getInformations()
     {
         $informations = array();

@@ -8,7 +8,6 @@
  * @copyright   2016 Lengow SAS
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-
 class Lengow_Connector_Model_Config extends Mage_Core_Model_Config
 {
     /**
@@ -30,6 +29,7 @@ class Lengow_Connector_Model_Config extends Mage_Core_Model_Config
         'export_last_export',
         'last_statistic_update',
         'order_statistic',
+        'see_migrate_block',
     );
 
     /**
@@ -49,6 +49,10 @@ class Lengow_Connector_Model_Config extends Mage_Core_Model_Config
             if ($scope == 'default' || $scope == 'stores') {
                 $old_value = Mage::getStoreConfig($path, $scope_id);
                 if ($old_value!= $value && !in_array($path_explode[2], $this->_exclude_options)) {
+                    if ($path_explode[2] == 'global_access_token' || $path_explode[2] == 'global_secret_token') {
+                        $value = preg_replace("/[a-zA-Z0-9]/", '*', $value);
+                        $old_value = preg_replace("/[a-zA-Z0-9]/", '*', $old_value);
+                    }
                     if ($scope == 'stores') {
                         $message = Mage::helper('lengow_connector/translation')
                             ->t(

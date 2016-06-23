@@ -8,7 +8,6 @@
  * @copyright   2016 Lengow SAS
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-
 class Lengow_Connector_Model_Import_Importorder extends Varien_Object
 {
     /**
@@ -150,10 +149,15 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
      * Construct the import order manager
      *
      * @param array params optional options
-     *
-     * integer  store_id       Id store for current order
-     * boolean  preprod_mode   preprod mode
-     * boolean  log_output     display log messages
+     * integer $store_id            Id store for current order
+     * boolean $preprod_mode        preprod mode
+     * boolean $log_output          display log messages
+     * boolean $marketplace_sku     marketplace sku
+     * boolean $delivery_address_id delivery address id
+     * boolean $order_data          order data
+     * boolean $package_data        package data
+     * boolean $first_package       first package
+     * boolean $import_helper       import helper
      */
     public function __construct($params = array())
     {
@@ -441,9 +445,9 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
     /**
      * Return an array of result for each order
      *
-     * @param string    $type_result        Type of result (new, update, error)
-     * @param integer   $order_lengow_id    ID of the lengow order record
-     * @param integer   $order_id           Order ID Magento
+     * @param string  $type_result      Type of result (new, update, error)
+     * @param integer $order_lengow_id  ID of the lengow order record
+     * @param integer $order_id         Order ID Magento
      *
      * @return array
      */

@@ -8,10 +8,11 @@
  * @copyright   2016 Lengow SAS
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-
 class Lengow_Connector_Block_Adminhtml_Log_Grid extends Mage_Adminhtml_Block_Widget_Grid
 {
-
+    /**
+     * Construct
+     */
     public function __construct()
     {
         parent::__construct();
@@ -22,6 +23,9 @@ class Lengow_Connector_Block_Adminhtml_Log_Grid extends Mage_Adminhtml_Block_Wid
         $this->setSaveParametersInSession(true);
     }
 
+    /**
+     * Prepare collection
+     */
     protected function _prepareCollection()
     {
         $collection = Mage::getModel('lengow/log')->getCollection();
@@ -29,6 +33,9 @@ class Lengow_Connector_Block_Adminhtml_Log_Grid extends Mage_Adminhtml_Block_Wid
         return parent::_prepareCollection();
     }
 
+    /**
+     * Prepare columns
+     */
     protected function _prepareColumns()
     {
         $this->addColumn('id', array(
@@ -50,6 +57,9 @@ class Lengow_Connector_Block_Adminhtml_Log_Grid extends Mage_Adminhtml_Block_Wid
         return parent::_prepareColumns();
     }
 
+    /**
+     * Get grid url
+     */
     public function getGridUrl()
     {
         return $this->getUrl('*/*/grid', array('_current' => true));

@@ -19,6 +19,9 @@ class Lengow_Connector_Helper_Translation extends Mage_Core_Helper_Abstract
 
     public static $forceIsoCode = null;
 
+    /**
+     * Construct
+     */
     public function __construct()
     {
         $this->isoCode = Mage::app()->getLocale()->getLocaleCode();
@@ -27,9 +30,9 @@ class Lengow_Connector_Helper_Translation extends Mage_Core_Helper_Abstract
     /**
      * Translate message
      *
-     * @param string $message   localization key
-     * @param array  $args      replace word in string
-     * @param array  $iso_code  iso code
+     * @param string $message  localization key
+     * @param array  $args     replace word in string
+     * @param array  $iso_code iso code
      *
      * @return mixed
      */
@@ -61,8 +64,8 @@ class Lengow_Connector_Helper_Translation extends Mage_Core_Helper_Abstract
     /**
      * Translate string
      *
-     * @param $text
-     * @param $args
+     * @param string $text localization key
+     * @param array  $args replace word in string
      *
      * @return string Final Translate string
      */

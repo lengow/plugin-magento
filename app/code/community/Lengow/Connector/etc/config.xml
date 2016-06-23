@@ -15,6 +15,13 @@
                 </args>
             </lengow>
         </routers>
+        <layout>
+            <updates>
+                <lengow_connector>
+                    <file>lengow.xml</file>
+                </lengow_connector>
+            </updates>
+        </layout>
     </frontend>
     <admin>
         <routers>

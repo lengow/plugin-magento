@@ -17,6 +17,7 @@ $list_folders = array(
     '/app/code/community/Lengow/Connector/locale',
     '/app/code/community/Lengow/Connector/sql',
     '/app/design/adminhtml/default/default/template/lengow',
+    '/app/design/frontend/base/default/template/lengow',
     '/skin/adminhtml/default/default/lengow',
 );
 

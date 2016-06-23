@@ -8,7 +8,6 @@
  * @copyright   2016 Lengow SAS
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-
 class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
 {
     /**
@@ -18,6 +17,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
 
     /**
      * Get Sync Data (Inscription / Update)
+     *
      * @return array
      */
     public function getSyncData()

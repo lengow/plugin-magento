@@ -41,8 +41,8 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
     /**
      * Get Marketplace singleton
      *
-     * @param string    $name       markeplace name
-     * @param integer   $store_id   store Id
+     * @param string  $name     markeplace name
+     * @param integer $store_id store Id
      *
      * @return array Lengow marketplace
      */
@@ -116,8 +116,8 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
     /**
      * Check if order status is valid for import
      *
-     * @param string                                    $order_state_marketplace    order state
-     * @param Lengow_Connector_Model_Import_Marketplace $marketplace                order marketplace
+     * @param string                                    $order_state_marketplace order state
+     * @param Lengow_Connector_Model_Import_Marketplace $marketplace             order marketplace
      *
      * @return boolean
      */

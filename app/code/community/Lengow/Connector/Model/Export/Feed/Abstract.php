@@ -10,7 +10,6 @@
  */
 abstract class Lengow_Connector_Model_Export_Feed_Abstract
 {
-
     /**
      * Version.
      */
