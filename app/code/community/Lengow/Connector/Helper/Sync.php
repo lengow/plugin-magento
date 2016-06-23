@@ -167,7 +167,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
         if (!$force) {
             $updated_at = $config->get('last_statistic_update');
             if (!is_null($updated_at) && (time() - strtotime($updated_at)) < $this->_cache_time) {
-                return json_decode($config->get('order_statistic'));
+                return json_decode($config->get('order_statistic'), true);
             }
         }
         $return = array();
@@ -175,7 +175,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
         $return['nb_order'] = 0;
         $return['average_order'] = 0;
         $return['currency'] = '';
-        // get stats by shop
+        // get stats by store
         $store_collection = Mage::getResourceModel('core/store_collection')->addFieldToFilter('is_active', 1);
         $i = 0;
         $all_currencies = array();
@@ -221,5 +221,41 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
         $config->set('order_statistic', Mage::helper('core')->jsonEncode($return));
         $config->set('last_statistic_update', date('Y-m-d H:i:s'));
         return $return;
+    }
+
+    /**
+     * Get Sync Data (Inscription / Update)
+     *
+     * @return array
+     */
+    public static function getOptionData()
+    {
+        $config = Mage::helper('lengow_connector/config');
+        $data = array();
+        $data['cms'] = array(
+            'token'          => $config->getToken(),
+            'type'           => 'magento',
+            'version'        => Mage::getVersion(),
+            'plugin_version' => (string)Mage::getConfig()->getNode()->modules->Lengow_Connector->version,
+            'options'        => $config->getAllValues()
+        );
+        foreach (Mage::app()->getWebsites() as $website) {
+            foreach ($website->getGroups() as $group) {
+                $stores = $group->getStores();
+                foreach ($stores as $store) {
+                    $export = Mage::getModel('lengow/export', array("store_id" => $store->getId()));
+                    $data['shops'][] = array(
+                        'enabled'    => (bool)$config->get('store_enable', $store->getId()),
+                        'token'      => $config->getToken($store->getId()),
+                        'store_name' => $store->getName(),
+                        'domain_url' => $store->getBaseUrl(),
+                        'feed_url'   => $export->getExportUrl(),
+                        'cron_url'   => Mage::getUrl('lengow/cron'),
+                        'options'    => $config->getAllValues($store->getId())
+                    );
+                }
+            }
+        }
+        return $data;
     }
 }

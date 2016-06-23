@@ -191,13 +191,13 @@
                                 <config>
                                     <children>
                                         <lengow_global_options>
-                                            <title>Lengow Global Configuration</title>
+                                            <title>Lengow Global settings</title>
                                         </lengow_global_options>
                                         <lengow_export_options>
-                                            <title>Lengow Export Feed Configuration</title>
+                                            <title>Lengow Export settings</title>
                                         </lengow_export_options>
                                         <lengow_import_options>
-                                            <title>Lengow Import Order Configuration</title>
+                                            <title>Lengow Import settings</title>
                                         </lengow_import_options>
                                     </children>
                                 </config>

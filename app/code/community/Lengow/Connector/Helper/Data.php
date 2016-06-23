@@ -149,9 +149,14 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
      *
      * @return integer $timestamp in gmt format
      */
-    public function getDateInCorrectFormat($timestamp)
+    public function getDateInCorrectFormat($timestamp, $second = false)
     {
-        return Mage::getModel('core/date')->date('l d F Y @ H:i', $timestamp);
+        if ($second) {
+            $format = 'l d F Y @ H:i:s';
+        } else {
+            $format = 'l d F Y @ H:i';
+        }
+        return Mage::getModel('core/date')->date($format, $timestamp);
     }
 
     /**

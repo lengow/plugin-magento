@@ -15,7 +15,7 @@ class Lengow_Connector_Block_Adminhtml_Product_Grid extends Mage_Adminhtml_Block
     public function __construct()
     {
         parent::__construct();
-        $this->setId('productGrid');
+        $this->setId('LengowProductGrid');
         $this->setDefaultSort('entity_id');
         $this->setDefaultDir('desc');
         $this->setSaveParametersInSession(true);
@@ -223,14 +223,14 @@ class Lengow_Connector_Block_Adminhtml_Product_Grid extends Mage_Adminhtml_Block
         $this->addColumn(
             'lengow_product',
             array(
-                'header'   => $this->helper('lengow_connector')->__('product.table.publish_on_lengow'),
+                'header'   => Mage::helper('lengow_connector')->__('product.table.publish_on_lengow'),
                 'index'    => 'lengow_product',
                 'width'    => '70px',
                 'type'     => 'options',
                 'renderer' => 'Lengow_Connector_Block_Adminhtml_Product_Renderer_Lengow',
                 'options'  => array(
-                    0 => $this->helper('lengow_connector')->__('global.just_no'),
-                    1 => $this->helper('lengow_connector')->__('global.just_yes')
+                    0 => Mage::helper('lengow_connector')->__('global.just_no'),
+                    1 => Mage::helper('lengow_connector')->__('global.just_yes')
                 ),
             )
         );
@@ -243,7 +243,7 @@ class Lengow_Connector_Block_Adminhtml_Product_Grid extends Mage_Adminhtml_Block
         $this->getMassactionBlock()->setFormFieldName('product');
         $this->getMassactionBlock()->setUseAjax(true);
         $this->getMassactionBlock()->addItem('publish', array(
-            'label'      => $this->helper('lengow_connector')->__('product.table.change_publication'),
+            'label'      => Mage::helper('lengow_connector')->__('product.table.change_publication'),
             'url'        => $this->getUrl('*/*/massPublish', array('_current' => true)),
             'complete'   => 'reloadGrid',
             'additional' => array(
@@ -251,10 +251,10 @@ class Lengow_Connector_Block_Adminhtml_Product_Grid extends Mage_Adminhtml_Block
                     'name'   => 'publish',
                     'type'   => 'select',
                     'class'  => 'required-entry',
-                    'label'  => $this->helper('lengow_connector')->__('product.table.publication'),
+                    'label'  => Mage::helper('lengow_connector')->__('product.table.publication'),
                     'values' => array(
-                        0 => $this->helper('lengow_connector')->__('global.just_no'),
-                        1 => $this->helper('lengow_connector')->__('global.just_yes')
+                        0 => Mage::helper('lengow_connector')->__('global.just_no'),
+                        1 => Mage::helper('lengow_connector')->__('global.just_yes')
                     )
                 )
             )

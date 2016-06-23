@@ -85,6 +85,79 @@ a.lengow_action {
 }
 
 /*************************************************/
+/*                PAGE DEBUG                     */
+/*************************************************/
+
+#store-information,
+#global-information,
+#cron-information,
+#checksum-information {
+    width:100%;
+    margin: auto;
+}
+
+#lengow_action_grid .content-header {
+    display: none;
+}
+
+.lengow-block {
+    width: 45%;
+    float: left;
+    padding: 2%;
+}
+
+.lengow-block-full {
+    width: 96%;
+    padding: 2%;
+}
+
+.lengow-block table,
+.lengow-block-full table {
+    border-collapse:separate;
+    border-spacing:2px;
+    border-color:grey;
+    margin-bottom:20px;
+    width: 100%;
+}
+
+.lengow-block table td,
+.lengow-block-full table td {
+    padding:8px;
+    line-height:1.42857143;
+    vertical-align:top;
+    border-top:1px solid #ddd;
+}
+
+.lengow-block table .title,
+.lengow-block-full table .title {
+    text-align:left;
+}
+
+.lengow-block table .value,
+.lengow-block-full table .value  {
+    text-align:right;
+}
+
+.lengow-green {
+    color:green;
+}
+
+.lengow-red {
+    color:red;
+}
+
+.lengow-content-header {
+    width:100%;
+    border-top: 2px solid #ddd;
+    margin-top:5px;
+    margin-bottom:10px;
+}
+
+#lengow_action_grid {
+    margin-top:15px;
+}
+
+/*************************************************/
 /*                 COMPONENTS                    */
 /*************************************************/
 
@@ -166,6 +239,11 @@ body.lengow-connector .grey_frame input[type="text"]{
     background:#7ac279;
 }
 
+.lengow_label.blue{
+    color:white;
+    background:#4bb5c1;
+}
+
 .lengow_label_waiting_shipment,
 .lengow_label_accepted {
     border:1px solid #7ac279;
@@ -230,6 +308,12 @@ span.lengow_order_action {
 span.lengow_order_country {
     bottom:20px;
     left:-15px;
+}
+
+span.lengow_toolbox_message {
+    bottom:20px;
+    left:-70px;
+    width:200px;
 }
 
 /*************************************************/

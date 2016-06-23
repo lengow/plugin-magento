@@ -67,7 +67,7 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
     }
 
     /**
-     * Product grid for AJAX request
+     * Order grid for AJAX request
      */
     public function gridAction()
     {
@@ -98,11 +98,11 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
         Mage::app()->getResponse()->setRedirect($url);
     }
 
-    public function cancelAndreImportOrderAction()
+    public function cancelAndReImportOrderAction()
     {
         $order_id = $this->getRequest()->getParam('order_id');
         $order = Mage::getModel('sales/order')->load($order_id);
-        $new_order_id = Mage::getModel('lengow/import_order')->cancelAndreImportOrder($order);
+        $new_order_id = Mage::getModel('lengow/import_order')->cancelAndReImportOrder($order);
         if (!$new_order_id) {
             $new_order_id = $order_id;
         }

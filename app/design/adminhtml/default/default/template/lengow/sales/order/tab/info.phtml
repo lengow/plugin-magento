@@ -44,7 +44,7 @@ $order = $this->getOrder()->getData();
                 </a>
             </button>
             <button type="button" class="lengow_btn">
-                <a href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_order/cancelAndreImportOrder/', array('order_id' => $order['entity_id'])); ?>"
+                <a href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_order/cancelAndReImportOrder/', array('order_id' => $order['entity_id'])); ?>"
                     onclick="return confirm('<?php echo Mage::helper('lengow_connector')->__('order.screen.check_cancel_and_reimport'); ?>')">
                     <?php echo Mage::helper('lengow_connector')->__('order.screen.cancel_and_reimport'); ?>
                 </a>

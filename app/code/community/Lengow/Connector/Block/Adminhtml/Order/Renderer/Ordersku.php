@@ -17,7 +17,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Renderer_Ordersku extends Mage_Admi
         $sent_marketplace = $row->getData('sent_marketplace');
         if (is_null($order_sku) && $sent_marketplace == 1) {
             return '<span class="lengow_label lengow_label_not_synchronized">'
-            .$this->helper('lengow_connector')->__('order.table.status_shipped_by_mkp').'</span>';
+            .Mage::helper('lengow_connector')->__('order.table.status_shipped_by_mkp').'</span>';
         } else {
             return $order_sku;
         }

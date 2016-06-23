@@ -15,7 +15,7 @@ class Lengow_Connector_Block_Adminhtml_Log_Grid extends Mage_Adminhtml_Block_Wid
     public function __construct()
     {
         parent::__construct();
-        $this->setId('sales_sync_log_grid');
+        $this->setId('LengowLogGrid');
         $this->setUseAjax(true);
         $this->setDefaultSort('id');
         $this->setDefaultDir('DESC');
