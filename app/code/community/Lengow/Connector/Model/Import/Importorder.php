@@ -47,11 +47,6 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
     protected $_log_output = false;
 
     /**
-     * @var array valid products lengow
-     */
-    protected $_lengow_products;
-
-    /**
      * @var Lengow_Connector_Model_Import_Marketplace
      */
     protected $_marketplace;

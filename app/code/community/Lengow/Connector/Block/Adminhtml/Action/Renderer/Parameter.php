@@ -11,7 +11,6 @@
 
 class Lengow_Connector_Block_Adminhtml_Action_Renderer_Parameter extends Mage_Adminhtml_Block_Widget_Grid_Column_Renderer_Abstract
 {
-
     /**
      * Decorate parameters values
      *

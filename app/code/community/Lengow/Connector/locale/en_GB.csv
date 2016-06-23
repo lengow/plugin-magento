@@ -76,6 +76,8 @@ order.screen.not_follow_by_lengow|Due a reimportation, this order is not followe
 order.screen.cancel_and_reimport|Cancel and re-import order
 order.screen.check_cancel_and_reimport|Do you really want to cancel and re-import the order?
 order.screen.synchronize_id|Synchronize ID
+order.screen.resend_action|Resend Action
+order.screen.check_resend_action|Do you really want to %{action} the order?
 order.table.lengow_action|Actions
 order.table.lengow_state|Lengow State
 order.table.marketplace_name|Marketplace
@@ -192,8 +194,8 @@ toolbox.table.action_type|Action type
 toolbox.table.retry|Retry
 toolbox.table.parameters|Parameters
 toolbox.table.state|Status
-toolbox.table.state_processing|Processing
-toolbox.table.state_completed|Completed
+toolbox.table.state_processing|processing
+toolbox.table.state_complete|complete
 toolbox.table.created_at|Created at
 toolbox.table.updated_at|Updated at
 lengow_setting.global_setting|Global settings

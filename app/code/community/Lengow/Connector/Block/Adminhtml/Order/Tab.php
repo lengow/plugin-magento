@@ -160,4 +160,33 @@ class Lengow_Connector_Block_Adminhtml_Order_Tab extends Mage_Adminhtml_Block_Sa
     {
         return (bool)$this->getOrder()->getData('follow_by_lengow');
     }
+
+    /**
+     * Check if can resend action order
+     *
+     * @return boolean
+     */
+    public function canReSendAction()
+    {
+        $order = $this->getOrder();
+        if (!Mage::getModel('lengow/import_action')->getActiveActionByOrderId($order->getData('entity_id'))) {
+            return false;
+        }
+        $order_lengow = Mage::getModel('lengow/import_order');
+        $order_lengow_id = $order_lengow->getLengowOrderIdWithOrderId($order->getData('entity_id'));
+        if ($order_lengow_id) {
+            $order_lengow = $order_lengow->load($order_lengow_id);
+            $magento_status = $order->getData('status');
+            $order_process_state = $order_lengow->getData('order_process_state');
+            $process_state_finish = $order_lengow->getOrderProcessState('closed');
+            if ($order_process_state != $process_state_finish
+                && ($magento_status == 'complete' || $magento_status == 'cancel')
+            ) {
+                return true;
+            }
+        } else {
+            return true;
+        }
+        return false;
+    }
 }

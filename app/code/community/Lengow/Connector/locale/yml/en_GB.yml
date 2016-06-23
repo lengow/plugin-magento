@@ -89,6 +89,8 @@ en:
       cancel_and_reimport: "Cancel and re-import order"
       check_cancel_and_reimport: "Do you really want to cancel and re-import the order?"
       synchronize_id: "Synchronize ID"
+      resend_action: "Resend Action"
+      check_resend_action: "Do you really want to %{action} the order?"
     table:
       lengow_action: "Actions"
       lengow_state: "Lengow State"
@@ -216,8 +218,8 @@ en:
       retry: "Retry"
       parameters: "Parameters"
       state: "Status"
-      state_processing: "Processing"
-      state_completed: "Completed"
+      state_processing: "processing"
+      state_complete: "complete"
       created_at: "Created at"
       updated_at: "Updated at"
   lengow_setting:

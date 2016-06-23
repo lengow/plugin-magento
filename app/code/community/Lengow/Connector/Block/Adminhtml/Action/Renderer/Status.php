@@ -26,7 +26,7 @@ class Lengow_Connector_Block_Adminhtml_Action_Renderer_Status extends Mage_Admin
                 .Mage::helper('lengow_connector')->__('toolbox.table.state_processing').'</span>';
         } else {
             return '<span class="lengow_label">'
-                .Mage::helper('lengow_connector')->__('toolbox.table.state_completed').'</span>';
+                .Mage::helper('lengow_connector')->__('toolbox.table.state_complete').'</span>';
         }
     }
 }

@@ -132,6 +132,19 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
         }
     }
 
+    public function reSendAction()
+    {
+        $order_id = $this->getRequest()->getParam('order_id');
+        $action = $this->getRequest()->getParam('action') == 'complete'
+            ? 'ship'
+            : $this->getRequest()->getParam('action');
+        $order = Mage::getModel('sales/order')->load($order_id);
+        $shipment = $order->getShipmentsCollection()->getFirstItem();
+        Mage::getModel('lengow/import_order')->callAction($action, $order, $shipment);
+        $url = Mage::helper('adminhtml')->getUrl("adminhtml/sales_order/view", array('order_id' => $order_id));
+        Mage::app()->getResponse()->setRedirect($url);
+    }
+
     protected function _getSession()
     {
         return Mage::getSingleton('adminhtml/session');

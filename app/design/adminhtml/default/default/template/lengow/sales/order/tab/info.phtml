@@ -7,6 +7,9 @@
 <?php
 $fields = $this->getFields();
 $order = $this->getOrder()->getData();
+$default_store = Mage::app()->getWebsite(true)->getDefaultGroup()->getDefaultStoreId();
+$current_store = (integer)$this->getRequest()->getParam('store', Mage::app()->getStore()->getId());
+$store_id = $current_store == 0 ? $default_store : $current_store;
 ?>
 <div class="entry-edit">
     <div class="entry-edit-head">
@@ -38,18 +41,27 @@ $order = $this->getOrder()->getData();
                 ?>
                 </tbody>
             </table>
-            <button type="button" class="lengow_btn">
-                <a href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_order/synchronize/', array('order_id' => $order['entity_id'])); ?>">
-                    <?php echo Mage::helper('lengow_connector')->__('order.screen.synchronize_id'); ?>
-                </a>
-            </button>
-            <button type="button" class="lengow_btn">
-                <a href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_order/cancelAndReImportOrder/', array('order_id' => $order['entity_id'])); ?>"
-                    onclick="return confirm('<?php echo Mage::helper('lengow_connector')->__('order.screen.check_cancel_and_reimport'); ?>')">
-                    <?php echo Mage::helper('lengow_connector')->__('order.screen.cancel_and_reimport'); ?>
-                </a>
-            </button>
-        <?php
+            <?php if (!Mage::helper('lengow_connector/config')->get('preprod_mode_enable', $store_id)) { ?>
+                <button type="button" class="lengow_btn">
+                    <a href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_order/synchronize/', array('order_id' => $order['entity_id'])); ?>">
+                        <?php echo Mage::helper('lengow_connector')->__('order.screen.synchronize_id'); ?>
+                    </a>
+                </button>
+                <button type="button" class="lengow_btn">
+                    <a href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_order/cancelAndreImportOrder/', array('order_id' => $order['entity_id'])); ?>"
+                       onclick="return confirm('<?php echo Mage::helper('lengow_connector')->__('order.screen.check_cancel_and_reimport'); ?>')">
+                        <?php echo Mage::helper('lengow_connector')->__('order.screen.cancel_and_reimport'); ?>
+                    </a>
+                </button>
+                <?php if ($this->canReSendAction()) { ?>
+                    <button type="button" class="lengow_btn">
+                        <a href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_order/reSend/', array('order_id' => $order['entity_id'], 'action' => $order['status'])); ?>"
+                           onclick="return confirm('<?php echo Mage::helper('lengow_connector')->__('order.screen.check_resend_action', array('action' => $order['status'])); ?>')">
+                            <?php echo Mage::helper('lengow_connector')->__('order.screen.resend_action'); ?>
+                        </a>
+                    </button>
+                <?php } ?>
+            <?php }
         } else {
             echo '<p>'.Mage::helper('lengow_connector')->__('order.screen.not_follow_by_lengow').'</p>';
         }
