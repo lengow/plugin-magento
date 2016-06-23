@@ -114,13 +114,13 @@ log.table.date|Date
 log.table.message|Message
 help.screen.title|Get a little help from your support team !
 help.screen.contain_text_support|Ask us anything about Lengow or share your feedback at 
-help.screen.mail_lengow_support|support@lengow.com.
+help.screen.mail_lengow_support|support.lengow.zendesk@lengow.com
 help.screen.mail_lengow_support_title|Account Information :
 help.screen.mailto_subject|Magento Lengow Plugin #Need assistance
 help.screen.need_some_help|Need some help ?
-help.screen.contain_text_support_hour|We’ll do our best to get back to you during regular business hours (Monday to Friday – 9am to 6pm / France Timezone).
+help.screen.contain_text_support_hour|We’ll do our best to get back to you during regular business hours (Monday to Friday – 9am to 6pm / France Timezone)
 help.screen.find_answer|You can also find answers in our 
-help.screen.link_prestashop_guide|PrestaShop dedicated guide
+help.screen.link_magento_guide|Magento dedicated guide
 legals.screen.simplified_company|Simplified limited liability company
 legals.screen.social_capital|Social capital:
 legals.screen.cnil_declaration|CNIL declaration:

@@ -2,7 +2,7 @@
 /app/design/frontend/base/default/layout/lengow.xml|d41d8cd98f00b204e9800998ecf8427e
 /app/etc/modules/Lengow_Connector.xml|25c38a521ca21e42fab671340f2e4cee
 /app/code/community/Lengow/Connector/etc/adminhtml.xml|e46753a2009cda1be0e8886291d995a7
-/app/code/community/Lengow/Connector/etc/config.xml|e8ed4855d90c710a7bc87558525f0417
+/app/code/community/Lengow/Connector/etc/config.xml|54fdc18d028ce63425a0ac446931e914
 /app/code/community/Lengow/Connector/etc/system.xml|815b354271048de0d89dad33b2b348fe
 /app/code/community/Lengow/Connector/Block/Adminhtml/Action.php|1e9ac7ae53b6d96b41630c51adbc6ecd
 /app/code/community/Lengow/Connector/Block/Adminhtml/Log.php|04b8f8ee0503e35a37f0a294f68071cb
@@ -81,9 +81,9 @@
 /app/code/community/Lengow/Connector/controllers/Adminhtml/Lengow/OrderController.php|44d9079a615f5efe488e0f8655e9195e
 /app/code/community/Lengow/Connector/controllers/FeedController.php|cb228321887323adbe9ef967591187e9
 /app/code/community/Lengow/Connector/controllers/CronController.php|cdbe15f94cf979ff7e56d81187aaaa92
-/app/code/community/Lengow/Connector/locale/en_GB.csv|acfdb4190964f31531f62b6a7d15d18b
+/app/code/community/Lengow/Connector/locale/en_GB.csv|cfc8f29218d8a3f0964509a20916fc31
 /app/code/community/Lengow/Connector/locale/yml/log.yml|fe5d07d14028599779d6a47820830e7a
-/app/code/community/Lengow/Connector/locale/yml/en_GB.yml|465fde63bc9897b5178e7b977242eab4
+/app/code/community/Lengow/Connector/locale/yml/en_GB.yml|c2ba7f2acd01581634ddfb7073d53666
 /app/code/community/Lengow/Connector/sql/lengow_setup/mysql4-install-3.0.0.php|c05ae8d30bd15d385a1943b975ff220d
 /app/design/adminhtml/default/default/template/lengow/home/dashboard.phtml|a6b7d6c045b7bafecca4c0413e2818c3
 /app/design/adminhtml/default/default/template/lengow/home/new.phtml|194ccc2318a4dbcce9e11534ca6fee4a
@@ -98,8 +98,8 @@
 /app/design/adminhtml/default/default/template/lengow/layout/toolbox.phtml|bb47e8d0093b3ee057b5b7cda0e25d12
 /app/design/adminhtml/default/default/template/lengow/layout/help.phtml|dee13c34ec6f1d1f40794fba73b13e09
 /app/design/adminhtml/default/default/template/lengow/header.phtml|5de9d14b7c9c7bb741bdf4e243df66ab
-/app/design/adminhtml/default/default/template/lengow/toolbox/index.phtml|fef64a2dc1d3d13219c48551d068ff7f
-/app/design/adminhtml/default/default/template/lengow/help/index.phtml|31fab8b84ef3981a71a9fd0eb56f89d4
+/app/design/adminhtml/default/default/template/lengow/toolbox/index.phtml|d89d3286b95a25f3c0bbab37e3c85af6
+/app/design/adminhtml/default/default/template/lengow/help/index.phtml|4787115680329ca1ced46d5b071f9871
 /app/design/adminhtml/default/default/template/lengow/product/index.phtml|34a4e05a0fb11d4e0a81b3b13724d31f
 /app/design/adminhtml/default/default/template/lengow/order/index.phtml|945ce087b4383502deda1c594c2a08ef
 /app/design/adminhtml/default/default/template/lengow/sales/payment/info/purchaseorder.phtml|8e9e7a287ef57fe72023e28747fb0864
