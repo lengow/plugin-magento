@@ -24,7 +24,7 @@ dashboard.screen.stat_nb_orders|Orders
 dashboard.screen.stat_avg_order|Average Order
 dashboard.screen.stat_more_stats|Want more stats?
 dashboard.screen.some_help_title|Need some help?
-dashboard.screen.get_in_touch|Get in touch with Lengow
+dashboard.screen.get_in_touch|Get in touch with Lengow.
 dashboard.screen.visit_help_center|Visit our Help Center
 dashboard.screen.configure_plugin|for detailed information on how to configure properly your Magento plugin
 product.screen.title|Export product
@@ -109,17 +109,17 @@ order.table.status_canceled|Canceled
 order.table.button_reimport_order|Re-import Orders
 order.table.button_resend_order|Resend Orders
 log.screen.title|Lengow logs
-log.table.id|Id
+log.table.id|ID
 log.table.date|Date
 log.table.message|Message
-help.screen.title|Get a little help from your support team !
-help.screen.contain_text_support|Ask us anything about Lengow or share your feedback at 
+help.screen.title|Get a little help from your support team!
+help.screen.contain_text_support|Ask us anything about Lengow or share your feedback at
 help.screen.mail_lengow_support|support.lengow.zendesk@lengow.com
-help.screen.mail_lengow_support_title|Account Information :
+help.screen.mail_lengow_support_title|Account Information:
 help.screen.mailto_subject|Magento Lengow Plugin #Need assistance
 help.screen.need_some_help|Need some help ?
-help.screen.contain_text_support_hour|We’ll do our best to get back to you during regular business hours (Monday to Friday – 9am to 6pm / France Timezone)
-help.screen.find_answer|You can also find answers in our 
+help.screen.contain_text_support_hour|We’ll do our best to get back to you during regular business hours (Monday to Friday – 9am to 6pm / France Timezone).
+help.screen.find_answer|You can also find answers in our
 help.screen.link_magento_guide|Magento dedicated guide
 legals.screen.simplified_company|Simplified limited liability company
 legals.screen.social_capital|Social capital:
@@ -186,10 +186,10 @@ toolbox.screen.list_modified_file|Files changed list
 toolbox.screen.list_deleted_file|Files deleted list
 toolbox.screen.action_information|Lengow actions
 toolbox.table.title|Lengow actions
-toolbox.table.id|Id
-toolbox.table.order_id|Order id
-toolbox.table.action_id|Action id
-toolbox.table.order_line_sku|Order line id
+toolbox.table.id|ID
+toolbox.table.order_id|Order ID
+toolbox.table.action_id|Action ID
+toolbox.table.order_line_sku|Order line ID
 toolbox.table.action_type|Action type
 toolbox.table.retry|Retry
 toolbox.table.parameters|Parameters
@@ -205,16 +205,16 @@ lengow_setting.global_plugin_compatibility_title|Plugin's compatibility
 lengow_setting.global_plugin_compatibility_yes|Magento version is compatible
 lengow_setting.global_plugin_compatibility_no|Magento version is not compatible
 lengow_setting.global_serveur_ip_title|IP of your server
-lengow_setting.global_information_credential|To change store credentials, thank to choose a store
+lengow_setting.global_information_credential|To change store credentials, please select a store
 lengow_setting.global_store_credential|Store credentials
 lengow_setting.global_store_enable_title|Enable store
 lengow_setting.global_store_enable_comment|Enable store to work with Lengow
 lengow_setting.global_account_id_title|Account ID
 lengow_setting.global_account_id_comment|Your Account ID of Lengow
 lengow_setting.global_access_token_title|Access token
-lengow_setting.global_access_token_comment|Your Access Token of Lengow
+lengow_setting.global_access_token_comment|Your Lengow's Access Token
 lengow_setting.global_secret_token_title|Secret token
-lengow_setting.global_secret_token_comment|Your Secret Token of Lengow
+lengow_setting.global_secret_token_comment|Your Lengow's Secret Token
 lengow_setting.global_advanced_setting|Advanced global settings
 lengow_setting.global_tracking_id_label|Tracker Product's ID
 lengow_setting.global_tracking_id_comment|Comment option
@@ -258,9 +258,9 @@ lengow_setting.import_report_mail_address_title|Mail for the report email
 lengow_setting.import_report_mail_address_comment|Email separated by ;
 lengow_setting.import_ship_mp_enabled_title|Import orders shipped by marketplaces
 lengow_setting.import_stock_ship_mp_title|I want to decrease my stock
-lengow_setting.import_stock_ship_mp_comment|Use this option to take into account your marketplaces orders on your stock in your PrestaShop backoffice
+lengow_setting.import_stock_ship_mp_comment|Use this option to take into account your marketplaces orders on your stock in your Magento backoffice
 lengow_setting.import_preprod_mode_enable_title|Preprod mode
-lengow_setting.import_preprod_mode_enable_comment|Only for preproduction's mode: no synchronisation orders with Lengow, import orders every time
+lengow_setting.import_preprod_mode_enable_comment|Only for preproduction's mode: no synchronization orders with Lengow, import orders every time
 lengow_setting.import_cron_enable_title|Enable Magento cron
 lengow_setting.import_cron_enable_comment|Enable the scheduled task for import your order every 30 minutes
 lengow_log.error.nb_order_imported|%{nb_order} order(s) imported
@@ -268,26 +268,26 @@ lengow_log.error.nb_order_updated|%{nb_order} order(s) updated
 lengow_log.error.nb_order_with_error|%{nb_order} order(s) with errors
 lengow_log.error.no_notification|No new notification on order
 lengow_log.error.rest_time_to_import|Import has already started. Please wait %{rest_time} seconds before re-importing orders
-lengow_log.error.account_id_empty|id account, access token or secret is empty in store %{store_name} (%{store_id})
+lengow_log.error.account_id_empty|ID account, access token or secret is empty in store %{store_name} (%{store_id})
 lengow_log.error.account_id_already_used|account ID %{account_id} is already used by store %{store_name} (%{store_id})
-lengow_log.error.order_not_found|Order can't be found in lengow feed
-lengow_log.error.no_product|no products in the order
-lengow_log.error.no_change_rate|no exchange rates available for order prices
-lengow_log.error.no_currency|no currency in the order
+lengow_log.error.order_not_found|Lengow error: order can't be found in lengow feed
+lengow_log.error.no_product|Lengow error: no products in the order
+lengow_log.error.no_change_rate|Lengow error: no exchange rates available for order prices
+lengow_log.error.no_currency|Lengow error: no currency in the order
 lengow_log.error.currency_not_available|currency %{currency_iso} is not available in your store
-lengow_log.error.no_country_for_delivery_address|delivery address doesn't contain the country
-lengow_log.error.no_billing_address|no billing address in the order
-lengow_log.error.no_country_for_billing_address|billing address doesn't contain the country
+lengow_log.error.no_country_for_delivery_address|Lengow error: delivery address doesn't contain the country
+lengow_log.error.no_billing_address|Lengow error: no billing address in the order
+lengow_log.error.no_country_for_billing_address|Lengow error: billing address doesn't contain the country
 lengow_log.exception.product_not_be_found|product %{product_id} could not be found
 lengow_log.exception.product_is_a_parent|product %{product_id} is a parent ID. Product variation is needed
 lengow_log.exception.no_connection_webservice|connection didn't work with the Lengow webservice in store %{store_name} (%{store_id})
 lengow_log.exception.crendentials_not_valid|account ID, token access or secret token are not valid in store %{store_name} (%{store_id})
 lengow_log.exception.error_lengow_webservice|Lengow webservice : %{error_code} - %{error_message} in store %{store_name} (%{store_id})
 lengow_log.exception.timeout_api|API call was blocked by a timeout
-lengow_log.exception.marketplace_not_present|the marketplace %{markeplace_name} does not feature in the marketplace list
+lengow_log.exception.marketplace_not_present|Lengow error: the marketplace %{markeplace_name} does not feature in the marketplace list
 lengow_log.exception.order_failed_with_quote|service unable to create order based on given quote
 lengow_log.exception.order_is_empty|order could not be saved
-lengow_log.exception.order_line_required|order Line require, but not found in order
+lengow_log.exception.order_line_required|order line is require, but not found in the order
 lengow_log.exception.action_not_valid|action %{action} is not valid
 lengow_log.exception.marketplace_action_not_present|marketplace actions %{action} are not present
 lengow_log.exception.store_id_require|store ID is required
@@ -341,9 +341,9 @@ log.import.order_successfully_imported|order successfully imported (ORDER ID %{o
 log.import.order_import_failed|import order failed - %{decoded_message}
 log.import.error_value_required|%{key} is required to create Lengow order
 log.import.error_already_created|%{decoded_message} (created on the %{date_message})
-log.import.error_no_package|import order failed - no package in the order
+log.import.error_no_package|import order failed - Lengow error: no package in the order
 log.import.error_wrong_package_number|import order failed - wrong package number
-log.import.error_no_delivery_address|import order failed - no delivery address in the order
+log.import.error_no_delivery_address|import order failed - Lengow error: no delivery address in the order
 log.import.order_synchronized_with_lengow|order successfully synchronised with Lengow webservice (ORDER ID %{order_id})
 log.import.order_not_synchronized_with_lengow|WARNING ! Order could NOT be synchronised with Lengow webservice (ORDER ID %{order_id})
 log.import.quantity_back_reimported_order|adding quantity back to stock (order is re-imported)
