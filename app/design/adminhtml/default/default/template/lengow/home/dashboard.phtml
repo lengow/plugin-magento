@@ -1,9 +1,9 @@
 <?php 
 $helper = Mage::helper('lengow_connector');
 $stats = Mage::helper('lengow_connector/sync')->getStatistic();
-$total_order = isset($stats->total_order) ? $stats->total_order : 0;
-$nb_order = isset($stats->nb_order) ? $stats->nb_order : 0;
-$average_order = isset($stats->average_order) ? $stats->average_order : 0;
+$total_order = isset($stats['total_order']) ? $stats['total_order'] : 0;
+$nb_order = isset($stats['nb_order']) ? $stats['nb_order'] : 0;
+$average_order = isset($stats['average_order']) ? $stats['average_order'] : 0;
 $order_to_be_sent = Mage::getModel('lengow/import_order')->countOrderToBeSent();
 ?>
 
@@ -79,7 +79,7 @@ $order_to_be_sent = Mage::getModel('lengow/import_order')->countOrderToBeSent();
             </a>
         </p>
         <p>
-            <a href="https://en.knowledgeowl.com/help/article/link/prestashopv2" target="_blank"
+            <a href="https://en.knowledgeowl.com/help/article/link/magento-v2" target="_blank"
                 title="<?php echo $helper->__('dashboard.screen.visit_help_center'); ?>"><?php echo $helper->__('dashboard.screen.visit_help_center'); ?></a>
             <?php echo $helper->__('dashboard.screen.configure_plugin'); ?>
         </p>

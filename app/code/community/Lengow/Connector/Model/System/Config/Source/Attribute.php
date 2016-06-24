@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * @category    Lengow
@@ -7,9 +8,11 @@
  * @copyright   2016 Lengow SAS
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-
 class Lengow_Connector_Model_System_Config_Source_Attribute extends Mage_Core_Model_Config_Data
 {
+    /**
+     * attributes excludes
+     */
     protected $_excludes = array(
         'media_gallery',
         'tier_price',

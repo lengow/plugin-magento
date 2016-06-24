@@ -8,7 +8,6 @@
  * @copyright   2016 Lengow SAS
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-
 class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
 {
     /**
@@ -231,8 +230,8 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
     /**
      * Removes all actions for one order Magento
      *
-     * @param integer $order_id     Magento order id
-     * @param string  $action_type  type (null, ship or cancel)
+     * @param integer $order_id    Magento order id
+     * @param string  $action_type type (null, ship or cancel)
      *
      * @return boolean
      */
@@ -260,7 +259,7 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
     /**
      * Remove old actions > 3 days
      *
-     * @param string  $action_type  type (null, ship or cancel)
+     * @param string $action_type type (null, ship or cancel)
      *
      * @return boolean
      */

@@ -8,7 +8,6 @@
  * @copyright   2015 Lengow SAS
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-
 class Lengow_Connector_Model_Import extends Varien_Object
 {
     /**
@@ -349,8 +348,8 @@ class Lengow_Connector_Model_Import extends Varien_Object
     /**
      * Check credentials for a store
      *
-     * @param integer   $store_id     Store Id
-     * @param string    $store_name   Store name
+     * @param integer $store_id   Store Id
+     * @param string  $store_name Store name
      *
      * @return boolean
      */
@@ -488,8 +487,8 @@ class Lengow_Connector_Model_Import extends Varien_Object
     /**
      * Create or update order in Magento
      *
-     * @param mixed     $orders     API orders
-     * @param integer   $store_id   Store Id
+     * @param mixed   $orders   API orders
+     * @param integer $store_id Store Id
      *
      * @return mixed
      */

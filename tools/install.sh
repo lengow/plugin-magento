@@ -47,6 +47,5 @@ copy_directory "/app/design/adminhtml/default/default/template/lengow"
 copy_directory "/skin/adminhtml/default/default/lengow"
 copy_directory "/skin/frontend/base/default/lengow"
 copy_directory "/media/lengow"
-copy_file "/app/locale/fr_FR/Lengow_Connector.csv"
 
 exit 0;

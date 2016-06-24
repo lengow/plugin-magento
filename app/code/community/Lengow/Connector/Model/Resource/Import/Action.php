@@ -11,6 +11,9 @@
 
 class Lengow_Connector_Model_Resource_Import_Action extends Mage_Core_Model_Resource_Db_Abstract
 {
+    /**
+     * Construct
+     */
     protected function _construct()
     {
         $this->_init('lengow/import_action', 'id');

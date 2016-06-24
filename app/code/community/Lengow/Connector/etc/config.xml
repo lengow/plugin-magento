@@ -15,6 +15,13 @@
                 </args>
             </lengow>
         </routers>
+        <layout>
+            <updates>
+                <lengow_connector>
+                    <file>lengow.xml</file>
+                </lengow_connector>
+            </updates>
+        </layout>
     </frontend>
     <admin>
         <routers>
@@ -191,13 +198,13 @@
                                 <config>
                                     <children>
                                         <lengow_global_options>
-                                            <title>Lengow Global Configuration</title>
+                                            <title>Lengow Global settings</title>
                                         </lengow_global_options>
                                         <lengow_export_options>
-                                            <title>Lengow Export Feed Configuration</title>
+                                            <title>Lengow Export settings</title>
                                         </lengow_export_options>
                                         <lengow_import_options>
-                                            <title>Lengow Import Order Configuration</title>
+                                            <title>Lengow Import settings</title>
                                         </lengow_import_options>
                                     </children>
                                 </config>
@@ -229,7 +236,7 @@
         <jobs>
             <export_cron_lengow>
                 <schedule>
-                    <cron_expr>* */4 * * *</cron_expr>
+                    <cron_expr>0 */4 * * *</cron_expr>
                 </schedule>
                 <run>
                     <model>lengow/observer::exportCron</model>

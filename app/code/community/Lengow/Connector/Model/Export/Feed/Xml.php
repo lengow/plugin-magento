@@ -10,19 +10,36 @@
  */
 class Lengow_Connector_Model_Export_Feed_Xml extends Lengow_Connector_Model_Export_Feed_Abstract
 {
-
+    /**
+     * Content type
+     */
     protected $_content_type = 'application/xml';
 
+    /**
+     * Get content type
+     *
+     * @return string
+     */
     public function getContentType()
     {
         return $this->_content_type;
     }
 
+    /**
+     * Make header
+     *
+     * @return string
+     */
     public function makeHeader()
     {
         return '<?xml version="1.0" encoding="UTF-8"?>'."\r\n".'<catalog>'."\r\n";
     }
 
+    /**
+     * Make each data
+     *
+     * @return string
+     */
     public function makeData($array, $args = array())
     {
         $line = '<product>'."\r\n";
@@ -33,6 +50,11 @@ class Lengow_Connector_Model_Export_Feed_Xml extends Lengow_Connector_Model_Expo
         return $line;
     }
 
+    /**
+     * Make footer
+     *
+     * @return string
+     */
     public function makeFooter()
     {
         return '</catalog>';

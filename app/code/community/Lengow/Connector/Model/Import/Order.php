@@ -8,7 +8,6 @@
  * @copyright   2016 Lengow SAS
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-
 class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
 {
     /**
@@ -345,7 +344,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
      *
      * @return mixed
      */
-    public function cancelAndreImportOrder($order)
+    public function cancelAndReImportOrder($order)
     {
         if (!$this->isReimported($order)) {
             return false;
@@ -695,76 +694,101 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
      */
     public function callAction($action, $order, $shipment = null)
     {
+        $success = true;
+        $helper = Mage::helper('lengow_connector');
+        $helper->log(
+            'API-OrderAction',
+            $helper->setLogMessage('log.order_action.try_to_send_action', array(
+                'action'   => $action,
+                'order_id' => $order->getIncrementId()
+            )),
+            false,
+            $order->getData('order_id_lengow')
+        );
         if ($order->getData('from_lengow') != 1) {
-            return false;
+            $success = false;
         }
-        $helper = Mage::helper('lengow_connector/data');
-        $order_lengow_id = $this->getLengowOrderIdWithOrderId($order->getId());
-        // Finish all order errors before API call
-        if ($order_lengow_id) {
-            $order_error = Mage::getModel('lengow/import_ordererror');
-            $order_error->finishOrderErrors($order_lengow_id, 'send');
-            $order_lengow = Mage::getModel('lengow/import_order')->load($order_lengow_id);
-            if ($order_lengow->getData('is_in_error') == 1) {
-                $order_lengow->updateOrder(array('is_in_error' => 0));
-            }
-        }
-        try {
-            // compatibility V2
-            if ($order->getData('feed_id_lengow') != 0) {
-                $this->checkAndChangeMarketplaceName($order);
-            }
-            $marketplace = Mage::helper('lengow_connector/import')->getMarketplaceSingleton(
-                (string)$order->getData('marketplace_lengow'),
-                $order->getStore()->getId()
-            );
-            if ($marketplace->containOrderLine($action)) {
-                $order_line_collection = Mage::getModel('lengow/import_orderline')
-                    ->getOrderLineByOrderID($order->getId());
-                // compatibility V2 and security
-                if (!$order_line_collection) {
-                    $order_line_collection = $this->getOrderLineByApi($order);
-                }
-                if (!$order_line_collection) {
-                    throw new Lengow_Connector_Model_Exception(
-                        $helper->setLogMessage('lengow_log.exception.order_line_required')
-                    );
-                }
-                $results = array();
-                foreach ($order_line_collection as $order_line) {
-                    $results[] = $marketplace->callAction($action, $order, $shipment, $order_line['order_line_id']);
-                }
-                return !in_array(false, $results);
-            } else {
-                return $marketplace->callAction($action, $order, $shipment);
-            }
-        } catch (Lengow_Connector_Model_Exception $e) {
-            $error_message = $e->getMessage();
-        } catch (Exception $e) {
-            $error_message = '[Magento error]: "'.$e->getMessage().'" '.$e->getFile().' line '.$e->getLine();
-        }
-        if (isset($error_message)) {
+        if ($success) {
+            $order_lengow_id = $this->getLengowOrderIdWithOrderId($order->getId());
+            // Finish all order errors before API call
             if ($order_lengow_id) {
-                if ((int)$order_lengow->getData('order_process_state') != self::PROCESS_STATE_FINISH) {
-                    $order_lengow->updateOrder(array('is_in_error' => 1));
-                    $order_error->createOrderError(array(
-                        'order_lengow_id' => $order_lengow_id,
-                        'message'         => $error_message,
-                        'type'            => 'send'
-                    ));
+                $order_error = Mage::getModel('lengow/import_ordererror');
+                $order_error->finishOrderErrors($order_lengow_id, 'send');
+                $order_lengow = Mage::getModel('lengow/import_order')->load($order_lengow_id);
+                if ($order_lengow->getData('is_in_error') == 1) {
+                    $order_lengow->updateOrder(array('is_in_error' => 0));
                 }
-                unset($order_lengow);
             }
-            $decoded_message = $helper->decodeLogMessage($error_message, 'en_GB');
-            $helper->log(
-                'API-OrderAction',
-                $helper->setLogMessage('log.order_action.call_action_failed', array(
-                    'decoded_message' => $decoded_message
-                )),
-                false,
-                $order->getData('order_id_lengow')
-            );
+            try {
+                // compatibility V2
+                if ($order->getData('feed_id_lengow') != 0) {
+                    $this->checkAndChangeMarketplaceName($order);
+                }
+                $marketplace = Mage::helper('lengow_connector/import')->getMarketplaceSingleton(
+                    (string)$order->getData('marketplace_lengow'),
+                    $order->getStore()->getId()
+                );
+                if ($marketplace->containOrderLine($action)) {
+                    $order_line_collection = Mage::getModel('lengow/import_orderline')
+                        ->getOrderLineByOrderID($order->getId());
+                    // compatibility V2 and security
+                    if (!$order_line_collection) {
+                        $order_line_collection = $this->getOrderLineByApi($order);
+                    }
+                    if (!$order_line_collection) {
+                        throw new Lengow_Connector_Model_Exception(
+                            $helper->setLogMessage('lengow_log.exception.order_line_required')
+                        );
+                    }
+                    $results = array();
+                    foreach ($order_line_collection as $order_line) {
+                        $results[] = $marketplace->callAction($action, $order, $shipment, $order_line['order_line_id']);
+                    }
+                    $success = !in_array(false, $results);
+                } else {
+                    $success = $marketplace->callAction($action, $order, $shipment);
+                }
+            } catch (Lengow_Connector_Model_Exception $e) {
+                $error_message = $e->getMessage();
+            } catch (Exception $e) {
+                $error_message = '[Magento error]: "'.$e->getMessage().'" '.$e->getFile().' line '.$e->getLine();
+            }
+            if (isset($error_message)) {
+                if ($order_lengow_id) {
+                    if ((int)$order_lengow->getData('order_process_state') != self::PROCESS_STATE_FINISH) {
+                        $order_lengow->updateOrder(array('is_in_error' => 1));
+                        $order_error->createOrderError(array(
+                            'order_lengow_id' => $order_lengow_id,
+                            'message'         => $error_message,
+                            'type'            => 'send'
+                        ));
+                    }
+                    unset($order_lengow);
+                }
+                $decoded_message = $helper->decodeLogMessage($error_message, 'en_GB');
+                $helper->log(
+                    'API-OrderAction',
+                    $helper->setLogMessage('log.order_action.call_action_failed', array(
+                        'decoded_message' => $decoded_message
+                    )),
+                    false,
+                    $order->getData('order_id_lengow')
+                );
+                $success = false;
+            }
         }
+        if ($success) {
+            $message = $helper->setLogMessage('log.order_action.action_send', array(
+                'action'   => $action,
+                'order_id' => $order->getIncrementId()
+            ));
+        } else {
+            $message = $helper->setLogMessage('log.order_action.action_not_send', array(
+                'action'   => $action,
+                'order_id' => $order->getIncrementId()
+            ));
+        }
+        $helper->log('API-OrderAction', $message, false, $order->getData('order_id_lengow'));
     }
 
     /**

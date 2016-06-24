@@ -8,7 +8,6 @@
  * @copyright   2016 Lengow SAS
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-
 class Lengow_Connector_CronController extends Mage_Core_Controller_Front_Action
 {
     /**
@@ -60,7 +59,9 @@ class Lengow_Connector_CronController extends Mage_Core_Controller_Front_Action
             }
             // sync options between Lengow and Magento
             if (is_null($sync) || $sync === 'option') {
-                // TODO
+                $options = Mage::helper('core')->jsonEncode(Mage::helper('lengow_connector/sync')->getOptionData());
+                $connector = Mage::getModel('lengow/connector');
+                $connector->queryApi('put', '/v3.0/cms', null, array(), $options);
             }
             // sync option is not valid
             if ($sync && ($sync !== 'order' && $sync !== 'action' && $sync !== 'option')) {

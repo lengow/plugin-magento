@@ -8,18 +8,17 @@
  * @copyright   2016 Lengow SAS
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-
 class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
 {
     /**
     * integer order error import type
     */
-    const TYPE_LOG_IMPORT = 1;
+    const TYPE_ERROR_IMPORT = 1;
 
     /**
     * integer order error send type
     */
-    const TYPE_LOG_SEND = 2;
+    const TYPE_ERROR_SEND = 2;
 
     /**
      * @var array $_field_list field list for the table lengow_order_line
@@ -116,13 +115,13 @@ class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
     {
         switch ($type) {
             case 'import':
-                return self::TYPE_LOG_IMPORT;
+                return self::TYPE_ERROR_IMPORT;
                 break;
             case 'send':
-                return self::TYPE_LOG_SEND;
+                return self::TYPE_ERROR_SEND;
                 break;
             default:
-                return self::TYPE_LOG_IMPORT;
+                return self::TYPE_ERROR_IMPORT;
                 break;
         }
     }

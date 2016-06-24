@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * @category    Lengow
@@ -7,16 +8,20 @@
  * @copyright   2016 Lengow SAS
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-
 class Lengow_Connector_Adminhtml_Lengow_ProductController extends Mage_Adminhtml_Controller_Action
 {
-
+    /**
+     * Init action
+     */
     protected function _initAction()
     {
         $this->loadLayout()->_setActiveMenu('lengowtab');
         return $this;
     }
 
+    /**
+     * Index Action
+     */
     public function indexAction()
     {
         if ($this->getRequest()->getParam('isAjax')) {
@@ -76,6 +81,9 @@ class Lengow_Connector_Adminhtml_Lengow_ProductController extends Mage_Adminhtml
         );
     }
 
+    /**
+     * Mass publish product action
+     */
     public function massPublishAction()
     {
         $product_ids = (array)$this->getRequest()->getParam('product');
@@ -112,11 +120,17 @@ class Lengow_Connector_Adminhtml_Lengow_ProductController extends Mage_Adminhtml
         }
     }
 
+    /**
+     * Get session
+     */
     protected function _getSession()
     {
         return Mage::getSingleton('adminhtml/session');
     }
 
+    /**
+     * Is allowed
+     */
     protected function _isAllowed()
     {
         return Mage::getSingleton('admin/session')->isAllowed('lengow_connector/product');

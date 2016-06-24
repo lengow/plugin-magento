@@ -8,7 +8,6 @@
  * @copyright   2016 Lengow SAS
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-
 class Lengow_Connector_Model_Connector
 {
     /**
@@ -167,7 +166,6 @@ class Lengow_Connector_Model_Connector
      */
     public function post($method, $array = array(), $format = 'json', $body = '')
     {
-        print_r($array);
         return $this->call($method, $array, 'POST', $format, $body);
     }
 
@@ -420,10 +418,10 @@ class Lengow_Connector_Model_Connector
     /**
      * Get result for a query Api
      *
-     * @param string    $type     (GET / POST / PUT / PATCH)
-     * @param string    $url
-     * @param integer   $store_id
-     * @param array     $params
+     * @param string  $type     (GET / POST / PUT / PATCH)
+     * @param string  $url
+     * @param integer $store_id
+     * @param array   $params
      * @param string  $body
      *
      * @return api result as array

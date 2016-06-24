@@ -1,22 +1,22 @@
 <?php 
-    $sync = Mage::helper('lengow_connector/sync')->getMailTo();
+    $mailto = Mage::helper('lengow_connector/sync')->getMailTo();
     $helper = Mage::helper('lengow_connector');
 ?>
 
 <img src="<?php echo $this->getSkinUrl('lengow/images/') ?>cosmo-yoga.png" class="img-circle" alt="lengow">
 <h2><?php echo $helper->__('help.screen.title'); ?></h2>
 <p>
-    <?php echo $helper->__('help.screen.contain_text_support');
-    echo $sync;
+    <?php echo $helper->__('help.screen.contain_text_support').'<br/>';
+    echo $mailto;
     ?>
 </p>
 <p><?php echo $helper->__('help.screen.contain_text_support_hour'); ?></p>
 <p><?php echo $helper->__('help.screen.find_answer'); ?>
-    <a href="https://en.knowledgeowl.com/help/article/link/prestashopv2"
+    <a href="https://en.knowledgeowl.com/help/article/link/magento-v2"
         class="sub-link"
         target="_blank"
         title="Help Center">
-        <?php echo $helper->__('help.screen.link_prestashop_guide'); ?>
+        <?php echo $helper->__('help.screen.link_magento_guide'); ?>
     </a>
 </p>
 

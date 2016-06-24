@@ -8,7 +8,6 @@
  * @copyright   2016 Lengow SAS
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-
 class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
 {
     /**
@@ -38,10 +37,10 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Write log
      *
-     * @param string    $category           Category
-     * @param string    $message            log message
-     * @param boolean   $display            display on screen
-     * @param string    $marketplace_sku    lengow order id
+     * @param string  $category        Category
+     * @param string  $message         log message
+     * @param boolean $display         display on screen
+     * @param string  $marketplace_sku lengow order id
      *
      * @return boolean
      */
@@ -115,22 +114,24 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Delete log files when too old
      *
-     * @param integer $nbDays
+     * @param integer $nb_days
      */
-    public function cleanLog($nbDays = 20)
+    public function cleanLog($nb_days = 20)
     {
-        if ($nbDays<=0) {
-            $nbDays = self::LOG_LIFE;
+        if ($nb_days<=0) {
+            $nb_days = self::LOG_LIFE;
         }
         $resource = Mage::getSingleton('core/resource');
         $write_connection = $resource->getConnection('core_write');
         $table = $resource->getTableName('lengow/log');
-        $query = "DELETE FROM ".$table." WHERE `date` < DATE_SUB(NOW(),INTERVAL ".$nbDays." DAY)";
+        $query = "DELETE FROM ".$table." WHERE `date` < DATE_SUB(NOW(),INTERVAL ".$nb_days." DAY)";
         $write_connection->query($query);
     }
 
     /**
-     * Get host for generated email.
+     * Get host for generated email
+     *
+     * @param integer $store_id store id
      *
      * @return string Hostname
      */
@@ -147,11 +148,19 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Get date in local date
      *
+     * @param integer $timestamp linux timestamp
+     * @param boolean $second    see seconds or not
+     *
      * @return integer $timestamp in gmt format
      */
-    public function getDateInCorrectFormat($timestamp)
+    public function getDateInCorrectFormat($timestamp, $second = false)
     {
-        return Mage::getModel('core/date')->date('l d F Y @ H:i', $timestamp);
+        if ($second) {
+            $format = 'l d F Y @ H:i:s';
+        } else {
+            $format = 'l d F Y @ H:i';
+        }
+        return Mage::getModel('core/date')->date($format, $timestamp);
     }
 
     /**
