@@ -212,6 +212,23 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
     }
 
     /**
+     * Find active actions
+     *
+     * @return mixed
+     */
+    public function checkActiveAction()
+    {
+        /*$results = $this->getCollection()
+            ->addFieldToFilter('order_id', $order_id)
+            ->addFieldToFilter('state', self::STATE_NEW)
+            ->getData();
+        if (count($results) > 0) {
+            return $results;
+        }
+        return false;*/
+    }
+
+    /**
      * Removes all actions for one order Magento
      *
      * @param integer $order_id     Magento order id
