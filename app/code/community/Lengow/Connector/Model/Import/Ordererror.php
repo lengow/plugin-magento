@@ -189,7 +189,8 @@ class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
      *
      * @return mixed
      */
-    public function getImportErrors() {
+    public function getImportErrors()
+    {
         $results = $this->getCollection()
             ->join(
                 array('order'=> 'lengow/import_order'),
