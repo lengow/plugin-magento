@@ -207,7 +207,9 @@ class Lengow_Connector_Model_Observer
             $import = Mage::getModel('lengow/import', array('type' => 'magento cron'));
             $import->exec();
             // sync action between Lengow and Magento
-            Mage::getModel('lengow/import_action')->checkFinishAction();
+            $action = Mage::getModel('lengow/import_action');
+            $action->checkFinishAction();
+            $action->checkActionNotSent();
             // sync options between Lengow and Magento
             $options = Mage::helper('core')->jsonEncode(Mage::helper('lengow_connector/sync')->getOptionData());
             $connector = Mage::getModel('lengow/connector');

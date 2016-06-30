@@ -327,7 +327,10 @@ class Lengow_Connector_Model_Import extends Varien_Object
                 $this->_import_helper->sendMailAlert($this->_log_output);
             }
             if (!$this->_preprod_mode && !$this->_import_one_order && $this->_type_import == 'manual') {
-                Mage::getModel('lengow/import_action')->checkFinishAction();
+                $action = Mage::getModel('lengow/import_action');
+                $action->checkFinishAction();
+                $action->checkActionNotSent();
+                unset($action);
             }
         }
         // Clear session

@@ -54,7 +54,7 @@ order.screen.all_order_will_be_sent_to|All order issue reports will be sent by m
 order.screen.no_order_will_be_sent|No order issue reports will be sent by mail
 order.screen.change_this|Change this?
 order.screen.last_order_importation|Last order importation : %{last_importation}
-order.screen.no_order_importation|No order importation for now
+order.screen.no_order_importation|No order synchronization for now
 order.screen.order_with_error|You have %{nb_order} order(s) with errors
 order.screen.order_to_be_sent|You have %{nb_order} order(s) waiting to be sent
 order.screen.lengow_information|Lengow informations
@@ -351,6 +351,7 @@ log.import.quantity_back_shipped_by_marketplace|adding quantity back to stock (o
 log.mail_report.send_mail_to|report email sent to %{email}
 log.mail_report.unable_send_mail_to|unable to send report email to %{email}
 log.order_action.start_for_store|check finish actions in store %{store_name} (%{store_id})
+log.order_action.start_not_sent_for_store|check actions not sent in store %{store_name} (%{store_id})
 log.order_action.try_to_send_action|try to send %{action} action (ORDER ID %{order_id})
 log.order_action.action_send|action %{action} successfully sent (ORDER ID %{order_id})
 log.order_action.action_not_send|WARNING ! action %{action} could not be sent (ORDER ID %{order_id})

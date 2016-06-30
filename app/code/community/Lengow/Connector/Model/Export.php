@@ -724,7 +724,6 @@ class Lengow_Connector_Model_Export extends Varien_Object
         $status = $this->_config['status'];
         $out_of_stock = $this->_config['out_of_stock'];
         $selected_products = $this->_config['selected_products'];
-
         // Search product to export
         $productCollection = Mage::getModel('catalog/product')
             ->getCollection()
@@ -764,7 +763,6 @@ class Lengow_Connector_Model_Export extends Varien_Object
             $this->_getOutOfStockSQL($out_of_stock),
             'inner'
         );
-
         // Filter to hide products
         Mage::getSingleton('catalog/product_status')->addVisibleFilterToCollection($productCollection);
         return $productCollection;

@@ -3,7 +3,6 @@
     $config_helper = Mage::helper('lengow_connector/config');
     $import_helper = Mage::helper('lengow_connector/import');
     $last_import = $import_helper->getLastImport();
-    $last_import_date = $helper->getDateInCorrectFormat($last_import['timestamp']);
     $report_mail_active = (bool)$config_helper->get('report_mail_enable');
     $report_mail_link = Mage::helper('adminhtml')
         ->getUrl('adminhtml/system_config/edit/section/lengow_import_options/');
@@ -31,7 +30,7 @@
     <?php
     if ($last_import['type'] != 'none') {
         echo $helper->__('order.screen.last_order_importation', array(
-            'last_importation' => '<b>'.$last_import_date.'</b>'
+            'last_importation' => '<b>'.$helper->getDateInCorrectFormat($last_import['timestamp']).'</b>'
         ));
     } else {
         echo $helper->__('order.screen.no_order_importation');
