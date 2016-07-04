@@ -38,14 +38,14 @@ class Lengow_Connector_Block_Adminhtml_Order_Renderer_Action extends Mage_Adminh
                 $action = 're_import';
                 $tootlip = $helper->decodeLogMessage('order.table.order_not_imported')
                     .'<br/>'.join('<br/>', $error_messages);
-                return '<a class="lengow_action lengow_tooltip lengow_btn lengow_btn_white"
+                return '<a class="lengow_action lengow_tooltip lgw-btn lgw-btn-white"
                     onclick="makeLengowActions(\''.$url.'\', \'re_import\', \''.$order_lengow_id.'\')">'
                     .$helper->decodeLogMessage('order.table.not_imported')
                     .'<span class="lengow_order_action">'.$tootlip.'</span>&nbsp<i class="fa fa-refresh"></i></a>';
             } else {
                 $tootlip = $helper->decodeLogMessage('order.table.action_sent_not_work')
                     .'<br/>'.join('<br/>', $error_messages);
-                return '<a class="lengow_action lengow_tooltip lengow_btn lengow_btn_white" 
+                return '<a class="lengow_action lengow_tooltip lgw-btn lgw-btn-white" 
                     onclick="makeLengowActions(\''.$url.'\', \'re_send\', \''.$order_lengow_id.'\')">'
                     .$helper->decodeLogMessage('order.table.not_sent')
                     .'<span class="lengow_order_action">'.$tootlip.'</span>&nbsp<i class="fa fa-refresh"></i></a>';
@@ -56,7 +56,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Renderer_Action extends Mage_Adminh
                 $action = Mage::getModel('lengow/import_action');
                 $last_action_type = $action->getLastOrderActionType($row->getData('order_id'));
                 if ($last_action_type) {
-                    return '<a class="lengow_action lengow_tooltip lengow_btn lengow_btn_white">'
+                    return '<a class="lengow_action lengow_tooltip lgw-btn lgw-btn-white">'
                         .$helper->decodeLogMessage('order.table.action_sent', null, array(
                             'action_type' => $last_action_type
                         ))

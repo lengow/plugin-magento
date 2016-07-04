@@ -3,6 +3,13 @@
     <default>
         <reference name="head">
               <action method="addCss"><stylesheet>lengow/css/lengow.css</stylesheet></action>
+              <!--<action method="addCss"><stylesheet>lengow/css/bootstrap-switch.min.css</stylesheet></action>
+              <action method="addCss"><stylesheet>lengow/css/bootstrap-datepicker.css</stylesheet></action>
+              <action method="addCss"><stylesheet>lengow/css/lengow-components.css</stylesheet></action>
+              <action method="addCss"><stylesheet>lengow/css/lengow-layout.css</stylesheet></action>
+              <action method="addCss"><stylesheet>lengow/css/lengow-pages.css</stylesheet></action>
+              <action method="addCss"><stylesheet>lengow/css/select-2.css</stylesheet></action>
+              <action method="addCss"><stylesheet>lengow/css/toolbox.css</stylesheet></action>-->
               <action method="addItem"><type>skin_css</type><name>lengow/css/font-awesome.css</name></action>
               <action method="addItem"><type>skin_js</type><name>lengow/js/jquery-2.2.2.js</name></action>
               <action method="addItem"><type>skin_js</type><name>lengow/js/noconflict.js</name></action>

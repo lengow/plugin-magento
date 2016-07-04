@@ -16,64 +16,68 @@
     $order_to_be_sent = $order->countOrderToBeSent();
 ?>
 
-<?php if ((bool)$config_helper->get('preprod_mode_enable')) { ?>
-    <p class="blue_frame" style="line-height: 20px;">
-        <?php echo $helper->__('order.screen.preprod_warning_message', array('url' => $report_mail_link)); ?>
+<div class="lgw-box">
+
+    <?php if ((bool)$config_helper->get('preprod_mode_enable')) { ?>
+        <p class="blue_frame" style="line-height: 20px;">
+            <?php echo $helper->__('order.screen.preprod_warning_message', array('url' => $report_mail_link)); ?>
+        </p>
+    <?php } ?>
+    <p id="lengow_order_with_error">
+        <?php echo $helper->__('order.screen.order_with_error', array('nb_order' => $order_with_error)); ?>
     </p>
-<?php } ?>
-<p id="lengow_order_with_error">
-    <?php echo $helper->__('order.screen.order_with_error', array('nb_order' => $order_with_error)); ?>
-</p>
-<p id="lengow_order_to_be_sent">
-    <?php echo $helper->__('order.screen.order_to_be_sent', array('nb_order' => $order_to_be_sent)); ?>
-</p>
-<p id="lengow_last_importation">
-    <?php
-    if ($last_import['type'] != 'none') {
-        echo $helper->__('order.screen.last_order_importation', array(
-            'last_importation' => '<b>'.$last_import_date.'</b>'
-        ));
-    } else {
-        echo $helper->__('order.screen.no_order_importation');
-    }
-    ?>
-</p>
-<p>
-    <?php
-    if ($report_mail_active) {
-        echo $helper->__('order.screen.all_order_will_be_sent_to').' ';
-        echo implode(', ', $report_mails).' ';
-    } else {
-        echo $helper->__('order.screen.no_order_will_be_sent').' ';
-    }
-    echo '(<a href="'.$report_mail_link.'">'.$helper->__('order.screen.change_this').'</a>)';
-    ?>
-</p>
+    <p id="lengow_order_to_be_sent">
+        <?php echo $helper->__('order.screen.order_to_be_sent', array('nb_order' => $order_to_be_sent)); ?>
+    </p>
+    <p id="lengow_last_importation">
+        <?php
+        if ($last_import['type'] != 'none') {
+            echo $helper->__('order.screen.last_order_importation', array(
+                'last_importation' => '<b>'.$last_import_date.'</b>'
+            ));
+        } else {
+            echo $helper->__('order.screen.no_order_importation');
+        }
+        ?>
+    </p>
+    <p>
+        <?php
+        if ($report_mail_active) {
+            echo $helper->__('order.screen.all_order_will_be_sent_to').' ';
+            echo implode(', ', $report_mails).' ';
+        } else {
+            echo $helper->__('order.screen.no_order_will_be_sent').' ';
+        }
+        echo '(<a href="'.$report_mail_link.'">'.$helper->__('order.screen.change_this').'</a>)';
+        ?>
+    </p>
 
-<button
-    type="button"
-    id="lengow_import_orders"
-    class="lengow_btn"
-    data-href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_order/'); ?>?isAjax=true" >
-    <?php echo $helper->__('order.screen.button_import'); ?>
-</button>
-<?php if ($see_migrate_block && $order_not_migrate > 0) { ?>
-    <div id="lengow_migrate_order" class="blue_frame">
-        <p><?php echo $helper->__('order.screen.nb_old_order_imported', array('nb_order' => $nb_order_imported)); ?></p>
-        <p><?php echo $helper->__('order.screen.order_visible_in_page', array('nb_order' => $order_to_be_sent)); ?></p>
-        <p><?php echo $helper->__('order.screen.where_see_old_order'); ?></p>
-        <button
-            type="button" 
-            id="lengow_migrate_fade"
-            class="lengow_btn"
-            data-href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_order/'); ?>?isAjax=true" >
-            <?php echo $helper->__('order.screen.button_migrate'); ?>
-        </button>
+    <button
+        type="button"
+        id="lengow_import_orders"
+        class="lgw_btn"
+        data-href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_order/'); ?>?isAjax=true" >
+        <?php echo $helper->__('order.screen.button_import'); ?>
+    </button>
+    <?php if ($see_migrate_block && $order_not_migrate > 0) { ?>
+        <div id="lengow_migrate_order" class="blue_frame">
+            <p><?php echo $helper->__('order.screen.nb_old_order_imported', array('nb_order' => $nb_order_imported)); ?></p>
+            <p><?php echo $helper->__('order.screen.order_visible_in_page', array('nb_order' => $order_to_be_sent)); ?></p>
+            <p><?php echo $helper->__('order.screen.where_see_old_order'); ?></p>
+            <button
+                type="button" 
+                id="lengow_migrate_fade"
+                class="lengow_btn"
+                data-href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_order/'); ?>?isAjax=true" >
+                <?php echo $helper->__('order.screen.button_migrate'); ?>
+            </button>
+        </div>
+    <?php } ?>
+
+    <div id="lengow_wrapper_messages" class="blue_frame" style="display:none;"></div>
+
+    <div id="lengow_controller_url"
+        data-href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_order/'); ?>?isAjax=true" >
     </div>
-<?php } ?>
 
-<div id="lengow_wrapper_messages" class="blue_frame" style="display:none;"></div>
-
-<div id="lengow_controller_url"
-    data-href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_order/'); ?>?isAjax=true" >
 </div>
