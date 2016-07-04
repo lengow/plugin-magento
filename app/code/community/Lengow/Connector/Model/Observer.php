@@ -66,8 +66,10 @@ class Lengow_Connector_Model_Observer
                     $value = $object['value'];
                     if ($old_value != $value && !in_array($path_explode[2], $this->_exclude_options)) {
                         if ($path_explode[2] == 'global_access_token' || $path_explode[2] == 'global_secret_token') {
-                            $value = preg_replace("/[a-zA-Z0-9]/", '*', $value);
+                            $new_value = preg_replace("/[a-zA-Z0-9]/", '*', $value);
                             $old_value = preg_replace("/[a-zA-Z0-9]/", '*', $old_value);
+                        } else {
+                            $new_value = $value;
                         }
                         if ($object['scope'] == 'stores') {
                             $message = Mage::helper('lengow_connector/translation')->t(
@@ -75,7 +77,7 @@ class Lengow_Connector_Model_Observer
                                 array(
                                     'key'       => $object['path'],
                                     'old_value' => $old_value,
-                                    'value'     => $value,
+                                    'value'     => $new_value,
                                     'store_id'  => $object['scope_id']
                                 )
                             );
@@ -85,7 +87,7 @@ class Lengow_Connector_Model_Observer
                                 array(
                                     'key'       => $object['path'],
                                     'old_value' => $old_value,
-                                    'value'     => $value,
+                                    'value'     => $new_value,
                                 )
                             );
                         }
@@ -207,11 +209,16 @@ class Lengow_Connector_Model_Observer
             $import = Mage::getModel('lengow/import', array('type' => 'magento cron'));
             $import->exec();
             // sync action between Lengow and Magento
-            Mage::getModel('lengow/import_action')->checkFinishAction();
+            $action = Mage::getModel('lengow/import_action');
+            $action->checkFinishAction();
+            $action->checkActionNotSent();
             // sync options between Lengow and Magento
-            $options = Mage::helper('core')->jsonEncode(Mage::helper('lengow_connector/sync')->getOptionData());
-            $connector = Mage::getModel('lengow/connector');
-            $result = $connector->queryApi('put', '/v3.0/cms', null, array(), $options);
+            $is_new_merchant = Mage::helper('lengow_connector/sync')->isNewMerchant();
+            if (!$is_new_merchant) {
+                $options = Mage::helper('core')->jsonEncode(Mage::helper('lengow_connector/sync')->getOptionData());
+                $connector = Mage::getModel('lengow/connector');
+                $result = $connector->queryApi('put', '/v3.0/cms', null, array(), $options);
+            }
         }
         return $this;
     }

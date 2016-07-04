@@ -193,26 +193,28 @@ foreach ($attributeSetCollection as $id => $attributeSet) {
 //                  Create Lengow tables
 // *********************************************************
 
+// Compatibility for version 1.5
+$type_text = Mage::getVersion() < '1.6.0.0' ? Varien_Db_Ddl_Table::TYPE_LONGVARCHAR : Varien_Db_Ddl_Table::TYPE_TEXT;
+
 // create table lengow_order
 $tableName = $installer->getTable('lengow_order');
-if ($installer->getConnection()->isTableExists($tableName) != true) {
+if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
     $table = $installer->getConnection()
         ->newTable($installer->getTable('lengow_order'))
         ->addColumn('id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
             'identity' => true,
             'unsigned' => true,
             'nullable' => false,
-            'primary' => true
+            'primary'  => true,
         ), 'Id')
         ->addColumn('order_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
             'nullable' => true,
             'unsigned' => true,
-            'default' => null
+            'default'  => null
         ), 'Order Id')
-        ->addColumn('order_sku', Varien_Db_Ddl_Table::TYPE_TEXT, null, array(
+        ->addColumn('order_sku', Varien_Db_Ddl_Table::TYPE_VARCHAR, 40, array(
             'nullable' => true,
-            'default' => null,
-            'length' => 40
+            'default'  => null,
         ), 'Order sku')
         ->addColumn('store_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
             'nullable' => false,
@@ -221,162 +223,172 @@ if ($installer->getConnection()->isTableExists($tableName) != true) {
         ->addColumn('feed_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
             'nullable' => true,
             'unsigned' => true,
-            'default' => null
+            'default'  => null
         ), 'Feed Id')
         ->addColumn('delivery_address_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
             'nullable' => true,
             'unsigned' => true,
-            'default' => null
+            'default'  => null
         ), 'Delivery Address Id')
-        ->addColumn('delivery_country_iso', Varien_Db_Ddl_Table::TYPE_TEXT, 3, array(
+        ->addColumn('delivery_country_iso', Varien_Db_Ddl_Table::TYPE_VARCHAR, 3, array(
             'nullable' => true,
-            'default' => null,
-            'length' => 3
+            'default'  => null,
+            'length'   => 3
         ), 'Delivery Country Iso')
-        ->addColumn('marketplace_sku', Varien_Db_Ddl_Table::TYPE_TEXT, 100, array(
+        ->addColumn('marketplace_sku', Varien_Db_Ddl_Table::TYPE_VARCHAR, 100, array(
             'nullable' => false,
-            'length' => 100
+            'length'   => 100
         ), 'Marketplace Sku')
-        ->addColumn('marketplace_name', Varien_Db_Ddl_Table::TYPE_TEXT, 100, array(
+        ->addColumn('marketplace_name', Varien_Db_Ddl_Table::TYPE_VARCHAR, 100, array(
             'nullable' => false,
-            'length' => 100
+            'length'   => 100
         ), 'Marketplace Name')
-        ->addColumn('marketplace_label', Varien_Db_Ddl_Table::TYPE_TEXT, 100, array(
+        ->addColumn('marketplace_label', Varien_Db_Ddl_Table::TYPE_VARCHAR, 100, array(
             'nullable' => true,
-            'default' => null,
-            'length' => 100
+            'default'  => null,
+            'length'   => 100
         ), 'Marketplace Label')
-        ->addColumn('order_lengow_state', Varien_Db_Ddl_Table::TYPE_TEXT, 100, array(
+        ->addColumn('order_lengow_state', Varien_Db_Ddl_Table::TYPE_VARCHAR, 100, array(
             'nullable' => false,
-            'length' => 100
+            'length'   => 100
         ), 'Order Lengow State')
         ->addColumn('order_process_state', Varien_Db_Ddl_Table::TYPE_SMALLINT, null, array(
             'nullable' => false,
             'unsigned' => true
         ), 'Order Process State')
-        ->addColumn('order_date', Varien_Db_Ddl_Table::TYPE_DATETIME, null, array(
+        ->addColumn('order_date', Varien_Db_Ddl_Table::TYPE_TIMESTAMP, null, array(
             'nullable' => false
         ), 'Order Date')
         ->addColumn('order_item', Varien_Db_Ddl_Table::TYPE_SMALLINT, null, array(
             'nullable' => true,
             'unsigned' => true,
-            'default' => null
+            'default'  => null
         ), 'Order Item')
-        ->addColumn('currency', Varien_Db_Ddl_Table::TYPE_TEXT, 3, array(
+        ->addColumn('currency', Varien_Db_Ddl_Table::TYPE_VARCHAR, 3, array(
             'nullable' => true,
-            'default' => null,
-            'length' => 3
+            'default'  => null,
+            'length'   => 3
         ), 'Currency')
         ->addColumn('total_paid', Varien_Db_Ddl_Table::TYPE_DECIMAL, null, array(
-            'nullable' => true,
-            'unsigned' => true,
+            'nullable'  => true,
+            'unsigned'  => true,
             'precision' => 17,
-            'scale' => 2,
-            'default' => null
+            'scale'     => 2,
+            'default'   => null
         ), 'Total Paid')
         ->addColumn('commission', Varien_Db_Ddl_Table::TYPE_DECIMAL, null, array(
-            'nullable' => true,
-            'unsigned' => true,
+            'nullable'  => true,
+            'unsigned'  => true,
             'precision' => 17,
-            'scale' => 2,
-            'default' => null
+            'scale'     => 2,
+            'default'   => null
         ), 'Commission')
-        ->addColumn('customer_name', Varien_Db_Ddl_Table::TYPE_TEXT, 255, array(
+        ->addColumn('customer_name', Varien_Db_Ddl_Table::TYPE_VARCHAR, 255, array(
             'nullable' => true,
-            'length' => 255,
-            'default' => null
+            'length'   => 255,
+            'default'  => null
         ), 'Customer Name')
-        ->addColumn('customer_email', Varien_Db_Ddl_Table::TYPE_TEXT, 255, array(
+        ->addColumn('customer_email', Varien_Db_Ddl_Table::TYPE_VARCHAR, 255, array(
             'nullable' => true,
-            'length' => 255,
-            'default' => null
+            'length'   => 255,
+            'default'  => null
         ), 'Customer Email')
-        ->addColumn('carrier', Varien_Db_Ddl_Table::TYPE_TEXT, 100, array(
+        ->addColumn('carrier', Varien_Db_Ddl_Table::TYPE_VARCHAR, 100, array(
             'nullable' => true,
-            'length' => 100,
-            'default' => null
+            'length'   => 100,
+            'default'  => null
         ), 'Carrier')
-        ->addColumn('carrier_method', Varien_Db_Ddl_Table::TYPE_TEXT, 100, array(
+        ->addColumn('carrier_method', Varien_Db_Ddl_Table::TYPE_VARCHAR, 100, array(
             'nullable' => true,
-            'length' => 100,
-            'default' => null
+            'length'   => 100,
+            'default'  => null
         ), 'Carrier Method')
-        ->addColumn('carrier_tracking', Varien_Db_Ddl_Table::TYPE_TEXT, 100, array(
+        ->addColumn('carrier_tracking', Varien_Db_Ddl_Table::TYPE_VARCHAR, 100, array(
             'nullable' => true,
-            'length' => 100,
-            'default' => null
+            'length'   => 100,
+            'default'  => null
         ), 'Carrier Tracking')
-        ->addColumn('carrier_id_relay', Varien_Db_Ddl_Table::TYPE_TEXT, 100, array(
+        ->addColumn('carrier_id_relay', Varien_Db_Ddl_Table::TYPE_VARCHAR, 100, array(
             'nullable' => true,
-            'length' => 100,
-            'default' => null
+            'length'   => 100,
+            'default'  => null
         ), 'Carrier Id Relay')
         ->addColumn('sent_marketplace', Varien_Db_Ddl_Table::TYPE_BOOLEAN, null, array(
             'nullable' => false,
-            'default' => 0
+            'default'  => 0
         ), 'Sent Marketplace')
         ->addColumn('is_in_error', Varien_Db_Ddl_Table::TYPE_BOOLEAN, null, array(
             'nullable' => false,
-            'default' => 0
+            'default'  => 0
         ), 'Is In Error')
-        ->addColumn('message', Varien_Db_Ddl_Table::TYPE_TEXT, null, array(
+        ->addColumn('message', $type_text, null, array(
             'nullable' => true,
-            'default' => null
+            'default'  => null
         ), 'Message')
-        ->addColumn('created_at', Varien_Db_Ddl_Table::TYPE_DATETIME, null, array(
+        ->addColumn('created_at', Varien_Db_Ddl_Table::TYPE_TIMESTAMP, null, array(
             'nullable' => false,
         ), 'Created At')
-        ->addColumn('updated_at', Varien_Db_Ddl_Table::TYPE_DATETIME, null, array(
+        ->addColumn('updated_at', Varien_Db_Ddl_Table::TYPE_TIMESTAMP, null, array(
             'nullable' => true,
-            'default' => null
+            'default'  => null
         ), 'Updated At')
-        ->addColumn('extra', Varien_Db_Ddl_Table::TYPE_TEXT, null, array(
+        ->addColumn('extra', $type_text, null, array(
             'nullable' => true,
-            'default' => null
+            'default'  => null
         ), 'Extra');
     $installer->getConnection()->createTable($table);
+    // Compatibility with version 1.5
+    if (Mage::getVersion() < '1.6.0.0') {
+        $installer->getConnection()->modifyColumn($tableName, 'id', 'int(11) NOT NULL auto_increment');
+        $installer->getConnection()->modifyColumn($tableName, 'total_paid', 'DECIMAL(17,2) UNSIGNED NULL');
+        $installer->getConnection()->modifyColumn($tableName, 'commission', 'DECIMAL(17,2) UNSIGNED NULL');
+    }
 }
 
 // create table lengow_order_line
 $tableName = $installer->getTable('lengow_order_line');
-if ($installer->getConnection()->isTableExists($tableName) != true) {
+if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
     $table = $installer->getConnection()
         ->newTable($installer->getTable('lengow_order_line'))
         ->addColumn('id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
             'identity' => true,
             'unsigned' => true,
             'nullable' => false,
-            'primary' => true,
+            'primary'  => true,
         ), 'Id')
         ->addColumn('order_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
             'nullable' => false,
             'unsigned' => true
         ), 'Order Id')
-        ->addColumn('order_line_id', Varien_Db_Ddl_Table::TYPE_TEXT, 100, array(
+        ->addColumn('order_line_id', Varien_Db_Ddl_Table::TYPE_VARCHAR, 100, array(
             'nullable' => false,
-            'length' => 100
+            'length'   => 100
         ), 'Order Line Id');
     $installer->getConnection()->createTable($table);
+    // Compatibility with version 1.5
+    if (Mage::getVersion() < '1.6.0.0') {
+        $installer->getConnection()->modifyColumn($tableName, 'id', 'int(11) NOT NULL auto_increment');
+    }
 }
 
 // create table lengow_order_error
 $tableName = $installer->getTable('lengow_order_error');
-if ($installer->getConnection()->isTableExists($tableName) != true) {
+if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
     $table = $installer->getConnection()
         ->newTable($installer->getTable('lengow_order_error'))
         ->addColumn('id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
             'identity' => true,
             'unsigned' => true,
             'nullable' => false,
-            'primary' => true,
+            'primary'  => true,
         ), 'Id')
         ->addColumn('order_lengow_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
             'nullable' => false,
             'unsigned' => true
         ), 'Order Lengow Id')
-        ->addColumn('message', Varien_Db_Ddl_Table::TYPE_TEXT, null, array(
+        ->addColumn('message', $type_text, null, array(
             'nullable' => true,
-            'default' => null
+            'default'  => null
         ), 'Message')
         ->addColumn('type', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
             'nullable' => false,
@@ -384,32 +396,36 @@ if ($installer->getConnection()->isTableExists($tableName) != true) {
         ), 'Type')
         ->addColumn('is_finished', Varien_Db_Ddl_Table::TYPE_BOOLEAN, null, array(
             'nullable' => false,
-            'default' => 0
+            'default'  => 0
         ), 'Is Finished')
         ->addColumn('mail', Varien_Db_Ddl_Table::TYPE_BOOLEAN, null, array(
             'nullable' => false,
-            'default' => 0
+            'default'  => 0
         ), 'Mail')
-        ->addColumn('created_at', Varien_Db_Ddl_Table::TYPE_DATETIME, null, array(
+        ->addColumn('created_at', Varien_Db_Ddl_Table::TYPE_TIMESTAMP, null, array(
             'nullable' => false,
         ), 'Created At')
-        ->addColumn('updated_at', Varien_Db_Ddl_Table::TYPE_DATETIME, null, array(
+        ->addColumn('updated_at', Varien_Db_Ddl_Table::TYPE_TIMESTAMP, null, array(
             'nullable' => true,
-            'default' => null
+            'default'  => null
         ), 'Updated At');
     $installer->getConnection()->createTable($table);
+    // Compatibility with version 1.5
+    if (Mage::getVersion() < '1.6.0.0') {
+        $installer->getConnection()->modifyColumn($tableName, 'id', 'int(11) NOT NULL auto_increment');
+    }
 }
 
 // create table lengow_action
 $tableName = $installer->getTable('lengow_action');
-if ($installer->getConnection()->isTableExists($tableName) != true) {
+if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
     $table = $installer->getConnection()
         ->newTable($installer->getTable('lengow_action'))
         ->addColumn('id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
             'identity' => true,
             'unsigned' => true,
             'nullable' => false,
-            'primary' => true,
+            'primary'  => true,
         ), 'Id')
         ->addColumn('order_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
             'nullable' => false,
@@ -419,55 +435,63 @@ if ($installer->getConnection()->isTableExists($tableName) != true) {
             'nullable' => false,
             'unsigned' => true
         ), 'Action Id')
-        ->addColumn('order_line_sku', Varien_Db_Ddl_Table::TYPE_TEXT, 100, array(
+        ->addColumn('order_line_sku', Varien_Db_Ddl_Table::TYPE_VARCHAR, 100, array(
             'nullable' => true,
-            'length' => 100,
-            'default' => null
+            'length'   => 100,
+            'default'  => null
         ), 'Order Line Sku')
-        ->addColumn('action_type', Varien_Db_Ddl_Table::TYPE_TEXT, 32, array(
+        ->addColumn('action_type', Varien_Db_Ddl_Table::TYPE_VARCHAR, 32, array(
             'nullable' => false,
-            'length' => 32
+            'length'   => 32
         ), 'Action Type')
         ->addColumn('retry', Varien_Db_Ddl_Table::TYPE_SMALLINT, null, array(
             'nullable' => false,
             'unsigned' => true,
-            'default' => 0
+            'default'  => 0
         ), 'Retry')
-        ->addColumn('parameters', Varien_Db_Ddl_Table::TYPE_TEXT, null, array(
+        ->addColumn('parameters', $type_text, null, array(
             'nullable' => false
         ), 'Parameters')
         ->addColumn('state', Varien_Db_Ddl_Table::TYPE_SMALLINT, null, array(
             'nullable' => false,
             'unsigned' => true
         ), 'State')
-        ->addColumn('created_at', Varien_Db_Ddl_Table::TYPE_DATETIME, null, array(
+        ->addColumn('created_at', Varien_Db_Ddl_Table::TYPE_TIMESTAMP, null, array(
             'nullable' => false
         ), 'Created At')
-        ->addColumn('updated_at', Varien_Db_Ddl_Table::TYPE_DATETIME, null, array(
+        ->addColumn('updated_at', Varien_Db_Ddl_Table::TYPE_TIMESTAMP, null, array(
             'nullable' => true,
-            'default' => null
+            'default'  => null
         ), 'Updated At');
     $installer->getConnection()->createTable($table);
+    // Compatibility with version 1.5
+    if (Mage::getVersion() < '1.6.0.0') {
+        $installer->getConnection()->modifyColumn($tableName, 'id', 'int(11) NOT NULL auto_increment');
+    }
 }
 
 // create table lengow_log
 $tableName = $installer->getTable('lengow_log');
-if ($installer->getConnection()->isTableExists($tableName) != true) {
+if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
     $table = $installer->getConnection()
         ->newTable($installer->getTable('lengow_log'))
         ->addColumn('id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
             'identity' => true,
             'unsigned' => true,
             'nullable' => false,
-            'primary' => true,
+            'primary'  => true
         ), 'Id')
-        ->addColumn('date', Varien_Db_Ddl_Table::TYPE_DATETIME, null, array(
+        ->addColumn('date', Varien_Db_Ddl_Table::TYPE_TIMESTAMP, null, array(
             'nullable' => false,
         ), 'Date')
-        ->addColumn('message', Varien_Db_Ddl_Table::TYPE_TEXT, null, array(
+        ->addColumn('message', $type_text, null, array(
             'nullable' => false,
         ), 'Message');
     $installer->getConnection()->createTable($table);
+    // Compatibility with version 1.5
+    if (Mage::getVersion() < '1.6.0.0') {
+        $installer->getConnection()->modifyColumn($tableName, 'id', 'int(11) NOT NULL auto_increment');
+    }
 }
 
 // *********************************************************
@@ -519,112 +543,112 @@ $new_settings = array(
     array(
         'old_path' => 'lensync/orders/active_store',
         'new_path' => 'lengow_global_options/store_credential/global_store_enable',
-        'store' => true
+        'store'    => true
     ),
     array(
         'old_path' => 'lentracker/general/account_id',
         'new_path' => 'lengow_global_options/store_credential/global_account_id',
-        'store' => true
+        'store'    => true
     ),
     array(
         'old_path' => 'lentracker/general/access_token',
         'new_path' => 'lengow_global_options/store_credential/global_access_token',
-        'store' => true
+        'store'    => true
     ),
     array(
         'old_path' => 'lentracker/general/secret',
         'new_path' => 'lengow_global_options/store_credential/global_secret_token',
-        'store' => true
+        'store'    => true
     ),
     array(
         'old_path' => 'lentracker/tag/identifiant',
         'new_path' => 'lengow_global_options/advanced/global_tracking_id',
-        'store' => false
+        'store'    => false
     ),
     array(
         'old_path' => 'lenexport/performances/valid_ip',
         'new_path' => 'lengow_global_options/advanced/global_authorized_ip',
-        'store' => false
+        'store'    => false
     ),
     array(
-        'old_path' => 'export_only_selected',
+        'old_path' => 'lenexport/global/export_only_selected',
         'new_path' => 'lengow_export_options/simple/export_selection_enable',
-        'store' => true
+        'store'    => true
     ),
     array(
         'old_path' => 'lenexport/global/export_soldout',
         'new_path' => 'lengow_export_options/simple/export_out_stock',
-        'store' => true
+        'store'    => true
     ),
     array(
         'old_path' => 'lenexport/global/producttype',
         'new_path' => 'lengow_export_options/simple/export_product_type',
-        'store' => true
+        'store'    => true
     ),
     array(
         'old_path' => 'lenexport/global/productstatus',
         'new_path' => 'lengow_export_options/simple/export_product_status',
-        'store' => true
+        'store'    => true
     ),
     array(
         'old_path' => 'lenexport/data/parentsimages',
         'new_path' => 'lengow_export_options/advanced/export_parent_image',
-        'store' => true
+        'store'    => true
     ),
     array(
         'old_path' => 'lenexport/data/shipping_price_based_on',
         'new_path' => 'lengow_export_options/advanced/export_default_shipping_country',
-        'store' => true
+        'store'    => true
     ),
     array(
         'old_path' => 'lenexport/data/default_shipping_method',
         'new_path' => 'lengow_export_options/advanced/export_default_shipping_method',
-        'store' => true
+        'store'    => true
     ),
     array(
         'old_path' => 'lenexport/data/default_shipping_price',
         'new_path' => 'lengow_export_options/advanced/export_default_shipping_price',
-        'store' => true
+        'store'    => true
     ),
     array(
         'old_path' => 'lenexport/attributelist/attributes',
         'new_path' => 'lengow_export_options/advanced/export_attribute',
-        'store' => true
+        'store'    => true
     ),
     array(
         'old_path' => 'lenexport/performances/usesavefile',
         'new_path' => 'lengow_export_options/advanced/export_file_enable',
-        'store' => false
+        'store'    => false
     ),
     array(
         'old_path' => 'lenexport/performances/active_cron',
         'new_path' => 'lengow_export_options/advanced/export_cron_enable',
-        'store' => false
+        'store'    => false
     ),
     array(
         'old_path' => 'lensync/orders/period',
         'new_path' => 'lengow_import_options/simple/import_days',
-        'store' => true
+        'store'    => true
     ),
     array(
         'old_path' => 'lensync/orders/customer_group',
         'new_path' => 'lengow_import_options/simple/import_customer_group',
-        'store' => true
+        'store'    => true
     ),
     array(
         'old_path' => 'lensync/orders/default_shipping',
         'new_path' => 'lengow_import_options/simple/import_default_shipping_method',
-        'store' => true
+        'store'    => true
     ),
     array(
         'old_path' => 'lensync/performances/debug',
         'new_path' => 'lengow_import_options/advanced/import_preprod_mode_enable',
-        'store' => false
+        'store'    => false
     ),
     array(
         'old_path' => 'lensync/performances/active_cron',
         'new_path' => 'lengow_import_options/advanced/import_cron_enable',
-        'store' => false
+        'store'    => false
     )
 );
 // All the settings to delete
@@ -635,6 +659,7 @@ $delete_settings = array(
     'lentracker/general/api_key',
     'lentracker/tag/type',
     'lentracker/hidden/last_synchro',
+    'lenexport/global/active_store',
     'lenexport/global/autoexport_newproduct',
     'lenexport/data/format',
     'lenexport/data/count_images',
@@ -657,40 +682,40 @@ $delete_settings = array(
 $store_collection = Mage::getResourceModel('core/store_collection')->addFieldToFilter('is_active', 1);
 // Update settings
 foreach ($new_settings as $setting) {
-    if ($setting['store']) {
-        foreach ($store_collection as $store) {
-            $store_value = Mage::getStoreConfig($setting['old_path'], $store);
-            if (!is_null($store_value)) {
-                Mage::getModel('core/config')->saveConfig(
-                    $setting['new_path'],
-                    $store_value,
-                    $store->getCode(),
-                    $store->getId()
-                );
-                Mage::getModel('core/config')->deleteConfig(
-                    $setting['old_path'],
-                    $store->getCode(),
-                    $store->getId()
-                );
-            }
-        }
-    }
     $global_value = Mage::getStoreConfig($setting['old_path']);
     if (!is_null($global_value)) {
         Mage::getModel('core/config')->saveConfig($setting['new_path'], $global_value);
         Mage::getModel('core/config')->deleteConfig($setting['old_path']);
     }
+    if ($setting['store']) {
+        foreach ($store_collection as $store) {
+            // Get value by collection -> getStoreConfig() by store don't work (already null)
+            $store_values = Mage::getModel('core/config_data')->getCollection()
+                ->addFieldToFilter('path', $setting['old_path'])
+                ->addFieldToFilter('scope_id', $store->getId())
+                ->getData();
+            if (count($store_values) > 0 && $store_values[0]['value'] != $global_value) {
+                Mage::getModel('core/config')->saveConfig(
+                    $setting['new_path'],
+                    $store_values[0]['value'],
+                    'stores',
+                    $store->getId()
+                );
+                Mage::getModel('core/config')->deleteConfig(
+                    $setting['old_path'],
+                    'stores',
+                    $store->getId()
+                );
+            }
+        }
+    }
 }
 // Delete settings
 foreach ($delete_settings as $setting_path) {
     foreach ($store_collection as $store) {
-        if (!is_null(Mage::getStoreConfig($setting_path, $store))) {
-            Mage::getModel('core/config')->deleteConfig($setting_path, $store->getCode(), $store->getId());
-        }
+        Mage::getModel('core/config')->deleteConfig($setting_path, 'store', $store->getId());
     }
-    if (!is_null(Mage::getStoreConfig($setting_path))) {
-        Mage::getModel('core/config')->deleteConfig($setting_path);
-    }
+    Mage::getModel('core/config')->deleteConfig($setting_path);
 }
 
 // *********************************************************

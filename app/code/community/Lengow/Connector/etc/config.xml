@@ -67,12 +67,12 @@
             </core>
         </models>
         <resources>
-            <lengow_setup>
+            <lengow_connector_setup>
                 <setup>
                     <module>Lengow_Connector</module>
                     <class>Mage_Sales_Model_Mysql4_Setup</class>
                 </setup>
-            </lengow_setup>
+            </lengow_connector_setup>
         </resources>
         <events>
             <model_save_after>

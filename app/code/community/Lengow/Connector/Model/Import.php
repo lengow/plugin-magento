@@ -327,7 +327,10 @@ class Lengow_Connector_Model_Import extends Varien_Object
                 $this->_import_helper->sendMailAlert($this->_log_output);
             }
             if (!$this->_preprod_mode && !$this->_import_one_order && $this->_type_import == 'manual') {
-                Mage::getModel('lengow/import_action')->checkFinishAction();
+                $action = Mage::getModel('lengow/import_action');
+                $action->checkFinishAction();
+                $action->checkActionNotSent();
+                unset($action);
             }
         }
         // Clear session
@@ -604,6 +607,8 @@ class Lengow_Connector_Model_Import extends Varien_Object
                     $this->_helper->log('Import', $synchro_message, $this->_log_output, $marketplace_sku);
                     unset($magento_order);
                 }
+                // Clean current order in session
+                Mage::getSingleton('core/session')->setCurrentOrderLengow(false);
                 // if re-import order -> return order informations
                 if ($this->_import_one_order) {
                     return $order;
@@ -618,7 +623,6 @@ class Lengow_Connector_Model_Import extends Varien_Object
                     }
                 }
                 // clean process
-                Mage::getSingleton('core/session')->setCurrentOrderLengow(false);
                 unset($import_order);
                 unset($order);
                 // if limit is set

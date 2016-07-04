@@ -179,7 +179,12 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
         $store_collection = Mage::getResourceModel('core/store_collection')->addFieldToFilter('is_active', 1);
         $i = 0;
         $all_currencies = array();
+        $account_ids = array();
         foreach ($store_collection as $store) {
+            $account_id = $config->get('account_id', $store->getId());
+            if (is_null($account_id) || in_array($account_id, $account_ids) || empty($account_id)) {
+                continue;
+            }
             $connector = Mage::getModel('lengow/connector');
             $result = $connector->queryApi(
                 'get',
@@ -192,6 +197,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
                 $return['average_order'] += $result->average_order;
                 $return['currency'] = $result->currency->iso_a3;
             }
+            $account_ids[] = $account_id;
             $i++;
             // Get store currencies
             $store_currencies = Mage::app()->getStore($store->getId())->getAvailableCurrencyCodes();

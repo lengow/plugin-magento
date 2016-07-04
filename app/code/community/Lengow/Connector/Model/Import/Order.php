@@ -184,8 +184,8 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
         // check if log already exists for the given order id
         $results = $order_error->getCollection()
             ->join(
-                array('order'=> 'lengow/import_order'),
-                'order.id=main_table.order_lengow_id',
+                'lengow/import_order',
+                '`lengow/import_order`.id=main_table.order_lengow_id',
                 array('marketplace_sku' => 'marketplace_sku', 'delivery_address_id' => 'delivery_address_id')
             )
             ->addFieldToFilter('marketplace_sku', $marketplace_sku)
@@ -283,6 +283,61 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
             ->getData();
         if (count($results) > 0) {
             return (int)$results[0]['id'];
+        }
+        return false;
+    }
+
+
+    /**
+     * Get unset order by store
+     *
+     * @param integer $store_id Magento store id
+     *
+     * @return mixed
+     */
+    public function getUnsentOrderByStore($store_id)
+    {
+        // Compatibility for version 1.5
+        if (Mage::getVersion() < '1.6.0.0') {
+            $results = $this->getCollection()
+                ->join(
+                    'sales/order',
+                    'entity_id=main_table.order_id',
+                    array('store_id' => 'store_id', 'follow_by_lengow' => 'follow_by_lengow', 'state' => 'state')
+                )
+                ->addFieldToFilter('`sales/order`.store_id', $store_id)
+                ->addFieldToFilter('follow_by_lengow', array('eq' => 1))
+                ->addFieldToFilter('state', array(array('in' => array('cancel', 'complete'))))
+                ->addFieldToFilter('order_process_state', array('eq' => 1))
+                ->addFieldToFilter('is_in_error', array('eq' => 0))
+                ->getData();
+        } else {
+            $results = $this->getCollection()
+                ->join(
+                    array('magento_order' => 'sales/order'),
+                    'magento_order.entity_id=main_table.order_id',
+                    array('store_id' => 'store_id', 'follow_by_lengow' => 'follow_by_lengow', 'state' => 'state')
+                )
+                ->addFieldToFilter('magento_order.store_id', $store_id)
+                ->addFieldToFilter('magento_order.follow_by_lengow', array('eq' => 1))
+                ->addFieldToFilter('magento_order.state', array(array('in' => array('cancel', 'complete'))))
+                ->addFieldToFilter('main_table.order_process_state', array('eq' => 1))
+                ->addFieldToFilter('main_table.is_in_error', array('eq' => 0))
+                ->getData();
+        }
+        if (count($results) > 0) {
+            $unsent_orders = array();
+            foreach ($results as $result) {
+                if (!Mage::getModel('lengow/import_action')->getActiveActionByOrderId($result['order_id'])) {
+                    $unsent_orders[] = array(
+                        'order_id' => $result['order_id'],
+                        'action'   => $result['state'] == 'cancel' ? 'cancel' : 'ship'
+                    );
+                }
+            }
+            if (count($unsent_orders) > 0) {
+                return $unsent_orders;
+            }
         }
         return false;
     }
@@ -789,6 +844,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
             ));
         }
         $helper->log('API-OrderAction', $message, false, $order->getData('order_id_lengow'));
+        return $success;
     }
 
     /**
@@ -907,7 +963,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
      */
     public function migrateOldOrder($is_processing = true)
     {
-        $total = $this->countNotMigrateOrder(true);
+        $total = $this->countNotMigrateOrder($is_processing);
         if ($total > 0) {
             $per_page = 500;
             $nb_page = ceil($total / $per_page);

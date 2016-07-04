@@ -176,15 +176,28 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
      */
     public function getActiveActionByStore($store_id)
     {
-        $results = $this->getCollection()
-            ->join(
-                array('order' => 'sales/order'),
-                'order.entity_id=main_table.order_id',
-                array('store_id' => 'store_id')
-            )
-            ->addFieldToFilter('order.store_id', $store_id)
-            ->addFieldToFilter('main_table.state', self::STATE_NEW)
-            ->getData();
+        // Compatibility for version 1.5
+        if (Mage::getVersion() < '1.6.0.0') {
+            $results = $this->getCollection()
+                ->join(
+                    'sales/order',
+                    'entity_id=main_table.order_id',
+                    array('store_id' => 'store_id')
+                )
+                ->addFieldToFilter('store_id', $store_id)
+                ->addFieldToFilter('main_table.state', self::STATE_NEW)
+                ->getData();
+        } else {
+            $results = $this->getCollection()
+                ->join(
+                    array('magento_order' => 'sales/order'),
+                    'magento_order.entity_id=main_table.order_id',
+                    array('store_id' => 'store_id')
+                )
+                ->addFieldToFilter('magento_order.store_id', $store_id)
+                ->addFieldToFilter('main_table.state', self::STATE_NEW)
+                ->getData();
+        }
         if (count($results) > 0) {
             return $results;
         }
@@ -316,7 +329,6 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
             }
             return true;
         }
-
         return false;
     }
 
@@ -438,6 +450,48 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
         }
         // Clean actions after 3 days
         $this->finishAllOldActions();
+        return true;
+    }
+
+    /**
+     * Check if actions are not sent
+     *
+     * @return bool
+     */
+    public function checkActionNotSent()
+    {
+        $config = Mage::helper('lengow_connector/config');
+        $helper = Mage::helper('lengow_connector/data');
+        if ((bool)$config->get('preprod_mode_enable')) {
+            return false;
+        }
+        // get all store to check active actions
+        $store_collection = Mage::getResourceModel('core/store_collection')->addFieldToFilter('is_active', 1);
+        foreach ($store_collection as $store) {
+            if ($config->get('store_enable', (int)$store->getId())) {
+                $helper->log(
+                    'API-OrderAction',
+                    $helper->setLogMessage('log.order_action.start_not_sent_for_store', array(
+                        'store_name' => $store->getName(),
+                        'store_id'   => $store->getId()
+                    ))
+                );
+                // Get unsent orders by store
+                $unsent_orders = Mage::getModel('lengow/import_order')->getUnsentOrderByStore((int)$store->getId());
+                // If no unsent orders, do nothing
+                if (!$unsent_orders) {
+                    continue;
+                }
+                foreach ($unsent_orders as $unsent_order) {
+                    $shipment = null;
+                    $order = Mage::getModel('sales/order')->load($unsent_order['order_id']);
+                    if ($unsent_order['action'] == 'ship') {
+                        $shipment = $order->getShipmentsCollection()->getFirstItem();
+                    }
+                    Mage::getModel('lengow/import_order')->callAction($unsent_order['action'], $order, $shipment);
+                }
+            }
+        }
         return true;
     }
 }
