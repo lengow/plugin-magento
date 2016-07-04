@@ -298,19 +298,33 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
     public function getUnsentOrderByStore($store_id)
     {
         // Compatibility for version 1.5
-        $alias = Mage::getVersion() < '1.6.0.0' ? '`sales/order`' : 'sales/order';
-        $results = $this->getCollection()
-            ->join(
-                'sales/order',
-                'entity_id=main_table.order_id',
-                array('store_id' => 'store_id', 'follow_by_lengow' => 'follow_by_lengow', 'state' => 'state')
-            )
-            ->addFieldToFilter($alias.'.store_id', $store_id)
-            ->addFieldToFilter('follow_by_lengow', array('eq' => 1))
-            ->addFieldToFilter('state', array(array('in' => array('cancel', 'complete'))))
-            ->addFieldToFilter('order_process_state', array('eq' => 1))
-            ->addFieldToFilter('is_in_error', array('eq' => 0))
-            ->getData();
+        if (Mage::getVersion() < '1.6.0.0') {
+            $results = $this->getCollection()
+                ->join(
+                    'sales/order',
+                    'entity_id=main_table.order_id',
+                    array('store_id' => 'store_id', 'follow_by_lengow' => 'follow_by_lengow', 'state' => 'state')
+                )
+                ->addFieldToFilter('`sales/order`.store_id', $store_id)
+                ->addFieldToFilter('follow_by_lengow', array('eq' => 1))
+                ->addFieldToFilter('state', array(array('in' => array('cancel', 'complete'))))
+                ->addFieldToFilter('order_process_state', array('eq' => 1))
+                ->addFieldToFilter('is_in_error', array('eq' => 0))
+                ->getData();
+        } else {
+            $results = $this->getCollection()
+                ->join(
+                    array('magento_order' => 'sales/order'),
+                    'magento_order.entity_id=main_table.order_id',
+                    array('store_id' => 'store_id', 'follow_by_lengow' => 'follow_by_lengow', 'state' => 'state')
+                )
+                ->addFieldToFilter('magento_order.store_id', $store_id)
+                ->addFieldToFilter('magento_order.follow_by_lengow', array('eq' => 1))
+                ->addFieldToFilter('magento_order.state', array(array('in' => array('cancel', 'complete'))))
+                ->addFieldToFilter('main_table.order_process_state', array('eq' => 1))
+                ->addFieldToFilter('main_table.is_in_error', array('eq' => 0))
+                ->getData();
+        }
         if (count($results) > 0) {
             $unsent_orders = array();
             foreach ($results as $result) {

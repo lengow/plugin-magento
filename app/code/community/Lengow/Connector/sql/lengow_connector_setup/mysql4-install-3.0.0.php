@@ -338,7 +338,11 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
         ), 'Extra');
     $installer->getConnection()->createTable($table);
     // Compatibility with version 1.5
-    $installer->getConnection()->modifyColumn($tableName, 'id', 'int(11) NOT NULL auto_increment');
+    if (Mage::getVersion() < '1.6.0.0') {
+        $installer->getConnection()->modifyColumn($tableName, 'id', 'int(11) NOT NULL auto_increment');
+        $installer->getConnection()->modifyColumn($tableName, 'total_paid', 'DECIMAL(17,2) UNSIGNED NULL');
+        $installer->getConnection()->modifyColumn($tableName, 'commission', 'DECIMAL(17,2) UNSIGNED NULL');
+    }
 }
 
 // create table lengow_order_line
@@ -362,7 +366,9 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
         ), 'Order Line Id');
     $installer->getConnection()->createTable($table);
     // Compatibility with version 1.5
-    $installer->getConnection()->modifyColumn($tableName, 'id', 'int(11) NOT NULL auto_increment');
+    if (Mage::getVersion() < '1.6.0.0') {
+        $installer->getConnection()->modifyColumn($tableName, 'id', 'int(11) NOT NULL auto_increment');
+    }
 }
 
 // create table lengow_order_error
@@ -405,7 +411,9 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
         ), 'Updated At');
     $installer->getConnection()->createTable($table);
     // Compatibility with version 1.5
-    $installer->getConnection()->modifyColumn($tableName, 'id', 'int(11) NOT NULL auto_increment');
+    if (Mage::getVersion() < '1.6.0.0') {
+        $installer->getConnection()->modifyColumn($tableName, 'id', 'int(11) NOT NULL auto_increment');
+    }
 }
 
 // create table lengow_action
@@ -457,7 +465,9 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
         ), 'Updated At');
     $installer->getConnection()->createTable($table);
     // Compatibility with version 1.5
-    $installer->getConnection()->modifyColumn($tableName, 'id', 'int(11) NOT NULL auto_increment');
+    if (Mage::getVersion() < '1.6.0.0') {
+        $installer->getConnection()->modifyColumn($tableName, 'id', 'int(11) NOT NULL auto_increment');
+    }
 }
 
 // create table lengow_log
@@ -479,7 +489,9 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
         ), 'Message');
     $installer->getConnection()->createTable($table);
     // Compatibility with version 1.5
-    $installer->getConnection()->modifyColumn($tableName, 'id', 'int(11) NOT NULL auto_increment');
+    if (Mage::getVersion() < '1.6.0.0') {
+        $installer->getConnection()->modifyColumn($tableName, 'id', 'int(11) NOT NULL auto_increment');
+    }
 }
 
 // *********************************************************
@@ -531,112 +543,112 @@ $new_settings = array(
     array(
         'old_path' => 'lensync/orders/active_store',
         'new_path' => 'lengow_global_options/store_credential/global_store_enable',
-        'store' => true
+        'store'    => true
     ),
     array(
         'old_path' => 'lentracker/general/account_id',
         'new_path' => 'lengow_global_options/store_credential/global_account_id',
-        'store' => true
+        'store'    => true
     ),
     array(
         'old_path' => 'lentracker/general/access_token',
         'new_path' => 'lengow_global_options/store_credential/global_access_token',
-        'store' => true
+        'store'    => true
     ),
     array(
         'old_path' => 'lentracker/general/secret',
         'new_path' => 'lengow_global_options/store_credential/global_secret_token',
-        'store' => true
+        'store'    => true
     ),
     array(
         'old_path' => 'lentracker/tag/identifiant',
         'new_path' => 'lengow_global_options/advanced/global_tracking_id',
-        'store' => false
+        'store'    => false
     ),
     array(
         'old_path' => 'lenexport/performances/valid_ip',
         'new_path' => 'lengow_global_options/advanced/global_authorized_ip',
-        'store' => false
+        'store'    => false
     ),
     array(
-        'old_path' => 'export_only_selected',
+        'old_path' => 'lenexport/global/export_only_selected',
         'new_path' => 'lengow_export_options/simple/export_selection_enable',
-        'store' => true
+        'store'    => true
     ),
     array(
         'old_path' => 'lenexport/global/export_soldout',
         'new_path' => 'lengow_export_options/simple/export_out_stock',
-        'store' => true
+        'store'    => true
     ),
     array(
         'old_path' => 'lenexport/global/producttype',
         'new_path' => 'lengow_export_options/simple/export_product_type',
-        'store' => true
+        'store'    => true
     ),
     array(
         'old_path' => 'lenexport/global/productstatus',
         'new_path' => 'lengow_export_options/simple/export_product_status',
-        'store' => true
+        'store'    => true
     ),
     array(
         'old_path' => 'lenexport/data/parentsimages',
         'new_path' => 'lengow_export_options/advanced/export_parent_image',
-        'store' => true
+        'store'    => true
     ),
     array(
         'old_path' => 'lenexport/data/shipping_price_based_on',
         'new_path' => 'lengow_export_options/advanced/export_default_shipping_country',
-        'store' => true
+        'store'    => true
     ),
     array(
         'old_path' => 'lenexport/data/default_shipping_method',
         'new_path' => 'lengow_export_options/advanced/export_default_shipping_method',
-        'store' => true
+        'store'    => true
     ),
     array(
         'old_path' => 'lenexport/data/default_shipping_price',
         'new_path' => 'lengow_export_options/advanced/export_default_shipping_price',
-        'store' => true
+        'store'    => true
     ),
     array(
         'old_path' => 'lenexport/attributelist/attributes',
         'new_path' => 'lengow_export_options/advanced/export_attribute',
-        'store' => true
+        'store'    => true
     ),
     array(
         'old_path' => 'lenexport/performances/usesavefile',
         'new_path' => 'lengow_export_options/advanced/export_file_enable',
-        'store' => false
+        'store'    => false
     ),
     array(
         'old_path' => 'lenexport/performances/active_cron',
         'new_path' => 'lengow_export_options/advanced/export_cron_enable',
-        'store' => false
+        'store'    => false
     ),
     array(
         'old_path' => 'lensync/orders/period',
         'new_path' => 'lengow_import_options/simple/import_days',
-        'store' => true
+        'store'    => true
     ),
     array(
         'old_path' => 'lensync/orders/customer_group',
         'new_path' => 'lengow_import_options/simple/import_customer_group',
-        'store' => true
+        'store'    => true
     ),
     array(
         'old_path' => 'lensync/orders/default_shipping',
         'new_path' => 'lengow_import_options/simple/import_default_shipping_method',
-        'store' => true
+        'store'    => true
     ),
     array(
         'old_path' => 'lensync/performances/debug',
         'new_path' => 'lengow_import_options/advanced/import_preprod_mode_enable',
-        'store' => false
+        'store'    => false
     ),
     array(
         'old_path' => 'lensync/performances/active_cron',
         'new_path' => 'lengow_import_options/advanced/import_cron_enable',
-        'store' => false
+        'store'    => false
     )
 );
 // All the settings to delete
@@ -647,6 +659,7 @@ $delete_settings = array(
     'lentracker/general/api_key',
     'lentracker/tag/type',
     'lentracker/hidden/last_synchro',
+    'lenexport/global/active_store',
     'lenexport/global/autoexport_newproduct',
     'lenexport/data/format',
     'lenexport/data/count_images',
@@ -669,40 +682,40 @@ $delete_settings = array(
 $store_collection = Mage::getResourceModel('core/store_collection')->addFieldToFilter('is_active', 1);
 // Update settings
 foreach ($new_settings as $setting) {
-    if ($setting['store']) {
-        foreach ($store_collection as $store) {
-            $store_value = Mage::getStoreConfig($setting['old_path'], $store);
-            if (!is_null($store_value)) {
-                Mage::getModel('core/config')->saveConfig(
-                    $setting['new_path'],
-                    $store_value,
-                    $store->getCode(),
-                    $store->getId()
-                );
-                Mage::getModel('core/config')->deleteConfig(
-                    $setting['old_path'],
-                    $store->getCode(),
-                    $store->getId()
-                );
-            }
-        }
-    }
     $global_value = Mage::getStoreConfig($setting['old_path']);
     if (!is_null($global_value)) {
         Mage::getModel('core/config')->saveConfig($setting['new_path'], $global_value);
         Mage::getModel('core/config')->deleteConfig($setting['old_path']);
     }
+    if ($setting['store']) {
+        foreach ($store_collection as $store) {
+            // Get value by collection -> getStoreConfig() by store don't work (already null)
+            $store_values = Mage::getModel('core/config_data')->getCollection()
+                ->addFieldToFilter('path', $setting['old_path'])
+                ->addFieldToFilter('scope_id', $store->getId())
+                ->getData();
+            if (count($store_values) > 0 && $store_values[0]['value'] != $global_value) {
+                Mage::getModel('core/config')->saveConfig(
+                    $setting['new_path'],
+                    $store_values[0]['value'],
+                    'stores',
+                    $store->getId()
+                );
+                Mage::getModel('core/config')->deleteConfig(
+                    $setting['old_path'],
+                    'stores',
+                    $store->getId()
+                );
+            }
+        }
+    }
 }
 // Delete settings
 foreach ($delete_settings as $setting_path) {
     foreach ($store_collection as $store) {
-        if (!is_null(Mage::getStoreConfig($setting_path, $store))) {
-            Mage::getModel('core/config')->deleteConfig($setting_path, $store->getCode(), $store->getId());
-        }
+        Mage::getModel('core/config')->deleteConfig($setting_path, 'store', $store->getId());
     }
-    if (!is_null(Mage::getStoreConfig($setting_path))) {
-        Mage::getModel('core/config')->deleteConfig($setting_path);
-    }
+    Mage::getModel('core/config')->deleteConfig($setting_path);
 }
 
 // *********************************************************

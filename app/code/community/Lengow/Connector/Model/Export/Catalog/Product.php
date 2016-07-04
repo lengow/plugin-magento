@@ -204,12 +204,14 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
             }
         }
         if (!$config) {
+            $price_excluding_tax = $price;
             $price_including_tax = $price + $calculator->calcTaxAmount($price, $taxPercent, false);
             $final_price_excluding_tax = $final_price;
             $final_price_including_tax = $final_price + $calculator->calcTaxAmount($final_price, $taxPercent, false);
         } else {
+            $price_excluding_tax = Mage::helper('tax')->getPrice($product_instance, $price);
             $price_including_tax = $price;
-            $final_price_excluding_tax = Mage::helper('tax')->getPrice($product_instance, $price);
+            $final_price_excluding_tax = Mage::helper('tax')->getPrice($product_instance, $final_price);
             $final_price_including_tax = $final_price;
         }
         // get currency for convert
@@ -225,7 +227,8 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
             $discount_amount = $price_including_tax - $final_price_including_tax;
             $datas['price_excl_tax'] = round($final_price_excluding_tax, 2);
             $datas['price_incl_tax'] = round($final_price_including_tax, 2);
-            $datas['price_before_discount'] = round($price_including_tax, 2);
+            $datas['price_before_discount_excl_tax'] = round($price_excluding_tax, 2);
+            $datas['price_before_discount_incl_tax'] = round($price_including_tax, 2);
         } else {
             $discount_amount = Mage::helper('directory')->currencyConvert(
                 $price_including_tax,
@@ -246,7 +249,12 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
                 $this->getOriginalCurrency(),
                 $this->getCurrentCurrencyCode()
             ), 2);
-            $datas['price_before_discount'] = round(Mage::helper('directory')->currencyConvert(
+            $datas['price_before_discount_excl_tax'] = round(Mage::helper('directory')->currencyConvert(
+                $price_excluding_tax,
+                $this->getOriginalCurrency(),
+                $this->getCurrentCurrencyCode()
+            ), 2);
+            $datas['price_before_discount_incl_tax'] = round(Mage::helper('directory')->currencyConvert(
                 $price_including_tax,
                 $this->getOriginalCurrency(),
                 $this->getCurrentCurrencyCode()

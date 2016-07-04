@@ -176,15 +176,28 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
      */
     public function getActiveActionByStore($store_id)
     {
-        $results = $this->getCollection()
-            ->join(
-                'sales/order',
-                'entity_id=main_table.order_id',
-                array('store_id' => 'store_id')
-            )
-            ->addFieldToFilter('store_id', $store_id)
-            ->addFieldToFilter('main_table.state', self::STATE_NEW)
-            ->getData();
+        // Compatibility for version 1.5
+        if (Mage::getVersion() < '1.6.0.0') {
+            $results = $this->getCollection()
+                ->join(
+                    'sales/order',
+                    'entity_id=main_table.order_id',
+                    array('store_id' => 'store_id')
+                )
+                ->addFieldToFilter('store_id', $store_id)
+                ->addFieldToFilter('main_table.state', self::STATE_NEW)
+                ->getData();
+        } else {
+            $results = $this->getCollection()
+                ->join(
+                    array('magento_order' => 'sales/order'),
+                    'magento_order.entity_id=main_table.order_id',
+                    array('store_id' => 'store_id')
+                )
+                ->addFieldToFilter('magento_order.store_id', $store_id)
+                ->addFieldToFilter('main_table.state', self::STATE_NEW)
+                ->getData();
+        }
         if (count($results) > 0) {
             return $results;
         }

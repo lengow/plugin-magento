@@ -50,8 +50,10 @@ class Lengow_Connector_Model_Config extends Mage_Core_Model_Config
                 $old_value = Mage::getStoreConfig($path, $scope_id);
                 if ($old_value!= $value && !in_array($path_explode[2], $this->_exclude_options)) {
                     if ($path_explode[2] == 'global_access_token' || $path_explode[2] == 'global_secret_token') {
-                        $value = preg_replace("/[a-zA-Z0-9]/", '*', $value);
+                        $new_value = preg_replace("/[a-zA-Z0-9]/", '*', $value);
                         $old_value = preg_replace("/[a-zA-Z0-9]/", '*', $old_value);
+                    } else {
+                        $new_value = $value;
                     }
                     if ($scope == 'stores') {
                         $message = Mage::helper('lengow_connector/translation')
@@ -60,7 +62,7 @@ class Lengow_Connector_Model_Config extends Mage_Core_Model_Config
                                 array(
                                     'key'       => $path,
                                     'old_value' => $old_value,
-                                    'value'     => $value,
+                                    'value'     => $new_value,
                                     'store_id'  => $scope_id
                                 )
                             );
@@ -68,7 +70,7 @@ class Lengow_Connector_Model_Config extends Mage_Core_Model_Config
                         $message = Mage::helper('lengow_connector/translation')->t('log.setting.setting_change', array(
                             'key'       => $path,
                             'old_value' => $old_value,
-                            'value'     => $value,
+                            'value'     => $new_value,
                         ));
                     }
                     Mage::helper('lengow_connector')->log('Config', $message);

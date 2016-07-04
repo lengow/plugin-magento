@@ -855,6 +855,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
     {
         $additional_data = array(
             'from_lengow'                => true,
+            'follow_by_lengow'           => true,
             'marketplace_lengow'         => (string)$this->_order_data->marketplace,
             'order_id_lengow'            => (string)$this->_marketplace_sku,
             'delivery_address_id_lengow' => (int)$this->_delivery_address_id,

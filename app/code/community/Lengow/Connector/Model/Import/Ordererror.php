@@ -191,17 +191,32 @@ class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
      */
     public function getImportErrors()
     {
-        $results = $this->getCollection()
-            ->join(
-                'lengow/import_order',
-                '`lengow/import_order`.id=main_table.order_lengow_id',
-                array('marketplace_sku' => 'marketplace_sku')
-            )
-            ->addFieldToFilter('mail', array('eq' => 0))
-            ->addFieldToFilter('is_finished', array('eq' => 0))
-            ->addFieldToSelect('message')
-            ->addFieldToSelect('id')
-            ->getData();
+        // Compatibility for version 1.5
+        if (Mage::getVersion() < '1.6.0.0') {
+            $results = $this->getCollection()
+                ->join(
+                    'lengow/import_order',
+                    '`lengow/import_order`.id=main_table.order_lengow_id',
+                    array('marketplace_sku' => 'marketplace_sku')
+                )
+                ->addFieldToFilter('mail', array('eq' => 0))
+                ->addFieldToFilter('is_finished', array('eq' => 0))
+                ->addFieldToSelect('message')
+                ->addFieldToSelect('id')
+                ->getData();
+        } else {
+             $results = $this->getCollection()
+                ->join(
+                    array('lengow_order' => 'lengow/import_order'),
+                    'lengow_order.id=main_table.order_lengow_id',
+                    array('marketplace_sku' => 'marketplace_sku')
+                )
+                ->addFieldToFilter('mail', array('eq' => 0))
+                ->addFieldToFilter('is_finished', array('eq' => 0))
+                ->addFieldToSelect('message')
+                ->addFieldToSelect('id')
+                ->getData();
+        }
         if (count($results) == 0) {
             return false;
         }
