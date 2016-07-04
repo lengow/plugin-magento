@@ -14,22 +14,24 @@ $last_export = $helper->getDateInCorrectFormat($config->get('last_export', $stor
 <div class="lgw-box">
     
     <div><?php echo $this->getChildHtml('store_switcher'); ?></div>
+    <div id="lengow_check_shop">
+        <a class="lengow_check_shop lengow_tooltip"
+           data-id_shop="<?php echo $store_id ?>"
+           data-href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_product/'); ?>?isAjax=true">
+        </a>
+    </div>
+    <a href="<?php echo $sync_data['shops'][$store_id]['feed_url'] ?>stream/1/update_export_date/0"
+           target="_blank"><i class="fa fa-download lengow_tooltip lengow_export_feed lengow_link_tooltip"><span> <?php echo $helper->__('product.screen.button_download') ?></span></i></a>
+    <div class="text-center">
         <h3 id="lengow_product_store_name" class="lengow_product_store_name lengow_tooltip"><?php echo $sync_data['shops'][$store_id]['name'] ?>
-            <span>
-                <?php echo $sync_data['shops'][$store_id]['name'] ?> (<?php echo $store_id ?>)
-                <?php echo $sync_data['shops'][$store_id]['domain'] ?>
-            </span>
+        <span>
+            <?php echo $sync_data['shops'][$store_id]['name'] ?> (<?php echo $store_id ?>)
+            <?php echo $sync_data['shops'][$store_id]['domain'] ?>
+        </span>
         </h3>
-    <br>
 
-        <div id="lengow_check_shop">
-            <a class="lengow_check_shop lengow_tooltip"
-               data-id_shop="<?php echo $store_id ?>"
-               data-href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_product/'); ?>?isAjax=true">
-            </a>
-        </div>
-        <a href="<?php echo $sync_data['shops'][$store_id]['feed_url'] ?>stream/1/update_export_date/0"
-           target="_blank"><i class="fa fa-download lengow_tooltip"><span> <?php echo $helper->__('product.screen.button_download') ?></span></i></a><br>
+    <br>        
+        <br>
         <p>
             <?php
             if ($config->get('last_export', $store_id) != null) {
@@ -41,15 +43,19 @@ $last_export = $helper->getDateInCorrectFormat($config->get('last_export', $stor
             ?>
         </p>
 
-        <div id="parent_exported_products">
-            <span id="exported_products"><?php echo $sync_data['shops'][$store_id]['nb_product_exported'] ?></span>
+        <div class="products-exported">
+            <div id="parent_exported_products">
+                <span id="exported_products"><?php echo $sync_data['shops'][$store_id]['nb_product_exported'] ?></span>
+            </div>
+            <span> <?php echo $helper->__('product.screen.nb_exported') ?></span>
         </div>
-        <span> <?php echo $helper->__('product.screen.nb_exported') ?></span><br>
+        <br>
         <div id="parent_total_products">
             <span id="total_products"><?php echo $sync_data['shops'][$store_id]['nb_product_total'] ?></span>
         </div>
         <span> <?php echo $helper->__('product.screen.nb_available') ?></span><br>
         <br>
+        <hr>
         <div class="lgw-switch <?php if ($config->get('out_stock', $store_id) == '1'): ?> checked <?php endif; ?>">
             <label>
                 <div><span></span>
@@ -82,4 +88,5 @@ $last_export = $helper->getDateInCorrectFormat($config->get('last_export', $stor
         <i class="fa fa-info-circle lengow_tooltip"><span class ="lengow_specific_product_support"><?php echo $helper->__('product.screen.include_specific_product_support') ?></span></i>
         <br/>
         <br/>
+    </div>
 </div> 
