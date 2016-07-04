@@ -30,17 +30,6 @@ $last_export = $helper->getDateInCorrectFormat($config->get('last_export', $stor
         </div>
         <a href="<?php echo $sync_data['shops'][$store_id]['feed_url'] ?>stream/1/update_export_date/0"
            target="_blank"><i class="fa fa-download lengow_tooltip"><span> <?php echo $helper->__('product.screen.button_download') ?></span></i></a><br>
-        <p>
-            <?php
-            if ($config->get('last_export', $store_id) != null) {
-                echo $helper->__('product.screen.store_last_indexation').' ';
-                echo $last_export;
-            } else {
-                echo $helper->__('product.screen.store_not_index');
-            }
-            ?>
-        </p>
-
         <div id="parent_exported_products">
             <span id="exported_products"><?php echo $sync_data['shops'][$store_id]['nb_product_exported'] ?></span>
         </div>
