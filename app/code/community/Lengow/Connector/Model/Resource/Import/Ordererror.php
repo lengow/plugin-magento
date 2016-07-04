@@ -8,7 +8,7 @@
  * @copyright   2016 Lengow SAS
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Lengow_Connector_Model_Resource_Import_Ordererror extends Mage_Core_Model_Resource_Db_Abstract
+class Lengow_Connector_Model_Resource_Import_Ordererror extends Mage_Core_Model_Mysql4_Abstract
 {
     /**
      * Construct

@@ -193,26 +193,28 @@ foreach ($attributeSetCollection as $id => $attributeSet) {
 //                  Create Lengow tables
 // *********************************************************
 
+// Compatibility for version 1.5
+$type_text = Mage::getVersion() < '1.6.0.0' ? Varien_Db_Ddl_Table::TYPE_LONGVARCHAR : Varien_Db_Ddl_Table::TYPE_TEXT;
+
 // create table lengow_order
 $tableName = $installer->getTable('lengow_order');
-if ($installer->getConnection()->isTableExists($tableName) != true) {
+if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
     $table = $installer->getConnection()
         ->newTable($installer->getTable('lengow_order'))
         ->addColumn('id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
             'identity' => true,
             'unsigned' => true,
             'nullable' => false,
-            'primary' => true
+            'primary'  => true,
         ), 'Id')
         ->addColumn('order_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
             'nullable' => true,
             'unsigned' => true,
-            'default' => null
+            'default'  => null
         ), 'Order Id')
-        ->addColumn('order_sku', Varien_Db_Ddl_Table::TYPE_TEXT, null, array(
+        ->addColumn('order_sku', Varien_Db_Ddl_Table::TYPE_VARCHAR, 40, array(
             'nullable' => true,
-            'default' => null,
-            'length' => 40
+            'default'  => null,
         ), 'Order sku')
         ->addColumn('store_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
             'nullable' => false,
@@ -221,162 +223,166 @@ if ($installer->getConnection()->isTableExists($tableName) != true) {
         ->addColumn('feed_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
             'nullable' => true,
             'unsigned' => true,
-            'default' => null
+            'default'  => null
         ), 'Feed Id')
         ->addColumn('delivery_address_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
             'nullable' => true,
             'unsigned' => true,
-            'default' => null
+            'default'  => null
         ), 'Delivery Address Id')
-        ->addColumn('delivery_country_iso', Varien_Db_Ddl_Table::TYPE_TEXT, 3, array(
+        ->addColumn('delivery_country_iso', Varien_Db_Ddl_Table::TYPE_VARCHAR, 3, array(
             'nullable' => true,
-            'default' => null,
-            'length' => 3
+            'default'  => null,
+            'length'   => 3
         ), 'Delivery Country Iso')
-        ->addColumn('marketplace_sku', Varien_Db_Ddl_Table::TYPE_TEXT, 100, array(
+        ->addColumn('marketplace_sku', Varien_Db_Ddl_Table::TYPE_VARCHAR, 100, array(
             'nullable' => false,
-            'length' => 100
+            'length'   => 100
         ), 'Marketplace Sku')
-        ->addColumn('marketplace_name', Varien_Db_Ddl_Table::TYPE_TEXT, 100, array(
+        ->addColumn('marketplace_name', Varien_Db_Ddl_Table::TYPE_VARCHAR, 100, array(
             'nullable' => false,
-            'length' => 100
+            'length'   => 100
         ), 'Marketplace Name')
-        ->addColumn('marketplace_label', Varien_Db_Ddl_Table::TYPE_TEXT, 100, array(
+        ->addColumn('marketplace_label', Varien_Db_Ddl_Table::TYPE_VARCHAR, 100, array(
             'nullable' => true,
-            'default' => null,
-            'length' => 100
+            'default'  => null,
+            'length'   => 100
         ), 'Marketplace Label')
-        ->addColumn('order_lengow_state', Varien_Db_Ddl_Table::TYPE_TEXT, 100, array(
+        ->addColumn('order_lengow_state', Varien_Db_Ddl_Table::TYPE_VARCHAR, 100, array(
             'nullable' => false,
-            'length' => 100
+            'length'   => 100
         ), 'Order Lengow State')
         ->addColumn('order_process_state', Varien_Db_Ddl_Table::TYPE_SMALLINT, null, array(
             'nullable' => false,
             'unsigned' => true
         ), 'Order Process State')
-        ->addColumn('order_date', Varien_Db_Ddl_Table::TYPE_DATETIME, null, array(
+        ->addColumn('order_date', Varien_Db_Ddl_Table::TYPE_TIMESTAMP, null, array(
             'nullable' => false
         ), 'Order Date')
         ->addColumn('order_item', Varien_Db_Ddl_Table::TYPE_SMALLINT, null, array(
             'nullable' => true,
             'unsigned' => true,
-            'default' => null
+            'default'  => null
         ), 'Order Item')
-        ->addColumn('currency', Varien_Db_Ddl_Table::TYPE_TEXT, 3, array(
+        ->addColumn('currency', Varien_Db_Ddl_Table::TYPE_VARCHAR, 3, array(
             'nullable' => true,
-            'default' => null,
-            'length' => 3
+            'default'  => null,
+            'length'   => 3
         ), 'Currency')
         ->addColumn('total_paid', Varien_Db_Ddl_Table::TYPE_DECIMAL, null, array(
-            'nullable' => true,
-            'unsigned' => true,
+            'nullable'  => true,
+            'unsigned'  => true,
             'precision' => 17,
-            'scale' => 2,
-            'default' => null
+            'scale'     => 2,
+            'default'   => null
         ), 'Total Paid')
         ->addColumn('commission', Varien_Db_Ddl_Table::TYPE_DECIMAL, null, array(
-            'nullable' => true,
-            'unsigned' => true,
+            'nullable'  => true,
+            'unsigned'  => true,
             'precision' => 17,
-            'scale' => 2,
-            'default' => null
+            'scale'     => 2,
+            'default'   => null
         ), 'Commission')
-        ->addColumn('customer_name', Varien_Db_Ddl_Table::TYPE_TEXT, 255, array(
+        ->addColumn('customer_name', Varien_Db_Ddl_Table::TYPE_VARCHAR, 255, array(
             'nullable' => true,
-            'length' => 255,
-            'default' => null
+            'length'   => 255,
+            'default'  => null
         ), 'Customer Name')
-        ->addColumn('customer_email', Varien_Db_Ddl_Table::TYPE_TEXT, 255, array(
+        ->addColumn('customer_email', Varien_Db_Ddl_Table::TYPE_VARCHAR, 255, array(
             'nullable' => true,
-            'length' => 255,
-            'default' => null
+            'length'   => 255,
+            'default'  => null
         ), 'Customer Email')
-        ->addColumn('carrier', Varien_Db_Ddl_Table::TYPE_TEXT, 100, array(
+        ->addColumn('carrier', Varien_Db_Ddl_Table::TYPE_VARCHAR, 100, array(
             'nullable' => true,
-            'length' => 100,
-            'default' => null
+            'length'   => 100,
+            'default'  => null
         ), 'Carrier')
-        ->addColumn('carrier_method', Varien_Db_Ddl_Table::TYPE_TEXT, 100, array(
+        ->addColumn('carrier_method', Varien_Db_Ddl_Table::TYPE_VARCHAR, 100, array(
             'nullable' => true,
-            'length' => 100,
-            'default' => null
+            'length'   => 100,
+            'default'  => null
         ), 'Carrier Method')
-        ->addColumn('carrier_tracking', Varien_Db_Ddl_Table::TYPE_TEXT, 100, array(
+        ->addColumn('carrier_tracking', Varien_Db_Ddl_Table::TYPE_VARCHAR, 100, array(
             'nullable' => true,
-            'length' => 100,
-            'default' => null
+            'length'   => 100,
+            'default'  => null
         ), 'Carrier Tracking')
-        ->addColumn('carrier_id_relay', Varien_Db_Ddl_Table::TYPE_TEXT, 100, array(
+        ->addColumn('carrier_id_relay', Varien_Db_Ddl_Table::TYPE_VARCHAR, 100, array(
             'nullable' => true,
-            'length' => 100,
-            'default' => null
+            'length'   => 100,
+            'default'  => null
         ), 'Carrier Id Relay')
         ->addColumn('sent_marketplace', Varien_Db_Ddl_Table::TYPE_BOOLEAN, null, array(
             'nullable' => false,
-            'default' => 0
+            'default'  => 0
         ), 'Sent Marketplace')
         ->addColumn('is_in_error', Varien_Db_Ddl_Table::TYPE_BOOLEAN, null, array(
             'nullable' => false,
-            'default' => 0
+            'default'  => 0
         ), 'Is In Error')
-        ->addColumn('message', Varien_Db_Ddl_Table::TYPE_TEXT, null, array(
+        ->addColumn('message', $type_text, null, array(
             'nullable' => true,
-            'default' => null
+            'default'  => null
         ), 'Message')
-        ->addColumn('created_at', Varien_Db_Ddl_Table::TYPE_DATETIME, null, array(
+        ->addColumn('created_at', Varien_Db_Ddl_Table::TYPE_TIMESTAMP, null, array(
             'nullable' => false,
         ), 'Created At')
-        ->addColumn('updated_at', Varien_Db_Ddl_Table::TYPE_DATETIME, null, array(
+        ->addColumn('updated_at', Varien_Db_Ddl_Table::TYPE_TIMESTAMP, null, array(
             'nullable' => true,
-            'default' => null
+            'default'  => null
         ), 'Updated At')
-        ->addColumn('extra', Varien_Db_Ddl_Table::TYPE_TEXT, null, array(
+        ->addColumn('extra', $type_text, null, array(
             'nullable' => true,
-            'default' => null
+            'default'  => null
         ), 'Extra');
     $installer->getConnection()->createTable($table);
+    // Compatibility with version 1.5
+    $installer->getConnection()->modifyColumn($tableName, 'id', 'int(11) NOT NULL auto_increment');
 }
 
 // create table lengow_order_line
 $tableName = $installer->getTable('lengow_order_line');
-if ($installer->getConnection()->isTableExists($tableName) != true) {
+if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
     $table = $installer->getConnection()
         ->newTable($installer->getTable('lengow_order_line'))
         ->addColumn('id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
             'identity' => true,
             'unsigned' => true,
             'nullable' => false,
-            'primary' => true,
+            'primary'  => true,
         ), 'Id')
         ->addColumn('order_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
             'nullable' => false,
             'unsigned' => true
         ), 'Order Id')
-        ->addColumn('order_line_id', Varien_Db_Ddl_Table::TYPE_TEXT, 100, array(
+        ->addColumn('order_line_id', Varien_Db_Ddl_Table::TYPE_VARCHAR, 100, array(
             'nullable' => false,
-            'length' => 100
+            'length'   => 100
         ), 'Order Line Id');
     $installer->getConnection()->createTable($table);
+    // Compatibility with version 1.5
+    $installer->getConnection()->modifyColumn($tableName, 'id', 'int(11) NOT NULL auto_increment');
 }
 
 // create table lengow_order_error
 $tableName = $installer->getTable('lengow_order_error');
-if ($installer->getConnection()->isTableExists($tableName) != true) {
+if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
     $table = $installer->getConnection()
         ->newTable($installer->getTable('lengow_order_error'))
         ->addColumn('id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
             'identity' => true,
             'unsigned' => true,
             'nullable' => false,
-            'primary' => true,
+            'primary'  => true,
         ), 'Id')
         ->addColumn('order_lengow_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
             'nullable' => false,
             'unsigned' => true
         ), 'Order Lengow Id')
-        ->addColumn('message', Varien_Db_Ddl_Table::TYPE_TEXT, null, array(
+        ->addColumn('message', $type_text, null, array(
             'nullable' => true,
-            'default' => null
+            'default'  => null
         ), 'Message')
         ->addColumn('type', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
             'nullable' => false,
@@ -384,32 +390,34 @@ if ($installer->getConnection()->isTableExists($tableName) != true) {
         ), 'Type')
         ->addColumn('is_finished', Varien_Db_Ddl_Table::TYPE_BOOLEAN, null, array(
             'nullable' => false,
-            'default' => 0
+            'default'  => 0
         ), 'Is Finished')
         ->addColumn('mail', Varien_Db_Ddl_Table::TYPE_BOOLEAN, null, array(
             'nullable' => false,
-            'default' => 0
+            'default'  => 0
         ), 'Mail')
-        ->addColumn('created_at', Varien_Db_Ddl_Table::TYPE_DATETIME, null, array(
+        ->addColumn('created_at', Varien_Db_Ddl_Table::TYPE_TIMESTAMP, null, array(
             'nullable' => false,
         ), 'Created At')
-        ->addColumn('updated_at', Varien_Db_Ddl_Table::TYPE_DATETIME, null, array(
+        ->addColumn('updated_at', Varien_Db_Ddl_Table::TYPE_TIMESTAMP, null, array(
             'nullable' => true,
-            'default' => null
+            'default'  => null
         ), 'Updated At');
     $installer->getConnection()->createTable($table);
+    // Compatibility with version 1.5
+    $installer->getConnection()->modifyColumn($tableName, 'id', 'int(11) NOT NULL auto_increment');
 }
 
 // create table lengow_action
 $tableName = $installer->getTable('lengow_action');
-if ($installer->getConnection()->isTableExists($tableName) != true) {
+if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
     $table = $installer->getConnection()
         ->newTable($installer->getTable('lengow_action'))
         ->addColumn('id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
             'identity' => true,
             'unsigned' => true,
             'nullable' => false,
-            'primary' => true,
+            'primary'  => true,
         ), 'Id')
         ->addColumn('order_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
             'nullable' => false,
@@ -419,55 +427,59 @@ if ($installer->getConnection()->isTableExists($tableName) != true) {
             'nullable' => false,
             'unsigned' => true
         ), 'Action Id')
-        ->addColumn('order_line_sku', Varien_Db_Ddl_Table::TYPE_TEXT, 100, array(
+        ->addColumn('order_line_sku', Varien_Db_Ddl_Table::TYPE_VARCHAR, 100, array(
             'nullable' => true,
-            'length' => 100,
-            'default' => null
+            'length'   => 100,
+            'default'  => null
         ), 'Order Line Sku')
-        ->addColumn('action_type', Varien_Db_Ddl_Table::TYPE_TEXT, 32, array(
+        ->addColumn('action_type', Varien_Db_Ddl_Table::TYPE_VARCHAR, 32, array(
             'nullable' => false,
-            'length' => 32
+            'length'   => 32
         ), 'Action Type')
         ->addColumn('retry', Varien_Db_Ddl_Table::TYPE_SMALLINT, null, array(
             'nullable' => false,
             'unsigned' => true,
-            'default' => 0
+            'default'  => 0
         ), 'Retry')
-        ->addColumn('parameters', Varien_Db_Ddl_Table::TYPE_TEXT, null, array(
+        ->addColumn('parameters', $type_text, null, array(
             'nullable' => false
         ), 'Parameters')
         ->addColumn('state', Varien_Db_Ddl_Table::TYPE_SMALLINT, null, array(
             'nullable' => false,
             'unsigned' => true
         ), 'State')
-        ->addColumn('created_at', Varien_Db_Ddl_Table::TYPE_DATETIME, null, array(
+        ->addColumn('created_at', Varien_Db_Ddl_Table::TYPE_TIMESTAMP, null, array(
             'nullable' => false
         ), 'Created At')
-        ->addColumn('updated_at', Varien_Db_Ddl_Table::TYPE_DATETIME, null, array(
+        ->addColumn('updated_at', Varien_Db_Ddl_Table::TYPE_TIMESTAMP, null, array(
             'nullable' => true,
-            'default' => null
+            'default'  => null
         ), 'Updated At');
     $installer->getConnection()->createTable($table);
+    // Compatibility with version 1.5
+    $installer->getConnection()->modifyColumn($tableName, 'id', 'int(11) NOT NULL auto_increment');
 }
 
 // create table lengow_log
 $tableName = $installer->getTable('lengow_log');
-if ($installer->getConnection()->isTableExists($tableName) != true) {
+if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
     $table = $installer->getConnection()
         ->newTable($installer->getTable('lengow_log'))
         ->addColumn('id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
             'identity' => true,
             'unsigned' => true,
             'nullable' => false,
-            'primary' => true,
+            'primary'  => true
         ), 'Id')
-        ->addColumn('date', Varien_Db_Ddl_Table::TYPE_DATETIME, null, array(
+        ->addColumn('date', Varien_Db_Ddl_Table::TYPE_TIMESTAMP, null, array(
             'nullable' => false,
         ), 'Date')
-        ->addColumn('message', Varien_Db_Ddl_Table::TYPE_TEXT, null, array(
+        ->addColumn('message', $type_text, null, array(
             'nullable' => false,
         ), 'Message');
     $installer->getConnection()->createTable($table);
+    // Compatibility with version 1.5
+    $installer->getConnection()->modifyColumn($tableName, 'id', 'int(11) NOT NULL auto_increment');
 }
 
 // *********************************************************

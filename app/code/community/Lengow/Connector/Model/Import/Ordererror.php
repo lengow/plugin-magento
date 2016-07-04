@@ -193,11 +193,9 @@ class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
     {
         $results = $this->getCollection()
             ->join(
-                array('order'=> 'lengow/import_order'),
-                'order.id=main_table.order_lengow_id',
-                array('marketplace_sku' => 'marketplace_sku'),
-                array('message' => 'message'),
-                array('id' => 'id')
+                'lengow/import_order',
+                '`lengow/import_order`.id=main_table.order_lengow_id',
+                array('marketplace_sku' => 'marketplace_sku')
             )
             ->addFieldToFilter('mail', array('eq' => 0))
             ->addFieldToFilter('is_finished', array('eq' => 0))
