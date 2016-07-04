@@ -207,6 +207,18 @@ span.lengow_toolbox_message {
     width:200px;
 }
 
+span.no_indexation {
+    bottom:20px;
+    left:-50px;
+    width:100px;
+}
+
+span.last_indexation {
+    bottom:20px;
+    left:-70px;
+    width:150px;
+}
+
 /*************************************************/
 /*                    BUTTONS                    */
 /*************************************************/

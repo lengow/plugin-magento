@@ -20,17 +20,16 @@ $last_export = $helper->getDateInCorrectFormat($config->get('last_export', $stor
            data-href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_product/'); ?>?isAjax=true">
         </a>
     </div>
+    <div class="lengow_export_feed">
     <a href="<?php echo $sync_data['shops'][$store_id]['feed_url'] ?>stream/1/update_export_date/0"
-           target="_blank"><i class="fa fa-download lengow_tooltip lengow_export_feed lengow_link_tooltip"><span> <?php echo $helper->__('product.screen.button_download') ?></span></i></a>
+       target="_blank"><i class="fa fa-download lengow_tooltip"><span> <?php echo $helper->__('product.screen.button_download') ?></span></i></a>
+    </div>
+    <br>
     <div class="text-center">
-        <h3 id="lengow_product_store_name" class="lengow_product_store_name lengow_tooltip"><?php echo $sync_data['shops'][$store_id]['name'] ?>
-        <span>
-            <?php echo $sync_data['shops'][$store_id]['name'] ?> (<?php echo $store_id ?>)
-            <?php echo $sync_data['shops'][$store_id]['domain'] ?>
-        </span>
+        <h3 id="lengow_product_store_name" class="lengow_product_store_name lengow_tooltip">
+            <?php echo $sync_data['shops'][$store_id]['name'] ?>
         </h3>
-
-    <br>        
+        <br>        
         <br>
         <p>
             <?php
