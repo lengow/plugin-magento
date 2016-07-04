@@ -3,112 +3,114 @@
     $toolbox = Mage::helper('lengow_connector/toolbox');
 ?>
 
-<h2><i class="fa fa-rocket"></i> <?php echo $helper->__('toolbox.screen.title') ?></h2>
-<br />
-<div id="lengow_see_global" class="lgw-switch checked">
-    <label>
-        <div>
-            <span></span>
-            <input type="checkbox" data-action="see_global_information" class="lengow_switch_option" checked="checked">
+<div class="lgw-box">
+    <h2><i class="fa fa-rocket"></i> <?php echo $helper->__('toolbox.screen.title') ?></h2>
+    <br />
+    <div id="lengow_see_global" class="lgw-switch checked">
+        <label>
+            <div>
+                <span></span>
+                <input type="checkbox" data-action="see_global_information" class="lengow_switch_option" checked="checked">
+            </div>
+            <?php echo $helper->__('toolbox.screen.gobal_information'); ?>
+        </label>
+    </div>
+    <div id="global-information">
+        <div class="lengow-block">
+            <h3><i class="fa fa-cog"></i> <?php echo $helper->__('toolbox.screen.plugin_information'); ?></h3>
+            <?php echo $toolbox->getPluginInformations(); ?>
         </div>
-        <?php echo $helper->__('toolbox.screen.gobal_information'); ?>
-    </label>
-</div>
-<div id="global-information">
-    <div class="lengow-block">
-        <h3><i class="fa fa-cog"></i> <?php echo $helper->__('toolbox.screen.plugin_information'); ?></h3>
-        <?php echo $toolbox->getPluginInformations(); ?>
+        <div class="lengow-block">
+            <h3><i class="fa fa-download"></i> <?php echo $helper->__('toolbox.screen.import_information'); ?></h3>
+            <?php echo $toolbox->getImportInformations(); ?>
+        </div>
+        <div class="clear"></div>
     </div>
-    <div class="lengow-block">
-        <h3><i class="fa fa-download"></i> <?php echo $helper->__('toolbox.screen.import_information'); ?></h3>
-        <?php echo $toolbox->getImportInformations(); ?>
-    </div>
-    <div class="clear"></div>
-</div>
 
-<div class="lengow-content-header"></div>
-<div class="lgw-switch" id="lengow_see_store">
-    <label>
-        <div>
-            <span></span>
-            <input type="checkbox" action="see_store_information" class="lengow_switch_option">
-        </div>
-        <?php echo $helper->__('toolbox.screen.store_information'); ?>
-    </label>
-</div>
-<div id="store-information">  
-    <div class="lengow-block">        
-        <h3><i class="fa fa-upload"></i> <?php echo $helper->__('toolbox.screen.export_information'); ?></h3>
-        <?php
-        foreach (Mage::app()->getWebsites() as $website) {
-            foreach ($website->getGroups() as $group) {
-                $stores = $group->getStores();
-                foreach ($stores as $store) {
-                    echo $toolbox->getExportInformations($store);
+    <div class="lengow-content-header"></div>
+    <div class="lgw-switch" id="lengow_see_store">
+        <label>
+            <div>
+                <span></span>
+                <input type="checkbox" action="see_store_information" class="lengow_switch_option">
+            </div>
+            <?php echo $helper->__('toolbox.screen.store_information'); ?>
+        </label>
+    </div>
+    <div id="store-information">  
+        <div class="lengow-block">        
+            <h3><i class="fa fa-upload"></i> <?php echo $helper->__('toolbox.screen.export_information'); ?></h3>
+            <?php
+            foreach (Mage::app()->getWebsites() as $website) {
+                foreach ($website->getGroups() as $group) {
+                    $stores = $group->getStores();
+                    foreach ($stores as $store) {
+                        echo $toolbox->getExportInformations($store);
+                    }
                 }
             }
-        }
-        ?>
-    </div>
-    <div class="lengow-block">
-        <h3><i class="fa fa-list"></i> <?php echo $helper->__('toolbox.screen.content_folder_media'); ?></h3>
-        <?php
-        foreach (Mage::app()->getWebsites() as $website) {
-            foreach ($website->getGroups() as $group) {
-                $stores = $group->getStores();
-                foreach ($stores as $store) {
-                    echo $toolbox->getFileInformations($store);
+            ?>
+        </div>
+        <div class="lengow-block">
+            <h3><i class="fa fa-list"></i> <?php echo $helper->__('toolbox.screen.content_folder_media'); ?></h3>
+            <?php
+            foreach (Mage::app()->getWebsites() as $website) {
+                foreach ($website->getGroups() as $group) {
+                    $stores = $group->getStores();
+                    foreach ($stores as $store) {
+                        echo $toolbox->getFileInformations($store);
+                    }
                 }
             }
-        }
-        ?>
-    </div>
-    <div class="clear"></div>
-</div>
-<div class="lengow-content-header"></div>
-<div class="lgw-switch" id="lengow_see_cron">
-    <label>
-        <div>
-            <span></span>
-            <input type="checkbox" action="see_cron_information" class="lengow_switch_option">
+            ?>
         </div>
-        <?php echo $helper->__('toolbox.screen.cron_information'); ?>
-    </label>
-</div>
-<div id="cron-information">
-    <div class="lengow-block">
-        <h3><i class="fa fa-clock-o"></i> <?php echo $helper->__('toolbox.screen.export_cron'); ?></h3>
-        <?php echo $toolbox->getCronInformation('export'); ?>
+        <div class="clear"></div>
     </div>
-    <div class="lengow-block">
-        <h3><i class="fa fa-clock-o"></i> <?php echo $helper->__('toolbox.screen.import_cron'); ?></h3>
-        <?php echo $toolbox->getCronInformation('import'); ?>
+    <div class="lengow-content-header"></div>
+    <div class="lgw-switch" id="lengow_see_cron">
+        <label>
+            <div>
+                <span></span>
+                <input type="checkbox" action="see_cron_information" class="lengow_switch_option">
+            </div>
+            <?php echo $helper->__('toolbox.screen.cron_information'); ?>
+        </label>
     </div>
-    <div class="clear"></div>
-</div>
-<div class="lengow-content-header"></div>
-<div class="lgw-switch" id="lengow_see_checksum">
-    <label>
-        <div>
-            <span></span>
-            <input type="checkbox" action="see_checksum_information" class="lengow_switch_option">
+    <div id="cron-information">
+        <div class="lengow-block">
+            <h3><i class="fa fa-clock-o"></i> <?php echo $helper->__('toolbox.screen.export_cron'); ?></h3>
+            <?php echo $toolbox->getCronInformation('export'); ?>
         </div>
-        <?php echo $helper->__('toolbox.screen.checksum_information'); ?>
-    </label>
-</div>
-<div id="checksum-information">
-    <div class="lengow-block-full">
-        <?php echo $toolbox->checkFileMd5(); ?>
-    </div>
-    <div class="clear"></div>
-</div>
-<div class="lengow-content-header"></div>
-<div class="lgw-switch" id="lengow_see_action">
-    <label>
-        <div>
-            <span></span>
-            <input type="checkbox" action="see_action_information" class="lengow_switch_option">
+        <div class="lengow-block">
+            <h3><i class="fa fa-clock-o"></i> <?php echo $helper->__('toolbox.screen.import_cron'); ?></h3>
+            <?php echo $toolbox->getCronInformation('import'); ?>
         </div>
-        <?php echo $helper->__('toolbox.screen.action_information'); ?>
-    </label>
+        <div class="clear"></div>
+    </div>
+    <div class="lengow-content-header"></div>
+    <div class="lgw-switch" id="lengow_see_checksum">
+        <label>
+            <div>
+                <span></span>
+                <input type="checkbox" action="see_checksum_information" class="lengow_switch_option">
+            </div>
+            <?php echo $helper->__('toolbox.screen.checksum_information'); ?>
+        </label>
+    </div>
+    <div id="checksum-information">
+        <div class="lengow-block-full">
+            <?php echo $toolbox->checkFileMd5(); ?>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="lengow-content-header"></div>
+    <div class="lgw-switch" id="lengow_see_action">
+        <label>
+            <div>
+                <span></span>
+                <input type="checkbox" action="see_action_information" class="lengow_switch_option">
+            </div>
+            <?php echo $helper->__('toolbox.screen.action_information'); ?>
+        </label>
+    </div>
 </div>

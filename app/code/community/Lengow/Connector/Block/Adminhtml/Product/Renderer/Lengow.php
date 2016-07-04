@@ -22,11 +22,11 @@ class Lengow_Connector_Block_Adminhtml_Product_Renderer_Lengow extends Mage_Admi
         $value =  $row->getData($this->getColumn()->getIndex());
         if ($value == 1) {
             $value = $this->helper('lengow_connector')->__('global.just_yes');
-            $class = 'green';
+            $class = 'lgw-btn-green';
         } else {
             $value = $this->helper('lengow_connector')->__('global.just_no');
-            $class = 'red';
+            $class = 'lgw-btn-red';
         }
-        return '<span class="publish-lgw '.$class.'">'.$value.'</span>';
+        return '<span class="publish-lgw lengow_label '.$class.'">'.$value.'</span>';
     }
 }
