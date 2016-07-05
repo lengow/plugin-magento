@@ -21,6 +21,18 @@
             <?php echo $helper->__('order.screen.preprod_warning_message', array('url' => $report_mail_link)); ?>
         </p>
     <?php } ?>
+    <div id="lengow_migrate_order" class="blue_frame">
+        <p><?php echo $helper->__('order.screen.nb_old_order_imported', array('nb_order' => $nb_order_imported)); ?></p>
+        <p><?php echo $helper->__('order.screen.order_visible_in_page', array('nb_order' => $order_to_be_sent)); ?></p>
+        <p><?php echo $helper->__('order.screen.where_see_old_order'); ?></p>
+        <button
+            type="button" 
+            id="lengow_migrate_fade"
+            class="lgw-btn " 
+            data-href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_order/'); ?>?isAjax=true" >
+            <?php echo $helper->__('order.screen.button_migrate'); ?>
+        </button>
+    </div>
     <?php if ($see_migrate_block && $order_not_migrate > 0) { ?>
         <div id="lengow_migrate_order" class="blue_frame">
             <p><?php echo $helper->__('order.screen.nb_old_order_imported', array('nb_order' => $nb_order_imported)); ?></p>
