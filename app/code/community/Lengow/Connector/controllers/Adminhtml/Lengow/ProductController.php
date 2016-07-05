@@ -30,17 +30,17 @@ class Lengow_Connector_Adminhtml_Lengow_ProductController extends Mage_Adminhtml
                 switch ($action) {
                     case 'change_option_selected':
                         $state = Mage::app()->getRequest()->getParam('state');
-                        $shopId = Mage::app()->getRequest()->getParam('id_shop');
+                        $store_id = Mage::app()->getRequest()->getParam('store_id');
                         if ($state !== null) {
-                            Mage::helper('lengow_connector/config')->set('selection_enable', $state, $shopId);
+                            Mage::helper('lengow_connector/config')->set('selection_enable', $state, $store_id);
                             $this->getResponse()->setBody($state);
                         }
                         break;
                     case 'change_option_product_out_of_stock':
-                        $shopId = Mage::app()->getRequest()->getParam('id_shop');
+                        $store_id = Mage::app()->getRequest()->getParam('store_id');
                         $state = Mage::app()->getRequest()->getParam('state');
                         if ($state !== null) {
-                            Mage::helper('lengow_connector/config')->set('out_stock', $state, $shopId);
+                            Mage::helper('lengow_connector/config')->set('out_stock', $state, $store_id);
                         }
                         break;
                     case 'check_store':
@@ -57,14 +57,14 @@ class Lengow_Connector_Adminhtml_Lengow_ProductController extends Mage_Adminhtml
                             } else {
                                 $datas['message'] = $helper->__('product.screen.store_not_index');
                             }
-                            $datas['link_title'] = $helper->__('product.screen.lengow_shop_sync');
-                            $datas['id'] = 'lengow_shop_sync';
+                            $datas['link_title'] = $helper->__('product.screen.lengow_store_sync');
+                            $datas['id'] = 'lengow_store_sync';
                         } else {
-                            $datas['message'] = $helper->__('product.screen.lengow_shop_no_sync');
-                            $datas['link_title'] = $helper->__('product.screen.sync_your_shop');
+                            $datas['message'] = $helper->__('product.screen.lengow_store_no_sync');
+                            $datas['link_title'] = $helper->__('product.screen.sync_your_store');
                             $datas['link_href'] = Mage::helper('adminhtml')
                                 ->getUrl('adminhtml/lengow_home/').'?isSync=true';
-                            $datas['id'] = 'lengow_shop_no_sync';
+                            $datas['id'] = 'lengow_store_no_sync';
                         }
                         $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($datas));
                         break;
