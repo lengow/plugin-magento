@@ -11,14 +11,17 @@ $default_store = Mage::app()->getWebsite(true)->getDefaultGroup()->getDefaultSto
 $current_store = (integer)$this->getRequest()->getParam('store', Mage::app()->getStore()->getId());
 $store_id = $current_store == 0 ? $default_store : $current_store;
 ?>
-<div class="entry-edit">
+<!-- <div class="entry-edit">
     <div class="entry-edit-head">
         <h4 class="icon-head head-account">
             <?php echo Mage::helper('lengow_connector')->__('order.screen.lengow_information'); ?>
         </h4>
     </div>
-</div>
-<div class="fieldset">
+</div> -->
+<div class="lgw-box">
+    <h2>
+            <?php echo Mage::helper('lengow_connector')->__('order.screen.lengow_information'); ?>
+    </h2>
     <?php
     if ($this->isLengowOrder()) {
         if ($this->isFollowByLengow()) {
@@ -29,7 +32,7 @@ $store_id = $current_store == 0 ? $default_store : $current_store;
                 foreach ($fields as $field) {
                     ?>
                     <tr>
-                        <td class="label">
+                        <td class="label bold">
                             <label><?php echo $field['label']; ?></label>
                         </td>
                         <td class="value">

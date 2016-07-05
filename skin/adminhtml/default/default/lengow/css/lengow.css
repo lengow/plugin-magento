@@ -798,7 +798,7 @@ span.publish-lgw.red {
   font-weight: bold;
 }
 
-a.lengow_check_shop {
+a.lengow_check_store {
     padding-left: 3px;
     padding-right: 14px;
     margin-right: 5px;
@@ -924,4 +924,21 @@ body.adminhtml-lengow-order-index .lgw-col-4{
 
 #lengow_action_grid {
     margin-top:15px;
+}
+
+/*************************************************/
+/*                SALES ORDER                     */
+/*************************************************/
+
+body.adminhtml-sales-order-view #sales_order_view_tabs_TAB_NAME_content  button,
+body.adminhtml-sales-order-view #sales_order_view_tabs_TAB_NAME_content button a{
+    color:#fff;
+    text-decoration: none;
+}
+
+body.adminhtml-sales-order-view #sales_order_view_tabs_TAB_NAME_content button:hover,
+body.adminhtml-sales-order-view #sales_order_view_tabs_TAB_NAME_content button a:hover{
+    color:#fff;
+    text-decoration: underline;
+
 }
