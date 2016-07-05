@@ -36,15 +36,17 @@ $sync_data = Mage::helper('lengow_connector/sync')->getSyncData();
         <br>
         <div class="products-exported">
             <div id="parent_exported_products">
-                <span id="exported_products"><?php echo $sync_data['shops'][$store_id]['nb_product_exported'] ?></span>
+                <span id="exported_products" class="lengow_exported stats-big-value"><?php echo $sync_data['shops'][$store_id]['nb_product_exported'] ?></span>
+                <span> <?php echo $helper->__('product.screen.nb_exported') ?></span>
             </div>
-            <span> <?php echo $helper->__('product.screen.nb_exported') ?></span>
+            
         </div>
         <br>
         <div id="parent_total_products">
-            <span id="total_products"><?php echo $sync_data['shops'][$store_id]['nb_product_total'] ?></span>
+            <span id="total_products"  class="lengow_total stats-big-value"><?php echo $sync_data['shops'][$store_id]['nb_product_total'] ?></span>
+            <span> <?php echo $helper->__('product.screen.nb_available') ?></span>
         </div>
-        <span> <?php echo $helper->__('product.screen.nb_available') ?></span><br>
+        <br>
         <br>
         <hr>
         <div class="lgw-switch <?php if ($config->get('out_stock', $store_id) == '1'): ?> checked <?php endif; ?>">
