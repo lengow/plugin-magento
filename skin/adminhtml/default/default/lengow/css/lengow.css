@@ -948,7 +948,7 @@ body.adminhtml-sales-order-view #sales_order_view_tabs_TAB_NAME_content button a
 body.adminhtml-sales-order-view #sales_order_view_tabs_TAB_NAME_content button:hover,
 body.adminhtml-sales-order-view #sales_order_view_tabs_TAB_NAME_content button a:hover{
     color:#fff;
-    text-decoration: underline;
+    text-decoration: none;
 }
 
 #lgw-info-title {
