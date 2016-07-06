@@ -862,22 +862,31 @@ body.adminhtml-lengow-order-index .lgw-col-4{
 #cron-information,
 #checksum-information {
     width:100%;
-    margin: auto;
+    margin:auto;
 }
 
 #lengow_action_grid .content-header {
-    display: none;
+    display:none;
 }
 
 .lengow-block {
-    width: 45%;
-    float: left;
-    padding: 2%;
+    width:45%;
+    float:left;
+    padding:2%;
 }
 
 .lengow-block-full {
-    width: 96%;
-    padding: 2%;
+    width:96%;
+    padding:2%;
+}
+
+.lengow-block-full textarea {
+    width:97%;
+    min-width:400px;
+    height:300px;
+    resize:none;
+    padding:2%;
+    border-color:#ddd;
 }
 
 .lengow-block table,
@@ -886,7 +895,7 @@ body.adminhtml-lengow-order-index .lgw-col-4{
     border-spacing:2px;
     border-color:grey;
     margin-bottom:20px;
-    width: 100%;
+    width:100%;
 }
 
 .lengow-block table td,
@@ -917,7 +926,7 @@ body.adminhtml-lengow-order-index .lgw-col-4{
 
 .lengow-content-header {
     width:100%;
-    border-top: 2px solid #ddd;
+    border-top:2px solid #ddd;
     margin-top:5px;
     margin-bottom:10px;
 }
@@ -940,5 +949,12 @@ body.adminhtml-sales-order-view #sales_order_view_tabs_TAB_NAME_content button:h
 body.adminhtml-sales-order-view #sales_order_view_tabs_TAB_NAME_content button a:hover{
     color:#fff;
     text-decoration: underline;
+}
 
+#lgw-info-title {
+  float: left;
+}
+
+#lgw-info-btn {
+  float:right;
 }
