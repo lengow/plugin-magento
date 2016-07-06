@@ -2,15 +2,6 @@
 <layout>
     <default>
         <reference name="head">
-              <action method="addCss"><stylesheet>lengow/css/lengow.css</stylesheet></action>
-              <!--<action method="addCss"><stylesheet>lengow/css/bootstrap-switch.min.css</stylesheet></action>
-              <action method="addCss"><stylesheet>lengow/css/bootstrap-datepicker.css</stylesheet></action>
-              <action method="addCss"><stylesheet>lengow/css/lengow-components.css</stylesheet></action>
-              <action method="addCss"><stylesheet>lengow/css/lengow-layout.css</stylesheet></action>
-              <action method="addCss"><stylesheet>lengow/css/lengow-pages.css</stylesheet></action>
-              <action method="addCss"><stylesheet>lengow/css/select-2.css</stylesheet></action>
-              <action method="addCss"><stylesheet>lengow/css/toolbox.css</stylesheet></action>-->
-              <action method="addItem"><type>skin_css</type><name>lengow/css/font-awesome.css</name></action>
               <action method="addItem"><type>skin_js</type><name>lengow/js/jquery-2.2.2.js</name></action>
               <action method="addItem"><type>skin_js</type><name>lengow/js/noconflict.js</name></action>
         </reference>
@@ -20,6 +11,7 @@
     </default>
     <adminhtml_lengow_home_index>
         <reference name="head">
+            <action method="addCss"><stylesheet>lengow/css/lengow.css</stylesheet></action>
             <action method="addItem"><type>skin_js</type><name>lengow/js/home.js</name></action>
         </reference>
         <reference name="content">
@@ -33,7 +25,9 @@
     </adminhtml_lengow_home_index>
     <adminhtml_lengow_product_index>
         <reference name="head">
-          <action method="addItem"><type>skin_js</type><name>lengow/js/product.js</name></action>
+            <action method="addCss"><stylesheet>lengow/css/lengow.css</stylesheet></action>
+            <action method="addCss"><stylesheet>lengow/css/font-awesome.css</stylesheet></action>
+            <action method="addItem"><type>skin_js</type><name>lengow/js/product.js</name></action>
         </reference>
         <reference name="content">
             <block type="page/html" name="lengow_layout" template="lengow/layout/product.phtml" >
@@ -51,6 +45,8 @@
     </adminhtml_lengow_product_index>
     <adminhtml_lengow_order_index>
         <reference name="head">
+            <action method="addCss"><stylesheet>lengow/css/lengow.css</stylesheet></action>
+            <action method="addCss"><stylesheet>lengow/css/font-awesome.css</stylesheet></action>
             <action method="addItem"><type>skin_js</type><name>lengow/js/order.js</name></action>
         </reference>
         <reference name="content">
@@ -65,6 +61,7 @@
     </adminhtml_lengow_order_index>
     <adminhtml_lengow_help_index>
         <reference name="head">
+            <action method="addCss"><stylesheet>lengow/css/lengow.css</stylesheet></action>
             <action method="addItem"><type>skin_js</type><name>lengow/js/help.js</name></action>
         </reference>
         <reference name="content">
@@ -76,6 +73,9 @@
         </reference>
     </adminhtml_lengow_help_index>
     <adminhtml_lengow_log_index>
+         <reference name="head">
+            <action method="addCss"><stylesheet>lengow/css/lengow.css</stylesheet></action>
+        </reference>
         <reference name="content">
             <block type="page/html" name="lengow_layout" template="lengow/layout/log.phtml" >
                 <block type="page/html" name="lengow_header" template="lengow/header.phtml" />
@@ -86,6 +86,7 @@
     </adminhtml_lengow_log_index>
     <adminhtml_lengow_legal_index>
         <reference name="head">
+            <action method="addCss"><stylesheet>lengow/css/lengow.css</stylesheet></action>
             <action method="addItem"><type>skin_js</type><name>lengow/js/legal.js</name></action>
         </reference>
         <reference name="content">
@@ -98,6 +99,8 @@
     </adminhtml_lengow_legal_index>
     <adminhtml_lengow_toolbox_index>
         <reference name="head">
+            <action method="addCss"><stylesheet>lengow/css/lengow.css</stylesheet></action>
+            <action method="addCss"><stylesheet>lengow/css/font-awesome.css</stylesheet></action>
             <action method="addItem"><type>skin_js</type><name>lengow/js/toolbox.js</name></action>
         </reference>
         <reference name="content">

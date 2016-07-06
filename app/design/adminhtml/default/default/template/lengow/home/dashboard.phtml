@@ -31,7 +31,7 @@ $order_to_be_sent = Mage::getModel('lengow/import_order')->countOrderToBeSent();
                     <img src="<?php echo $this->getSkinUrl('lengow/images/') ?>home-orders.png" class="img-responsive">
                     <h2>
                         <?php echo $helper->__('dashboard.screen.orders_title'); ?>
-                        <span class="lgw-label lgw-label_red"><?php echo $order_to_be_sent; ?></span>
+                        <span class="lgw-label lgw-label-red"><?php echo $order_to_be_sent; ?></span>
                     </h2>
                     <p><?php echo $helper->__('dashboard.screen.orders_text'); ?></p>
                 </div>

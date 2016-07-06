@@ -43,24 +43,30 @@ class Lengow_Connector_Adminhtml_Lengow_ProductController extends Mage_Adminhtml
                             Mage::helper('lengow_connector/config')->set('out_stock', $state, $shopId);
                         }
                         break;
-                    case 'check_shop':
-                        $shopId = Mage::app()->getRequest()->getParam('id_shop');
-                        $sync = Mage::getModel('lengow/connector')->getConnectorByStore($shopId);
-                        $checkShop = array();
-                        $checkShop['result'] = $sync;
+                    case 'check_store':
+                        $store_id = Mage::app()->getRequest()->getParam('store_id');
+                        $sync = Mage::getModel('lengow/connector')->getConnectorByStore($store_id);
+                        $helper = Mage::helper('lengow_connector');
+                        $datas = array();
+                        $datas['result'] = $sync;
                         if ($sync == true) {
-                            $checkShop['message'] = Mage::helper('lengow_connector')
-                                ->__('product.screen.lengow_shop_sync');
-                            $checkShop['id'] = 'lengow_shop_sync';
+                            $last_export = Mage::helper('lengow_connector/config')->get('last_export', $store_id);
+                            if ($last_export != null) {
+                                $datas['message'] = $helper->__('product.screen.store_last_indexation').'<br />'.
+                                    $helper->getDateInCorrectFormat($last_export);
+                            } else {
+                                $datas['message'] = $helper->__('product.screen.store_not_index');
+                            }
+                            $datas['link_title'] = $helper->__('product.screen.lengow_shop_sync');
+                            $datas['id'] = 'lengow_shop_sync';
                         } else {
-                            $checkShop['message'] = Mage::helper('lengow_connector')
-                                ->__('product.screen.lengow_shop_no_sync');
-                            $checkShop['link_title'] = Mage::helper('lengow_connector')
-                                ->__('product.screen.sync_your_shop');
-                            $checkShop['link_href'] = Mage::helper('adminhtml')->getUrl('adminhtml/lengow_home/').'?isSync=true';
-                            $checkShop['id'] = 'lengow_shop_no_sync';
+                            $datas['message'] = $helper->__('product.screen.lengow_shop_no_sync');
+                            $datas['link_title'] = $helper->__('product.screen.sync_your_shop');
+                            $datas['link_href'] = Mage::helper('adminhtml')
+                                ->getUrl('adminhtml/lengow_home/').'?isSync=true';
+                            $datas['id'] = 'lengow_shop_no_sync';
                         }
-                        $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($checkShop));
+                        $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($datas));
                         break;
                 }
             }

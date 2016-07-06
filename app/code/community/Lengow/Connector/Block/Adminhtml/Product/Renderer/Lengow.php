@@ -27,6 +27,6 @@ class Lengow_Connector_Block_Adminhtml_Product_Renderer_Lengow extends Mage_Admi
             $value = $this->helper('lengow_connector')->__('global.just_no');
             $class = 'lgw-btn-red';
         }
-        return '<span class="publish-lgw lengow_label '.$class.'">'.$value.'</span>';
+        return '<span class="publish-lgw lgw-label '.$class.'">'.$value.'</span>';
     }
 }

@@ -9,20 +9,24 @@
 
         function checkShop() {
             var href = $('.lengow_check_shop').attr('data-href'),
-                id_shop = $(this).attr('data-id_shop');
+                store_id = $('.lengow_check_shop').attr('data-id_shop');
             $.getJSON({
                 url: href,
                 method: 'POST',
-                data: {action: 'check_shop', id_shop: id_shop, form_key: FORM_KEY},
+                data: {action: 'check_store', store_id: store_id, form_key: FORM_KEY},
                 dataType: 'json',
                 beforeSend: function () {
                     $('.lengow_check_shop').html('<i class="fa fa-circle-o-notch fa-spin"></i>');
                 },
                 success: function (data) {
-                    $('.lengow_check_shop').html("<span>"+data.message+"</span>");
-                    $('.lengow_check_shop').attr("id", data.id);
                     if (data.result == false) {
-                        $('.lengow_check_shop').after("<a href="+data.link_href+"><span>"+data.link_title+"</span></a>");
+                        $('.lengow_check_shop').html('<span class="no_indexation">'+data.message+'</span>');
+                        $('.lengow_check_shop').attr('id', data.id);
+                        $('.lengow_check_shop').after('<a href="'+data.link_href+'"><span>'+data.link_title+'</span></a>');
+                    } else {
+                        $('.lengow_check_shop').html('<span class="last_indexation">'+data.message+'</span>');
+                        $('.lengow_check_shop').attr('id', data.id);
+                        $('.lengow_check_shop').after(data.link_title);
                     }
                 }
             });
