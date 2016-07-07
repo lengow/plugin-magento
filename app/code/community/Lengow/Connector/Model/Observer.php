@@ -30,6 +30,7 @@ class Lengow_Connector_Model_Observer
         'last_statistic_update',
         'order_statistic',
         'see_migrate_block',
+        'last_status_update',
     );
 
     /**

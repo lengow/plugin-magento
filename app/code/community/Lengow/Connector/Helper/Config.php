@@ -139,6 +139,14 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
             'path'   => 'lengow_import_options/advanced/see_migrate_block',
             'export' => false,
         ),
+        'last_status_update' => array(
+            'path'   => 'lengow_import_options/advanced/last_status_update',
+            'export' => false,
+        ),
+        'account_status' => array(
+            'path'   => 'lengow_import_options/advanced/account_status',
+            'export' => false,
+        ),
     );
 
     /**

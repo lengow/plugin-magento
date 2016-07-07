@@ -264,4 +264,40 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
         }
         return $data;
     }
+
+    /**
+     * Get Status Account
+     *
+     * @param boolean $force Force cache Update
+     * @return mixed
+     */
+    public function getStatusAccount($force = false)
+    {
+        $config = Mage::helper('lengow_connector/config');
+        if (!$force) {
+            $updated_at = $config->get('last_status_update');
+            if (!is_null($updated_at) && (time() - strtotime($updated_at)) < $this->_cache_time) {
+                return json_decode($config->get('account_status'), true);
+            }
+        }
+        
+        //TODO call API for return a customer id or false
+        //$result = Mage::getModel('lengow/connector')->queryApi('get', '/v3.0/cms');
+        $result = true;
+        
+        if ($result) {
+            //TODO call API with customer id parameter for return status account
+            //$status = Mage::getModel('lengow/connector')->queryApi('get', '/v3.0/cms');
+            $status = array();
+            $status['type'] = 'bad_payer';
+            $status['day'] = 0;
+
+            if ($status) {
+                $config->set('account_status', Mage::helper('core')->jsonEncode($status));
+                $config->set('last_status_update', date('Y-m-d H:i:s'));
+                return $status;
+            }
+        }
+        return false;
+    }
 }

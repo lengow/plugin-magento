@@ -27,6 +27,21 @@ dashboard.screen.some_help_title|Need some help?
 dashboard.screen.get_in_touch|Get in touch with Lengow.
 dashboard.screen.visit_help_center|Visit our Help Center
 dashboard.screen.configure_plugin|for detailed information on how to configure properly your Magento plugin
+status.screen.title_end_free_trial|Even good times can stop
+status.screen.subtitle_end_free_trial|You've reach the end of your trial !
+status.screen.first_description_end_free_trial|Your 15 days free on Lengow is now expired. It's terrible, we know, but the best is yet to come ! We sincerely hope you've enjoyed Lengow to improve your business.
+status.screen.second_description_end_free_trial|Your account will be disabled until you purchase a new subscription. All existing diffusions and indexations will be stopped too.
+status.screen.third_description_end_free_trial|Don't forget that a trial account is deleted 30 days after expiration. Make sure to upgrade in order not to lose the great work you've made into building your channels.
+status.screen.title_bad_payer|Bad things happened :'(
+status.screen.subtitle_bad_payer|Your account is temporaly closed
+status.screen.first_description_bad_payer|We are sorry that we had to get there, but we had to temporarily limit access to your account because the automatic payment of your subscription failed.
+status.screen.second_description_bad_payer|The publication of your catalogs is also suspended. We strongly suggest you get in touch with us at
+status.screen.phone_bad_payer|or by phone at (+33)4 565 656
+status.screen.third_description_bad_payer|We hope to count you back among us really soon.
+status.screen.signature_bad_payer|Team Lengow
+status.screen.facturation_button|View my billing informations
+status.screen.upgrade_account_button|It's ok, I'm ready for an upgrade !
+status.screen.refresh_action|Refresh my account
 product.screen.title|Export product
 product.screen.nb_exported|products exported
 product.screen.nb_available|products available
