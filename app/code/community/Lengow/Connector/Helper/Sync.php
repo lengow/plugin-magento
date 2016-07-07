@@ -92,6 +92,32 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * Check if store is follow by Lengow
+     *
+     * @param $store_id
+     *
+     * @return boolean
+     */
+    public function checkStore($store_id)
+    {
+        $connector = Mage::getModel('lengow/connector');
+        $result = $connector->queryApi('get', '/v3.0/cms', $store_id);
+        $token = Mage::helper('lengow_connector/config')->get('token', $store_id);
+        if (!isset($result->error)) {
+            if (isset($result->shops)) {
+                foreach ($result->shops as $results) {
+                    if ($results->token === $token) {
+                        if ($results->enabled === true) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
      * Check if is a new marchant
      *
      * @return boolean

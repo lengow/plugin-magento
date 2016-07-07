@@ -367,7 +367,7 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
                     if ($check['state']) {
                         $out.= '<td align="right"><i class="fa fa-check lengow-green"></td>';
                     } else {
-                        $out.= '<td class="value"><i class="fa fa-times lengow-red"></td>';
+                        $out.= '<td align="right"><i class="fa fa-times lengow-red"></td>';
                     }
                 } else {
                     $out.= '<td align="right">'.$check['message'].'</td>';
