@@ -31,6 +31,7 @@ class Lengow_Connector_Model_Config extends Mage_Core_Model_Config
         'order_statistic',
         'see_migrate_block',
         'last_status_update',
+        'account_status',
     );
 
     /**

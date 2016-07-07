@@ -31,6 +31,7 @@ class Lengow_Connector_Model_Observer
         'order_statistic',
         'see_migrate_block',
         'last_status_update',
+        'account_status',
     );
 
     /**
