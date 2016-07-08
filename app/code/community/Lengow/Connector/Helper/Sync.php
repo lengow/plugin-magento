@@ -309,21 +309,21 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
         
         //TODO call API for return a customer id or false
         //$result = Mage::getModel('lengow/connector')->queryApi('get', '/v3.0/cms');
-        $result = true;
+//        $result = true;
         
-        if ($result) {
+//        if ($result) {
             //TODO call API with customer id parameter for return status account
             //$status = Mage::getModel('lengow/connector')->queryApi('get', '/v3.0/cms');
-            $status = array();
-            $status['type'] = 'bad_payer';
-            $status['day'] = 0;
+//            $status = array();
+//            $status['type'] = 'bad_payer';
+//            $status['day'] = 0;
 
-            if ($status) {
-                $config->set('account_status', Mage::helper('core')->jsonEncode($status));
-                $config->set('last_status_update', date('Y-m-d H:i:s'));
-                return $status;
-            }
-        }
+//            if ($status) {
+//                $config->set('account_status', Mage::helper('core')->jsonEncode($status));
+//                $config->set('last_status_update', date('Y-m-d H:i:s'));
+//                return $status;
+//            }
+//        }
         return false;
     }
 }
