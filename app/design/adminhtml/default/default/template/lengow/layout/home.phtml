@@ -1,7 +1,7 @@
 <?php
 $is_new_merchant = Mage::helper('lengow_connector/sync')->isNewMerchant();
 $is_sync = Mage::app()->getRequest()->getParam('isSync');
-$is_status = Mage::helper('lengow_connector/sync')->getStatusAccount();
+$is_status = Mage::helper('lengow_connector/sync')->getStatusAccount(true);
 if ($is_new_merchant || $is_sync) {
     echo $this->getChildHtml("lengow_new");
     echo '<input type="hidden" id="lengow_sync_link" value="'.$is_sync.'">';

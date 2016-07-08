@@ -7,6 +7,8 @@ module.name|Lengow
 global.just_yes|Yes
 global.just_no|No
 header.preprod_active|Pre-production mode
+header.counter|Day left: %{counter}
+header.updgrade_account|upgrade
 footer.toolbox|Toolbox
 footer.legals|Legals
 footer.copyright_lengow|Copyright Lengow

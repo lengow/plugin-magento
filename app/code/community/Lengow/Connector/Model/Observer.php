@@ -45,10 +45,12 @@ class Lengow_Connector_Model_Observer
     public function updateAdminMenu()
     {
         $is_new_merchant = Mage::helper('lengow_connector/sync')->isNewMerchant();
-        $update_value = $is_new_merchant ? 1 : 0;
+        $is_status = Mage::helper('lengow_connector/sync')->getStatusAccount();
+        $update_value = ($is_new_merchant || ($is_status['type'] == 'free_trial' && $is_status['day'] == 0) || $is_status['type'] == 'bad_payer') ? 1 : 0;
+
         $menu = Mage::getSingleton('admin/config')->getAdminhtmlConfig()->getNode('menu/lengowtab/children');
         foreach ($menu->children() as $childName => $child) {
-            $menu->setNode($childName.'/disabled', $update_value);
+            $menu->setNode($childName . '/disabled', $update_value);
         }
     }
 
@@ -77,19 +79,19 @@ class Lengow_Connector_Model_Observer
                             $message = Mage::helper('lengow_connector/translation')->t(
                                 'log.setting.setting_change_for_store',
                                 array(
-                                    'key'       => $object['path'],
+                                    'key' => $object['path'],
                                     'old_value' => $old_value,
-                                    'value'     => $new_value,
-                                    'store_id'  => $object['scope_id']
+                                    'value' => $new_value,
+                                    'store_id' => $object['scope_id']
                                 )
                             );
                         } else {
                             $message = Mage::helper('lengow_connector/translation')->t(
                                 'log.setting.setting_change',
                                 array(
-                                    'key'       => $object['path'],
+                                    'key' => $object['path'],
                                     'old_value' => $old_value,
-                                    'value'     => $new_value,
+                                    'value' => $new_value,
                                 )
                             );
                         }
@@ -182,14 +184,14 @@ class Lengow_Connector_Model_Observer
                         Mage::app()->getStore()->setCurrentStore($store_id);
                         // launch export process
                         $export = Mage::getModel('lengow/export', array(
-                            'store_id'           => $store_id,
-                            'stream'             => false,
+                            'store_id' => $store_id,
+                            'stream' => false,
                             'update_export_date' => false,
-                            'type'               => 'magento cron'
+                            'type' => 'magento cron'
                         ));
                         $export->exec();
                     } catch (Exception $e) {
-                        $error_message = '[Magento error] "'.$e->getMessage().'" '.$e->getFile().' line '.$e->getLine();
+                        $error_message = '[Magento error] "' . $e->getMessage() . '" ' . $e->getFile() . ' line ' . $e->getLine();
                         Mage::helper('lengow_connector')->log('Export', $error_message);
                     }
                 }

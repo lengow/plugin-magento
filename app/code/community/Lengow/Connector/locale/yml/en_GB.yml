@@ -12,6 +12,8 @@ en:
     just_no: "No"
   header:
     preprod_active: "Pre-production mode"
+    counter: "Day left: %{counter}"
+    updgrade_account: "upgrade"
   footer:
     toolbox: "Toolbox"
     legals: "Legals"

@@ -30,7 +30,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
         $data['version'] = Mage::getVersion();
         $data['plugin_version'] = (string)Mage::getConfig()->getNode()->modules->Lengow_Connector->version;
         $data['email'] = Mage::getStoreConfig('trans_email/ident_general/email');
-        $data['return_url'] = 'http://'.$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
+        $data['return_url'] = 'http://' . $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"];
         foreach (Mage::app()->getWebsites() as $website) {
             foreach ($website->getGroups() as $group) {
                 $stores = $group->getStores();
@@ -62,7 +62,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
         foreach ($params as $shop_token => $values) {
             if ($store = $config->getStoreByToken($shop_token)) {
                 $list_key = array(
-                    'account_id'   => false,
+                    'account_id' => false,
                     'access_token' => false,
                     'secret_token' => false
                 );
@@ -149,34 +149,34 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
         $subject = Mage::helper('lengow_connector')->__('help.screen.mailto_subject');
         $result = Mage::getModel('lengow/connector')->queryApi('get', '/v3.0/cms');
         $body = '%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A'
-            .Mage::helper('lengow_connector')->__('help.screen.mail_lengow_support_title').'%0D%0A';
+            . Mage::helper('lengow_connector')->__('help.screen.mail_lengow_support_title') . '%0D%0A';
         if (isset($result->cms)) {
-            $body .= 'commun_account : '.$result->cms->common_account.'%0D%0A';
+            $body .= 'commun_account : ' . $result->cms->common_account . '%0D%0A';
         }
         foreach ($mailto as $key => $value) {
             if ($key == 'domain_name' || $key == 'token' || $key == 'return_url' || $key == 'shops') {
                 continue;
             }
-            $body .= $key.' : '.$value.'%0D%0A';
+            $body .= $key . ' : ' . $value . '%0D%0A';
         }
         $shops = $mailto['shops'];
         $i = 1;
         foreach ($shops as $shop) {
             foreach ($shop as $item => $value) {
                 if ($item == 'name') {
-                    $body .= 'Store '.$i.' : '.$value.'%0D%0A';
+                    $body .= 'Store ' . $i . ' : ' . $value . '%0D%0A';
                 } elseif ($item == 'feed_url') {
                     $body .= $value . '%0D%0A';
                 }
             }
             $i++;
         }
-        $html = '<a href="mailto:'. $mail;
-        $html.= '?subject='. $subject;
-        $html.= '&body='. $body .'" ';
-        $html.= 'title="'.Mage::helper('lengow_connector')->__('help.screen.need_some_help').'" target="_blank">';
-        $html.= Mage::helper('lengow_connector')->__('help.screen.mail_lengow_support');
-        $html.= '</a>';
+        $html = '<a href="mailto:' . $mail;
+        $html .= '?subject=' . $subject;
+        $html .= '&body=' . $body . '" ';
+        $html .= 'title="' . Mage::helper('lengow_connector')->__('help.screen.need_some_help') . '" target="_blank">';
+        $html .= Mage::helper('lengow_connector')->__('help.screen.mail_lengow_support');
+        $html .= '</a>';
         return $html;
     }
 
@@ -239,12 +239,12 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
             $return['average_order'] = round($return['average_order'] / $i, 2);
         }
         if ($return['currency'] && in_array($return['currency'], $all_currencies)) {
-                $return['total_order'] = Mage::app()->getLocale()
-                    ->currency($return['currency'])
-                    ->toCurrency($return['total_order']);
-                $return['average_order'] = Mage::app()->getLocale()
-                    ->currency($return['currency'])
-                    ->toCurrency($return['average_order']);
+            $return['total_order'] = Mage::app()->getLocale()
+                ->currency($return['currency'])
+                ->toCurrency($return['total_order']);
+            $return['average_order'] = Mage::app()->getLocale()
+                ->currency($return['currency'])
+                ->toCurrency($return['average_order']);
         } else {
             $return['total_order'] = number_format($return['total_order'], 2, ',', ' ');
             $return['average_order'] = number_format($return['average_order'], 2, ',', ' ');
@@ -265,11 +265,11 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
         $config = Mage::helper('lengow_connector/config');
         $data = array();
         $data['cms'] = array(
-            'token'          => $config->getToken(),
-            'type'           => 'magento',
-            'version'        => Mage::getVersion(),
+            'token' => $config->getToken(),
+            'type' => 'magento',
+            'version' => Mage::getVersion(),
             'plugin_version' => (string)Mage::getConfig()->getNode()->modules->Lengow_Connector->version,
-            'options'        => $config->getAllValues()
+            'options' => $config->getAllValues()
         );
         foreach (Mage::app()->getWebsites() as $website) {
             foreach ($website->getGroups() as $group) {
@@ -277,13 +277,13 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
                 foreach ($stores as $store) {
                     $export = Mage::getModel('lengow/export', array("store_id" => $store->getId()));
                     $data['shops'][] = array(
-                        'enabled'    => (bool)$config->get('store_enable', $store->getId()),
-                        'token'      => $config->getToken($store->getId()),
+                        'enabled' => (bool)$config->get('store_enable', $store->getId()),
+                        'token' => $config->getToken($store->getId()),
                         'store_name' => $store->getName(),
                         'domain_url' => $store->getBaseUrl(),
-                        'feed_url'   => $export->getExportUrl(),
-                        'cron_url'   => Mage::getUrl('lengow/cron'),
-                        'options'    => $config->getAllValues($store->getId())
+                        'feed_url' => $export->getExportUrl(),
+                        'cron_url' => Mage::getUrl('lengow/cron'),
+                        'options' => $config->getAllValues($store->getId())
                     );
                 }
             }
@@ -306,24 +306,24 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
                 return json_decode($config->get('account_status'), true);
             }
         }
-        
+
         //TODO call API for return a customer id or false
         //$result = Mage::getModel('lengow/connector')->queryApi('get', '/v3.0/cms');
-//        $result = true;
-        
-//        if ($result) {
+        $result = true;
+
+        if ($result) {
             //TODO call API with customer id parameter for return status account
             //$status = Mage::getModel('lengow/connector')->queryApi('get', '/v3.0/cms');
-//            $status = array();
-//            $status['type'] = 'bad_payer';
-//            $status['day'] = 0;
+            $status = array();
+            $status['type'] = 'prenium';
+            $status['day'] = 0;
 
-//            if ($status) {
-//                $config->set('account_status', Mage::helper('core')->jsonEncode($status));
-//                $config->set('last_status_update', date('Y-m-d H:i:s'));
-//                return $status;
-//            }
-//        }
+            if ($status) {
+                $config->set('account_status', Mage::helper('core')->jsonEncode($status));
+                $config->set('last_status_update', date('Y-m-d H:i:s'));
+                return $status;
+            }
+        }
         return false;
     }
 }
