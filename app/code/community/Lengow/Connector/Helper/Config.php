@@ -41,11 +41,19 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
             'path'   => 'lengow_global_options/advanced/global_authorized_ip',
         ),
         'last_statistic_update' => array(
-            'path'   => 'lengow_import_options/advanced/last_statistic_update',
+            'path'   => 'lengow_global_options/advanced/last_statistic_update',
             'export' => false,
         ),
         'order_statistic' => array(
-            'path'   => 'lengow_import_options/advanced/order_statistic',
+            'path'   => 'lengow_global_options/advanced/order_statistic',
+            'export' => false,
+        ),
+        'last_status_update' => array(
+            'path'   => 'lengow_global_options/advanced/last_status_update',
+            'export' => false,
+        ),
+        'account_status' => array(
+            'path'   => 'lengow_global_options/advanced/account_status',
             'export' => false,
         ),
         'selection_enable' => array(
@@ -137,14 +145,6 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
         ),
         'see_migrate_block' => array(
             'path'   => 'lengow_import_options/advanced/see_migrate_block',
-            'export' => false,
-        ),
-        'last_status_update' => array(
-            'path'   => 'lengow_import_options/advanced/last_status_update',
-            'export' => false,
-        ),
-        'account_status' => array(
-            'path'   => 'lengow_import_options/advanced/account_status',
             'export' => false,
         ),
     );
