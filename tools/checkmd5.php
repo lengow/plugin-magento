@@ -14,6 +14,7 @@ $list_folders = array(
     '/app/code/community/Lengow/Connector/Helper',
     '/app/code/community/Lengow/Connector/Model',
     '/app/code/community/Lengow/Connector/controllers',
+    '/app/code/community/Lengow/Connector/etc',
     '/app/code/community/Lengow/Connector/locale',
     '/app/code/community/Lengow/Connector/sql',
     '/app/design/adminhtml/default/default/template/lengow',
@@ -25,9 +26,6 @@ $file_paths = array(
     $base.'/app/design/adminhtml/default/default/layout/lengow.xml',
     $base.'/app/design/frontend/base/default/layout/lengow.xml',
     $base.'/app/etc/modules/Lengow_Connector.xml',
-    $base.'/app/code/community/Lengow/Connector/etc/adminhtml.xml',
-    $base.'/app/code/community/Lengow/Connector/etc/config.xml',
-    $base.'/app/code/community/Lengow/Connector/etc/system.xml',
 );
 
 foreach ($list_folders as $folder) {
@@ -50,7 +48,7 @@ function explorer($path)
     if (is_dir($path)) {
         $me = opendir($path);
         while ($child = readdir($me)) {
-            if ($child != '.' && $child != '..') {
+            if ($child != '.' && $child != '..' && $child != 'checkmd5.csv') {
                 $result = explorer($path.DIRECTORY_SEPARATOR.$child);
                 $paths = array_merge($paths, $result);
             }

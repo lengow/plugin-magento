@@ -314,11 +314,21 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
             }
             if (isset($results->count) && $results->count > 0) {
                 foreach ($results->results as $row) {
-                    $order_action_id = Mage::getModel('lengow/import_action')->getIdByActionId($row->id);
+                    $order_action_id = Mage::getModel('lengow/import_action')->getActiveActionByActionId($row->id);
                     if ($order_action_id) {
                         $order_action = Mage::getModel('lengow/import_action')->load($order_action_id);
                         $retry = (int)$order_action->getData('retry') + 1;
                         $order_action->updateAction(array('retry' => $retry));
+                    } else {
+                        // if update doesn't work, create new action
+                        $order_action = Mage::getModel('lengow/import_action');
+                        $order_action->createAction(array(
+                            'order_id'       => $order->getId(),
+                            'action_type'    => $action,
+                            'action_id'      => $row->id,
+                            'order_line_sku' => isset($params['line']) ? $params['line'] : null,
+                            'parameters'     => Mage::helper('core')->jsonEncode($params)
+                        ));
                     }
                 }
             } else {

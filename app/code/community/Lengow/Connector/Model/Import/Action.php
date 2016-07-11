@@ -108,17 +108,17 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
     }
 
     /**
-     * Get ID from API action ID
+     * Get active action by API action ID
      *
      * @param integer $action_id action id from API
      *
      * @return mixed
      */
-    public function getIdByActionId($action_id)
+    public function getActiveActionByActionId($action_id)
     {
         $results = $this->getCollection()
             ->addFieldToFilter('action_id', $action_id)
-            ->addFieldToSelect('id')
+            ->addFieldToFilter('state', self::STATE_NEW)
             ->getData();
         if (count($results) > 0) {
             return (int)$results[0]['id'];
@@ -127,20 +127,22 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
     }
 
     /**
-     * Find actions by order id
+     * Find active actions by order id
      *
      * @param integer $order_id
      * @param string  $action_type (ship or cancel)
      *
      * @return mixed
      */
-    public function getOrderActiveAction($order_id, $action_type)
+    public function getActiveActionByOrderId($order_id, $action_type = null)
     {
-        $results = $this->getCollection()
+        $collection = $this->getCollection()
             ->addFieldToFilter('order_id', $order_id)
-            ->addFieldToFilter('action_type', $action_type)
-            ->addFieldToFilter('state', self::STATE_NEW)
-            ->getData();
+            ->addFieldToFilter('state', self::STATE_NEW);
+        if (!is_null($action_type)) {
+            $collection->addFieldToFilter('action_type', $action_type);
+        }
+        $results = $collection->getData();
         if (count($results) > 0) {
             return $results;
         }
@@ -198,25 +200,6 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
                 ->addFieldToFilter('main_table.state', self::STATE_NEW)
                 ->getData();
         }
-        if (count($results) > 0) {
-            return $results;
-        }
-        return false;
-    }
-
-    /**
-     * Find active actions by order id
-     *
-     * @param integer $order_id
-     *
-     * @return mixed
-     */
-    public function getActiveActionByOrderId($order_id)
-    {
-        $results = $this->getCollection()
-            ->addFieldToFilter('order_id', $order_id)
-            ->addFieldToFilter('state', self::STATE_NEW)
-            ->getData();
         if (count($results) > 0) {
             return $results;
         }
