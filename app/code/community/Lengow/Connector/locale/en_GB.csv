@@ -8,7 +8,7 @@ global.just_yes|Yes
 global.just_no|No
 header.preprod_active|Pre-production mode
 header.counter|Day left: %{counter}
-header.updgrade_account|upgrade
+header.upgrade_account|upgrade
 footer.toolbox|Toolbox
 footer.legals|Legals
 footer.copyright_lengow|Copyright Lengow
@@ -57,11 +57,11 @@ product.screen.sync_your_store|Synchronize my store with Lengow
 product.screen.button_download|Download
 product.screen.store_last_indexation|Last indexation
 product.screen.store_not_index|Not indexed yet
-product.table.publish_on_lengow|Publish on Lengow
+product.table.publish_on_lengow|Published on Lengow
 product.table.change_publication|Change Lengow's publication
 product.table.publication|Publication
 order.screen.title|Orders
-order.screen.button_import|Import orders
+order.screen.button_import|Synchronize Orders
 order.screen.button_migrate|Don't show this message again
 order.screen.preprod_warning_message|You are in pre-production mode. You can import orders, but no interaction with Lengow is possible. <a href=%{url}>Change this</a>
 order.screen.nb_old_order_imported|With Lengow you have already imported and processed %{nb_order} orders
@@ -70,8 +70,8 @@ order.screen.where_see_old_order|Other orders already processed are visible in t
 order.screen.all_order_will_be_sent_to|All order issue reports will be sent by mail to
 order.screen.no_order_will_be_sent|No order issue reports will be sent by mail
 order.screen.change_this|Change this?
-order.screen.last_order_importation|Last order importation : %{last_importation}
-order.screen.no_order_importation|No order synchronization for now
+order.screen.last_order_importation|Last synchronization : %{last_importation}
+order.screen.no_order_importation|No synchronisation for now
 order.screen.order_with_error|You have %{nb_order} order(s) with errors
 order.screen.order_to_be_sent|You have %{nb_order} order(s) waiting to be sent
 order.screen.lengow_information|Lengow informations
@@ -89,9 +89,9 @@ order.screen.imported_at|Imported at
 order.screen.message|Message
 order.screen.extra|JSON format
 order.screen.not_lengow_order|This order doesn't come from Lengow
-order.screen.not_follow_by_lengow|Due a reimportation, this order is not followed by Lengow
-order.screen.cancel_and_reimport|Cancel and re-import order
-order.screen.check_cancel_and_reimport|Do you really want to cancel and re-import the order?
+order.screen.not_follow_by_lengow|Due to a reimportation, this order is not followed by Lengow
+order.screen.cancel_and_reimport|Re-import order
+order.screen.check_cancel_and_reimport|Do you really want to re-import the order?
 order.screen.synchronize_id|Synchronize ID
 order.screen.resend_action|Resend Action
 order.screen.check_resend_action|Do you really want to %{action} the order?
@@ -113,7 +113,7 @@ order.table.order_not_imported|Order hasn't been imported into Magento
 order.table.action_sent|action %{action_type} sent
 order.table.not_imported|not imported
 order.table.not_sent|not sent
-order.table.action_waiting_return|Action sent, waiting returns
+order.table.action_waiting_return|Action sent, waiting for response
 order.table.action_sent_not_work|Action sent to the marketplace didn't work
 order.table.status_not_synchronized|Not synchronized
 order.table.status_accepted|Accepted
@@ -143,7 +143,7 @@ legals.screen.social_capital|Social capital:
 legals.screen.cnil_declaration|CNIL declaration:
 legals.screen.company_registration_number|Company Registration Number, Nantes:
 legals.screen.vat_identification_number|VAT identification number:
-legals.screen.address|Adress
+legals.screen.address|Address
 legals.screen.contact|Contact
 legals.screen.hosting|Hosting
 toolbox.screen.title|Lengow Toolbox
@@ -152,7 +152,7 @@ toolbox.screen.plugin_information|Plugin information
 toolbox.screen.server_ip|Server IP
 toolbox.screen.authorized_ip|Authorised IP
 toolbox.screen.legacy_enable|Legacy fields enabled
-toolbox.screen.export_on_a_file|Export on a file enabled
+toolbox.screen.export_on_a_file|Export in a file enabled
 toolbox.screen.export_cron_enable|Magento cron job enabled for export
 toolbox.screen.pre_production_enable|Pre-production mode disabled
 toolbox.screen.write_permission|Write permission from media folder
@@ -239,8 +239,8 @@ lengow_setting.global_authorized_ip_label|IP authorized
 lengow_setting.global_authorized_ip_comment|Authorized access by IP, separated by ;
 lengow_setting.export_setting|Export settings
 lengow_setting.export_simple_setting|Simple export settings
-lengow_setting.export_selection_enable_label|Export only selected product
-lengow_setting.export_out_stock_label|Export product out of stock
+lengow_setting.export_selection_enable_label|Export only selected products
+lengow_setting.export_out_stock_label|Export out of stock products
 lengow_setting.export_product_type_label|Product type to export
 lengow_setting.export_product_status_label|Status of product to export
 lengow_setting.export_advanced_setting|Advanced export settings
@@ -253,20 +253,20 @@ lengow_setting.export_default_shipping_country_comment|Default country for shipp
 lengow_setting.export_default_shipping_method_label|Shipping method
 lengow_setting.export_default_shipping_method_comment|Default shipping method to calculate shipping cost
 lengow_setting.export_default_shipping_price_label|Shipping cost
-lengow_setting.export_default_shipping_price_comment|Default shipping cost if matching find
+lengow_setting.export_default_shipping_price_comment|Default shipping cost if matching found
 lengow_setting.export_legacy_enable_label|Export with legacy feed
-lengow_setting.export_legacy_enable_comment|Compatibility for old lengow versions
+lengow_setting.export_legacy_enable_comment|Compatibility with old Lengow versions
 lengow_setting.export_file_enable_label|Save feed on file
 lengow_setting.export_file_enable_comment|Save the feed on a file
 lengow_setting.export_cron_enable_lable|Enable Magento cron
-lengow_setting.export_cron_enable_comment|Enable the scheduled task for export your feed every 4 hours
+lengow_setting.export_cron_enable_comment|Enable the scheduled task to export your feed every 4 hours
 lengow_setting.import_setting|Import settings
 lengow_setting.import_simple_setting|Simple import settings
 lengow_setting.import_advanced_setting|Advanced import settings
 lengow_setting.import_days_title|Import orders from x days
 lengow_setting.import_days_comment|Choose a number of days
 lengow_setting.import_customer_group_title|Customer group
-lengow_setting.import_customer_group_comment|Choose a customer group for lengow customer
+lengow_setting.import_customer_group_comment|Choose a customer group for Lengow customer
 lengow_setting.import_default_shipping_method_title|Shipping method
 lengow_setting.import_default_shipping_method_comment|Choose a shipping method for imported orders
 lengow_setting.import_report_mail_enable_title|I would like to be notified when there are issues regarding order importation
@@ -279,7 +279,7 @@ lengow_setting.import_stock_ship_mp_comment|Use this option to take into account
 lengow_setting.import_preprod_mode_enable_title|Preprod mode
 lengow_setting.import_preprod_mode_enable_comment|Only for preproduction's mode: no synchronization orders with Lengow, import orders every time
 lengow_setting.import_cron_enable_title|Enable Magento cron
-lengow_setting.import_cron_enable_comment|Enable the scheduled task for import your order every 30 minutes
+lengow_setting.import_cron_enable_comment|Enable the scheduled task to import your order every 30 minutes
 lengow_log.error.nb_order_imported|%{nb_order} order(s) imported
 lengow_log.error.nb_order_updated|%{nb_order} order(s) updated
 lengow_log.error.nb_order_with_error|%{nb_order} order(s) with errors
@@ -304,7 +304,7 @@ lengow_log.exception.timeout_api|API call was blocked by a timeout
 lengow_log.exception.marketplace_not_present|Lengow error: the marketplace %{markeplace_name} does not feature in the marketplace list
 lengow_log.exception.order_failed_with_quote|service unable to create order based on given quote
 lengow_log.exception.order_is_empty|order could not be saved
-lengow_log.exception.order_line_required|order line is require, but not found in the order
+lengow_log.exception.order_line_required|order line is required but not found in the order
 lengow_log.exception.action_not_valid|action %{action} is not valid
 lengow_log.exception.marketplace_action_not_present|marketplace actions %{action} are not present
 lengow_log.exception.store_id_require|store ID is required
@@ -326,10 +326,10 @@ log.export.execution_time|execution time: %{seconds} seconds
 log.export.generate_feed_available_here|export of the store %{store_name} (%{store_id}) generated a file here : %{feed_url}
 log.export.unauthorised_ip|unauthorised IP : %{ip}
 log.export.error_configurable_product_disabled|WARNING ! %{nb_product} simple product(s) are associated with configurable products disabled
-log.export.error_folder_not_created|can't create folder %{folder_path}
-log.export.error_folder_not_writable|can't access folder %{folder_path}
+log.export.error_folder_not_created|unable to create folder %{folder_path}.
+log.export.error_folder_not_writable|unable to access to the folder %{folder_path}.
 log.import.not_valid_action|Action: %{action} is not a valid action
-log.import.preprod_mode_active|warning ! Preprod mode is activated
+log.import.preprod_mode_active|warning ! Pre-prod mode is activated
 log.import.start|## start %{type} import ##
 log.import.end|## end %{type} import ##
 log.import.start_for_store|start import in store %{store_name} (%{store_id})
@@ -337,14 +337,14 @@ log.import.connector_get_order|get order with order id: %{marketplace_sku} and m
 log.import.connector_get_all_order|get orders between %{date_from} and %{date_to} with account ID: %{account_id}
 log.import.find_one_order|%{nb_order} order found for order ID: %{marketplace_sku} and markeplace: %{markeplace_name} with account ID: %{account_id}
 log.import.find_all_orders|%{nb_order} order(s) found with account ID: %{account_id}
-log.import.external_id_exist|already imported in a Magento with order ID %{order_id}
+log.import.external_id_exist|already imported in a Magento with the order ID %{order_id}
 log.import.order_shipped_by_marketplace|order shipped by %{markeplace_name}
 log.import.current_order_state_unavailable|current order's state [%{order_state_marketplace}] makes it unavailable to import for marketplace %{marketplace_name}
 log.import.import_failed|import failed - %{decoded_message}
-log.import.lengow_order_saved|order saved in lengow orders table
-log.import.lengow_order_not_saved|WARNING ! Order could NOT be saved in lengow orders table
-log.import.lengow_order_updated|order updated in lengow orders table
-log.import.lengow_order_line_saved|save order lines product : %{order_line_saved}
+log.import.lengow_order_saved|order saved in Lengow orders table
+log.import.lengow_order_not_saved|WARNING ! Order could NOT be saved in Lengow orders table
+log.import.lengow_order_updated|order updated in Lengow orders table
+log.import.lengow_order_line_saved|save order lines product: %{order_line_saved}
 log.import.rewrite_processing_fee|rewrite amount without processing fee
 log.import.rewrite_shipping_cost|rewrite amount without shipping cost
 log.import.shipping_method_unavailable|the selected shipping method is unavailable for current order. Lengow shipping method assigned
@@ -353,7 +353,7 @@ log.import.product_be_found|product id %{product_id} found with field %{attribut
 log.import.product_state_canceled|product %{product_id} could not be added to cart - status: %{state_product}
 log.import.order_already_imported|order already imported (ORDER ID %{order_id})
 log.import.order_ready_to_reimport|order is ready to be re-imported (ORDER ID %{order_id})
-log.import.order_state_updated|order's state has been updated to %{state_name}
+log.import.order_state_updated|order's status has been updated to %{state_name}
 log.import.order_successfully_imported|order successfully imported (ORDER ID %{order_id})
 log.import.order_import_failed|import order failed - %{decoded_message}
 log.import.error_value_required|%{key} is required to create Lengow order
@@ -367,7 +367,7 @@ log.import.quantity_back_reimported_order|adding quantity back to stock (order i
 log.import.quantity_back_shipped_by_marketplace|adding quantity back to stock (order shipped by marketplace)
 log.mail_report.send_mail_to|report email sent to %{email}
 log.mail_report.unable_send_mail_to|unable to send report email to %{email}
-log.order_action.start_for_store|check finish actions in store %{store_name} (%{store_id})
+log.order_action.start_for_store|check completed actions in store %{store_name} (%{store_id})
 log.order_action.start_not_sent_for_store|check actions not sent in store %{store_name} (%{store_id})
 log.order_action.try_to_send_action|try to send %{action} action (ORDER ID %{order_id})
 log.order_action.action_send|action %{action} successfully sent (ORDER ID %{order_id})

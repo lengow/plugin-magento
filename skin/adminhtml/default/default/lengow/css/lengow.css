@@ -385,10 +385,6 @@ body.lengow-connector .middle,
 
 /* GRID */
 
-/*.grid table td{
-  font-family: 'Open Sans', sans-serif;
-}*/
-
 .lgw-row{
     margin-left: -15px;
     margin-right: -15px;
@@ -646,9 +642,6 @@ hr{
   border-radius: 50%;
 }
 
-
-
-
 /***************************************************************************************************************************************************/
 /*                     PAGES                                                                                                                        */
 /***************************************************************************************************************************************************/
@@ -662,10 +655,6 @@ hr{
 body.lengow-connector .middle {
   padding:23px 27px 0 27px;
   background:transparent!important;
-}
-
-.footer {
-  padding:0px;
 }
 
 .lgw-footer{

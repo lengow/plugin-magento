@@ -313,8 +313,8 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
             //TODO call API with customer id parameter for return status account
             //$status = Mage::getModel('lengow/connector')->queryApi('get', '/v3.0/cms');
             $status = array();
-            $status['type'] = 'premium';
-            $status['day'] = 0;
+            $status['type'] = 'free_trial';
+            $status['day'] = 10;
             if ($status) {
                 $config->set('account_status', Mage::helper('core')->jsonEncode($status));
                 $config->set('last_status_update', date('Y-m-d H:i:s'));

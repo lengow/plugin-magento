@@ -1,5 +1,5 @@
 <?php
-$account_status = json_decode(Mage::helper('lengow_connector/config')->get('account_status'), true);
+$account_status = Mage::helper('lengow_connector/sync')->getStatusAccount();
 if ((bool)Mage::helper('lengow_connector/config')->get('preprod_mode_enable')) { ?>
         <span id="lgw-preprod">
             <?php echo Mage::helper('lengow_connector')->__('header.preprod_active'); ?>
@@ -8,7 +8,7 @@ if ((bool)Mage::helper('lengow_connector/config')->get('preprod_mode_enable')) {
 if ($account_status['type'] == 'free_trial' && $account_status['day'] != 0) :?>
     <span id="lgw-counter">
             <?php echo Mage::helper('lengow_connector')->__('header.counter', array('counter' => $account_status['day'])); ?>
-        <a href="http://www.lengow.com/"><?php echo Mage::helper('lengow_connector')->__('header.updgrade_account'); ?></a>
+        <a href="http://www.lengow.com/"><?php echo Mage::helper('lengow_connector')->__('header.upgrade_account'); ?></a>
     </span>
     <div class="clear"></div>
 <?php endif; ?>
