@@ -20,6 +20,7 @@
                     <block type="page/html" name="lengow_header" template="lengow/header.phtml" />
                     <block type="page/html" name="lengow_dashboard" template="lengow/home/dashboard.phtml" />
                     <block type="page/html" name="lengow_new" template="lengow/home/new.phtml" />
+                    <block type="page/html" name="lengow_status" template="lengow/home/status.phtml" />
                     <block type="page/html" name="lengow_footer" template="lengow/footer.phtml" />
               </block>
         </reference>

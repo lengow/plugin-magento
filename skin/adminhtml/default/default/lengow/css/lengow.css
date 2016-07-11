@@ -690,6 +690,15 @@ body.lengow-connector .middle {
   display: inline-block;
 }
 
+/* COUNTER FREE TRIAL */
+#lgw-counter{
+    color:white;
+    background:#2b598a;
+    padding:8px 18px;
+    margin-bottom: 15px;
+    font-size:12px;
+    display: inline-block;
+}
 
 
 /*************************************************/
@@ -717,12 +726,19 @@ body.lengow-connector .middle {
 .adminhtml-lengow-home-index #lgw-preprod{
   color:white;
   background:#e55a4d;
-  padding:5px 10px;
   position:absolute;
   left:0px;
   font-size:12px;
-  z-index:2;
-  top:177px;
+  z-index:1;
+  top:200px;
+}
+
+.adminhtml-lengow-home-index #lgw-counter{
+    position:absolute;
+    left:0px;
+    font-size:12px;
+    z-index:2;
+    top:140px;
 }
 
 .adminhtml-lengow-home-index .lgw-col-4 a{

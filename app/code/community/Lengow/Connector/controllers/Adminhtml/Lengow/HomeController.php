@@ -54,4 +54,15 @@ class Lengow_Connector_Adminhtml_Lengow_HomeController extends Mage_Adminhtml_Co
     {
         return Mage::getSingleton('admin/session')->isAllowed('lengow_connector/home');
     }
+
+    /**
+     * Refresh account status
+     */
+    public function refreshAction()
+    {
+        Mage::helper('lengow_connector/sync')->getStatusAccount(true);
+
+        $url = Mage::helper('adminhtml')->getUrl("adminhtml/lengow_home");
+        Mage::app()->getResponse()->setRedirect($url);
+    }
 }
