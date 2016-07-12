@@ -17,22 +17,25 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action
     {
         set_time_limit(0);
         ini_set('memory_limit', '1G');
-        //get params data
+        // compatibility old versions
+        $selection = $this->getRequest()->getParam('selected_products', null);
+        $out_of_stock = $this->getRequest()->getParam('product_out_of_stock', null);
+        $product_ids = $this->getRequest()->getParam('ids_product', null);
+        // get params data
         $mode = $this->getRequest()->getParam('mode');
         $format = $this->getRequest()->getParam('format', null);
-        $types = $this->getRequest()->getParam('product_type', null);
-        $export_child = $this->getRequest()->getParam('export_child', null);
-        $status = $this->getRequest()->getParam('product_status', null);
-        $out_of_stock = $this->getRequest()->getParam('product_out_of_stock', null);
-        $selected_products = $this->getRequest()->getParam('selected_products', null);
         $stream = $this->getRequest()->getParam('stream', null);
-        $limit = $this->getRequest()->getParam('limit', null);
         $offset = $this->getRequest()->getParam('offset', null);
-        $ids_product = $this->getRequest()->getParam('ids_product', null);
+        $limit = $this->getRequest()->getParam('limit', null);
+        $selection = is_null($selection) ? $this->getRequest()->getParam('selection', null) : $selection;
+        $out_of_stock = is_null($out_of_stock) ? $this->getRequest()->getParam('out_of_stock', null) : $out_of_stock;
+        $product_ids = is_null($product_ids) ? $this->getRequest()->getParam('product_ids', null) : $product_ids;
+        $product_type = $this->getRequest()->getParam('product_type', null);
+        $product_status = $this->getRequest()->getParam('product_status', null);
         $legacy_fields = $this->getRequest()->getParam('legacy_fields', null);
+        $log_output = $this->getRequest()->getParam('log_output', null);
         $currency = $this->getRequest()->getParam('currency', null);
         $update_export_date = $this->getRequest()->getParam('update_export_date', null);
-        $log_output = $this->getRequest()->getParam('log_output', null);
         //get store data
         $storeCode = $this->getRequest()->getParam('code', null);
         if ($storeCode) {
@@ -60,14 +63,14 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action
                     'store_id'           => $storeId,
                     'format'             => $format,
                     'mode'               => $mode,
-                    'types'              => $types,
-                    'status'             => $status,
+                    'product_type'       => $product_type,
+                    'product_status'     => $product_status,
                     'out_of_stock'       => $out_of_stock,
-                    'selected_products'  => $selected_products,
+                    'selection'          => $selection,
                     'stream'             => $stream,
                     'limit'              => $limit,
                     'offset'             => $offset,
-                    'product_ids'        => $ids_product,
+                    'product_ids'        => $product_ids,
                     'currency'           => $currency,
                     'legacy_fields'      => $legacy_fields,
                     'update_export_date' => $update_export_date,

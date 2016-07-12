@@ -23,15 +23,21 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
     public function __()
     {
         $args = func_get_args();
+        $params = array();
+        $iso_code = null;
         $t = Mage::helper('lengow_connector/translation');
-        if ($args[0]=="") {
+        if ($args[0] == "") {
             return "";
+        } else {
+            $message = $args[0];
         }
-
         if (isset($args[1]) && is_array($args[1])) {
-            return $t->t($args[0], $args[1]);
+            $params = $args[1];
         }
-        return $t->t($args[0]);
+        if (isset($args[2]) && strlen($args[2]) > 0) {
+            $iso_code = $args[2];
+        }
+        return $t->t($message, $params, $iso_code);
     }
 
     /**
@@ -167,11 +173,12 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
      * Convert specials chars to html chars
      * Clean None utf-8 characters
      *
-     * @param string $value The content
+     * @param string  $value The content
+     * @param boolean $html  keep html or not
      *
      * @return string $value
      */
-    public function cleanData($value)
+    public function cleanData($value, $html = true)
     {
         if (is_array($value)) {
             return $value;
@@ -187,6 +194,10 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
         // Reject overly long 3 byte sequences and UTF-16 surrogates and replace with blank
         $value = preg_replace('/\xE0[\x80-\x9F][\x80-\xBF]' .
             '|\xED[\xA0-\xBF][\x80-\xBF]/S', '', $value);
+        if (!$html) {
+            $pattern = '@<[\/\!]*?[^<>]*?>@si'; //nettoyage du code HTML
+            $value = preg_replace($pattern, ' ', $value);
+        }
         $value = preg_replace('/[\s]+/', ' ', $value); //nettoyage des espaces multiples
         $value = trim($value);
         $value = str_replace(

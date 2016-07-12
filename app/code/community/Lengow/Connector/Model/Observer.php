@@ -193,7 +193,8 @@ class Lengow_Connector_Model_Observer
                             'store_id'           => $store_id,
                             'stream'             => false,
                             'update_export_date' => false,
-                            'type'               => 'magento cron'
+                            'type'               => 'magento cron',
+                            'log_output'         => false,
                         ));
                         $export->exec();
                     } catch (Exception $e) {
