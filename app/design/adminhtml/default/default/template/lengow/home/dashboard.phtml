@@ -3,7 +3,6 @@ $helper = Mage::helper('lengow_connector');
 $stats = Mage::helper('lengow_connector/sync')->getStatistic();
 $total_order = isset($stats['total_order']) ? $stats['total_order'] : 0;
 $nb_order = isset($stats['nb_order']) ? $stats['nb_order'] : 0;
-$average_order = isset($stats['average_order']) ? $stats['average_order'] : 0;
 $order_to_be_sent = Mage::getModel('lengow/import_order')->countOrderToBeSent();
 ?>
 
@@ -50,17 +49,13 @@ $order_to_be_sent = Mage::getModel('lengow/import_order')->countOrderToBeSent();
     <div class="lgw-box text-center">
         <h2><?php echo $helper->__('dashboard.screen.partner_business'); ?></h2>
         <div class="lgw-row lgw-home-stats">
-            <div class="lgw-col-4">
+            <div class="lgw-col-6">
                 <h5><?php echo $helper->__('dashboard.screen.stat_turnover'); ?></h5>
                 <span class="stats-big-value"><?php echo $total_order; ?></span>
             </div>
-            <div class="lgw-col-4">
+            <div class="lgw-col-6">
                 <h5><?php echo $helper->__('dashboard.screen.stat_nb_orders'); ?></h5>
                 <span class="stats-big-value"><?php echo $nb_order; ?></span>
-            </div>
-            <div class="lgw-col-4">
-                <h5><?php echo $helper->__('dashboard.screen.stat_avg_order'); ?></h5>
-                <span class="stats-big-value"><?php echo $average_order; ?></span>
             </div>
         </div>
         <p>

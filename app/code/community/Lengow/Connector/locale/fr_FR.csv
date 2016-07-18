@@ -7,9 +7,11 @@ module.name|Lengow
 global.just_yes|Oui
 global.just_no|Non
 header.preprod_active|Mode préproduction 
-footer.toolbox|Boite à outils 
+header.counter|Période d'essai : %{counter} jour(s) restant(s)
+header.upgrade_account|mettre à jour
+footer.toolbox|Toolbox
 footer.legals|Mentions légales
-footer.copyright_lengow|Copyright Lengow
+footer.plugin_lengow|Lengow Magento Module
 dashboard.screen.welcome_back|Bonjour ! Bienvenue parmi nous !
 dashboard.screen.go_to_lengow|Aller sur la plateforme Lengow
 dashboard.screen.products_title|Produits
@@ -21,12 +23,26 @@ dashboard.screen.settings_text|Configurer les principaux paramètres de votre pl
 dashboard.screen.partner_business|Lengow, partenaire de votre activité e-commerce
 dashboard.screen.stat_turnover|Chiffre d'affaires
 dashboard.screen.stat_nb_orders|Commandes
-dashboard.screen.stat_avg_order|Panier moyen
 dashboard.screen.stat_more_stats|Plus de statistiques ?
 dashboard.screen.some_help_title|Besoin d'aide ?
 dashboard.screen.get_in_touch|Prenez contact avec les équipes Lengow.
 dashboard.screen.visit_help_center|Visitez notre Help Center
 dashboard.screen.configure_plugin|pour plus d'informations sur la configuration de votre plugin Magento
+status.screen.title_end_free_trial|Toutes les bonnes choses ont une fin 
+status.screen.subtitle_end_free_trial|Vous avez atteint la fin de votre période d'essai !
+status.screen.first_description_end_free_trial|Vos 15 jours d'essai gratuits sur la plateforme Lengow sont maintenant terminés. Nous espérons que vous avez pu en profiter au mieux pour votre activité e-commerce.
+status.screen.second_description_end_free_trial|Votre compte va être désactivé jusqu'à ce que vous souscriviez à un abonnement sur la plateforme Lengow. Toutes les diffusions en cours ainsi que les indexations vont être momentanément stoppées.
+status.screen.third_description_end_free_trial|Votre compte d'essai sera supprimé 30 jours après expiration.<br />Pour conserver l'intégralité du paramétrage que vous avez défini, pensez à vous abonner dès à présent !
+status.screen.title_bad_payer|Les erreurs arrivent parfois...
+status.screen.subtitle_bad_payer|Votre compte est temporairement fermé
+status.screen.first_description_bad_payer|Nous sommes désolé d'en arriver là mais nous devons limiter temporairement l'accès à votre compte car le paiement automatique de votre abonnement n'a pu se faire.
+status.screen.second_description_bad_payer|La publication de vos catalogues est aussi suspendue. Nous vous recommandons vivement de prendre contact avec nous par mail
+status.screen.phone_bad_payer|ou par téléphone au +33 (0)2 85 52 64 15
+status.screen.third_description_bad_payer|Nous espérons vous revoir très rapidement parmi nous
+status.screen.signature_bad_payer|L'équipe Lengow
+status.screen.facturation_button|Voir mes informations des facturation
+status.screen.upgrade_account_button|Je suis prêt à m'abonner !
+status.screen.refresh_action|Actualiser mon compte
 product.screen.title|Exporter les produits 
 product.screen.nb_exported|produits exportés 
 product.screen.nb_available|produits disponibles
@@ -34,6 +50,9 @@ product.screen.include_out_of_stock|Inclure les produits déclinés
 product.screen.include_out_of_stock_support|Activez cette option si vous souhaitez exporter l'ensemble de votre stock
 product.screen.include_specific_product|Inclure une sélection de produits
 product.screen.include_specific_product_support|Utilisez cette option pour sélectionner vos produits individuellement
+product.screen.lengow_store_sync|Synchronisé
+product.screen.lengow_store_no_sync|Non synchronisé
+product.screen.sync_your_store|Synchronisez ma boutique avec Lengow
 product.screen.button_download|Télécharger
 product.screen.store_last_indexation|Dernière indexation
 product.screen.store_not_index|Pas encore indexé
@@ -126,11 +145,12 @@ legals.screen.vat_identification_number|Numéro de TVA intracommunautaire :
 legals.screen.address|Adresse
 legals.screen.contact|Contact
 legals.screen.hosting|Hébergement
-toolbox.screen.title|Boite à outils Lengow
+toolbox.screen.title|Lengow Toolbox
 toolbox.screen.gobal_information|Information globale
 toolbox.screen.plugin_information|Information plugin
 toolbox.screen.server_ip|IP Serveur
 toolbox.screen.authorized_ip|IP autorisée
+toolbox.screen.legacy_enable|Exportez le flux avec les en-têtes de la version antérieure
 toolbox.screen.export_on_a_file|Export sur les fichiers activé
 toolbox.screen.export_cron_enable|Magento cron job sont prêts pour l'export
 toolbox.screen.pre_production_enable|Mode préproduction désactivé

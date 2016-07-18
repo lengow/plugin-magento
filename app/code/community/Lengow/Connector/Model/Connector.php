@@ -53,12 +53,13 @@ class Lengow_Connector_Model_Connector
     /**
      * @var string URL of the API Lengow
      */
+    //const LENGOW_API_URL = 'http://api.lengow.io:80';
     const LENGOW_API_URL = 'http://api.lengow.net:80';
 
     /**
      * @var string URL of the SANDBOX Lengow
      */
-    const LENGOW_API_SANDBOX_URL = 'http://10.100.1.82:8081';
+    const LENGOW_API_SANDBOX_URL = 'http://api.lengow.net:80';
 
     /**
      * Default options for curl.
@@ -242,12 +243,7 @@ class Lengow_Connector_Model_Connector
      */
     private function _callAction($api, $args, $type, $format = 'json', $body = '')
     {
-        if ($api == '/v3.0/numbers') {
-            $url = 'http://10.100.1.82:8082';
-        } else {
-            $url = self::LENGOW_API_URL;
-        }
-        $result = $this->_makeRequest($type, $url.$api, $args, $this->_token, $body);
+        $result = $this->_makeRequest($type, self::LENGOW_API_URL.$api, $args, $this->_token, $body);
         return $this->_format($result, $format);
     }
 

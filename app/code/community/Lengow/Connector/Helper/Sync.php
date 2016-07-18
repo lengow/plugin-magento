@@ -11,9 +11,9 @@
 class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
 {
     /**
-     * Get Statistic with all store
+     * Get Statistic with all store every 5 hours
      */
-    protected $_cache_time = 10800;
+    protected $_cache_time = 18000;
 
     /**
      * Get Sync Data (Inscription / Update)
@@ -199,7 +199,6 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
         $return = array();
         $return['total_order'] = 0;
         $return['nb_order'] = 0;
-        $return['average_order'] = 0;
         $return['currency'] = '';
         // get stats by store
         $store_collection = Mage::getResourceModel('core/store_collection')->addFieldToFilter('is_active', 1);
@@ -211,16 +210,21 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
             if (is_null($account_id) || in_array($account_id, $account_ids) || empty($account_id)) {
                 continue;
             }
+            // TODO test call API for return statistics
             $connector = Mage::getModel('lengow/connector');
             $result = $connector->queryApi(
                 'get',
-                '/v3.0/numbers',
-                $store->getId()
+                '/v3.0/stats',
+                $store->getId(),
+                array(
+                    'date_from' => date('c', strtotime(date('Y-m-d').' -10 years')),
+                    'date_to'   => date('c'),
+                    'metrics'   => 'year',
+                )
             );
-            if (isset($result->revenues)) {
-                $return['total_order'] += $result->revenues;
-                $return['nb_order'] += $result->transactions;
-                $return['average_order'] += $result->average_order;
+            if (isset($result->level0)) {
+                $return['total_order'] += $result->level0->revenue;
+                $return['nb_order'] += $result->level0->transactions;
                 $return['currency'] = $result->currency->iso_a3;
             }
             $account_ids[] = $account_id;
@@ -235,19 +239,12 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
                 }
             }
         }
-        if ($i > 0) {
-            $return['average_order'] = round($return['average_order'] / $i, 2);
-        }
         if ($return['currency'] && in_array($return['currency'], $all_currencies)) {
             $return['total_order'] = Mage::app()->getLocale()
                 ->currency($return['currency'])
                 ->toCurrency($return['total_order']);
-            $return['average_order'] = Mage::app()->getLocale()
-                ->currency($return['currency'])
-                ->toCurrency($return['average_order']);
         } else {
             $return['total_order'] = number_format($return['total_order'], 2, ',', ' ');
-            $return['average_order'] = number_format($return['average_order'], 2, ',', ' ');
         }
         $return['nb_order'] = (int)$return['nb_order'];
         $config->set('order_statistic', Mage::helper('core')->jsonEncode($return));
@@ -295,6 +292,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
      * Get Status Account
      *
      * @param boolean $force Force cache Update
+     *
      * @return mixed
      */
     public function getStatusAccount($force = false)
@@ -306,11 +304,11 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
                 return json_decode($config->get('account_status'), true);
             }
         }
-        //TODO call API for return a customer id or false
+        // TODO call API for return a customer id or false
         //$result = Mage::getModel('lengow/connector')->queryApi('get', '/v3.0/cms');
         $result = true;
         if ($result) {
-            //TODO call API with customer id parameter for return status account
+            // TODO call API with customer id parameter for return status account
             //$status = Mage::getModel('lengow/connector')->queryApi('get', '/v3.0/cms');
             $status = array();
             $status['type'] = 'free_trial';

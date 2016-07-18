@@ -12,10 +12,12 @@ fr:
     just_no: "Non"
   header:
     preprod_active: "Mode préproduction "
+    counter: "Période d'essai : %{counter} jour(s) restant(s)"
+    upgrade_account: "mettre à jour"
   footer:
-    toolbox: "Boite à outils "
+    toolbox: "Toolbox"
     legals: "Mentions légales"
-    copyright_lengow: "Copyright Lengow"
+    plugin_lengow: "Lengow Magento Module"
   dashboard:
     screen:
       welcome_back: "Bonjour ! Bienvenue parmi nous !"
@@ -29,12 +31,28 @@ fr:
       partner_business: "Lengow, partenaire de votre activité e-commerce"
       stat_turnover: "Chiffre d'affaires"
       stat_nb_orders: "Commandes"
-      stat_avg_order: "Panier moyen"
       stat_more_stats: "Plus de statistiques ?"
       some_help_title: "Besoin d'aide ?"
       get_in_touch: "Prenez contact avec les équipes Lengow."
       visit_help_center: "Visitez notre Help Center"
       configure_plugin: "pour plus d'informations sur la configuration de votre plugin Magento"
+  status:
+    screen:
+      title_end_free_trial: "Toutes les bonnes choses ont une fin "
+      subtitle_end_free_trial: "Vous avez atteint la fin de votre période d'essai !"
+      first_description_end_free_trial: "Vos 15 jours d'essai gratuits sur la plateforme Lengow sont maintenant terminés. Nous espérons que vous avez pu en profiter au mieux pour votre activité e-commerce."
+      second_description_end_free_trial: "Votre compte va être désactivé jusqu'à ce que vous souscriviez à un abonnement sur la plateforme Lengow. Toutes les diffusions en cours ainsi que les indexations vont être momentanément stoppées."
+      third_description_end_free_trial: "Votre compte d'essai sera supprimé 30 jours après expiration.\nPour conserver l'intégralité du paramétrage que vous avez défini, pensez à vous abonner dès à présent !"
+      title_bad_payer: "Les erreurs arrivent parfois..."
+      subtitle_bad_payer: "Votre compte est temporairement fermé"
+      first_description_bad_payer: "Nous sommes désolé d'en arriver là mais nous devons limiter temporairement l'accès à votre compte car le paiement automatique de votre abonnement n'a pu se faire."
+      second_description_bad_payer: "La publication de vos catalogues est aussi suspendue. Nous vous recommandons vivement de prendre contact avec nous par mail"
+      phone_bad_payer: "ou par téléphone au +33 (0)2 85 52 64 15"
+      third_description_bad_payer: "Nous espérons vous revoir très rapidement parmi nous"
+      signature_bad_payer: "L'équipe Lengow"
+      facturation_button: "Voir mes informations des facturation"
+      upgrade_account_button: "Je suis prêt à m'abonner !"
+      refresh_action: "Actualiser mon compte"
   product:
     screen:
       title: "Exporter les produits "
@@ -44,6 +62,9 @@ fr:
       include_out_of_stock_support: "Activez cette option si vous souhaitez exporter l'ensemble de votre stock"
       include_specific_product: "Inclure une sélection de produits"
       include_specific_product_support: "Utilisez cette option pour sélectionner vos produits individuellement"
+      lengow_store_sync: "Synchronisé"
+      lengow_store_no_sync: "Non synchronisé"
+      sync_your_store: "Synchronisez ma boutique avec Lengow"
       button_download: "Télécharger"
       store_last_indexation: "Dernière indexation"
       store_not_index: "Pas encore indexé"
@@ -149,11 +170,12 @@ fr:
       hosting: "Hébergement"
   toolbox:
     screen:
-      title: "Boite à outils Lengow"
+      title: "Lengow Toolbox"
       gobal_information: "Information globale"
       plugin_information: "Information plugin"
       server_ip: "IP Serveur"
       authorized_ip: "IP autorisée"
+      legacy_enable: "Exportez le flux avec les en-têtes de la version antérieure"
       export_on_a_file: "Export sur les fichiers activé"
       export_cron_enable: "Magento cron job sont prêts pour l'export"
       pre_production_enable: "Mode préproduction désactivé"

@@ -12,12 +12,12 @@ en:
     just_no: "No"
   header:
     preprod_active: "Pre-production mode"
-    counter: "Day left: %{counter}"
+    counter: "Trial period: %{counter} day(s) left"
     upgrade_account: "upgrade"
   footer:
     toolbox: "Toolbox"
     legals: "Legals"
-    copyright_lengow: "Copyright Lengow"
+    plugin_lengow: "Lengow Magento Plugin"
   dashboard:
     screen:
       welcome_back: "Hi! Welcome back!"
@@ -31,7 +31,6 @@ en:
       partner_business: "Lengow, partner of your business"
       stat_turnover: "Turnover"
       stat_nb_orders: "Orders"
-      stat_avg_order: "Average Order"
       stat_more_stats: "Want more stats?"
       some_help_title: "Need some help?"
       get_in_touch: "Get in touch with Lengow."
@@ -40,19 +39,19 @@ en:
   status:
     screen:
       title_end_free_trial: "Even good times can stop"
-      subtitle_end_free_trial: "You've reach the end of your trial !"
+      subtitle_end_free_trial: "You've reach the end of your trial!"
       first_description_end_free_trial: "Your 15 days free on Lengow is now expired. It's terrible, we know, but the best is yet to come ! We sincerely hope you've enjoyed Lengow to improve your business."
       second_description_end_free_trial: "Your account will be disabled until you purchase a new subscription. All existing diffusions and indexations will be stopped too."
       third_description_end_free_trial: "Don't forget that a trial account is deleted 30 days after expiration. Make sure to upgrade in order not to lose the great work you've made into building your channels."
-      title_bad_payer: "Bad things happened :'("
+      title_bad_payer: "Bad things happened sometimes :'("
       subtitle_bad_payer: "Your account is temporaly closed"
-      first_description_bad_payer: "We are sorry that we had to get there, but we had to temporarily limit access to your account because the automatic payment of your subscription failed."
+      first_description_bad_payer: "We are sorry to get there, but we had to temporarily limit access to your account because the automatic payment of your subscription failed."
       second_description_bad_payer: "The publication of your catalogs is also suspended. We strongly suggest you get in touch with us at"
-      phone_bad_payer: "or by phone at (+33)4 565 656"
+      phone_bad_payer: "or by phone at +44 203 318 2632"
       third_description_bad_payer: "We hope to count you back among us really soon."
-      signature_bad_payer: "Team Lengow"
+      signature_bad_payer: "The Lengow team"
       facturation_button: "View my billing informations"
-      upgrade_account_button: "It's ok, I'm ready for an upgrade !"
+      upgrade_account_button: "It's ok, I'm ready to upgrade!"
       refresh_action: "Refresh my account"
   product:
     screen:
