@@ -5,7 +5,7 @@
 /app/code/community/Lengow/Connector/Block/Adminhtml/Log.php|579c8ac674282144a28b4661b9db4626
 /app/code/community/Lengow/Connector/Block/Adminhtml/Home.php|771fb00946fe097d5205e672729f7e6c
 /app/code/community/Lengow/Connector/Block/Adminhtml/Order.php|91abc3e359ec901f39a302b9290710ed
-/app/code/community/Lengow/Connector/Block/Adminhtml/Product/Grid.php|0e2371c446581af5678fbfe580842a77
+/app/code/community/Lengow/Connector/Block/Adminhtml/Product/Grid.php|99b1da51d5c0f6dc34fcfdf084c192d0
 /app/code/community/Lengow/Connector/Block/Adminhtml/Product/Renderer/Lengow.php|ee235c5938f58b1292cf89e15d63c090
 /app/code/community/Lengow/Connector/Block/Adminhtml/Log/Grid.php|2e1f144aeb55d767b3231aa4bf0ccf07
 /app/code/community/Lengow/Connector/Block/Adminhtml/Order/Tab.php|d4766bc350549923c17e1d6b6ec91e72
@@ -27,7 +27,7 @@
 /app/code/community/Lengow/Connector/Block/Tag/Simple.php|01b10ff77307299b21bdbd75c8917dcf
 /app/code/community/Lengow/Connector/Helper/Security.php|1589acc83ea8de9d1e36c882ce40e555
 /app/code/community/Lengow/Connector/Helper/Toolbox.php|0985c180a492d7e12ff3c3c6e3849f37
-/app/code/community/Lengow/Connector/Helper/Sync.php|02f668349600454e3015cbd3ace951e8
+/app/code/community/Lengow/Connector/Helper/Sync.php|1e15fb2d57db42f8bd1ac46237ce0a66
 /app/code/community/Lengow/Connector/Helper/Import.php|5123e8be0013ceff4b39c311898dd036
 /app/code/community/Lengow/Connector/Helper/Data.php|919962e166e7d2f8aa62a32ea1fc10b7
 /app/code/community/Lengow/Connector/Helper/Translation.php|4ca2a050f793d88341ff6f240a583133
@@ -84,11 +84,11 @@
 /app/code/community/Lengow/Connector/etc/config.xml|0c5e727dc1e6417b02f540bb134bf4f0
 /app/code/community/Lengow/Connector/etc/system.xml|815b354271048de0d89dad33b2b348fe
 /app/code/community/Lengow/Connector/etc/adminhtml.xml|e46753a2009cda1be0e8886291d995a7
-/app/code/community/Lengow/Connector/locale/en_GB.csv|29f2d8e77ae9d4c63991ad6e3b79acfc
+/app/code/community/Lengow/Connector/locale/en_GB.csv|d8cc65ca0545a547a3be823bee2238be
 /app/code/community/Lengow/Connector/locale/fr_FR.csv|e1a963a39c2fdd5ef50436d137b15d72
 /app/code/community/Lengow/Connector/locale/yml/log.yml|80ecf926655fb1de8d60d89de017b469
 /app/code/community/Lengow/Connector/locale/yml/fr_FR.yml|01436ecdb6a64517c091f2282ade31bc
-/app/code/community/Lengow/Connector/locale/yml/en_GB.yml|a2fe1087ce477327d280d2fde28502d6
+/app/code/community/Lengow/Connector/locale/yml/en_GB.yml|3993822aabd67402b5454fed1f25126a
 /app/code/community/Lengow/Connector/sql/lengow_connector_setup/mysql4-install-3.0.0.php|101970e9144377787635e18e8aadc963
 /app/design/adminhtml/default/default/template/lengow/home/status.phtml|f3bb31a9d8e6c74d833ed16bfd148664
 /app/design/adminhtml/default/default/template/lengow/home/dashboard.phtml|bb759c0cc1fdd39f36ae8f48a68a5fef

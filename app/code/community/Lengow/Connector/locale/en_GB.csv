@@ -56,6 +56,17 @@ product.screen.sync_your_store|Synchronize my store with Lengow
 product.screen.button_download|Download
 product.screen.store_last_indexation|Last indexation
 product.screen.store_not_index|Not indexed yet
+product.table.id|ID
+product.table.name|Name
+product.table.custom_name|Name in %{store_name}
+product.table.type|Type
+product.table.attribut_set_name|Attribut set name
+product.table.sku|Sku
+product.table.price|Price
+product.table.quantity|Quantity
+product.table.visibility|Visibility
+product.table.status|Status
+product.table.websites|Websites
 product.table.publish_on_lengow|Published on Lengow
 product.table.change_publication|Change Lengow's publication
 product.table.publication|Publication
