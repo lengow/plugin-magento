@@ -8,7 +8,9 @@ if ($is_new_merchant || $is_sync) {
 } elseif (($is_status['type'] == 'free_trial' && $is_status['day'] == 0) || ($is_status['type'] == 'bad_payer')) {
     echo $this->getChildHtml("lengow_status");
 } else {
+	echo '<div class="lgw-container">';
     echo $this->getChildHtml("lengow_header");
+    echo '</div>';
     echo $this->getChildHtml("lengow_dashboard");
 }
 echo $this->getChildHtml("lengow_footer");
