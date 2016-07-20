@@ -8,7 +8,7 @@ global.just_yes|Oui
 global.just_no|Non
 header.preprod_active|Mode préproduction 
 header.counter|Période d'essai : %{counter} jour(s) restant(s)
-header.upgrade_account|mettre à jour
+header.upgrade_account|Mettre à jour
 footer.toolbox|Toolbox
 footer.legals|Mentions légales
 footer.plugin_lengow|Lengow Magento Module
@@ -28,19 +28,18 @@ dashboard.screen.some_help_title|Besoin d'aide ?
 dashboard.screen.get_in_touch|Prenez contact avec les équipes Lengow.
 dashboard.screen.visit_help_center|Visitez notre Help Center
 dashboard.screen.configure_plugin|pour plus d'informations sur la configuration de votre plugin Magento
-status.screen.title_end_free_trial|Toutes les bonnes choses ont une fin 
+status.screen.title_end_free_trial|Toutes les bonnes choses ont une fin...
 status.screen.subtitle_end_free_trial|Vous avez atteint la fin de votre période d'essai !
-status.screen.first_description_end_free_trial|Vos 15 jours d'essai gratuits sur la plateforme Lengow sont maintenant terminés. Nous espérons que vous avez pu en profiter au mieux pour votre activité e-commerce.
+status.screen.first_description_end_free_trial|Vos 15 jours d'essai gratuit sur la plateforme Lengow sont maintenant terminés. Nous espérons qu'ils ont été bénéfiques à votre activité e-commerce.
 status.screen.second_description_end_free_trial|Votre compte va être désactivé jusqu'à ce que vous souscriviez à un abonnement sur la plateforme Lengow. Toutes les diffusions en cours ainsi que les indexations vont être momentanément stoppées.
-status.screen.third_description_end_free_trial|Votre compte d'essai sera supprimé 30 jours après expiration.<br />Pour conserver l'intégralité du paramétrage que vous avez défini, pensez à vous abonner dès à présent !
+status.screen.third_description_end_free_trial|Votre compte d'essai sera supprimé 30 jours après expiration. Pour conserver l'intégralité des paramètres que vous avez défini, pensez à vous abonner dès à présent !
 status.screen.title_bad_payer|Les erreurs arrivent parfois...
 status.screen.subtitle_bad_payer|Votre compte est temporairement fermé
-status.screen.first_description_bad_payer|Nous sommes désolé d'en arriver là mais nous devons limiter temporairement l'accès à votre compte car le paiement automatique de votre abonnement n'a pu se faire.
-status.screen.second_description_bad_payer|La publication de vos catalogues est aussi suspendue. Nous vous recommandons vivement de prendre contact avec nous par mail
+status.screen.first_description_bad_payer|Nous sommes désolé mais nous devons temporairement limiter l'accès à votre compte car le paiement automatique de votre abonnement n'a pu se faire.
+status.screen.second_description_bad_payer|La publication de vos catalogues est aussi suspendue. Nous vous recommandons de prendre contact avec nous rapidement par mail
 status.screen.phone_bad_payer|ou par téléphone au +33 (0)2 85 52 64 15
-status.screen.third_description_bad_payer|Nous espérons vous revoir très rapidement parmi nous
-status.screen.signature_bad_payer|L'équipe Lengow
-status.screen.facturation_button|Voir mes informations des facturation
+status.screen.third_description_bad_payer|Nous espérons vous revoir très rapidement parmi nous.
+status.screen.facturation_button|Voir mes informations de facturation
 status.screen.upgrade_account_button|Je suis prêt à m'abonner !
 status.screen.refresh_action|Actualiser mon compte
 product.screen.title|Exporter les produits 
@@ -56,7 +55,18 @@ product.screen.sync_your_store|Synchronisez ma boutique avec Lengow
 product.screen.button_download|Télécharger
 product.screen.store_last_indexation|Dernière indexation
 product.screen.store_not_index|Pas encore indexé
-product.table.publish_on_lengow|Publié sur Lengow
+product.table.id|ID
+product.table.name|Nom
+product.table.custom_name|Nom en %{store_name}
+product.table.type|Type
+product.table.attribut_set_name|Catégorie
+product.table.sku|SKU
+product.table.price|Prix
+product.table.quantity|Quantité
+product.table.visibility|Visibilité
+product.table.status|Statut 
+product.table.websites|Site web
+product.table.publish_on_lengow|Inclure dans l'export ?
 product.table.change_publication|Modifier la publication Lengow. 
 product.table.publication|Publication
 order.screen.title|Commandes
@@ -64,15 +74,15 @@ order.screen.button_import|Synchroniser les commandes
 order.screen.button_migrate|Ne plus afficher ce message
 order.screen.preprod_warning_message|Vous êtes en mode préproduction. Vous pouvez importer vos commandes mais les interactions avec Lengow ne sont pas possibles. <br /><a href=%{url}>Retourner en mode production ?&lt;/a>
 order.screen.nb_old_order_imported|Avec Lengow, vous avez déjà importé et traité %{nb_order} commandes
-order.screen.order_visible_in_page|%{nb_order} commandes attandent d'être envoyées et sont visibles sur cette page
+order.screen.order_visible_in_page|%{nb_order} commandes attendent d'être envoyées et sont visibles sur cette page
 order.screen.where_see_old_order|Les autres commandes déjà traitées sont visibles sur l'écran de commandes Mangento
 order.screen.all_order_will_be_sent_to|Les rapports d'erreurs de vos commandes seront envoyés par email à
-order.screen.no_order_will_be_sent|Aucun rapports d'erreurs de vos commandes seront envoyés par email 
+order.screen.no_order_will_be_sent|Les rapport d'erreurs de vos commandes ne seront pas envoyés par email 
 order.screen.change_this|Vous voulez modifier cela ?
 order.screen.last_order_importation|Dernière synchronisation : %{last_importation}
 order.screen.no_order_importation|Aucune synchronisation pour le moment
-order.screen.order_with_error|Vous avez %{nb_order} commande(s) avec erreurs
-order.screen.order_to_be_sent|Vous avez %{nb_order} commande(s) qui attendent d'être envoyées 
+order.screen.order_with_error|Vous avez %{nb_order} commande(s) en erreurs
+order.screen.order_to_be_sent|Vous avez %{nb_order} commande(s) en attente d'expédition 
 order.screen.lengow_information|Informations sur Lengow
 order.screen.feed_id|ID du flux
 order.screen.delivery_address_id|ID d'adresse de livraison
@@ -95,16 +105,16 @@ order.screen.synchronize_id|Synchronisez l'ID
 order.screen.resend_action|Renvoyer l'action
 order.screen.check_resend_action|Vous voulez vous vraiment %{action} la commande ?
 order.table.lengow_action|Actions
-order.table.lengow_state|Lengow Etat
+order.table.lengow_state|Statut Lengow
 order.table.marketplace_name|Place de marché 
 order.table.store|Boutique 
-order.table.marketplace_sku|Place de marché Sku 
-order.table.magento_sku|Magento Sku 
-order.table.magento_status|Magento Etat
+order.table.marketplace_sku|ID Commande
+order.table.magento_sku|Magento Sku
+order.table.magento_status|Statut Magento
 order.table.order_date|Date de la commande
 order.table.customer_name|Nom du client
 order.table.country|Pays
-order.table.items|Articles
+order.table.items|Quantité
 order.table.total_paid|Prix total 
 order.table.action_success|Succès
 order.table.action_error|Erreur
@@ -124,7 +134,7 @@ order.table.status_shipped_by_mkp|Expédié par la place de marché
 order.table.status_canceled|Annulé
 order.table.button_reimport_order|Réimporter les commandes
 order.table.button_resend_order|Renvoyer mes commandes
-log.screen.title|Lengow logs
+log.screen.title|Logs Lengow
 log.table.id|ID
 log.table.date|Date
 log.table.message|Message
@@ -146,54 +156,59 @@ legals.screen.address|Adresse
 legals.screen.contact|Contact
 legals.screen.hosting|Hébergement
 toolbox.screen.title|Lengow Toolbox
-toolbox.screen.gobal_information|Information globale
-toolbox.screen.plugin_information|Information plugin
+toolbox.screen.gobal_information|Information générales
+toolbox.screen.plugin_information|Informations sur le plugin
 toolbox.screen.server_ip|IP Serveur
-toolbox.screen.authorized_ip|IP autorisée
-toolbox.screen.legacy_enable|Exportez le flux avec les en-têtes de la version antérieure
-toolbox.screen.export_on_a_file|Export sur les fichiers activé
-toolbox.screen.export_cron_enable|Magento cron job sont prêts pour l'export
+toolbox.screen.authorized_ip|IP autorisée(s)
+toolbox.screen.legacy_enable|Activez les en-têtes de la version antérieure dans votre flux
+toolbox.screen.export_on_a_file|Sauvegarde dans un fichier activée
+toolbox.screen.export_cron_enable|Le cron Magento est activé pour l'export
 toolbox.screen.pre_production_enable|Mode préproduction désactivé
-toolbox.screen.import_information|Information sur l'import
-toolbox.screen.global_token|Import token
-toolbox.screen.url_import|Import URL
-toolbox.screen.import_cron_enable|Magento cron job sont prêts pour l'import
+toolbox.screen.write_permission|Droit d'écriture sur le dossier média
+toolbox.screen.import_information|Information sur la synchronisation
+toolbox.screen.global_token|Token d'import
+toolbox.screen.url_import|URL d'import
+toolbox.screen.import_cron_enable|Le cron Magento est activé pour l'import
 toolbox.screen.nb_order_imported|Commandes importées par Lengow
-toolbox.screen.nb_order_to_be_sent|Les commandes attendent d'être envoyées
-toolbox.screen.nb_order_with_error|Commandes avec erreurs
-toolbox.screen.import_in_progress|Import en cours 
-toolbox.screen.no_import|Pas d'import en cours
+toolbox.screen.nb_order_to_be_sent|Commandes en attente d'expédition
+toolbox.screen.nb_order_with_error|Commandes en erreurs
+toolbox.screen.import_in_progress|Synchronisation en cours
+toolbox.screen.no_import|Pas de synchronisation en cours
 toolbox.screen.rest_time_to_import|Attendez %{rest_time}  secondes avant d'importer de nouveau vos commandes
-toolbox.screen.store_last_import|Dernière import
-toolbox.screen.store_type_import|Dernière import type
+toolbox.screen.store_last_import|Dernière synchronisation
+toolbox.screen.store_type_import|Mode de la dernière synchronisation
 toolbox.screen.last_import_none|aucun
 toolbox.screen.last_import_cron|Cron
 toolbox.screen.last_import_manual|Manuel
-toolbox.screen.store_information|Boutique information
-toolbox.screen.export_information|Information sur l'export
-toolbox.screen.store_active|Boutique suivi par Lengow
-toolbox.screen.store_export_token|Export token
-toolbox.screen.store_last_export|Dernière export 
+toolbox.screen.store_information|Informations sur les boutiques
+toolbox.screen.export_information|Informations sur l'export
+toolbox.screen.store_active|Boutique synchronisée avec Lengow
+toolbox.screen.store_export_token|Token d'export
+toolbox.screen.store_last_export|Dernier export 
 toolbox.screen.store_product_total|Produits disponibles dans votre boutique
 toolbox.screen.store_product_exported|Produits exportés dans votre boutique
-toolbox.screen.url_export|Exporter l'URL pour cette boutique
+toolbox.screen.url_export|URL d'export pour cette boutique
+toolbox.screen.content_folder_media|Contenu du dossier média
+toolbox.screen.folder_path|Chemin d'accès
 toolbox.screen.file_list|Liste des fichiers
 toolbox.screen.no_file_exported|Ficher non exporté
-toolbox.screen.export_cron|Lengow export cron jobs
-toolbox.screen.import_cron|Lengow import cron jobs
+toolbox.screen.cron_information|Planification du Cron Magento
+toolbox.screen.export_cron|Cron d'export Lengow
+toolbox.screen.import_cron|Cron d'import Lengow
 toolbox.screen.cron_status|Statut 
 toolbox.screen.cron_message|Message
 toolbox.screen.cron_scheduled_at|Programmé pour 
 toolbox.screen.cron_executed_at|Exécuté pour
 toolbox.screen.cron_finished_at|Réalisé pour 
+toolbox.screen.no_cron_job_yet|Il n'y a pas de tâche planifiée pour le moment
 toolbox.screen.cron_see_message|Voir le message
-toolbox.screen.checksum_information|Ficher Checksum intégrity
+toolbox.screen.checksum_information|Intégrité des données
 toolbox.screen.file_not_exists|Le fichier checkmd5.csv n'est pas valide. Enregistrement impossible ! 
 toolbox.screen.summary|Sommaire
-toolbox.screen.file_checked|%{nb_file} fichers vérifés
-toolbox.screen.file_modified|%{nb_file} fichiers changés
-toolbox.screen.file_deleted|%{nb_file} fichier supprimés
-toolbox.screen.list_modified_file|Liste des fichiers changés
+toolbox.screen.file_checked|%{nb_file} fichier(s) vérifié(s)
+toolbox.screen.file_modified|%{nb_file} fichier(s) modifié(s)
+toolbox.screen.file_deleted|%{nb_file} fichier(s) supprimé(s)
+toolbox.screen.list_modified_file|Liste des fichiers modifiés
 toolbox.screen.list_deleted_file|Liste des fichiers supprimés
 toolbox.screen.action_information|Actions Lengow
 toolbox.table.title|Actions Lengow
@@ -203,69 +218,76 @@ toolbox.table.action_id|Action ID
 toolbox.table.order_line_sku|ID du numéro de la ligne de commande
 toolbox.table.action_type|Action type
 toolbox.table.retry|Réessayez 
-toolbox.table.parameters|Paramètres 
+toolbox.table.parameters|Paramètres
 toolbox.table.state|Statut
 toolbox.table.state_processing|traitement
 toolbox.table.state_complete|complèté
 toolbox.table.created_at|Créé à 
 toolbox.table.updated_at|Mis à jour à 
 lengow_setting.global_setting|Paramètres principaux
-lengow_setting.global_plugin_version_title|Version plugin
+lengow_setting.global_plugin_version_title|Version du plugin
 lengow_setting.global_magento_version_title|Version Magento
 lengow_setting.global_plugin_compatibility_title|Compatibilité du plugin
 lengow_setting.global_plugin_compatibility_yes|La version Magento est compatible
 lengow_setting.global_plugin_compatibility_no|La version Magento n'est pas compatible
 lengow_setting.global_serveur_ip_title|iP de votre serveur
-lengow_setting.global_information_credential|Pour modifier les informations d'identification de la boutique, s'il vous plaît sélectionner une boutique
+lengow_setting.global_information_credential|Pour modifier les informations d'identification de la boutique, sélectionnez une boutique
 lengow_setting.global_store_credential|Informations d'identification de la boutique
 lengow_setting.global_store_enable_title|Activer la boutique
 lengow_setting.global_store_enable_comment|Activer la boutique pour travailler avec Lengow
 lengow_setting.global_account_id_title|ID du compte
 lengow_setting.global_account_id_comment|ID de votre compte Lengow
-lengow_setting.global_access_token_title|Access token
-lengow_setting.global_access_token_comment|Votre access token Lengow
-lengow_setting.global_secret_token_title|Secret token
-lengow_setting.global_secret_token_comment|Votre secret token Lengow
-lengow_setting.global_advanced_setting|Paramètres principaux 
-lengow_setting.global_tracking_id_comment|Option de commentaire
-lengow_setting.global_authorized_ip_label|IP autorisée
+lengow_setting.global_access_token_title|Access Token
+lengow_setting.global_access_token_comment|Votre access Token Lengow
+lengow_setting.global_secret_token_title|Secret Token
+lengow_setting.global_secret_token_comment|Votre secret Token Lengow
+lengow_setting.global_advanced_setting|Paramètres principaux avancés 
+lengow_setting.global_tracking_id_label|Tracker ID produit
+lengow_setting.global_tracking_id_comment|Choisissez l'identifiant produit à utiliser par le tracker Lengow
+lengow_setting.global_authorized_ip_label|IP autorisée(s)
 lengow_setting.global_authorized_ip_comment|IP autorisée(s) séparée(s) par :
 lengow_setting.export_setting|Paramètres d'export
-lengow_setting.export_selection_enable_label|Exporter seulement les produits sélectionnés
-lengow_setting.export_out_stock_label|Exporter les produits hors stock
-lengow_setting.export_product_type_label|Produit type pour l'export
+lengow_setting.export_simple_setting|Paramètres d'export
+lengow_setting.export_selection_enable_label|Exportez seulement les produits sélectionnés
+lengow_setting.export_out_stock_label|Exportez les produits hors stock
+lengow_setting.export_product_type_label|Type de produits à exporter
 lengow_setting.export_product_status_label|Statut des produit à exporter 
-lengow_setting.export_advanced_setting|Paramètre avancé d'export
-lengow_setting.export_attribute_label|Sélectionner les attributs à exporter
+lengow_setting.export_advanced_setting|Paramètre avancés d'export
+lengow_setting.export_attribute_label|Sélectionnez les attributs à exporter
 lengow_setting.export_attribute_comment|Option de commentaire
-lengow_setting.export_parent_image_comment|Option de commentaire
+lengow_setting.export_parent_image_label|Fusionnez les images avec les produits parents
+lengow_setting.export_parent_image_comment|Activez cette option si vous souhaitez exporter vos produits enfants accompagnés aussi des images des produits parents 
 lengow_setting.export_default_shipping_country_label|Pays d'expédition
-lengow_setting.export_default_shipping_country_comment|Pays par défaut pour les frais d'expédition
+lengow_setting.export_default_shipping_country_comment|Pays à appliquer par défaut pour les frais d'expédition
 lengow_setting.export_default_shipping_method_label|Mode d'expédition
-lengow_setting.export_default_shipping_method_comment|Mode d'expédition par défaut pour calculer les frais d'expédition
+lengow_setting.export_default_shipping_method_comment|Mode d'expédition à appliquer par défaut pour calculer les frais d'expédition
 lengow_setting.export_default_shipping_price_label|Frais d'expédition
-lengow_setting.export_legacy_enable_comment|Compatibilité avec les anciennes versions Lengow
-lengow_setting.export_file_enable_label|Sauvegarder les flux dans un fichier
-lengow_setting.export_file_enable_comment|Sauvegarder ce flux dans un fichier
-lengow_setting.export_cron_enable_lable|Activer le cron Magento
-lengow_setting.import_setting|Paramètre des imports
-lengow_setting.import_simple_setting|Simple paramètres d'import
-lengow_setting.import_advanced_setting|Paramètres avancées d'import
-lengow_setting.import_days_title|Importer les commandes datant de x jours
+lengow_setting.export_default_shipping_price_comment|Frais d'expédition à appliquer par défaut si il y a une correspondance de trouvée
+lengow_setting.export_legacy_enable_label|Exportez le flux avec les en-têtes de la version antérieure
+lengow_setting.export_legacy_enable_comment|Optez pour une compatibilité de votre flux avec les anciennes versions Lengow
+lengow_setting.export_file_enable_label|Sauvegardez les flux dans un fichier
+lengow_setting.export_file_enable_comment|Cette option est utile dans le cas où votre catalogue contient un grand nombre de produits
+lengow_setting.export_cron_enable_lable|Autorisez le process Cron de Magento
+lengow_setting.export_cron_enable_comment|Si votre Cron est en place sur Magento, le fichier s'exportera automatiquement toutes les 4 heures
+lengow_setting.import_setting|Paramètres d'import
+lengow_setting.import_simple_setting|Paramètres d'import
+lengow_setting.import_advanced_setting|Paramètres avancés d'import
+lengow_setting.import_days_title|Importez les commandes datant de X jours
 lengow_setting.import_days_comment|Choisissez le nombre de jours
 lengow_setting.import_customer_group_title|Groupe client
+lengow_setting.import_customer_group_comment|Attribuez un groupe client aux clients Lengow
 lengow_setting.import_default_shipping_method_title|Mode d'expédition
-lengow_setting.import_default_shipping_method_comment|Choisissez un mode d'expédition pour les commandes importés
+lengow_setting.import_default_shipping_method_comment|Choisissez un mode d'expédition pour les commandes expédiées par les places de marché
 lengow_setting.import_report_mail_enable_title|Je veux être notifié en cas de problème lors de l'importation de mes commandes
-lengow_setting.import_report_mail_enable_comment|Nous allons vous les envoyer une fois par jour
-lengow_setting.import_report_mail_address_title|Mail pour le rapport email
+lengow_setting.import_report_mail_address_title|Email à utiliser pour l'envoi des emails de rapport
 lengow_setting.import_report_mail_address_comment|Email séparé par :
-lengow_setting.import_ship_mp_enabled_title|Import des commandes expédiées par les places de marché
+lengow_setting.import_ship_mp_enabled_title|Importez les commandes expédiées par les places de marché
 lengow_setting.import_stock_ship_mp_title|Je veux diminuer mon stock
-lengow_setting.import_stock_ship_mp_comment|Use this option to take into account your marketplaces orders on your stock in your Magento backoffice
+lengow_setting.import_stock_ship_mp_comment|Activez cette option pour prendre en compte les commandes des places de marché sur les stocks de votre backoffice Magento.
 lengow_setting.import_preprod_mode_enable_title|Mode préproduction 
-lengow_setting.import_preprod_mode_enable_comment|Seulement pour le mode préproduction : ne pas synchroniser les commandes avec Lengow, importer les commandes chaque fois. 
-lengow_setting.import_cron_enable_title|Activer Magento cron
+lengow_setting.import_preprod_mode_enable_comment|Utilisez la pré-production pour tester et simuler des commandes fictives. Pour rappel, vous devez activer ces paramètres UNIQUEMENT sur votre serveur de préproduction.
+lengow_setting.import_cron_enable_title|Autorisez le process Cron de Magento
+lengow_setting.import_cron_enable_comment|Si votre Cron est en place sur Magento, les commandes seront importées automatiquement toutes les 30 minutes
 lengow_log.error.nb_order_imported|%{nb_order} commande(s) importée(s)
 lengow_log.error.nb_order_updated|%{nb_order} commande(s) mise(s) à jour
 lengow_log.error.nb_order_with_error|%{nb_order} commande(s) avec erreurs
@@ -288,6 +310,7 @@ lengow_log.exception.crendentials_not_valid|L'ID du compte, l'acces Token ou le 
 lengow_log.exception.error_lengow_webservice|L'API Lengow : %{error_code} - %{error_message} pour la boutique %{name_shop} (%{id_shop}).
 lengow_log.exception.timeout_api|L'API a été bloquée par un timeout.
 lengow_log.exception.marketplace_not_present|Erreur Lengow : la place de marché %{markeplace_name} n’apparaît pas dans la liste des places de marché.
+lengow_log.exception.order_failed_with_quote|Service indisponible pour créer une commande basé sur une cotation donnée
 lengow_log.exception.order_is_empty|La commande ne peut être sauvegardée.
 lengow_log.exception.order_line_required|Numéro de la ligne de commande requis, non trouvé dans la commande.
 lengow_log.exception.action_not_valid|L'action %{action} n'est pas valide.

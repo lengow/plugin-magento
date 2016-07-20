@@ -304,7 +304,6 @@
                     <fields>
                         <import_report_mail_enable>
                             <label>lengow_setting.import_report_mail_enable_title</label>
-                            <comment>lengow_setting.import_report_mail_enable_comment</comment>
                             <frontend_type>select</frontend_type>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
