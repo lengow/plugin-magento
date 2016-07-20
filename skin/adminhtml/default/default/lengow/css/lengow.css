@@ -251,6 +251,9 @@ span.last_indexation {
     outline: none !important;
     white-space: nowrap;
 }
+.lgw-btn > a{
+  color:#fff !important;
+}
 .lgw-btn:hover,
 .lgw-btn:active{
     background:#019ce2;
@@ -522,6 +525,7 @@ ul,li{
 .lgw-box h3,
 .lgw-container h3{
   font-size: 19px;
+  color:#464646;
 }
 .lgw-box h4,
 .lgw-container h4{
@@ -682,11 +686,25 @@ body.lengow-connector .middle {
 /* COUNTER FREE TRIAL */
 #lgw-counter{
     color:white;
-    background:#2b598a;
-    padding:8px 18px;
     margin-bottom: 15px;
     font-size:12px;
-    display: inline-block;
+}
+
+#lgw-counter a{
+    color:#00aeef;
+    text-decoration: none;
+}
+
+#lgw-counter a:hover{
+    color:#00aeef;
+    text-decoration: underline;
+}
+
+
+body:not(.adminhtml-lengow-home-index) #lgw-counter{
+  float:right;
+  display:initial;
+  color:#555;
 }
 
 
@@ -704,8 +722,6 @@ body.lengow-connector .middle {
 }
 
 
- 
-
 /*Dashboard*/
 
 .adminhtml-lengow-home-index .lengow-nav{
@@ -722,13 +738,21 @@ body.lengow-connector .middle {
   top:200px;
 }
 
+/*Counter*/
 .adminhtml-lengow-home-index #lgw-counter{
-    position:absolute;
-    left:0px;
-    font-size:12px;
-    z-index:2;
-    top:140px;
+    background:transparent;
+    color:#555;
+    margin-top:20px;
 }
+
+.adminhtml-lengow-home-index #lgw-counter a{
+  text-decoration:none;
+}
+
+.adminhtml-lengow-home-index #lgw-counter a:hover{
+  text-decoration:underline;
+}
+
 
 .adminhtml-lengow-home-index .lgw-col-4 a{
     color:#00aeef;
