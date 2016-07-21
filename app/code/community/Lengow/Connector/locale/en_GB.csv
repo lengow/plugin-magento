@@ -8,39 +8,38 @@ global.just_yes|Yes
 global.just_no|No
 header.preprod_active|Pre-production mode
 header.counter|Trial period: %{counter} day(s) left
-header.upgrade_account|upgrade
+header.upgrade_account|Upgrade
 footer.toolbox|Toolbox
 footer.legals|Legals
 footer.plugin_lengow|Lengow Magento Plugin
 dashboard.screen.welcome_back|Hi! Welcome back!
 dashboard.screen.go_to_lengow|Go to Lengow
 dashboard.screen.products_title|Products
-dashboard.screen.products_text|Take a look at all your products available to prepare your catalogue
+dashboard.screen.products_text|Take a look at all available products so that you can prepare your catalogue
 dashboard.screen.orders_title|Orders
 dashboard.screen.orders_text|Manage your orders directly on your Magento dashboard
 dashboard.screen.settings_title|Settings
-dashboard.screen.settings_text|Configure the main settings of your Magento plugin
-dashboard.screen.partner_business|Lengow, partner of your business
+dashboard.screen.settings_text|Configure your Magento plugin main settings
+dashboard.screen.partner_business|Lengow, your business partner
 dashboard.screen.stat_turnover|Turnover
 dashboard.screen.stat_nb_orders|Orders
 dashboard.screen.stat_more_stats|Want more stats?
 dashboard.screen.some_help_title|Need some help?
 dashboard.screen.get_in_touch|Get in touch with Lengow.
 dashboard.screen.visit_help_center|Visit our Help Center
-dashboard.screen.configure_plugin|for detailed information on how to configure properly your Magento plugin
-status.screen.title_end_free_trial|Even good times can stop
-status.screen.subtitle_end_free_trial|You've reach the end of your trial!
-status.screen.first_description_end_free_trial|Your 15 days free on Lengow is now expired. It's terrible, we know, but the best is yet to come ! We sincerely hope you've enjoyed Lengow to improve your business.
-status.screen.second_description_end_free_trial|Your account will be disabled until you purchase a new subscription. All existing diffusions and indexations will be stopped too.
-status.screen.third_description_end_free_trial|Don't forget that a trial account is deleted 30 days after expiration. Make sure to upgrade in order not to lose the great work you've made into building your channels.
-status.screen.title_bad_payer|Bad things happened sometimes :'(
-status.screen.subtitle_bad_payer|Your account is temporaly closed
-status.screen.first_description_bad_payer|We are sorry to get there, but we had to temporarily limit access to your account because the automatic payment of your subscription failed.
-status.screen.second_description_bad_payer|The publication of your catalogs is also suspended. We strongly suggest you get in touch with us at
+dashboard.screen.configure_plugin|for detailed information on how to configure your Magento plugin properly
+status.screen.title_end_free_trial|All good things come to an end
+status.screen.subtitle_end_free_trial|You've reached the end of your trial!
+status.screen.first_description_end_free_trial|Your free 15-day trial period on Lengow has now expired. We know that it is sad news, but the best is yet to come! We sincerely hope Lengow has helped you improve your business.
+status.screen.second_description_end_free_trial|Your account will be suspended until you purchase a new subscription. All existing distributions and indexations will also be suspended.
+status.screen.third_description_end_free_trial|Don't forget that trial accounts are deleted 30 days after the end of the trial period. Make sure to upgrade so you do not lose the work you've done building channels.
+status.screen.title_bad_payer|Bad things happen sometimes :'(
+status.screen.subtitle_bad_payer|Your account has been temporarily shut down
+status.screen.first_description_bad_payer|We are sorry to inform you that we have had to limit access to your account temporarily because the automatic payment of your subscription failed.
+status.screen.second_description_bad_payer|The posting of your catalogue has been suspended. We strongly suggest that you get in touch with us at
 status.screen.phone_bad_payer|or by phone at +44 203 318 2632
-status.screen.third_description_bad_payer|We hope to count you back among us really soon.
-status.screen.signature_bad_payer|The Lengow team
-status.screen.facturation_button|View my billing informations
+status.screen.third_description_bad_payer|We hope to work with you again in the near future.
+status.screen.facturation_button|View my billing information
 status.screen.upgrade_account_button|It's ok, I'm ready to upgrade!
 status.screen.refresh_action|Refresh my account
 product.screen.title|Export product
@@ -61,13 +60,13 @@ product.table.name|Name
 product.table.custom_name|Name in %{store_name}
 product.table.type|Type
 product.table.attribut_set_name|Attribut set name
-product.table.sku|Sku
+product.table.sku|SKU
 product.table.price|Price
 product.table.quantity|Quantity
 product.table.visibility|Visibility
 product.table.status|Status
 product.table.websites|Websites
-product.table.publish_on_lengow|Published on Lengow
+product.table.publish_on_lengow|Include in export?
 product.table.change_publication|Change Lengow's publication
 product.table.publication|Publication
 order.screen.title|Orders
@@ -75,8 +74,8 @@ order.screen.button_import|Synchronize Orders
 order.screen.button_migrate|Don't show this message again
 order.screen.preprod_warning_message|You are in pre-production mode. You can import orders, but no interaction with Lengow is possible. <a href=%{url}>Change this</a>
 order.screen.nb_old_order_imported|With Lengow you have already imported and processed %{nb_order} orders
-order.screen.order_visible_in_page|%{nb_order} orders are waiting to be sent and are visible in this page
-order.screen.where_see_old_order|Other orders already processed are visible in the Magento order screen
+order.screen.order_visible_in_page|%{nb_order} orders are waiting to be sent and are visible here
+order.screen.where_see_old_order|You can consult processed orders in the Magento order screen
 order.screen.all_order_will_be_sent_to|All order issue reports will be sent by mail to
 order.screen.no_order_will_be_sent|No order issue reports will be sent by mail
 order.screen.change_this|Change this?
@@ -98,7 +97,7 @@ order.screen.sent_marketplace|Shipped by marketplace
 order.screen.imported_at|Imported at
 order.screen.message|Message
 order.screen.extra|JSON format
-order.screen.not_lengow_order|This order doesn't come from Lengow
+order.screen.not_lengow_order|This order is not from Lengow
 order.screen.not_follow_by_lengow|Due to a reimportation, this order is not followed by Lengow
 order.screen.cancel_and_reimport|Re-import order
 order.screen.check_cancel_and_reimport|Do you really want to re-import the order?
@@ -109,8 +108,8 @@ order.table.lengow_action|Actions
 order.table.lengow_state|Lengow State
 order.table.marketplace_name|Marketplace
 order.table.store|Store
-order.table.marketplace_sku|Marketplace Sku
-order.table.magento_sku|Magento Sku
+order.table.marketplace_sku|Marketplace SKU
+order.table.magento_sku|Magento SKU
 order.table.magento_status|Magento State
 order.table.order_date|Order Date
 order.table.customer_name|Customer name
@@ -144,8 +143,8 @@ help.screen.contain_text_support|Ask us anything about Lengow or share your feed
 help.screen.mail_lengow_support|support.lengow.zendesk@lengow.com
 help.screen.mail_lengow_support_title|Account Information:
 help.screen.mailto_subject|Magento Lengow Plugin #Need assistance
-help.screen.need_some_help|Need some help ?
-help.screen.contain_text_support_hour|We’ll do our best to get back to you during regular business hours (Monday to Friday – 9am to 6pm / France Timezone).
+help.screen.need_some_help|Need some help?
+help.screen.contain_text_support_hour|We’ll do our best to get back to you during regular business hours (Monday to Friday – 9am to 6pm GMT+1).
 help.screen.find_answer|You can also find answers in our
 help.screen.link_magento_guide|Magento dedicated guide
 legals.screen.simplified_company|Simplified limited liability company
@@ -209,8 +208,8 @@ toolbox.screen.summary|Summary
 toolbox.screen.file_checked|%{nb_file} files checked
 toolbox.screen.file_modified|%{nb_file} files changed
 toolbox.screen.file_deleted|%{nb_file} files deleted
-toolbox.screen.list_modified_file|Files changed list
-toolbox.screen.list_deleted_file|Files deleted list
+toolbox.screen.list_modified_file|List of changed files
+toolbox.screen.list_deleted_file|List of deleted files
 toolbox.screen.action_information|Lengow actions
 toolbox.table.title|Lengow actions
 toolbox.table.id|ID
@@ -219,7 +218,7 @@ toolbox.table.action_id|Action ID
 toolbox.table.order_line_sku|Order line ID
 toolbox.table.action_type|Action type
 toolbox.table.retry|Retry
-toolbox.table.parameters|Parameters
+toolbox.table.parameters|Settings
 toolbox.table.state|Status
 toolbox.table.state_processing|processing
 toolbox.table.state_complete|complete
@@ -237,26 +236,26 @@ lengow_setting.global_store_credential|Store credentials
 lengow_setting.global_store_enable_title|Enable store
 lengow_setting.global_store_enable_comment|Enable store to work with Lengow
 lengow_setting.global_account_id_title|Account ID
-lengow_setting.global_account_id_comment|Your Account ID of Lengow
+lengow_setting.global_account_id_comment|Your Lengow Account ID
 lengow_setting.global_access_token_title|Access token
-lengow_setting.global_access_token_comment|Your Lengow's Access Token
+lengow_setting.global_access_token_comment|Your Lengow Access Token
 lengow_setting.global_secret_token_title|Secret token
-lengow_setting.global_secret_token_comment|Your Lengow's Secret Token
+lengow_setting.global_secret_token_comment|Your Lengow Secret Token
 lengow_setting.global_advanced_setting|Advanced global settings
-lengow_setting.global_tracking_id_label|Tracker Product's ID
+lengow_setting.global_tracking_id_label|Tracker Product ID
 lengow_setting.global_tracking_id_comment|Comment option
 lengow_setting.global_authorized_ip_label|IP authorized
 lengow_setting.global_authorized_ip_comment|Authorized access by IP, separated by ;
 lengow_setting.export_setting|Export settings
 lengow_setting.export_simple_setting|Simple export settings
-lengow_setting.export_selection_enable_label|Export only selected products
+lengow_setting.export_selection_enable_label|Export selected products only
 lengow_setting.export_out_stock_label|Export out of stock products
 lengow_setting.export_product_type_label|Product type to export
 lengow_setting.export_product_status_label|Status of product to export
 lengow_setting.export_advanced_setting|Advanced export settings
 lengow_setting.export_attribute_label|Select attributes to export
 lengow_setting.export_attribute_comment|Comment option
-lengow_setting.export_parent_image_label|Merge images with parents products if exist
+lengow_setting.export_parent_image_label|Merge images with parent products if available
 lengow_setting.export_parent_image_comment|Comment option
 lengow_setting.export_default_shipping_country_label|Country shipping
 lengow_setting.export_default_shipping_country_comment|Default country for shipping cost
@@ -280,14 +279,13 @@ lengow_setting.import_customer_group_comment|Choose a customer group for Lengow 
 lengow_setting.import_default_shipping_method_title|Shipping method
 lengow_setting.import_default_shipping_method_comment|Choose a shipping method for imported orders
 lengow_setting.import_report_mail_enable_title|I would like to be notified when there are issues regarding order importation
-lengow_setting.import_report_mail_enable_comment|We will send you this once a day
 lengow_setting.import_report_mail_address_title|Mail for the report email
 lengow_setting.import_report_mail_address_comment|Email separated by ;
 lengow_setting.import_ship_mp_enabled_title|Import orders shipped by marketplaces
 lengow_setting.import_stock_ship_mp_title|I want to decrease my stock
-lengow_setting.import_stock_ship_mp_comment|Use this option to take into account your marketplaces orders on your stock in your Magento backoffice
+lengow_setting.import_stock_ship_mp_comment|Use this option to take marketplaces orders into account for your Magento backoffice
 lengow_setting.import_preprod_mode_enable_title|Preprod mode
-lengow_setting.import_preprod_mode_enable_comment|Only for preproduction's mode: no synchronization orders with Lengow, import orders every time
+lengow_setting.import_preprod_mode_enable_comment|Only for preproduction mode: no order synchronisation with Lengow, orders imported every time
 lengow_setting.import_cron_enable_title|Enable Magento cron
 lengow_setting.import_cron_enable_comment|Enable the scheduled task to import your order every 30 minutes
 lengow_log.error.nb_order_imported|%{nb_order} order(s) imported
@@ -297,7 +295,7 @@ lengow_log.error.no_notification|No new notification on order
 lengow_log.error.rest_time_to_import|Import has already started. Please wait %{rest_time} seconds before re-importing orders
 lengow_log.error.account_id_empty|ID account, access token or secret is empty in store %{store_name} (%{store_id})
 lengow_log.error.account_id_already_used|account ID %{account_id} is already used by store %{store_name} (%{store_id})
-lengow_log.error.order_not_found|Lengow error: order can't be found in lengow feed
+lengow_log.error.order_not_found|Lengow error: order cannot be found in Lengow feed
 lengow_log.error.no_product|Lengow error: no products in the order
 lengow_log.error.no_change_rate|Lengow error: no exchange rates available for order prices
 lengow_log.error.no_currency|Lengow error: no currency in the order
@@ -310,18 +308,18 @@ lengow_log.exception.product_is_a_parent|product %{product_id} is a parent ID. P
 lengow_log.exception.no_connection_webservice|connection didn't work with the Lengow webservice in store %{store_name} (%{store_id})
 lengow_log.exception.crendentials_not_valid|account ID, token access or secret token are not valid in store %{store_name} (%{store_id})
 lengow_log.exception.error_lengow_webservice|Lengow webservice : %{error_code} - %{error_message} in store %{store_name} (%{store_id})
-lengow_log.exception.timeout_api|API call was blocked by a timeout
-lengow_log.exception.marketplace_not_present|Lengow error: the marketplace %{markeplace_name} does not feature in the marketplace list
-lengow_log.exception.order_failed_with_quote|service unable to create order based on given quote
+lengow_log.exception.timeout_api|API call blocked due to a timeout
+lengow_log.exception.marketplace_not_present|Lengow error: %{markeplace_name} does not feature in the marketplace list
+lengow_log.exception.order_failed_with_quote|unable to create order based on given quote
 lengow_log.exception.order_is_empty|order could not be saved
 lengow_log.exception.order_line_required|order line is required but not found in the order
 lengow_log.exception.action_not_valid|action %{action} is not valid
-lengow_log.exception.marketplace_action_not_present|marketplace actions %{action} are not present
+lengow_log.exception.marketplace_action_not_present|the marketplace action %{action} is not present
 lengow_log.exception.store_id_require|store ID is required
 lengow_log.exception.marketplace_name_require|marketplace name is required
 lengow_log.exception.arg_is_required|can't ship order: %{arg_name} is required
-lengow_log.exception.action_is_too_old|order action is too old. Please retry the call
-lengow_log.mail_report.subject_report_mail|Lengow import errors
+lengow_log.exception.action_is_too_old|order action is too old. Please retry
+lengow_log.mail_report.subject_report_mail|Lengow imports errors
 lengow_log.mail_report.order|Order %{marketplace_sku}
 lengow_log.mail_report.no_error_in_report_mail|no error message, contact support via https://supportlengow.zendesk.com/agent/
 log.export.start|## start %{type} export ##
