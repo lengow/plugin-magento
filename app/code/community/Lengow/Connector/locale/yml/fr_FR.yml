@@ -87,7 +87,7 @@ fr:
       title: "Commandes"
       button_import: "Synchroniser les commandes"
       button_migrate: "Ne plus afficher ce message"
-      preprod_warning_message: "Vous êtes en mode préproduction. Vous pouvez importer vos commandes mais les interactions avec Lengow ne sont pas possibles. \n<a href=%{url}>Retourner en mode production ?&lt;/a>"
+      preprod_warning_message: "Vous êtes en mode préproduction. Vous pouvez importer vos commandes mais les interactions avec Lengow ne sont pas possibles. <a href=%{url}>Retourner en mode production ?</a>"
       nb_old_order_imported: "Avec Lengow, vous avez déjà importé et traité %{nb_order} commandes"
       order_visible_in_page: "%{nb_order} commandes attendent d'être envoyées et sont visibles sur cette page"
       where_see_old_order: "Les autres commandes déjà traitées sont visibles sur l'écran de commandes Mangento"
