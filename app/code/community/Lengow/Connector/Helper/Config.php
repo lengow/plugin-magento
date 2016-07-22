@@ -56,6 +56,10 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
             'path'   => 'lengow_global_options/advanced/account_status',
             'export' => false,
         ),
+        'last_option_cms_update' => array(
+            'path'   => 'lengow_global_options/advanced/last_option_cms_update',
+            'export' => false,
+        ),
         'selection_enable' => array(
             'path'   => 'lengow_export_options/simple/export_selection_enable',
             'store'  => true,
