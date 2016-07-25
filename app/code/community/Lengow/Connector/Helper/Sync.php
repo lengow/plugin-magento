@@ -101,7 +101,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
     public function checkSyncShop($store_id)
     {
         // TODO check shop synchronisation with account API
-        return true;
+        return false;
     }
 
     /**
