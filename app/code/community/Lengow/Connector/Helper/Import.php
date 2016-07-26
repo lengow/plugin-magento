@@ -69,7 +69,7 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
     {
         $timestamp = $this->_config->get('import_in_progress');
         if ($timestamp > 0) {
-            // security check : if last import is more than 10 min old => authorize new import to be launched
+            // security check : if last import is more than 60 seconds old => authorize new import to be launched
             if (($timestamp + (60 * 1)) < time()) {
                 $this->setImportEnd();
                 return false;
@@ -186,15 +186,15 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
         $errors = Mage::getModel('lengow/import_ordererror')->getImportErrors();
         if ($errors) {
             foreach ($errors as $error) {
-                $mail_body .= '<li>'.$helper->decodeLogMessage('lengow_log.mail_report.order', null, array(
+                $mail_body.= '<li>'.$helper->decodeLogMessage('lengow_log.mail_report.order', null, array(
                         'marketplace_sku' => $error['marketplace_sku']
                     ));
                 if ($error['message'] != '') {
-                    $mail_body .= ' - '.$helper->decodeLogMessage($error['message']);
+                    $mail_body.= ' - '.$helper->decodeLogMessage($error['message']);
                 } else {
-                    $mail_body .= ' - '.$helper->decodeLogMessage('lengow_log.mail_report.no_error_in_report_mail');
+                    $mail_body.= ' - '.$helper->decodeLogMessage('lengow_log.mail_report.no_error_in_report_mail');
                 }
-                $mail_body .= '</li>';
+                $mail_body.= '</li>';
                 $order_error = Mage::getModel('lengow/import_ordererror')->load($error['id']);
                 $order_error->updateOrderError(array('mail' => 1));
                 unset($order_error);

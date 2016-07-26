@@ -28,13 +28,13 @@
 /app/code/community/Lengow/Connector/Helper/Security.php|1589acc83ea8de9d1e36c882ce40e555
 /app/code/community/Lengow/Connector/Helper/Toolbox.php|0985c180a492d7e12ff3c3c6e3849f37
 /app/code/community/Lengow/Connector/Helper/Sync.php|794250690d7359fc43f06f74c1036c08
-/app/code/community/Lengow/Connector/Helper/Import.php|5123e8be0013ceff4b39c311898dd036
+/app/code/community/Lengow/Connector/Helper/Import.php|027a80fef40a6b2d894f0cde79e15e6f
 /app/code/community/Lengow/Connector/Helper/Data.php|919962e166e7d2f8aa62a32ea1fc10b7
 /app/code/community/Lengow/Connector/Helper/Translation.php|4ca2a050f793d88341ff6f240a583133
 /app/code/community/Lengow/Connector/Helper/Config.php|9cd7b90f25fd7e2d43ceb51db25cfcaa
 /app/code/community/Lengow/Connector/Model/Log.php|038b29d1659b2e80f03e2bb9b7d8e613
 /app/code/community/Lengow/Connector/Model/Observer.php|96ab45207eadc8459e9de8b01918214a
-/app/code/community/Lengow/Connector/Model/Import.php|14e214d94dbedde0a487a33485ed50bd
+/app/code/community/Lengow/Connector/Model/Import.php|ca513034873a72e0665a7862bc2936d1
 /app/code/community/Lengow/Connector/Model/Shipping/Carrier/Lengow.php|d5aa86867b84b2a5b9c3af362c46a6d5
 /app/code/community/Lengow/Connector/Model/Payment/Method/Lengow.php|ec54b989d6f0c4471c5510d08a22955e
 /app/code/community/Lengow/Connector/Model/Tracker.php|6f470805b339ddab174b39a7e433e7a1
