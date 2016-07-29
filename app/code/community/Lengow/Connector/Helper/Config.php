@@ -205,7 +205,7 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
      *
      * @return array
      */
-    public function getSelectedAttributes($store_id = null)
+    public function getSelectedAttributes($store_id = 0)
     {
         $tab = array();
         $attributeSelected = array();
@@ -229,7 +229,7 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
      *
      * @return array
      */
-    public function getToken($store_id = null)
+    public function getToken($store_id = 0)
     {
         $token = $this->get('token', $store_id);
         if ($token && strlen($token) > 0) {
