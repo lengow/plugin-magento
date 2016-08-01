@@ -663,11 +663,15 @@ body.lengow-connector .middle {
 }
 
 .lgw-footer{
-    padding:40px 0 60px 0; 
+  padding:40px 0 60px 0; 
 }
 .lgw-footer a {
-  color:#00aeef;
-  text-decoration: none;
+  color: #464646;
+  text-decoration: underline;
+}
+
+.lgw-footer a:hover {
+    color: #00aeef;
 }
 
 .clear {
