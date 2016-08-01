@@ -98,22 +98,9 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
      *
      * @return boolean
      */
-    public function checkStore($store_id)
+    public function checkSyncShop($store_id)
     {
-        $connector = Mage::getModel('lengow/connector');
-        $result = $connector->queryApi('get', '/v3.0/cms', $store_id);
-        $token = Mage::helper('lengow_connector/config')->get('token', $store_id);
-        if (!isset($result->error)) {
-            if (isset($result->shops)) {
-                foreach ($result->shops as $results) {
-                    if ($results->token === $token) {
-                        if ($results->enabled === true) {
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
+        // TODO check shop synchronisation with account API
         return false;
     }
 
@@ -178,6 +165,32 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
         $html.= Mage::helper('lengow_connector')->__('help.screen.mail_lengow_support');
         $html.= '</a>';
         return $html;
+    }
+
+    /**
+     * Set CMS options
+     *
+     * @param boolean $force Force cache Update
+     *
+     * @return boolean
+     */
+    public function setCmsOption($force = false)
+    {
+        if ($this->isNewMerchant()) {
+            return false;
+        }
+        $config = Mage::helper('lengow_connector/config');
+        if (!$force) {
+            $updated_at = $config->get('last_option_cms_update');
+            if (!is_null($updated_at) && (time() - strtotime($updated_at)) < $this->_cache_time) {
+                return false;
+            }
+        }
+        $options = Mage::helper('core')->jsonEncode($this->getOptionData());
+        $connector = Mage::getModel('lengow/connector');
+        $return = $connector->queryApi('put', '/v3.0/cms', null, array(), $options);
+        $config->set('last_option_cms_update', date('Y-m-d H:i:s'));
+        return true;
     }
 
     /**
