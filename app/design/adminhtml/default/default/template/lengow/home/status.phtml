@@ -17,7 +17,7 @@ $left_day = $account['day'];
             <div class="text-center">
                 <button type="button" class="lgw-btn">
                     <a href="http://www.lengow.com/" >
-                        <?php echo Mage::helper('lengow_connector')->__('status.screen.facturation_button'); ?>
+                        <?php echo Mage::helper('lengow_connector')->__('status.screen.upgrade_account_button'); ?>
                     </a>
                 </button>
                 <button type="button"  class="lgw-btn">
@@ -27,7 +27,6 @@ $left_day = $account['day'];
                 </button>
              </div>
         <?php else : ?>
-            <h2 class="text-center"><?php echo $helper->__('status.screen.title_bad_payer'); ?></h2>
             <h3 class="text-center"><?php echo $helper->__('status.screen.subtitle_bad_payer'); ?></h3>
             <p class="text-center"><?php echo $helper->__('status.screen.first_description_bad_payer'); ?></p>
             <p class="text-center"><?php echo $helper->__('status.screen.second_description_bad_payer'); ?>
@@ -38,7 +37,7 @@ $left_day = $account['day'];
             <p class="text-center">
                 <button type="button" class="lgw-btn">
                     <a href="http://www.lengow.com/">
-                        <?php echo Mage::helper('lengow_connector')->__('status.screen.upgrade_account_button'); ?>
+                        <?php echo Mage::helper('lengow_connector')->__('status.screen.facturation_button'); ?>
                     </a>
                 </button>
                 <button type="button" class="lgw-btn">
