@@ -281,7 +281,7 @@ span.last_indexation {
 .lgw-btn-white:hover,
 .lgw-btn-white:focus{
     background-color:#f7f7f7;
-    color:#555;
+    color:#555 !important;
 }
 
 /* GREEN */
@@ -795,9 +795,8 @@ body:not(.adminhtml-lengow-home-index) #lgw-counter{
   min-height: 270px;
 }
 .adminhtml-lengow-home-index .lgw-container a:hover{
-    text-decoration: none;
+    /*text-decoration: none;*/
 }
-
 /*************************************************/
 /*                PAGE PRODUCT                   */
 /*************************************************/
