@@ -32,6 +32,7 @@ class Lengow_Connector_Model_Observer
         'see_migrate_block',
         'last_status_update',
         'account_status',
+        'last_option_cms_update',
     );
 
     /**
@@ -223,12 +224,7 @@ class Lengow_Connector_Model_Observer
             $action->checkFinishAction();
             $action->checkActionNotSent();
             // sync options between Lengow and Magento
-            $is_new_merchant = Mage::helper('lengow_connector/sync')->isNewMerchant();
-            if (!$is_new_merchant) {
-                $options = Mage::helper('core')->jsonEncode(Mage::helper('lengow_connector/sync')->getOptionData());
-                $connector = Mage::getModel('lengow/connector');
-                $result = $connector->queryApi('put', '/v3.0/cms', null, array(), $options);
-            }
+            Mage::helper('lengow_connector/sync')->setCmsOption();
         }
         return $this;
     }

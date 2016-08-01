@@ -7,7 +7,7 @@ module.name|Lengow
 global.just_yes|Oui
 global.just_no|Non
 header.preprod_active|Mode préproduction 
-header.counter|Période d'essai : %{counter} jour(s) restant(s)
+header.counter|Période d'essai : %{counter} jour(s) restant(s).
 header.upgrade_account|Mettre à jour
 footer.toolbox|Toolbox
 footer.legals|Mentions légales
@@ -49,9 +49,9 @@ product.screen.include_out_of_stock|Inclure les produits déclinés
 product.screen.include_out_of_stock_support|Activez cette option si vous souhaitez exporter l'ensemble de votre stock
 product.screen.include_specific_product|Inclure une sélection de produits
 product.screen.include_specific_product_support|Utilisez cette option pour sélectionner vos produits individuellement
-product.screen.lengow_store_sync|Synchronisé
-product.screen.lengow_store_no_sync|Non synchronisé
-product.screen.sync_your_store|Synchronisez ma boutique avec Lengow
+product.screen.lengow_store_sync|Boutique synchronisée
+product.screen.lengow_store_no_sync|Boutique non synchronisée
+product.screen.sync_your_store|Synchroniser ma boutique avec Lengow
 product.screen.button_download|Télécharger
 product.screen.store_last_indexation|Dernière indexation
 product.screen.store_not_index|Pas encore indexé
@@ -294,7 +294,7 @@ lengow_log.error.nb_order_with_error|%{nb_order} commande(s) avec erreurs
 lengow_log.error.no_notification|Pas de nouvelle notification sur vos commandes
 lengow_log.error.rest_time_to_import|L'import a déjà commencé. Attender %{rest_time}  secondes avant d'importer de nouveau vos commandes
 lengow_log.error.account_id_empty|ID du compte, access token ou secret token sont vident dans votre boutique %{store_name} (%{store_id})
-lengow_log.error.account_id_already_used|l'ID du compte %{account_id} est déjà utilisé par la boutique %{name_shop} (%{id_shop})
+lengow_log.error.account_id_already_used|l'ID du compte %{account_id} est déjà utilisé par la boutique %{store_name} (%{store_id})
 lengow_log.error.order_not_found|Erreur Lengow : La commande ne peut être trouvé dans le flux Lengow
 lengow_log.error.no_product|Erreur Lengow : aucun produits dans cette commande
 lengow_log.error.no_change_rate|Erreur Lengow :  pas de taux de change valide à appliquer sur les prix.
@@ -305,9 +305,9 @@ lengow_log.error.no_billing_address|Erreur Lengow : pas d'adresse de facturation
 lengow_log.error.no_country_for_billing_address|Erreur Lengow : l'adresse de facturation ne contient pas de pays.
 lengow_log.exception.product_not_be_found|Le produit %{product_id} ne peut être trouvé.
 lengow_log.exception.product_is_a_parent|Le produit %{product_id}  est un ID parent. Les déclinaisons du produit sont nécessaires.
-lengow_log.exception.no_connection_webservice|La connexion ne se fait pas avec Lengow pour la boutique %{name_shop} (%{id_shop}).
-lengow_log.exception.crendentials_not_valid|L'ID du compte, l'acces Token ou le secret Token secret ne sont pas valides pour la boutique %{name_shop} (%{id_shop}).
-lengow_log.exception.error_lengow_webservice|L'API Lengow : %{error_code} - %{error_message} pour la boutique %{name_shop} (%{id_shop}).
+lengow_log.exception.no_connection_webservice|La connexion ne se fait pas avec Lengow pour la boutique %{store_name} (%{store_id}).
+lengow_log.exception.crendentials_not_valid|L'ID du compte, l'acces Token ou le secret Token secret ne sont pas valides pour la boutique %{store_name} (%{store_id}).
+lengow_log.exception.error_lengow_webservice|L'API Lengow : %{error_code} - %{error_message} pour la boutique %{store_name} (%{store_id}).
 lengow_log.exception.timeout_api|L'API a été bloquée par un timeout.
 lengow_log.exception.marketplace_not_present|Erreur Lengow : la place de marché %{markeplace_name} n’apparaît pas dans la liste des places de marché.
 lengow_log.exception.order_failed_with_quote|Service indisponible pour créer une commande basé sur une cotation donnée

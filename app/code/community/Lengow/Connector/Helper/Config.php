@@ -56,6 +56,10 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
             'path'   => 'lengow_global_options/advanced/account_status',
             'export' => false,
         ),
+        'last_option_cms_update' => array(
+            'path'   => 'lengow_global_options/advanced/last_option_cms_update',
+            'export' => false,
+        ),
         'selection_enable' => array(
             'path'   => 'lengow_export_options/simple/export_selection_enable',
             'store'  => true,
@@ -201,7 +205,7 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
      *
      * @return array
      */
-    public function getSelectedAttributes($store_id = null)
+    public function getSelectedAttributes($store_id = 0)
     {
         $tab = array();
         $attributeSelected = array();
@@ -225,7 +229,7 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
      *
      * @return array
      */
-    public function getToken($store_id = null)
+    public function getToken($store_id = 0)
     {
         $token = $this->get('token', $store_id);
         if ($token && strlen($token) > 0) {

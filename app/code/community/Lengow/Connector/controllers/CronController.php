@@ -61,12 +61,7 @@ class Lengow_Connector_CronController extends Mage_Core_Controller_Front_Action
             }
             // sync options between Lengow and Magento
             if (is_null($sync) || $sync === 'option') {
-                $is_new_merchant = Mage::helper('lengow_connector/sync')->isNewMerchant();
-                if (!$is_new_merchant) {
-                    $options = Mage::helper('core')->jsonEncode(Mage::helper('lengow_connector/sync')->getOptionData());
-                    $connector = Mage::getModel('lengow/connector');
-                    $connector->queryApi('put', '/v3.0/cms', null, array(), $options);
-                }
+                Mage::helper('lengow_connector/sync')->setCmsOption();
             }
             // sync option is not valid
             if ($sync && ($sync !== 'order' && $sync !== 'action' && $sync !== 'option')) {

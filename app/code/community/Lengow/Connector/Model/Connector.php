@@ -53,8 +53,9 @@ class Lengow_Connector_Model_Connector
     /**
      * @var string URL of the API Lengow
      */
-    //const LENGOW_API_URL = 'http://api.lengow.io:80';
-    const LENGOW_API_URL = 'http://api.lengow.net:80';
+    // const LENGOW_API_URL = 'http://api.lengow.io:80';
+    // const LENGOW_API_URL = 'http://api.lengow.net:80';
+    const LENGOW_API_URL = 'http://10.100.1.82:8081';
 
     /**
      * @var string URL of the SANDBOX Lengow
@@ -67,8 +68,8 @@ class Lengow_Connector_Model_Connector
     public static $CURL_OPTS = array(
         CURLOPT_CONNECTTIMEOUT => 10,
         CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_TIMEOUT => 300,
-        CURLOPT_USERAGENT => 'lengow-php-sdk',
+        CURLOPT_TIMEOUT        => 300,
+        CURLOPT_USERAGENT      => 'lengow-php-sdk',
     );
 
     /**
@@ -289,12 +290,12 @@ class Lengow_Connector_Model_Connector
         $opts[CURLOPT_CUSTOMREQUEST] = strtoupper($type);
         $url = parse_url($url);
         $opts[CURLOPT_PORT] = $url['port'];
-        $opts[CURLOPT_HEADER] = true;
+        $opts[CURLOPT_HEADER] = false;
         $opts[CURLOPT_RETURNTRANSFER] = true;
         $opts[CURLOPT_VERBOSE] = false;
         if (isset($token)) {
             $opts[CURLOPT_HTTPHEADER] = array(
-                'Authorization: ' . $token
+                'Authorization: '.$token
             );
         }
         $url = $url['scheme'].'://'.$url['host'].$url['path'];
@@ -332,17 +333,15 @@ class Lengow_Connector_Model_Connector
             $helper->log('Connector', $error_message);
             throw new Lengow_Connector_Model_Exception($timeout);
         }
-        list($header, $data) = explode("\r\n\r\n", $result, 2);
-        $information = curl_getinfo($ch, CURLINFO_HEADER_OUT);
         curl_close($ch);
-        if ($data === false) {
+        if ($result === false) {
             $error_message = $helper->setLogMessage('log.connector.error_api', array(
                 'error_code' => $error
             ));
             $helper->log('Connector', $error_message);
             throw new Lengow_Connector_Model_Exception($error);
         }
-        return $data;
+        return $result;
     }
 
     /**
@@ -430,6 +429,9 @@ class Lengow_Connector_Model_Connector
         try {
             list($account_id, $access_token, $secret_token) = $this->getAccessId($store_id);
             $this->init($access_token, $secret_token);
+            // if (!$this->isValidAuth($account_id)) {
+            //     return false;
+            // }
             $results = $this->$type(
                 $url,
                 array_merge(array('account_id' => $account_id), $params),
