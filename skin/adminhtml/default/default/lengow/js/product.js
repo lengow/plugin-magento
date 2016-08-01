@@ -50,8 +50,8 @@
                 },
                 dataType: 'script',
                 success: function(data){
-                    $("#parent_total_products").load(location.href + " #total_products");
-                    $("#parent_exported_products").load(location.href + " #exported_products");
+                    $("#total_products").load(location.href + " #total_products");
+                    $("#exported_products").load(location.href + " #exported_products");
                     if (action === 'change_option_selected' && data == "1") {
                         $('#lengow_product_grid').show();
                     } else if (action === 'change_option_selected'){
@@ -62,8 +62,8 @@
         });
 
         $('.lengow-connector').on('click', '.field-row', function() {
-            $("#parent_total_products").load(location.href + " #total_products");
-            $("#parent_exported_products").load(location.href + " #exported_products");
+            $("#total_products").load(location.href + " #total_products");
+            $("#exported_products").load(location.href + " #exported_products");
         });
 
         /* SWITCH TOGGLE */

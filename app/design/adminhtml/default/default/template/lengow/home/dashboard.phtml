@@ -50,11 +50,11 @@ $order_to_be_sent = Mage::getModel('lengow/import_order')->countOrderToBeSent();
         <img src="<?php echo $this->getSkinUrl('lengow/images/') ?>picto-stats.png" class="img-responsive">
         <h2><?php echo $helper->__('dashboard.screen.partner_business'); ?></h2>
         <div class="lgw-row lgw-home-stats">
-            <div class="lgw-col-6">
+            <div class="lgw-col-4 lgw-col-offset-2">
                 <h5><?php echo $helper->__('dashboard.screen.stat_turnover'); ?></h5>
                 <span class="stats-big-value"><?php echo $total_order; ?></span>
             </div>
-            <div class="lgw-col-6">
+            <div class="lgw-col-4">
                 <h5><?php echo $helper->__('dashboard.screen.stat_nb_orders'); ?></h5>
                 <span class="stats-big-value"><?php echo $nb_order; ?></span>
             </div>
