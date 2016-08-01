@@ -45,7 +45,7 @@ status.screen.refresh_action|Actualiser mon compte
 product.screen.title|Exporter les produits 
 product.screen.nb_exported|produits exportés 
 product.screen.nb_available|produits disponibles
-product.screen.include_out_of_stock|Inclure les produits déclinés
+product.screen.include_out_of_stock|Inclure les produits hors stock
 product.screen.include_out_of_stock_support|Activez cette option si vous souhaitez exporter l'ensemble de votre stock
 product.screen.include_specific_product|Inclure une sélection de produits
 product.screen.include_specific_product_support|Utilisez cette option pour sélectionner vos produits individuellement
@@ -72,7 +72,7 @@ product.table.publication|Publication
 order.screen.title|Commandes
 order.screen.button_import|Synchroniser les commandes
 order.screen.button_migrate|Ne plus afficher ce message
-order.screen.preprod_warning_message|Vous êtes en mode préproduction. Vous pouvez importer vos commandes mais les interactions avec Lengow ne sont pas possibles. <br /><a href=%{url}>Retourner en mode production ?</a>
+order.screen.preprod_warning_message|Vous êtes en mode préproduction. Vous pouvez importer vos commandes mais les interactions avec Lengow ne sont pas possibles. <a href=%{url}>Retourner en mode production ?</a>
 order.screen.nb_old_order_imported|Avec Lengow, vous avez déjà importé et traité %{nb_order} commandes
 order.screen.order_visible_in_page|%{nb_order} commandes attendent d'être envoyées et sont visibles sur cette page
 order.screen.where_see_old_order|Les autres commandes déjà traitées sont visibles sur l'écran de commandes Mangento

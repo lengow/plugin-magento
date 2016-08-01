@@ -41,6 +41,7 @@ class Lengow_Connector_Adminhtml_Lengow_ProductController extends Mage_Adminhtml
                         $state = Mage::app()->getRequest()->getParam('state');
                         if ($state !== null) {
                             Mage::helper('lengow_connector/config')->set('out_stock', $state, $store_id);
+                            $this->getResponse()->setBody($state);
                         }
                         break;
                     case 'check_store':

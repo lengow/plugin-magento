@@ -57,7 +57,7 @@ fr:
       title: "Exporter les produits "
       nb_exported: "produits exportés "
       nb_available: "produits disponibles"
-      include_out_of_stock: "Inclure les produits déclinés"
+      include_out_of_stock: "Inclure les produits hors stock"
       include_out_of_stock_support: "Activez cette option si vous souhaitez exporter l'ensemble de votre stock"
       include_specific_product: "Inclure une sélection de produits"
       include_specific_product_support: "Utilisez cette option pour sélectionner vos produits individuellement"
