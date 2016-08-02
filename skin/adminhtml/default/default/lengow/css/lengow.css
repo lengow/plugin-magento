@@ -753,10 +753,9 @@ body:not(.adminhtml-lengow-home-index) #lgw-counter{
   color:white;
   background:#e55a4d;
   position:absolute;
-  /*left:0px;*/
   font-size:12px;
   z-index:1;
-  top:190px;
+  top:170px;
 }
 
 /*Counter*/
