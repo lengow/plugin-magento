@@ -10,7 +10,7 @@ $order_to_be_sent = Mage::getModel('lengow/import_order')->countOrderToBeSent();
     <div class="lgw-box lgw-home-header text-center">
         <img src="<?php echo $this->getSkinUrl('lengow/images/') ?>lengow-white-big.png" alt="lengow">
         <h1><?php echo $helper->__('dashboard.screen.welcome_back'); ?></h1>
-        <a href="http://solution.lengow.com" class="lgw-btn" target="_blank" title="<?php echo $helper->__('dashboard.screen.go_to_lengow'); ?>">
+        <a href="http://my.lengow.io/" class="lgw-btn" target="_blank" title="<?php echo $helper->__('dashboard.screen.go_to_lengow'); ?>">
             <?php echo $helper->__('dashboard.screen.go_to_lengow'); ?>
         </a>
     </div>
@@ -60,7 +60,7 @@ $order_to_be_sent = Mage::getModel('lengow/import_order')->countOrderToBeSent();
             </div>
         </div>
         <p>
-            <a href="http://solution.lengow.com" target="_blank"
+            <a href="http://my.lengow.io/" target="_blank"
                 title="<?php echo $helper->__('dashboard.screen.stat_more_stats'); ?>" class="lgw-btn lgw-btn-white">
                 <?php echo $helper->__('dashboard.screen.stat_more_stats'); ?>
             </a>
@@ -75,7 +75,7 @@ $order_to_be_sent = Mage::getModel('lengow/import_order')->countOrderToBeSent();
             </a>
         </p>
         <p>
-            <a href="https://en.knowledgeowl.com/help/article/link/magento-v2" target="_blank"
+            <a href="<?php echo $helper->__('help.screen.knowledge_link_url'); ?>" target="_blank"
                 title="<?php echo $helper->__('dashboard.screen.visit_help_center'); ?>"><?php echo $helper->__('dashboard.screen.visit_help_center'); ?></a>
             <?php echo $helper->__('dashboard.screen.configure_plugin'); ?>
         </p>

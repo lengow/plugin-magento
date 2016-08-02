@@ -8,7 +8,7 @@ if ((bool)Mage::helper('lengow_connector/config')->get('preprod_mode_enable')) {
 if ($account_status['type'] == 'free_trial' && $account_status['day'] != 0) :?>
 	    <p id="lgw-counter" class="blue-frame">
 	            <?php echo Mage::helper('lengow_connector')->__('header.counter', array('counter' => $account_status['day'])); ?>
-	        <a href="http://www.lengow.com/"><?php echo Mage::helper('lengow_connector')->__('header.upgrade_account'); ?></a>
+	        <a href="http://my.lengow.io/" target="_blank"><?php echo Mage::helper('lengow_connector')->__('header.upgrade_account'); ?></a>
 	    </p>
     <div class="clear"></div>
 <?php endif; ?>
