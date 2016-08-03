@@ -36,9 +36,11 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
         ),
         'tracking_id' => array(
             'path'   => 'lengow_global_options/advanced/global_tracking_id',
+            'global' => true,
         ),
         'authorized_ip' => array(
             'path'   => 'lengow_global_options/advanced/global_authorized_ip',
+            'global' => true,
         ),
         'last_statistic_update' => array(
             'path'   => 'lengow_global_options/advanced/last_statistic_update',
@@ -98,15 +100,19 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
         ),
         'legacy_enable' => array(
             'path'   => 'lengow_export_options/advanced/export_legacy_enable',
+            'global' => true,
         ),
         'file_enable' => array(
             'path'   => 'lengow_export_options/advanced/export_file_enable',
+            'global' => true,
         ),
         'export_cron_enable' => array(
             'path'   => 'lengow_export_options/advanced/export_cron_enable',
+            'global' => true,
         ),
         'last_export' => array(
             'path'   => 'lengow_export_options/advanced/export_last_export',
+            'store'  => true,
         ),
         'days' => array(
             'path'   => 'lengow_import_options/simple/import_days',
@@ -122,30 +128,39 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
         ),
         'report_mail_enable' => array(
             'path'   => 'lengow_import_options/advanced/import_report_mail_enable',
+            'global' => true,
         ),
         'report_mail_address' => array(
             'path'   => 'lengow_import_options/advanced/import_report_mail_address',
+            'global' => true,
         ),
         'import_ship_mp_enabled' => array(
             'path'   =>  'lengow_import_options/advanced/import_ship_mp_enabled',
+            'global' => true,
         ),
         'import_stock_ship_mp' => array(
             'path'   =>  'lengow_import_options/advanced/import_stock_ship_mp',
+            'global' => true,
         ),
         'preprod_mode_enable' => array(
             'path'   => 'lengow_import_options/advanced/import_preprod_mode_enable',
+            'global' => true,
         ),
         'import_cron_enable' => array(
             'path'   => 'lengow_import_options/advanced/import_cron_enable',
+            'global' => true,
         ),
         'import_in_progress' => array(
             'path'   => 'lengow_import_options/advanced/import_in_progress',
+            'global' => true,
         ),
         'last_import_manual' => array(
             'path'   => 'lengow_import_options/advanced/last_import_manual',
+            'global' => true,
         ),
         'last_import_cron' => array(
             'path'   => 'lengow_import_options/advanced/last_import_cron',
+            'global' => true,
         ),
         'see_migrate_block' => array(
             'path'   => 'lengow_import_options/advanced/see_migrate_block',
@@ -294,11 +309,13 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
                 continue;
             }
             if ($store_id) {
-                if (isset($value['store']) && $value['store'] == 1) {
+                if (isset($value['store']) && $value['store']) {
                     $rows[$key] = $this->get($key, $store_id);
                 }
             } else {
-                $rows[$key] = $this->get($key);
+                if (isset($value['global']) && $value['global']) {
+                    $rows[$key] = $this->get($key);
+                }
             }
         }
         return $rows;
