@@ -708,8 +708,8 @@ body:not(.adminhtml-lengow-home-index) #lgw-counter{
 }
 
 #lgw-counter a{
-    color:#00aeef;
-    text-decoration: none;
+    color:#555;
+    text-decoration: underline;
 }
 
 #lgw-counter a:hover{
@@ -719,8 +719,6 @@ body:not(.adminhtml-lengow-home-index) #lgw-counter{
 
 
 body:not(.adminhtml-lengow-home-index) #lgw-counter{
-  /*float:right;*/
-  /*display:initial;*/
   color:#555;
 }
 
