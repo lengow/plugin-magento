@@ -55,6 +55,7 @@ a.lgw-box-link:hover{
 }
 
 
+body.lengow-connector .blue_frame,
 .blue-frame{
     border-radius:3px;
     margin-bottom:15px;
@@ -693,18 +694,6 @@ body.lengow-connector .middle {
 }
 
 /* COUNTER FREE TRIAL */
-
-body:not(.adminhtml-lengow-home-index) #lgw-counter{
-
-    background: #cdf1ff;
-    border: 1px solid #00aeef;
-    color: white;
-    padding: 5px 10px;
-    margin-bottom: 15px;
-    font-size: 12px;
-    display: inline-block;
-}
-
 #lgw-counter{
     color:white;
     margin-bottom: 15px;
@@ -753,9 +742,10 @@ body:not(.adminhtml-lengow-home-index) #lgw-counter{
   color:white;
   background:#e55a4d;
   position:absolute;
+  
   font-size:12px;
   z-index:1;
-  top:170px;
+  top:190px;
 }
 
 /*Counter*/
@@ -787,7 +777,7 @@ body:not(.adminhtml-lengow-home-index) #lgw-counter{
   height:240px;
   color:white;
   padding:60px 30px 0;
-  background: #2E3340 no-repeat center;
+  background: url("../images/header.png") #2E3340 no-repeat center;
 }
 .adminhtml-lengow-home-index .lgw-home-header a{
     color:inherit;
