@@ -700,7 +700,6 @@ body:not(.adminhtml-lengow-home-index) #lgw-counter{
     background: #cdf1ff;
     border: 1px solid #00aeef;
     border-radius:3px;
-    color: white;
     padding: 5px 10px;
     margin-bottom: 15px;
     font-size: 12px;
@@ -716,12 +715,6 @@ body:not(.adminhtml-lengow-home-index) #lgw-counter{
     color:#00aeef;
     text-decoration: underline;
 }
-
-
-body:not(.adminhtml-lengow-home-index) #lgw-counter{
-  color:#555;
-}
-
 
 /*************************************************/
 /*                     HOME                     */
@@ -753,6 +746,7 @@ body:not(.adminhtml-lengow-home-index) #lgw-counter{
 }
 
 /*Counter*/
+
 .adminhtml-lengow-home-index #lgw-counter{
     color:#555;
     margin-top:20px;
@@ -760,6 +754,7 @@ body:not(.adminhtml-lengow-home-index) #lgw-counter{
 }
 
 .adminhtml-lengow-home-index #lgw-counter a{
+  color:#00aeef;
   text-decoration:none;
 }
 
