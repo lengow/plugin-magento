@@ -684,6 +684,7 @@ body.lengow-connector .middle {
 }
 
 /* PREPROD */
+
 #lgw-preprod{
   color:white;
   background:#e55a4d;
@@ -694,10 +695,16 @@ body.lengow-connector .middle {
 }
 
 /* COUNTER FREE TRIAL */
-#lgw-counter{
-    color:white;
+
+body:not(.adminhtml-lengow-home-index) #lgw-counter{
+    background: #cdf1ff;
+    border: 1px solid #00aeef;
+    border-radius:3px;
+    color: white;
+    padding: 5px 10px;
     margin-bottom: 15px;
-    font-size:12px;
+    font-size: 12px;
+    display: inline-block;
 }
 
 #lgw-counter a{
@@ -742,17 +749,16 @@ body:not(.adminhtml-lengow-home-index) #lgw-counter{
   color:white;
   background:#e55a4d;
   position:absolute;
-  
   font-size:12px;
   z-index:1;
-  top:190px;
+  top:170px;
 }
 
 /*Counter*/
 .adminhtml-lengow-home-index #lgw-counter{
-    /*background:transparent;*/
     color:#555;
     margin-top:20px;
+    font-size: 12px;
 }
 
 .adminhtml-lengow-home-index #lgw-counter a{
