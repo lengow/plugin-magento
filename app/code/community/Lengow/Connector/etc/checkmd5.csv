@@ -27,7 +27,7 @@
 /app/code/community/Lengow/Connector/Block/Tag/Simple.php|01b10ff77307299b21bdbd75c8917dcf
 /app/code/community/Lengow/Connector/Helper/Security.php|1589acc83ea8de9d1e36c882ce40e555
 /app/code/community/Lengow/Connector/Helper/Toolbox.php|0985c180a492d7e12ff3c3c6e3849f37
-/app/code/community/Lengow/Connector/Helper/Sync.php|8f0d25f5e7440d324dce46347647b1ed
+/app/code/community/Lengow/Connector/Helper/Sync.php|a68ddcb5cbad3c995adb2a1c257ea44f
 /app/code/community/Lengow/Connector/Helper/Import.php|027a80fef40a6b2d894f0cde79e15e6f
 /app/code/community/Lengow/Connector/Helper/Data.php|919962e166e7d2f8aa62a32ea1fc10b7
 /app/code/community/Lengow/Connector/Helper/Translation.php|4ca2a050f793d88341ff6f240a583133
@@ -106,7 +106,7 @@
 /app/design/adminhtml/default/default/template/lengow/header.phtml|02075205119e3845f7dcb3dcb2eb683a
 /app/design/adminhtml/default/default/template/lengow/toolbox/index.phtml|cf10d92f8d2f08df16362a8325c5f194
 /app/design/adminhtml/default/default/template/lengow/help/index.phtml|11642cb134bff9bcda019a7f2032d31c
-/app/design/adminhtml/default/default/template/lengow/product/index.phtml|f7cb15f4a7edd4478d041fae8fe09dcd
+/app/design/adminhtml/default/default/template/lengow/product/index.phtml|18f047f239519cfd47b9a8e8967532c4
 /app/design/adminhtml/default/default/template/lengow/order/index.phtml|bdd129eee32711c332f7db1381647ca4
 /app/design/adminhtml/default/default/template/lengow/sales/payment/info/purchaseorder.phtml|8e9e7a287ef57fe72023e28747fb0864
 /app/design/adminhtml/default/default/template/lengow/sales/order/tab/info.phtml|7b7e2e61000e8f27d155fd22218ad829

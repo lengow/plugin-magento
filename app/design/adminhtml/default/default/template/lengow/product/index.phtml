@@ -21,7 +21,11 @@ $sync_data = Mage::helper('lengow_connector/sync')->getSyncData();
     </div>
     <div class="lengow_export_feed">
     <a href="<?php echo $sync_data['shops'][$store_id]['feed_url'] ?>stream/1/update_export_date/0"
-       target="_blank"><i class="fa fa-download lengow_tooltip"><span > <?php echo $helper->__('product.screen.button_download') ?></span></i></a>
+       target="_blank">
+        <i class="fa fa-download lengow_tooltip">
+            <span ><?php echo $helper->__('product.screen.button_download') ?></span>
+        </i>
+    </a>
     </div>
     <br>
     <div class="text-center">
@@ -36,14 +40,18 @@ $sync_data = Mage::helper('lengow_connector/sync')->getSyncData();
         <br>
         <div class="products-exported">
             <div id="parent_exported_products">
-                <span id="exported_products" class="lengow_exported stats-big-value"><?php echo $sync_data['shops'][$store_id]['nb_product_exported'] ?></span>
+                <span id="exported_products" class="lengow_exported stats-big-value">
+                    <?php echo $sync_data['shops'][$store_id]['exported_product_number'] ?>
+                </span>
                 <span> <?php echo $helper->__('product.screen.nb_exported') ?></span>
             </div>
             
         </div>
         <br>
         <div id="parent_total_products">
-            <span id="total_products"  class="lengow_total stats-big-value"><?php echo $sync_data['shops'][$store_id]['nb_product_total'] ?></span>
+            <span id="total_products"  class="lengow_total stats-big-value">
+                <?php echo $sync_data['shops'][$store_id]['total_product_number'] ?>
+            </span>
             <span> <?php echo $helper->__('product.screen.nb_available') ?></span>
         </div>
         <br>
@@ -58,11 +66,16 @@ $sync_data = Mage::helper('lengow_connector/sync')->getSyncData();
                         data-href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_product/'); ?>?isAjax=true"
                         data-action="change_option_product_out_of_stock"
                         data-id_store="<?php echo $store_id ?>"
-                        value="1" <?php if ($config->get('out_stock', $store_id) == '1'): ?> checked="checked" <?php endif; ?>>
+                        value="1" <?php if ($config->get('out_stock', $store_id) == '1'): ?> 
+                        checked="checked" <?php endif; ?>>
                 </div> <?php echo $helper->__('product.screen.include_out_of_stock') ?>
             </label>
         </div>
-        <i class="fa fa-info-circle lengow_tooltip"><span class="lengow_out_of_stock_suuport"><?php echo $helper->__('product.screen.include_out_of_stock_support') ?></span></i>
+        <i class="fa fa-info-circle lengow_tooltip">
+            <span class="lengow_out_of_stock_suuport">
+                <?php echo $helper->__('product.screen.include_out_of_stock_support') ?>
+            </span>
+        </i>
         <br>
         <div class="lgw-switch <?php if ($config->get('selection_enable', $store_id) == '1'): ?> checked <?php endif; ?>">
             <label>
@@ -74,11 +87,16 @@ $sync_data = Mage::helper('lengow_connector/sync')->getSyncData();
                         data-href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_product/'); ?>?isAjax=true"
                         data-action="change_option_selected"
                         data-id_store="<?php echo $store_id ?>"
-                        value="1" <?php if ($config->get('selection_enable', $store_id) == '1'): ?> checked="checked" <?php endif; ?>>
+                        value="1" <?php if ($config->get('selection_enable', $store_id) == '1'): ?> 
+                        checked="checked" <?php endif; ?>>
                 </div> <?php echo $helper->__('product.screen.include_specific_product') ?>
             </label>
         </div>
-        <i class="fa fa-info-circle lengow_tooltip"><span class ="lengow_specific_product_support"><?php echo $helper->__('product.screen.include_specific_product_support') ?></span></i>
+        <i class="fa fa-info-circle lengow_tooltip">
+            <span class ="lengow_specific_product_support">
+                <?php echo $helper->__('product.screen.include_specific_product_support') ?>
+            </span>
+        </i>
         <br/>
         <br/>
     </div>

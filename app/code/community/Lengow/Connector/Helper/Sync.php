@@ -24,27 +24,25 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
     {
         $config = Mage::helper('lengow_connector/config');
         $data = array();
-        $data['domain_name'] = $_SERVER["SERVER_NAME"];
-        $data['token'] = $config->getToken();
-        $data['type'] = 'magento';
-        $data['version'] = Mage::getVersion();
+        $data['domain_name']    = $_SERVER["SERVER_NAME"];
+        $data['token']          = $config->getToken();
+        $data['type']           = 'magento';
+        $data['version']        = Mage::getVersion();
         $data['plugin_version'] = (string)Mage::getConfig()->getNode()->modules->Lengow_Connector->version;
-        $data['email'] = Mage::getStoreConfig('trans_email/ident_general/email');
-        $data['return_url'] = 'http://'.$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
+        $data['email']          = Mage::getStoreConfig('trans_email/ident_general/email');
+        $data['return_url']     = 'http://'.$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
         foreach (Mage::app()->getWebsites() as $website) {
             foreach ($website->getGroups() as $group) {
                 $stores = $group->getStores();
                 foreach ($stores as $store) {
-                    $export = Mage::getModel('lengow/export', array(
-                        "store_id" => $store->getId(),
-                    ));
-                    $data['shops'][$store->getId()]['token'] = $config->getToken($store->getId());
-                    $data['shops'][$store->getId()]['name'] = $store->getName();
-                    $data['shops'][$store->getId()]['domain'] = $store->getBaseUrl();
-                    $data['shops'][$store->getId()]['feed_url'] = $export->getExportUrl();
-                    $data['shops'][$store->getId()]['cron_url'] = Mage::getUrl('lengow/cron');
-                    $data['shops'][$store->getId()]['nb_product_total'] = $export->getTotalProduct();
-                    $data['shops'][$store->getId()]['nb_product_exported'] = $export->getTotalExportedProduct();
+                    $export = Mage::getModel('lengow/export', array("store_id" => $store->getId()));
+                    $data['shops'][$store->getId()]['token']                   = $config->getToken($store->getId());
+                    $data['shops'][$store->getId()]['name']                    = $store->getName();
+                    $data['shops'][$store->getId()]['domain']                  = $store->getBaseUrl();
+                    $data['shops'][$store->getId()]['feed_url']                = $export->getExportUrl();
+                    $data['shops'][$store->getId()]['cron_url']                = Mage::getUrl('lengow/cron');
+                    $data['shops'][$store->getId()]['total_product_number']    = $export->getTotalProduct();
+                    $data['shops'][$store->getId()]['exported_product_number'] = $export->getTotalExportedProduct();
                 }
             }
         }
@@ -287,13 +285,15 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
                 foreach ($stores as $store) {
                     $export = Mage::getModel('lengow/export', array("store_id" => $store->getId()));
                     $data['shops'][] = array(
-                        'enabled'    => (bool)$config->get('store_enable', $store->getId()),
-                        'token'      => $config->getToken($store->getId()),
-                        'store_name' => $store->getName(),
-                        'domain_url' => $store->getBaseUrl(),
-                        'feed_url'   => $export->getExportUrl(),
-                        'cron_url'   => Mage::getUrl('lengow/cron'),
-                        'options'    => $config->getAllValues($store->getId())
+                        'enabled'                 => (bool)$config->get('store_enable', $store->getId()),
+                        'token'                   => $config->getToken($store->getId()),
+                        'store_name'              => $store->getName(),
+                        'domain_url'              => $store->getBaseUrl(),
+                        'feed_url'                => $export->getExportUrl(),
+                        'cron_url'                => Mage::getUrl('lengow/cron'),
+                        'total_product_number'    => $export->getTotalProduct(),
+                        'exported_product_number' => $export->getTotalExportedProduct(),
+                        'options'                 => $config->getAllValues($store->getId())
                     );
                 }
             }
