@@ -89,7 +89,6 @@
                         </global_authorized_ip>
                         <global_tracking_id>
                             <label>lengow_setting.global_tracking_id_label</label>
-                            <comment>lengow_setting.global_tracking_id_comment</comment>
                             <frontend_type>select</frontend_type>
                             <sort_order>20</sort_order>
                             <show_in_default>1</show_in_default>
@@ -168,7 +167,6 @@
                     <fields>
                         <export_attribute>
                             <label>lengow_setting.export_attribute_label</label>
-                            <comment>lengow_setting.export_attribute_comment</comment>
                             <frontend_type>multiselect</frontend_type>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
@@ -207,7 +205,6 @@
                         </export_default_shipping_price>
                         <export_parent_image>
                             <label>lengow_setting.export_parent_image_label</label>
-                            <comment>lengow_setting.export_parent_image_comment</comment>
                             <frontend_type>select</frontend_type>
                             <sort_order>50</sort_order>
                             <show_in_default>1</show_in_default>

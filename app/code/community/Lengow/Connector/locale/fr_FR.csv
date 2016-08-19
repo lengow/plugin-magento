@@ -92,7 +92,7 @@ order.screen.customer_email|Email client
 order.screen.carrier|Transporteur des places de marché
 order.screen.carrier_method|Mode d'expédition des places de marché
 order.screen.carrier_tracking|Numéro de tracking
-order.screen.carrier_id_relay|ID relais
+order.screen.carrier_id_relay|ID  du point relais
 order.screen.sent_marketplace|Expédié par la place de marché
 order.screen.imported_at|Importée à 
 order.screen.message|Message
@@ -244,7 +244,6 @@ lengow_setting.global_secret_token_title|Secret Token
 lengow_setting.global_secret_token_comment|Votre secret Token Lengow
 lengow_setting.global_advanced_setting|Paramètres principaux avancés
 lengow_setting.global_tracking_id_label|Tracker ID produit
-lengow_setting.global_tracking_id_comment|Choisissez l'identifiant produit à utiliser par le tracker Lengow
 lengow_setting.global_authorized_ip_label|IP autorisée(s)
 lengow_setting.global_authorized_ip_comment|IP autorisée(s) séparée(s) par :
 lengow_setting.export_setting|Paramètres d'export
@@ -255,9 +254,7 @@ lengow_setting.export_product_type_label|Type de produits à exporter
 lengow_setting.export_product_status_label|Statut des produit à exporter 
 lengow_setting.export_advanced_setting|Paramètre avancés d'export
 lengow_setting.export_attribute_label|Sélectionnez les attributs à exporter
-lengow_setting.export_attribute_comment|Option de commentaire
 lengow_setting.export_parent_image_label|Fusionnez les images avec les produits parents
-lengow_setting.export_parent_image_comment|Activez cette option si vous souhaitez exporter vos produits enfants accompagnés aussi des images des produits parents 
 lengow_setting.export_default_shipping_country_label|Pays d'expédition
 lengow_setting.export_default_shipping_country_comment|Pays à appliquer par défaut pour les frais d'expédition
 lengow_setting.export_default_shipping_method_label|Mode d'expédition

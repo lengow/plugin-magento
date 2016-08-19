@@ -79,7 +79,7 @@ order.screen.where_see_old_order|You can consult processed orders in the Magento
 order.screen.all_order_will_be_sent_to|All order issue reports will be sent by mail to
 order.screen.no_order_will_be_sent|No order issue reports will be sent by mail
 order.screen.change_this|Change this?
-order.screen.last_order_importation|Last synchronization : %{last_importation}
+order.screen.last_order_importation|Last synchronisation : %{last_importation}
 order.screen.no_order_importation|No synchronisation for now
 order.screen.order_with_error|You have %{nb_order} order(s) with errors
 order.screen.order_to_be_sent|You have %{nb_order} order(s) waiting to be sent
@@ -160,7 +160,7 @@ toolbox.screen.title|Lengow Toolbox
 toolbox.screen.gobal_information|Global information
 toolbox.screen.plugin_information|Plugin information
 toolbox.screen.server_ip|Server IP
-toolbox.screen.authorized_ip|Authorised IP
+toolbox.screen.authorized_ip|Authorized IP
 toolbox.screen.legacy_enable|Legacy fields enabled
 toolbox.screen.export_on_a_file|Export in a file enabled
 toolbox.screen.export_cron_enable|Magento cron job enabled for export
@@ -244,7 +244,6 @@ lengow_setting.global_secret_token_title|Secret token
 lengow_setting.global_secret_token_comment|Your Lengow Secret Token
 lengow_setting.global_advanced_setting|All advanced settings
 lengow_setting.global_tracking_id_label|Tracker Product ID
-lengow_setting.global_tracking_id_comment|Comment option
 lengow_setting.global_authorized_ip_label|IP authorized
 lengow_setting.global_authorized_ip_comment|Authorized access by IP, separated by ;
 lengow_setting.export_setting|Export settings
@@ -255,9 +254,7 @@ lengow_setting.export_product_type_label|Product type to export
 lengow_setting.export_product_status_label|Status of product to export
 lengow_setting.export_advanced_setting|Advanced export settings
 lengow_setting.export_attribute_label|Select attributes to export
-lengow_setting.export_attribute_comment|Comment option
 lengow_setting.export_parent_image_label|Merge images with parent products if available
-lengow_setting.export_parent_image_comment|Comment option
 lengow_setting.export_default_shipping_country_label|Country shipping
 lengow_setting.export_default_shipping_country_comment|Default country for shipping cost
 lengow_setting.export_default_shipping_method_label|Shipping method
