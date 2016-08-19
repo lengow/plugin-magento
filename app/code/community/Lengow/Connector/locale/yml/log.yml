@@ -35,7 +35,7 @@ en:
       lengow_order_line_saved: "save order lines product: %{order_line_saved}"
       rewrite_processing_fee: "rewrite amount without processing fee"
       rewrite_shipping_cost: "rewrite amount without shipping cost"
-      shipping_method_unavailable: "the chosen shipping method is not available for this order. Lengow has  assigned a shipping method"
+      shipping_method_unavailable: "the chosen shipping method is not available for this order. Lengow has assigned a shipping method"
       generate_unique_email: "generate a unique email %{email}"
       product_be_found: "product id %{product_id} found with field %{attribute_name} (%{attribute_value})"
       product_state_canceled: "product %{product_id} could not be added to cart - status: %{state_product}"
