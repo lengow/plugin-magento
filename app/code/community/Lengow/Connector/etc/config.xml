@@ -74,6 +74,23 @@
                 </setup>
             </lengow_connector_setup>
         </resources>
+        <sales>
+            <order>
+                <statuses>
+                    <lengow_technical_error translate="label">
+                        <label>Lengow Technical Error</label>
+                    </lengow_technical_error>
+                </statuses>
+                <states>
+                    <lengow_technical_error translate="label">
+                        <label>Lengow Technical Error</label>
+                        <statuses>
+                            <lengow_technical_error default="1"/>
+                        </statuses>
+                    </lengow_technical_error>
+                </states>
+            </order>
+        </sales>
         <events>
             <model_save_after>
                 <observers>
@@ -84,23 +101,6 @@
                     </events_after_save>
                 </observers>
             </model_save_after>
-            <sales>
-                <order>
-                    <statuses>
-                        <lengow_technical_error translate="label">
-                            <label>Lengow Technical Error</label>
-                        </lengow_technical_error>
-                    </statuses>
-                    <states>
-                        <lengow_technical_error translate="label">
-                            <label>Lengow Technical Error</label>
-                            <statuses>
-                                <lengow_technical_error default="1"/>
-                            </statuses>
-                        </lengow_technical_error>
-                    </states>
-                </order>
-            </sales>
             <sales_order_shipment_save_after>
                 <observers>
                     <lengow_shipment_save_after>
@@ -130,19 +130,17 @@
             <lengow>
                 <class>Lengow_Connector_Block</class>
             </lengow>
-        </blocks>
-        <helpers>
-            <lengow_connector>
-                <class>Lengow_Connector_Helper</class>
-            </lengow_connector>
-        </helpers>
-        <blocks>
             <adminhtml>
                 <rewrite>
                     <system_config_edit>Lengow_Connector_Block_Adminhtml_System_Config_Edit</system_config_edit>
                 </rewrite>
             </adminhtml>
         </blocks>
+        <helpers>
+            <lengow_connector>
+                <class>Lengow_Connector_Helper</class>
+            </lengow_connector>
+        </helpers>
         <fieldsets>
             <lengow_convert_address>
                 <company>
