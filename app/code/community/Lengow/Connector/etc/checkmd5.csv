@@ -64,7 +64,7 @@
 /app/code/community/Lengow/Connector/Model/Export/Feed/Yaml.php|d991d0c73fb51dc2b04d922424990a50
 /app/code/community/Lengow/Connector/Model/Export/Feed/Json.php|abe6a0cc5c24594c9ad982399e2b2c0c
 /app/code/community/Lengow/Connector/Model/Export/Feed/Xml.php|c24ecef0408da71d3c7ce42dff966b37
-/app/code/community/Lengow/Connector/Model/Export/Catalog/Product.php|d8c7906347cf5029ea87942eeddc14a7
+/app/code/community/Lengow/Connector/Model/Export/Catalog/Product.php|27f377ef90a7f5510b47017865ad0ed3
 /app/code/community/Lengow/Connector/Model/System/Config/Source/Attribute.php|0ef7fcdfae445aeee9b5cba599731fd2
 /app/code/community/Lengow/Connector/Model/System/Config/Source/Group.php|0aba2e41f4813c4a5cdc5ae65b459b45
 /app/code/community/Lengow/Connector/Model/System/Config/Source/Status.php|a6de2c423e86d887d8b0e3669277fe4c

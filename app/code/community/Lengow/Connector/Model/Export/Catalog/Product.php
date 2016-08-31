@@ -325,8 +325,8 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
                 ->addPathsFilter('1/'.$id_root_category.'/')
                 ->exportToArray();
         }
-        if (isset($categoryCache[key($categories)])) {
-            return $categoryCache[key($categories)];
+        if (isset($categoryCache[key(end($categories))])) {
+            return $categoryCache[key(end($categories))];
         }
         //old config value #levelcategory
         $max_level = 5;
