@@ -134,7 +134,7 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
         );
         $last_import =  $this->_import_helper->getLastImport();
         $last_import_date = $last_import['timestamp'] == 'none'
-            ? $this->_helper->__('toolbox.index.last_import_none')
+            ? $this->_helper->__('toolbox.screen.last_import_none')
             : $this->_helper->getDateInCorrectFormat($last_import['timestamp'], true);
         if ($last_import['type'] == 'none') {
             $last_import_type = $this->_helper->__('toolbox.screen.last_import_none');

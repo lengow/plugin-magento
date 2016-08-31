@@ -87,6 +87,8 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
                 }
             }
         }
+        // Clean config cache to valid configuration
+        Mage::app()->getCacheInstance()->cleanType('config');
     }
 
     /**
