@@ -59,6 +59,11 @@ class Lengow_Connector_Model_Observer
         foreach ($menu->children() as $childName => $child) {
             $menu->setNode($childName.'/disabled', $update_value);
         }
+        // Clean config cache to valid configuration
+        Mage::app()->getCache()->clean(
+            Zend_Cache::CLEANING_MODE_MATCHING_TAG,
+            array(Mage_Adminhtml_Block_Page_Menu::CACHE_TAGS)
+        );
     }
 
     /**

@@ -725,5 +725,13 @@ foreach ($delete_settings as $setting_path) {
 Mage::getModel('lengow/import_order')->migrateOldOrder();
 $see_migrate_block = Mage::helper('lengow_connector/config')->get('see_migrate_block');
 if (is_null($see_migrate_block)) {
-    Mage::helper('lengow_connector/config')->set('see_migrate_block', 1);
+    Mage::helper('lengow_connector/config')->set('see_migrate_block', 1, 0, false);
 }
+
+// *********************************************************
+//          Clean Magento cache
+// *********************************************************
+
+Mage::app()->getCacheInstance()->cleanType('config');
+Mage::app()->getCacheInstance()->cleanType('layout');
+Mage::app()->getCacheInstance()->cleanType('block_html');

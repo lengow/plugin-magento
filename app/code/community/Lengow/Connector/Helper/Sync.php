@@ -70,7 +70,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
                     }
                     if (strlen($value) > 0) {
                         $list_key[$key] = true;
-                        $config->set($key, $value, $store->getId());
+                        $config->set($key, $value, $store->getId(), false);
                     }
                 }
                 $find_false_value = false;
@@ -81,9 +81,9 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
                     }
                 }
                 if (!$find_false_value) {
-                    $config->set('store_enable', true, $store->getId());
+                    $config->set('store_enable', true, $store->getId(), false);
                 } else {
-                    $config->set('store_enable', false, $store->getId());
+                    $config->set('store_enable', false, $store->getId(), false);
                 }
             }
         }

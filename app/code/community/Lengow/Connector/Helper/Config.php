@@ -188,13 +188,14 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
     /**
      * Set Value
      *
-     * @param string  $key      Lengow setting key
-     * @param mixed   $value    Lengow setting value
-     * @param integer $store_id Store id
+     * @param string  $key         Lengow setting key
+     * @param mixed   $value       Lengow setting value
+     * @param integer $store_id    Store id
+     * @param boolean $clean_cache Clean config cache to valid configuration
      *
      * @return null
      */
-    public function set($key, $value, $store_id = 0)
+    public function set($key, $value, $store_id = 0, $clean_cache = true)
     {
         if ($store_id == 0) {
             Mage::getModel('core/config')->saveConfig(
@@ -210,6 +211,9 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
                 'stores',
                 $store_id
             );
+        }
+        if ($clean_cache) {
+            Mage::app()->getCacheInstance()->cleanType('config');
         }
     }
 
