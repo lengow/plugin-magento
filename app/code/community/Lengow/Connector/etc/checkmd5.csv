@@ -71,7 +71,7 @@
 /app/code/community/Lengow/Connector/Model/System/Config/Source/Types.php|993e4be35ac976c48424fc5dc83cdec9
 /app/code/community/Lengow/Connector/Model/System/Config/Source/Tracking.php|9ef90b4ccbc66d7ca6380022fa6ef486
 /app/code/community/Lengow/Connector/Model/Exception.php|f8ec1eb0e3825adb1aa9e616a150895e
-/app/code/community/Lengow/Connector/Model/Export.php|26f12e23317e65e3c9559b8c44fa6cb2
+/app/code/community/Lengow/Connector/Model/Export.php|e59bb9ba14743ea0df201447423ac7c3
 /app/code/community/Lengow/Connector/controllers/Adminhtml/Lengow/LegalController.php|9795eb7f03dba074d0214a2fbb41b004
 /app/code/community/Lengow/Connector/controllers/Adminhtml/Lengow/ToolboxController.php|8f0a7eb8c771bc5fbc6207d8711df80d
 /app/code/community/Lengow/Connector/controllers/Adminhtml/Lengow/HelpController.php|5e1f7c7066b7a869634a447cd00939a5
@@ -79,7 +79,7 @@
 /app/code/community/Lengow/Connector/controllers/Adminhtml/Lengow/LogController.php|72e33663a20b4c2d7b47322b3994a5d0
 /app/code/community/Lengow/Connector/controllers/Adminhtml/Lengow/ProductController.php|5581b5200be131580cfa87c5d842d2c4
 /app/code/community/Lengow/Connector/controllers/Adminhtml/Lengow/OrderController.php|41d920f8c24958200fc06f4edc7070ec
-/app/code/community/Lengow/Connector/controllers/FeedController.php|baba0a3a3612afd71fd3236ecd3bab46
+/app/code/community/Lengow/Connector/controllers/FeedController.php|ffc812c4b16fee3c36db9a25b1af6e83
 /app/code/community/Lengow/Connector/controllers/CronController.php|6516bd515387a5a187876e55e1d5a400
 /app/code/community/Lengow/Connector/etc/config.xml|3aee6583be767a2e531eddd9b559e4cc
 /app/code/community/Lengow/Connector/etc/system.xml|919b273d70578179b7740322ea432a8f

@@ -266,8 +266,8 @@ class Lengow_Connector_Model_Export extends Varien_Object
         }
         // Get configuration params
         $this->_config['mode'] = isset($params['mode']) ? $params['mode'] : '';
-        $this->_config['product_type'] = isset($params['product_type'])
-            ? $params['product_type']
+        $this->_config['product_types'] = isset($params['product_types'])
+            ? $params['product_types']
             : $this->_config_helper->get('product_type', $this->_store_id);
         $this->_config['product_status'] = isset($params['product_status'])
             ? (string)$params['product_status']
@@ -723,7 +723,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
     public function _getQuery()
     {
         // Filter
-        $product_type = explode(',', $this->_config['product_type']);
+        $product_types = explode(',', $this->_config['product_types']);
         $product_status = $this->_config['product_status'];
         $out_of_stock = $this->_config['out_of_stock'];
         $selection = $this->_config['selection'];
@@ -732,7 +732,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
             ->getCollection()
             ->setStoreId($this->_store_id)
             ->addStoreFilter($this->_store_id)
-            ->addAttributeToFilter('type_id', array('in' => $product_type))
+            ->addAttributeToFilter('type_id', array('in' => $product_types))
             ->joinField(
                 'store_id',
                 Mage::getConfig()->getTablePrefix().'catalog_category_product_index',

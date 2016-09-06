@@ -21,6 +21,7 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action
         $selection = $this->getRequest()->getParam('selected_products', null);
         $out_of_stock = $this->getRequest()->getParam('product_out_of_stock', null);
         $product_ids = $this->getRequest()->getParam('ids_product', null);
+        $product_types = $this->getRequest()->getParam('product_type', null);
         // get params data
         $mode = $this->getRequest()->getParam('mode');
         $format = $this->getRequest()->getParam('format', null);
@@ -30,7 +31,9 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action
         $selection = is_null($selection) ? $this->getRequest()->getParam('selection', null) : $selection;
         $out_of_stock = is_null($out_of_stock) ? $this->getRequest()->getParam('out_of_stock', null) : $out_of_stock;
         $product_ids = is_null($product_ids) ? $this->getRequest()->getParam('product_ids', null) : $product_ids;
-        $product_type = $this->getRequest()->getParam('product_type', null);
+        $product_types = is_null($product_types)
+            ? $this->getRequest()->getParam('product_types', null)
+            : $product_types;
         $product_status = $this->getRequest()->getParam('product_status', null);
         $legacy_fields = $this->getRequest()->getParam('legacy_fields', null);
         $log_output = $this->getRequest()->getParam('log_output', null);
@@ -62,7 +65,7 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action
                     'store_id'           => $store_id,
                     'format'             => $format,
                     'mode'               => $mode,
-                    'product_type'       => $product_type,
+                    'product_types'      => $product_types,
                     'product_status'     => $product_status,
                     'out_of_stock'       => $out_of_stock,
                     'selection'          => $selection,
