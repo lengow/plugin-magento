@@ -24,12 +24,10 @@
                 });
             };
             if (sync_link) {
-                // shop synchronisation
                 // sync_iframe.src = 'http://cms.lengow.io/sync/';
                 // sync_iframe.src = 'http://cms.lengow.net/sync/';
                 sync_iframe.src = 'http://cms.lengow.dev/sync/';
             } else {
-                // new account creation
                 // sync_iframe.src = 'http://cms.lengow.io/';
                 // sync_iframe.src = 'http://cms.lengow.net/';
                 sync_iframe.src = 'http://cms.lengow.dev/';

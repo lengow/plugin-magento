@@ -43,6 +43,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
                     $data['shops'][$store->getId()]['cron_url']                = Mage::getUrl('lengow/cron');
                     $data['shops'][$store->getId()]['total_product_number']    = $export->getTotalProduct();
                     $data['shops'][$store->getId()]['exported_product_number'] = $export->getTotalExportedProduct();
+                    $data['shops'][$store->getId()]['configured']              = $this->checkSyncStore($store->getId());
                 }
             }
         }
@@ -98,10 +99,10 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
      *
      * @return boolean
      */
-    public function checkSyncShop($store_id)
+    public function checkSyncStore($store_id)
     {
-        // TODO check shop synchronisation with account API
-        return false;
+        return Mage::helper('lengow_connector/config')->get('store_enable', $store_id)
+            && Mage::getModel('lengow/connector')->getConnectorByStore($store_id);
     }
 
     /**

@@ -46,7 +46,7 @@ class Lengow_Connector_Adminhtml_Lengow_ProductController extends Mage_Adminhtml
                         break;
                     case 'check_store':
                         $store_id = Mage::app()->getRequest()->getParam('store_id');
-                        $sync = Mage::helper('lengow_connector/sync')->checkSyncShop($store_id);
+                        $sync = Mage::helper('lengow_connector/sync')->checkSyncStore($store_id);
                         $helper = Mage::helper('lengow_connector');
                         $datas = array();
                         $datas['result'] = $sync;

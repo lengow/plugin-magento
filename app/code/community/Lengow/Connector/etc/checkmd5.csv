@@ -27,7 +27,7 @@
 /app/code/community/Lengow/Connector/Block/Tag/Simple.php|01b10ff77307299b21bdbd75c8917dcf
 /app/code/community/Lengow/Connector/Helper/Security.php|1589acc83ea8de9d1e36c882ce40e555
 /app/code/community/Lengow/Connector/Helper/Toolbox.php|8352f3564f50e9fbf22e9a4d5893d322
-/app/code/community/Lengow/Connector/Helper/Sync.php|aadc0234b61a38711d2b58c8989fce6b
+/app/code/community/Lengow/Connector/Helper/Sync.php|5dba7ffa0769c9225f3242774a29f3bf
 /app/code/community/Lengow/Connector/Helper/Import.php|027a80fef40a6b2d894f0cde79e15e6f
 /app/code/community/Lengow/Connector/Helper/Data.php|919962e166e7d2f8aa62a32ea1fc10b7
 /app/code/community/Lengow/Connector/Helper/Translation.php|4ca2a050f793d88341ff6f240a583133
@@ -77,7 +77,7 @@
 /app/code/community/Lengow/Connector/controllers/Adminhtml/Lengow/HelpController.php|5e1f7c7066b7a869634a447cd00939a5
 /app/code/community/Lengow/Connector/controllers/Adminhtml/Lengow/HomeController.php|5ca6f40f45ea415f83e1768e6cf2c789
 /app/code/community/Lengow/Connector/controllers/Adminhtml/Lengow/LogController.php|72e33663a20b4c2d7b47322b3994a5d0
-/app/code/community/Lengow/Connector/controllers/Adminhtml/Lengow/ProductController.php|5581b5200be131580cfa87c5d842d2c4
+/app/code/community/Lengow/Connector/controllers/Adminhtml/Lengow/ProductController.php|13bdcee4eae6f7bc9ee87282de3aa8b6
 /app/code/community/Lengow/Connector/controllers/Adminhtml/Lengow/OrderController.php|41d920f8c24958200fc06f4edc7070ec
 /app/code/community/Lengow/Connector/controllers/FeedController.php|ffc812c4b16fee3c36db9a25b1af6e83
 /app/code/community/Lengow/Connector/controllers/CronController.php|6516bd515387a5a187876e55e1d5a400
@@ -363,7 +363,7 @@
 /skin/adminhtml/default/default/lengow/images/home-settings.png|4f7751e943137d3c10b71da358f7b1d7
 /skin/adminhtml/default/default/lengow/images/home-products.png|99ff45448ea094f8c70b58a0cd4d9303
 /skin/adminhtml/default/default/lengow/images/home-orders.png|db05b21ec6b166d844b42c0e807cb265
-/skin/adminhtml/default/default/lengow/js/home.js|aa6b8aba3a6114a75cc020f696d1d275
+/skin/adminhtml/default/default/lengow/js/home.js|8ed8863780196d685c6c83a5862732f8
 /skin/adminhtml/default/default/lengow/js/toolbox.js|3dda41ffd4db10d49754d1e4785a31f5
 /skin/adminhtml/default/default/lengow/js/noconflict.js|0471665ee04a2c68f993899eb8affe25
 /skin/adminhtml/default/default/lengow/js/product.js|0a3e571ee7588df2ef992d1932216edd
