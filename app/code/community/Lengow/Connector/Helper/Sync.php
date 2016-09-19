@@ -127,46 +127,46 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
         return true;
     }
 
-    /**
-     * Generate mailto for help page
-     */
-    public function getMailTo()
-    {
-        $mailto = $this->getSyncData();
-        $mail = 'support.lengow.zendesk@lengow.com';
-        $subject = Mage::helper('lengow_connector')->__('help.screen.mailto_subject');
-        $result = Mage::getModel('lengow/connector')->queryApi('get', '/v3.0/cms');
-        $body = '%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A'
-            .Mage::helper('lengow_connector')->__('help.screen.mail_lengow_support_title').'%0D%0A';
-        if (isset($result->cms)) {
-            $body.= 'commun_account : '.$result->cms->common_account.'%0D%0A';
-        }
-        foreach ($mailto as $key => $value) {
-            if ($key == 'domain_name' || $key == 'token' || $key == 'return_url' || $key == 'shops') {
-                continue;
-            }
-            $body.= $key.' : '.$value.'%0D%0A';
-        }
-        $shops = $mailto['shops'];
-        $i = 1;
-        foreach ($shops as $shop) {
-            foreach ($shop as $item => $value) {
-                if ($item == 'name') {
-                    $body.= 'Store '.$i.' : '.$value.'%0D%0A';
-                } elseif ($item == 'feed_url') {
-                    $body.= $value . '%0D%0A';
-                }
-            }
-            $i++;
-        }
-        $html = '<a href="mailto:'.$mail;
-        $html.= '?subject='.$subject;
-        $html.= '&body='.$body.'" ';
-        $html.= 'title="'.Mage::helper('lengow_connector')->__('help.screen.need_some_help').'" target="_blank">';
-        $html.= Mage::helper('lengow_connector')->__('help.screen.mail_lengow_support');
-        $html.= '</a>';
-        return $html;
-    }
+//    /**
+//     * Generate mailto for help page
+//     */
+//    public function getMailTo()
+//    {
+//        $mailto = $this->getSyncData();
+//        $mail = 'support.lengow.zendesk@lengow.com';
+//        $subject = Mage::helper('lengow_connector')->__('help.screen.mailto_subject');
+//        $result = Mage::getModel('lengow/connector')->queryApi('get', '/v3.0/cms');
+//        $body = '%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A'
+//            .Mage::helper('lengow_connector')->__('help.screen.mail_lengow_support_title').'%0D%0A';
+//        if (isset($result->cms)) {
+//            $body.= 'commun_account : '.$result->cms->common_account.'%0D%0A';
+//        }
+//        foreach ($mailto as $key => $value) {
+//            if ($key == 'domain_name' || $key == 'token' || $key == 'return_url' || $key == 'shops') {
+//                continue;
+//            }
+//            $body.= $key.' : '.$value.'%0D%0A';
+//        }
+//        $shops = $mailto['shops'];
+//        $i = 1;
+//        foreach ($shops as $shop) {
+//            foreach ($shop as $item => $value) {
+//                if ($item == 'name') {
+//                    $body.= 'Store '.$i.' : '.$value.'%0D%0A';
+//                } elseif ($item == 'feed_url') {
+//                    $body.= $value . '%0D%0A';
+//                }
+//            }
+//            $i++;
+//        }
+//        $html = '<a href="mailto:'.$mail;
+//        $html.= '?subject='.$subject;
+//        $html.= '&body='.$body.'" ';
+//        $html.= 'title="'.Mage::helper('lengow_connector')->__('help.screen.need_some_help').'" target="_blank">';
+//        $html.= Mage::helper('lengow_connector')->__('help.screen.mail_lengow_support');
+//        $html.= '</a>';
+//        return $html;
+//    }
 
     /**
      * Set CMS options

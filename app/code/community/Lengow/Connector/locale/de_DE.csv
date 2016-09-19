@@ -140,9 +140,6 @@ log.table.date|Datum
 log.table.message|Nachricht
 help.screen.title|Holen Sie sich etwas Hilfe von Ihrem Supportteam!
 help.screen.contain_text_support|Fragen Sie uns alles über Lengow oder teilen Sie ihr Feedback.
-help.screen.mail_lengow_support|support.lengow.zendesk@lengow.com
-help.screen.mail_lengow_support_title|Kontoinformationen:
-help.screen.mailto_subject|Magento Lengow Plug-In #Braucht Hilfe
 help.screen.need_some_help|Brauchen Sie Hilfe?
 help.screen.contain_text_support_hour|Wir werden alles tun, um Sie während der normalen Geschäftszeiten ( Montag - Freitag von 09:00 - 18:00 (MEZ+1) zurückzurufen.
 help.screen.find_answer|Sie können Antworten auch in unserem... finden

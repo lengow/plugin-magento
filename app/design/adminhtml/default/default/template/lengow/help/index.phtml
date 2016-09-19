@@ -1,5 +1,5 @@
 <?php 
-    $mailto = Mage::helper('lengow_connector/sync')->getMailTo();
+//    $mailto = Mage::helper('lengow_connector/sync')->getMailTo();
     $helper = Mage::helper('lengow_connector');
 ?>
 
@@ -8,9 +8,11 @@
     <div class="text-center">
         <h2><?php echo $helper->__('help.screen.title'); ?></h2>
         <p>
-            <?php echo $helper->__('help.screen.contain_text_support').'<br/>';
-            echo $mailto;
-            ?>
+            <?php echo $helper->__('help.screen.contain_text_support')?>
+            <a href="<?php echo $helper->__('help.screen.link_lengow_support') ?>"
+               target="_blank" title="Lengow Support">
+                <?php echo $helper->__('help.screen.title_lengow_support') ?>
+            </a>
         </p>
         <p><?php echo $helper->__('help.screen.contain_text_support_hour'); ?></p>
         <p><?php echo $helper->__('help.screen.find_answer'); ?>
