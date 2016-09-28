@@ -127,47 +127,6 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
         return true;
     }
 
-//    /**
-//     * Generate mailto for help page
-//     */
-//    public function getMailTo()
-//    {
-//        $mailto = $this->getSyncData();
-//        $mail = 'support.lengow.zendesk@lengow.com';
-//        $subject = Mage::helper('lengow_connector')->__('help.screen.mailto_subject');
-//        $result = Mage::getModel('lengow/connector')->queryApi('get', '/v3.0/cms');
-//        $body = '%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A'
-//            .Mage::helper('lengow_connector')->__('help.screen.mail_lengow_support_title').'%0D%0A';
-//        if (isset($result->cms)) {
-//            $body.= 'commun_account : '.$result->cms->common_account.'%0D%0A';
-//        }
-//        foreach ($mailto as $key => $value) {
-//            if ($key == 'domain_name' || $key == 'token' || $key == 'return_url' || $key == 'shops') {
-//                continue;
-//            }
-//            $body.= $key.' : '.$value.'%0D%0A';
-//        }
-//        $shops = $mailto['shops'];
-//        $i = 1;
-//        foreach ($shops as $shop) {
-//            foreach ($shop as $item => $value) {
-//                if ($item == 'name') {
-//                    $body.= 'Store '.$i.' : '.$value.'%0D%0A';
-//                } elseif ($item == 'feed_url') {
-//                    $body.= $value . '%0D%0A';
-//                }
-//            }
-//            $i++;
-//        }
-//        $html = '<a href="mailto:'.$mail;
-//        $html.= '?subject='.$subject;
-//        $html.= '&body='.$body.'" ';
-//        $html.= 'title="'.Mage::helper('lengow_connector')->__('help.screen.need_some_help').'" target="_blank">';
-//        $html.= Mage::helper('lengow_connector')->__('help.screen.mail_lengow_support');
-//        $html.= '</a>';
-//        return $html;
-//    }
-
     /**
      * Set CMS options
      *
@@ -192,6 +151,42 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
         $return = $connector->queryApi('put', '/v3.0/cms', null, array(), $options);
         $config->set('last_option_cms_update', date('Y-m-d H:i:s'));
         return true;
+    }
+
+    /**
+     * Get Status Account
+     *
+     * @param boolean $force Force cache Update
+     *
+     * @return mixed
+     */
+    public function getStatusAccount($force = false)
+    {
+        $config = Mage::helper('lengow_connector/config');
+        if (!$force) {
+            $updated_at = $config->get('last_status_update');
+            if (!is_null($updated_at) && (time() - strtotime($updated_at)) < $this->_cache_time) {
+                return json_decode($config->get('account_status'), true);
+            }
+        }
+        $result = Mage::getModel('lengow/connector')->queryApi(
+            'get',
+            '/v3.0/subscriptions'
+        );
+        if (isset($result->subscription)) {
+            $status = array();
+            $status['type'] = $result->subscription->billing_offer->type;
+            $status['day'] = - round((strtotime(date("c")) - strtotime($result->subscription->renewal)) / 86400);
+            if ($status['day'] < 0) {
+                $status['day'] = 0;
+            }
+            if ($status) {
+                $config->set('account_status', Mage::helper('core')->jsonEncode($status));
+                $config->set('last_status_update', date('Y-m-d H:i:s'));
+                return $status;
+            }
+        }
+        return false;
     }
 
     /**
@@ -224,7 +219,6 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
             if (is_null($account_id) || in_array($account_id, $account_ids) || empty($account_id)) {
                 continue;
             }
-            // TODO test call API for return statistics
             $connector = Mage::getModel('lengow/connector');
             $result = $connector->queryApi(
                 'get',
@@ -237,8 +231,9 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
                 )
             );
             if (isset($result->level0)) {
-                $return['total_order'] += $result->level0->revenue;
-                $return['nb_order'] += $result->level0->transactions;
+                $stats = $result->level0[0];
+                $return['total_order'] += $stats->revenue;
+                $return['nb_order'] += $stats->transactions;
                 $return['currency'] = $result->currency->iso_a3;
             }
             $account_ids[] = $account_id;
@@ -302,39 +297,5 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
             }
         }
         return $data;
-    }
-
-    /**
-     * Get Status Account
-     *
-     * @param boolean $force Force cache Update
-     *
-     * @return mixed
-     */
-    public function getStatusAccount($force = false)
-    {
-        $config = Mage::helper('lengow_connector/config');
-        if (!$force) {
-            $updated_at = $config->get('last_status_update');
-            if (!is_null($updated_at) && (time() - strtotime($updated_at)) < $this->_cache_time) {
-                return json_decode($config->get('account_status'), true);
-            }
-        }
-        // TODO call API for return a customer id or false
-        //$result = Mage::getModel('lengow/connector')->queryApi('get', '/v3.0/cms');
-        $result = true;
-        if ($result) {
-            // TODO call API with customer id parameter for return status account
-            //$status = Mage::getModel('lengow/connector')->queryApi('get', '/v3.0/cms');
-            $status = array();
-            $status['type'] = 'free_trial';
-            $status['day'] = 10;
-            if ($status) {
-                $config->set('account_status', Mage::helper('core')->jsonEncode($status));
-                $config->set('last_status_update', date('Y-m-d H:i:s'));
-                return $status;
-            }
-        }
-        return false;
     }
 }

@@ -8,7 +8,7 @@ global.just_yes|Yes
 global.just_no|No
 header.preprod_active|Pre-production mode
 header.counter|Trial period: %{counter} day(s) left.
-header.upgrade_account|Upgrade
+header.upgrade_account|Subscribe
 footer.toolbox|Toolbox
 footer.legals|Legal notices
 footer.plugin_lengow|Lengow Magento Plugin
@@ -32,15 +32,15 @@ dashboard.screen.configure_plugin|for detailed information on how to configure y
 status.screen.title_end_free_trial|All good things come to an end
 status.screen.subtitle_end_free_trial|You've reached the end of your trial!
 status.screen.first_description_end_free_trial|Your free 15-day trial period on Lengow has now expired. We know that it is sad news, but the best is yet to come! We sincerely hope Lengow has helped you improve your business.
-status.screen.second_description_end_free_trial|Your account will be suspended until you purchase a new subscription. All existing distributions and indexations will also be suspended.
-status.screen.third_description_end_free_trial|Don't forget that trial accounts are deleted 30 days after the end of the trial period. Make sure to upgrade so you do not lose the work you've done building channels.
+status.screen.second_description_end_free_trial|Your account will be suspended until you purchase a new subscription. All existing distributions and importations will also be suspended.
+status.screen.third_description_end_free_trial|Don't forget that trial accounts are deleted 30 days after the end of the trial period. Make sure to subscribe so you do not lose the work you've done building channels.
 status.screen.subtitle_bad_payer|Your account has been temporarily shut down
 status.screen.first_description_bad_payer|We are sorry to inform you that we have had to limit access to your account temporarily because the automatic payment of your subscription failed.
 status.screen.second_description_bad_payer|The posting of your catalogue has been suspended. We strongly suggest that you get in touch with us at
 status.screen.phone_bad_payer|or by phone at +44 203 318 2632
 status.screen.third_description_bad_payer|We hope to work with you again in the near future.
 status.screen.facturation_button|View my billing information
-status.screen.upgrade_account_button|It's ok, I'm ready to upgrade!
+status.screen.upgrade_account_button|It's ok, I'm ready to subscribe!
 status.screen.refresh_action|Refresh my account
 product.screen.title|Export product
 product.screen.nb_exported|products exported
@@ -140,11 +140,13 @@ log.table.date|Date
 log.table.message|Message
 help.screen.title|Get a little help from your support team!
 help.screen.contain_text_support|Ask us anything about Lengow or share your feedback at
+help.screen.title_lengow_support|Lengow Support.
+help.screen.link_lengow_support|https://supportlengow.zendesk.com/hc/en-us/requests/new
 help.screen.need_some_help|Need some help?
 help.screen.contain_text_support_hour|We’ll do our best to get back to you during regular business hours (Monday to Friday – 9am to 6pm GMT+1).
 help.screen.find_answer|You can also find answers in our
 help.screen.link_magento_guide|Magento dedicated guide
-help.screen.knowledge_link_url|https://en.knowledgeowl.com/help/magento-v2
+help.screen.knowledge_link_url|https://en.lengow.help/help/magento
 legals.screen.simplified_company|Simplified limited liability company
 legals.screen.social_capital|Social capital:
 legals.screen.cnil_declaration|CNIL declaration:
@@ -258,8 +260,6 @@ lengow_setting.export_default_shipping_method_label|Shipping method
 lengow_setting.export_default_shipping_method_comment|Default shipping method to calculate shipping cost
 lengow_setting.export_default_shipping_price_label|Shipping cost
 lengow_setting.export_default_shipping_price_comment|Default shipping cost if matching found
-lengow_setting.export_legacy_enable_label|Export with legacy feed
-lengow_setting.export_legacy_enable_comment|Compatibility with old Lengow versions
 lengow_setting.export_file_enable_label|Save feed on file
 lengow_setting.export_file_enable_comment|Save the feed on a file
 lengow_setting.export_cron_enable_lable|Enable Magento cron

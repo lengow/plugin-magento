@@ -138,6 +138,11 @@ class Lengow_Connector_Model_Export extends Varien_Object
     protected $_stream;
 
     /**
+     * mixed use legacy fields or not
+     */
+    protected $_legacy;
+
+    /**
      * object
      */
     protected $_store;
@@ -247,11 +252,8 @@ class Lengow_Connector_Model_Export extends Varien_Object
             $this->_stream = $stream;
         }
         // Get legacy fields or new fields
-        $legacy_fields = isset($params['legacy_fields']) ? (boolean)$params['legacy_fields'] : null;
-        if (is_null($legacy_fields)) {
-            $legacy_fields = $this->_config_helper->get('legacy_enable', $this->_store_id) ? true : false;
-        }
-        $this->_default_fields = $legacy_fields ? $this->_legacy_fields : $this->_new_fields ;
+        $this->_legacy = isset($params['legacy_fields']) ? (boolean)$params['legacy_fields'] : null;
+        // Update last export date or not
         $this->_update_export_date = isset($params['update_export_date']) ? (bool)$params['update_export_date'] : true;
         // See logs or not (only when stream = 0)
         if ($this->_stream) {
@@ -336,6 +338,8 @@ class Lengow_Connector_Model_Export extends Varien_Object
             )),
             $this->_log_output
         );
+        // set legacy fields option
+        $this->_setLegacyFields();
         // Gestion des attributs à exporter
         $attributes_to_export = $this->_config_helper->getSelectedAttributes($this->_store_id);
         $this->_attrs = array();
@@ -682,6 +686,28 @@ class Lengow_Connector_Model_Export extends Varien_Object
             $this->_helper->__('log.export.end', array('type' => $this->_type_export)),
             $this->_log_output
         );
+    }
+
+    /**
+     * Set or not legacy fields to export
+     *
+     * @param boolean $legacy_fields use legacy fields
+     */
+    protected function _setLegacyFields()
+    {
+        if (is_null($this->_legacy)) {
+            $result = Mage::getModel('lengow/connector')->queryApi(
+                'get',
+                '/v3.0/subscriptions',
+                $this->_store_id
+            );
+            if (isset($result->legacy)) {
+                $this->_legacy = (bool)$result->legacy;
+            } else {
+                $this->_legacy = false;
+            }
+        }
+        $this->_default_fields = $this->_legacy ? $this->_legacy_fields : $this->_new_fields ;
     }
 
     /**

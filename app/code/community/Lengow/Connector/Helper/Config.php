@@ -98,10 +98,6 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
             'path'   => 'lengow_export_options/advanced/export_parent_image',
             'store'  => true,
         ),
-        'legacy_enable' => array(
-            'path'   => 'lengow_export_options/advanced/export_legacy_enable',
-            'global' => true,
-        ),
         'file_enable' => array(
             'path'   => 'lengow_export_options/advanced/export_file_enable',
             'global' => true,

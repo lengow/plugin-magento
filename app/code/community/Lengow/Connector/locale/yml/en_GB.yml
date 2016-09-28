@@ -13,7 +13,7 @@ en:
   header:
     preprod_active: "Pre-production mode"
     counter: "Trial period: %{counter} day(s) left."
-    upgrade_account: "Upgrade"
+    upgrade_account: "Subscribe"
   footer:
     toolbox: "Toolbox"
     legals: "Legal notices"
@@ -42,15 +42,15 @@ en:
       title_end_free_trial: "All good things come to an end"
       subtitle_end_free_trial: "You've reached the end of your trial!"
       first_description_end_free_trial: "Your free 15-day trial period on Lengow has now expired. We know that it is sad news, but the best is yet to come! We sincerely hope Lengow has helped you improve your business."
-      second_description_end_free_trial: "Your account will be suspended until you purchase a new subscription. All existing distributions and indexations will also be suspended."
-      third_description_end_free_trial: "Don't forget that trial accounts are deleted 30 days after the end of the trial period. Make sure to upgrade so you do not lose the work you've done building channels."
+      second_description_end_free_trial: "Your account will be suspended until you purchase a new subscription. All existing distributions and importations will also be suspended."
+      third_description_end_free_trial: "Don't forget that trial accounts are deleted 30 days after the end of the trial period. Make sure to subscribe so you do not lose the work you've done building channels."
       subtitle_bad_payer: "Your account has been temporarily shut down"
       first_description_bad_payer: "We are sorry to inform you that we have had to limit access to your account temporarily because the automatic payment of your subscription failed."
       second_description_bad_payer: "The posting of your catalogue has been suspended. We strongly suggest that you get in touch with us at"
       phone_bad_payer: "or by phone at +44 203 318 2632"
       third_description_bad_payer: "We hope to work with you again in the near future."
       facturation_button: "View my billing information"
-      upgrade_account_button: "It's ok, I'm ready to upgrade!"
+      upgrade_account_button: "It's ok, I'm ready to subscribe!"
       refresh_action: "Refresh my account"
   product:
     screen:
@@ -160,17 +160,14 @@ en:
   help:
     screen:
       title: "Get a little help from your support team!"
-      contain_text_support: "Ask us anything about Lengow or share your feedback at "
+      contain_text_support: "Ask us anything about Lengow or share your feedback at"
       title_lengow_support: "Lengow Support."
       link_lengow_support: "https://supportlengow.zendesk.com/hc/en-us/requests/new"
-#      mail_lengow_support: "support.lengow.zendesk@lengow.com"
-#      mail_lengow_support_title: "Account Information:"
-#      mailto_subject: "Magento Lengow Plugin #Need assistance"
       need_some_help: "Need some help?"
       contain_text_support_hour: "We’ll do our best to get back to you during regular business hours (Monday to Friday – 9am to 6pm GMT+1)."
       find_answer: "You can also find answers in our"
       link_magento_guide: "Magento dedicated guide"
-      knowledge_link_url: "https://en.knowledgeowl.com/help/magento-v2"
+      knowledge_link_url: "https://en.lengow.help/help/magento"
   legals:
     screen:
       simplified_company: "Simplified limited liability company"
@@ -290,8 +287,6 @@ en:
     export_default_shipping_method_comment: "Default shipping method to calculate shipping cost"
     export_default_shipping_price_label: "Shipping cost"
     export_default_shipping_price_comment: "Default shipping cost if matching found"
-    export_legacy_enable_label: "Export with legacy feed"
-    export_legacy_enable_comment: "Compatibility with old Lengow versions"
     export_file_enable_label: "Save feed on file"
     export_file_enable_comment: "Save the feed on a file"
     export_cron_enable_lable: "Enable Magento cron"
