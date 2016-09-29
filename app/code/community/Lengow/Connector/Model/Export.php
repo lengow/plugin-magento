@@ -693,8 +693,6 @@ class Lengow_Connector_Model_Export extends Varien_Object
 
     /**
      * Set or not legacy fields to export
-     *
-     * @param boolean $legacy_fields use legacy fields
      */
     protected function _setLegacyFields()
     {
