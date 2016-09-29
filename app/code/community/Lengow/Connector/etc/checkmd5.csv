@@ -71,7 +71,7 @@
 /app/code/community/Lengow/Connector/Model/System/Config/Source/Types.php|993e4be35ac976c48424fc5dc83cdec9
 /app/code/community/Lengow/Connector/Model/System/Config/Source/Tracking.php|9ef90b4ccbc66d7ca6380022fa6ef486
 /app/code/community/Lengow/Connector/Model/Exception.php|f8ec1eb0e3825adb1aa9e616a150895e
-/app/code/community/Lengow/Connector/Model/Export.php|ffe2c21adce092dbc0093a7a95c51383
+/app/code/community/Lengow/Connector/Model/Export.php|9b9c819982c9046bbcf24a76c478ae30
 /app/code/community/Lengow/Connector/controllers/Adminhtml/Lengow/LegalController.php|9795eb7f03dba074d0214a2fbb41b004
 /app/code/community/Lengow/Connector/controllers/Adminhtml/Lengow/ToolboxController.php|8f0a7eb8c771bc5fbc6207d8711df80d
 /app/code/community/Lengow/Connector/controllers/Adminhtml/Lengow/HelpController.php|5e1f7c7066b7a869634a447cd00939a5
@@ -356,8 +356,8 @@
 /skin/adminhtml/default/default/lengow/images/flag/BA.png|0ca33f9b22f6317781e167a74843a19e
 /skin/adminhtml/default/default/lengow/images/flag/ML.png|a902428bbc6d2e20381b5f4a58ffc750
 /skin/adminhtml/default/default/lengow/images/flag/VU.png|cade21feef734a691c19396d4cacd4d4
-/skin/adminhtml/default/default/lengow/images/lengow-blue.png|49cefb4cfd1ac1bfe9b9a5f1779f9772
-/skin/adminhtml/default/default/lengow/images/lengow-white-big.png|dc4ad39ddc3dd572b8a198931b137c7d
+/skin/adminhtml/default/default/lengow/images/lengow-blue.png|20c05b7249c00f126861223ecc5b6ce9
+/skin/adminhtml/default/default/lengow/images/lengow-white-big.png|6e6178f2db21104a157aebb27f9a5ca2
 /skin/adminhtml/default/default/lengow/images/home-settings.png|4f7751e943137d3c10b71da358f7b1d7
 /skin/adminhtml/default/default/lengow/images/home-products.png|99ff45448ea094f8c70b58a0cd4d9303
 /skin/adminhtml/default/default/lengow/images/home-orders.png|db05b21ec6b166d844b42c0e807cb265
