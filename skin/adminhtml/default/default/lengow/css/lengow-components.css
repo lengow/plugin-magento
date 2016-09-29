@@ -41,6 +41,10 @@
   box-shadow 100ms ease;
 }
 
+.lgw-box .lgw-label {
+  margin: 0;
+}
+
 a.lgw-box-link:hover {
   text-decoration: none;
 }
