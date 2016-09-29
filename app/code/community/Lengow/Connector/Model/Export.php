@@ -307,9 +307,12 @@ class Lengow_Connector_Model_Export extends Varien_Object
         $productCollection = $this->_getQuery();
         $tempProductCollection = $productCollection;
         $tempProductCollection->getSelect()->columns('COUNT(DISTINCT e.entity_id) As total');
-        // Get total product
+        // Get total expoted product or total product
         if ($this->_config['mode'] == 'size') {
             echo $tempProductCollection->getFirstItem()->getTotal();
+            exit();
+        } elseif ($this->_config['mode'] == 'total') {
+            echo $this->getTotalProduct();
             exit();
         }
         // Limit & Offset
