@@ -104,13 +104,16 @@ class Lengow_Connector_Model_Import extends Varien_Object
      * Construct the import manager
      *
      * @param array params optional options
-     * string    marketplace_sku  lengow marketplace order id to import
-     * string    marketplace_name lengow marketplace name to import
-     * integer   id_store         id store for current import
-     * integer   days             import period
-     * integer   limit            number of orders to import
-     * boolean   log_output       display log messages
-     * boolean   preprod_mode     preprod mode
+     * string  marketplace_sku     lengow marketplace order id to import
+     * string  marketplace_name    lengow marketplace name to import
+     * string  type                type of current import
+     * integer delivery_address_id Lengow delivery address id to import
+     * integer order_lengow_id     Lengow order id in Magento
+     * integer store_id            store id for current import
+     * integer days                import period
+     * integer limit               number of orders to import
+     * boolean log_output          display log messages
+     * boolean preprod_mode        preprod mode
      */
     public function __construct($params = array())
     {
@@ -149,7 +152,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
     }
 
     /**
-     * Excute import: fetch orders and import them
+     * Execute import: fetch orders and import them
      *
      * @return array
      */
