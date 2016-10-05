@@ -142,15 +142,19 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
      * @param string  $lengow_id           Lengow order id
      * @param string  $markeplace_name     marketplace name
      * @param integer $delivery_address_id delivery address id
+     * @param string  $marketplace_legacy  old marketplace name for v2 compatibility
      *
      * @return mixed
      */
-    public function getOrderIdIfExist($marketplace_sku, $marketplace_name, $delivery_address_id)
+    public function getOrderIdIfExist($marketplace_sku, $marketplace_name, $delivery_address_id, $marketplace_legacy)
     {
+        // V2 compatibility
+        $in = is_null($marketplace_legacy) ? array($marketplace) : array($marketplace, strtolower($marketplace_legacy));
+
         // get order id from Magento flat order table
         $results = Mage::getModel('sales/order')->getCollection()
             ->addAttributeToFilter('order_id_lengow', $marketplace_sku)
-            ->addAttributeToFilter('marketplace_lengow', $marketplace_name)
+            ->addAttributeToFilter('marketplace_lengow', array('in' => $in))
             ->addAttributeToFilter('follow_by_lengow', array('eq' => 1))
             ->addAttributeToSelect('entity_id')
             ->addAttributeToSelect('delivery_address_id_lengow')

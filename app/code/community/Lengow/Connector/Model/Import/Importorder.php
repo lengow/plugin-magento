@@ -214,8 +214,9 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
         // recovery id if the command has already been imported
         $order_id = $this->_model_order->getOrderIdIfExist(
             $this->_marketplace_sku,
-            (string)$this->_marketplace->name,
-            $this->_delivery_address_id
+            $this->_marketplace->name,
+            $this->_delivery_address_id,
+            $this->_marketplace->legacy_code
         );
         // update order state if already imported
         if ($order_id) {

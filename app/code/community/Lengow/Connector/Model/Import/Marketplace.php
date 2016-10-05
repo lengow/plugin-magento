@@ -44,6 +44,16 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
     public $name;
 
     /**
+     * @var string the old code of the markeplace for v2 compatibility
+     */
+    public $legacy_code;
+
+    /**
+     * @var string the name of the marketplace
+     */
+    public $label_name;
+
+    /**
      * @var integer Store Id
      */
     public $store_id;
@@ -96,6 +106,7 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
         }
         $this->marketplace = self::$MARKETPLACES[$this->store_id]->{$this->name};
         if (!empty($this->marketplace)) {
+            $this->legacy_code = $this->marketplace->legacy_code;
             $this->label_name = $this->marketplace->name;
             foreach ($this->marketplace->orders->status as $key => $state) {
                 foreach ($state as $value) {
