@@ -11,6 +11,30 @@
 class Lengow_Connector_Model_Export extends Varien_Object
 {
     /**
+     * All available params for export
+     */
+    protected $_export_params = array(
+        'mode',
+        'format',
+        'stream',
+        'offset',
+        'limit',
+        'selection',
+        'out_of_stock',
+        'product_ids',
+        'product_types',
+        'product_status',
+        'store',
+        'code',
+        'currency',
+        'locale',
+        'legacy_fields',
+        'log_output',
+        'update_export_date',
+        'get_params'
+    );
+
+    /**
      * Default fields
      */
     protected $_default_fields;
@@ -268,6 +292,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
         }
         // Get configuration params
         $this->_config['mode'] = isset($params['mode']) ? $params['mode'] : '';
+        $this->_config['get_params'] = isset($params['get_params']) ? (boolean)$params['get_params'] : false;
         $this->_config['product_types'] = isset($params['product_types'])
             ? $params['product_types']
             : $this->_config_helper->get('product_type', $this->_store_id);
@@ -294,6 +319,11 @@ class Lengow_Connector_Model_Export extends Varien_Object
      */
     public function exec()
     {
+        // get params option
+        if ($this->_config['get_params']) {
+            echo $this->getExportParams();
+            exit();
+        }
         // start chrono
         $time_start = $this->_microtimeFloat();
         // clean logs > 20 days
@@ -981,5 +1011,95 @@ class Lengow_Connector_Model_Export extends Varien_Object
     public function getExportUrl()
     {
         return Mage::getUrl('lengow/feed', array('store' => $this->_store_id));
+    }
+
+    /**
+     * Get all export available parameters
+     *
+     * @return string
+     */
+    public function getExportParams()
+    {
+        $params = array();
+        $available_stores = array();
+        $available_codes = array();
+        $available_currencies = array();
+        $available_languages = array();
+        foreach (Mage::app()->getWebsites() as $website) {
+            foreach ($website->getGroups() as $group) {
+                $stores = $group->getStores();
+                foreach ($stores as $store) {
+                    $available_stores[] = $store->getId();
+                    $available_codes[] = $store->getCode();
+                    $currency_codes = $store->getAvailableCurrencyCodes();
+                    foreach ($currency_codes as $currency_code) {
+                        if (!in_array($currency_code, $available_currencies)) {
+                            $available_currencies[] = $currency_code;
+                        }
+                    }
+                    $store_language = Mage::getStoreConfig('general/locale/code', $store->getId());
+                    if (!in_array($store_language, $available_languages)) {
+                        $available_languages[] = $store_language;
+                    }
+                }
+            }
+        }
+        foreach ($this->_export_params as $param) {
+            switch ($param) {
+                case 'mode':
+                    $authorized_value = array('size', 'total');
+                    $type             = 'string';
+                    $example          = 'size';
+                    break;
+                case 'format':
+                    $authorized_value = $this->_available_formats;
+                    $type             = 'string';
+                    $example          = 'csv';
+                    break;
+                case 'store':
+                    $authorized_value = $available_stores;
+                    $type             = 'integer';
+                    $example          = 1;
+                    break;
+                case 'code':
+                    $authorized_value = $available_codes;
+                    $type             = 'string';
+                    $example          = 'french';
+                    break;
+                case 'currency':
+                    $authorized_value = $available_currencies;
+                    $type             = 'string';
+                    $example          = 'EUR';
+                    break;
+                case 'locale':
+                    $authorized_value = $available_languages;
+                    $type             = 'string';
+                    $example          = 'fr_FR';
+                    break;
+                case 'offset':
+                case 'limit':
+                    $authorized_value = 'all integers';
+                    $type             = 'integer';
+                    $example          = 100;
+                    break;
+                case 'product_ids':
+                    $authorized_value = 'all integers';
+                    $type             = 'string';
+                    $example          = '101,108,215';
+                    break;
+                default:
+                    $authorized_value = array(0, 1);
+                    $type             = 'integer';
+                    $example          = 1;
+                    break;
+            }
+            $params[$param] = array(
+                'authorized_values' => $authorized_value,
+                'type'              => $type,
+                'example'           => $example
+            );
+        }
+        
+        return json_encode($params);
     }
 }

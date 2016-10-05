@@ -24,6 +24,7 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action
         $product_types = $this->getRequest()->getParam('product_type', null);
         // get params data
         $mode = $this->getRequest()->getParam('mode');
+        $get_params = $this->getRequest()->getParam('get_params');
         $format = $this->getRequest()->getParam('format', null);
         $stream = $this->getRequest()->getParam('stream', null);
         $offset = $this->getRequest()->getParam('offset', null);
@@ -65,6 +66,7 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action
                     'store_id'           => $store_id,
                     'format'             => $format,
                     'mode'               => $mode,
+                    'get_params'         => $get_params,
                     'product_types'      => $product_types,
                     'product_status'     => $product_status,
                     'out_of_stock'       => $out_of_stock,
