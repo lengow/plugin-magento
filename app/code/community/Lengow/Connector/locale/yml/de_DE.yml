@@ -13,6 +13,7 @@ de:
   header:
     preprod_active: "Vorproduktionsmodus"
     counter: "Testzeitraum: %{counter} Tag(e) verbleiben."
+    upgrade_account: "Jetzt anmelden!"
   footer:
     toolbox: "Toolbox"
     legals: "Rechtshinweise"
@@ -41,12 +42,15 @@ de:
       title_end_free_trial: "Alle guten Dinge haben ein Ende"
       subtitle_end_free_trial: "Ihr Testzeitraum ist nun abgelaufen"
       first_description_end_free_trial: "Ihr 15-tägiger Testzeitraum ist nun abgelaufen. Wir wissen, dass es traurige Neuigkeiten sind, aber das Beste kommt erst noch. Wir hoffen aufrichtig, dass Lengow zu Ihrem Unternehmenserfolg beitragen konnte."
+      second_description_end_free_trial: "Ihr Account wird gesperrt, bis Sie eine neue Lizenz erwerben. Dies gilt auch für bereits erstellte Verteilungen und Imports!"
+      third_description_end_free_trial: "Ihr Trial-Account wird 30 Tage nach dem Ende Ihres Test-Zeitraums automatisch gelöscht. Gehen Sie auf Nummer sicher und melden Sie sich an - nur so sichern Sie Ihre bereits geleistete Arbeit an Ihren Kanälen."
       subtitle_bad_payer: "Ihr Konto wurde vorläufig geschlossen"
       first_description_bad_payer: "Wir informieren Sie, dass wir Ihren Zugang zu Ihrem Konto blockieren mussten, da die automatische Überweisung leider nicht bei uns eingegangen ist."
       second_description_bad_payer: "Die Publizierung Ihres Produktdatenfeeds wurde vorübergehend eingestellt. Wir empfehlen Ihnen dringend, mit uns in Kontakt zu treten über"
       phone_bad_payer: "oder telefonisch unter: +49 (0)3222-17 41 093"
       third_description_bad_payer: "Wir hoffen auf eine zeitnahe neue Zusammenarbeit."
       facturation_button: "Siehe meine Rechnungsinformation"
+      upgrade_account_button: "Ich bin bereit mich anzumelden!"
       refresh_action: " Meinen Account aktualisieren"
   product:
     screen:
@@ -330,7 +334,7 @@ de:
       crendentials_not_valid: "Konto-ID, Wertmarkenzugang oder Geheimwertmarke gelten im Laden nicht %{store_name} (%{store_id})"
       error_lengow_webservice: "Lengow Webservice : %{error_code} - %{error_message} auf Lager %{store_name} (%{store_id})"
       timeout_api: "API Anruf wegen Zeitüberschreitung blockiert"
-      marketplace_not_present: "Lengow Fehler: %{markeplace_name} erscheint nicht in der Marketplace-Liste"
+      marketplace_not_present: "Lengow Fehler: %{marketplace_name} erscheint nicht in der Marketplace-Liste"
       order_failed_with_quote: "auf dem Angebot basierende Bestellung konnte nicht erstellt werden."
       order_is_empty: "Bestellung konnte nicht gespeichert werden."
       order_line_required: "Erforderliche Bestellzeile kann in der Bestellung nicht gefunden werden."

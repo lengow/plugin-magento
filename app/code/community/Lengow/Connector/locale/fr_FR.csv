@@ -234,7 +234,7 @@ lengow_setting.global_serveur_ip_title|iP de votre serveur
 lengow_setting.global_information_credential|Pour modifier les informations d'identification de la boutique, sélectionnez une boutique
 lengow_setting.global_store_credential|Informations d'identification de la boutique
 lengow_setting.global_store_enable_title|Activer la boutique
-lengow_setting.global_store_enable_comment|Activer la boutique pour travailler avec Lengow
+lengow_setting.global_store_enable_comment|Activer la boutique pour la connecter à la plateforme Lengow
 lengow_setting.global_account_id_title|ID du compte
 lengow_setting.global_account_id_comment|ID de votre compte Lengow
 lengow_setting.global_access_token_title|Access Token
@@ -304,7 +304,7 @@ lengow_log.exception.no_connection_webservice|La connexion ne se fait pas avec L
 lengow_log.exception.crendentials_not_valid|L'ID du compte, l'acces Token ou le secret Token secret ne sont pas valides pour la boutique %{store_name} (%{store_id}).
 lengow_log.exception.error_lengow_webservice|L'API Lengow : %{error_code} - %{error_message} pour la boutique %{store_name} (%{store_id}).
 lengow_log.exception.timeout_api|L'API a été bloquée par un timeout.
-lengow_log.exception.marketplace_not_present|Erreur Lengow : la place de marché %{markeplace_name} n’apparaît pas dans la liste des places de marché.
+lengow_log.exception.marketplace_not_present|Erreur Lengow : la place de marché %{marketplace_name} n’apparaît pas dans la liste des places de marché.
 lengow_log.exception.order_failed_with_quote|Service indisponible pour créer une commande basé sur une cotation donnée
 lengow_log.exception.order_is_empty|La commande ne peut être sauvegardée.
 lengow_log.exception.order_line_required|Numéro de la ligne de commande requis, non trouvé dans la commande.

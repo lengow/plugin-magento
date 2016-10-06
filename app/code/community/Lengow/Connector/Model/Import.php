@@ -231,10 +231,10 @@ class Lengow_Connector_Model_Import extends Varien_Object
                             $this->_helper->log(
                                 'Import',
                                 $this->_helper->setLogMessage('log.import.find_one_order', array(
-                                    'nb_order'        => $total_orders,
-                                    'marketplace_sku' => $this->_marketplace_sku,
-                                    'markeplace_name' => $this->_marketplace_name,
-                                    'account_id'      => $this->_account_id
+                                    'nb_order'         => $total_orders,
+                                    'marketplace_sku'  => $this->_marketplace_sku,
+                                    'marketplace_name' => $this->_marketplace_name,
+                                    'account_id'       => $this->_account_id
                                 )),
                                 $this->_log_output
                             );
@@ -406,8 +406,8 @@ class Lengow_Connector_Model_Import extends Varien_Object
                 $this->_helper->log(
                     'Import',
                     $this->_helper->setLogMessage('log.import.connector_get_order', array(
-                        'marketplace_sku' => $this->_marketplace_sku,
-                        'markeplace_name' => $this->_marketplace_name
+                        'marketplace_sku'  => $this->_marketplace_sku,
+                        'marketplace_name' => $this->_marketplace_name
                     )),
                     $this->_log_output
                 );

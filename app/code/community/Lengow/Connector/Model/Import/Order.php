@@ -140,7 +140,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
      * if order is already Imported
      *
      * @param string  $lengow_id           Lengow order id
-     * @param string  $markeplace_name     marketplace name
+     * @param string  $marketplace_name    marketplace name
      * @param integer $delivery_address_id delivery address id
      * @param string  $marketplace_legacy  old marketplace name for v2 compatibility
      *

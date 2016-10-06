@@ -316,7 +316,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
                 $this->_helper->log(
                     'Import',
                     $this->_helper->setLogMessage('log.import.order_shipped_by_marketplace', array(
-                        'markeplace_name' => $this->_marketplace->name
+                        'marketplace_name' => $this->_marketplace->name
                     )),
                     $this->_log_output,
                     $this->_marketplace_sku

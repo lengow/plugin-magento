@@ -84,7 +84,7 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
     public $carriers = array();
 
     /**
-     * Construct a new Markerplace instance
+     * Construct a new Marketplace instance with marketplace API
      *
      * @param array params options
      * integer store_id Store Id for current order
@@ -100,7 +100,7 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
         if (!isset(self::$MARKETPLACES[$this->store_id]->{$this->name})) {
             throw new Lengow_Connector_Model_Exception(
                 $this->_helper->setLogMessage('lengow_log.exception.marketplace_not_present', array(
-                    'markeplace_name' => $this->name
+                    'marketplace_name' => $this->name
                 ))
             );
         }

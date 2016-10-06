@@ -8,6 +8,7 @@ global.just_yes|Ja
 global.just_no|Nein
 header.preprod_active|Vorproduktionsmodus
 header.counter|Testzeitraum: %{counter} Tag(e) verbleiben.
+header.upgrade_account|Jetzt anmelden!
 footer.toolbox|Toolbox
 footer.legals|Rechtshinweise
 footer.plugin_lengow|Lengow Magento Plugin
@@ -31,12 +32,15 @@ dashboard.screen.configure_plugin|um detaillierte Informationen zu der korrekten
 status.screen.title_end_free_trial|Alle guten Dinge haben ein Ende
 status.screen.subtitle_end_free_trial|Ihr Testzeitraum ist nun abgelaufen
 status.screen.first_description_end_free_trial|Ihr 15-tägiger Testzeitraum ist nun abgelaufen. Wir wissen, dass es traurige Neuigkeiten sind, aber das Beste kommt erst noch. Wir hoffen aufrichtig, dass Lengow zu Ihrem Unternehmenserfolg beitragen konnte.
+status.screen.second_description_end_free_trial|Ihr Account wird gesperrt, bis Sie eine neue Lizenz erwerben. Dies gilt auch für bereits erstellte Verteilungen und Imports!
+status.screen.third_description_end_free_trial|Ihr Trial-Account wird 30 Tage nach dem Ende Ihres Test-Zeitraums automatisch gelöscht. Gehen Sie auf Nummer sicher und melden Sie sich an - nur so sichern Sie Ihre bereits geleistete Arbeit an Ihren Kanälen.
 status.screen.subtitle_bad_payer|Ihr Konto wurde vorläufig geschlossen
 status.screen.first_description_bad_payer|Wir informieren Sie, dass wir Ihren Zugang zu Ihrem Konto blockieren mussten, da die automatische Überweisung leider nicht bei uns eingegangen ist.
 status.screen.second_description_bad_payer|Die Publizierung Ihres Produktdatenfeeds wurde vorübergehend eingestellt. Wir empfehlen Ihnen dringend, mit uns in Kontakt zu treten über
 status.screen.phone_bad_payer|oder telefonisch unter: +49 (0)3222-17 41 093
 status.screen.third_description_bad_payer|Wir hoffen auf eine zeitnahe neue Zusammenarbeit.
 status.screen.facturation_button|Siehe meine Rechnungsinformation
+status.screen.upgrade_account_button|Ich bin bereit mich anzumelden!
 status.screen.refresh_action| Meinen Account aktualisieren
 product.screen.title|Produkt exportieren
 product.screen.nb_exported|Produkte exportiert
@@ -300,7 +304,7 @@ lengow_log.exception.no_connection_webservice|Verbindung mit dem Lengow Webservi
 lengow_log.exception.crendentials_not_valid|Konto-ID, Wertmarkenzugang oder Geheimwertmarke gelten im Laden nicht %{store_name} (%{store_id})
 lengow_log.exception.error_lengow_webservice|Lengow Webservice : %{error_code} - %{error_message} auf Lager %{store_name} (%{store_id})
 lengow_log.exception.timeout_api|API Anruf wegen Zeitüberschreitung blockiert
-lengow_log.exception.marketplace_not_present|Lengow Fehler: %{markeplace_name} erscheint nicht in der Marketplace-Liste
+lengow_log.exception.marketplace_not_present|Lengow Fehler: %{marketplace_name} erscheint nicht in der Marketplace-Liste
 lengow_log.exception.order_failed_with_quote|auf dem Angebot basierende Bestellung konnte nicht erstellt werden.
 lengow_log.exception.order_is_empty|Bestellung konnte nicht gespeichert werden.
 lengow_log.exception.order_line_required|Erforderliche Bestellzeile kann in der Bestellung nicht gefunden werden.
