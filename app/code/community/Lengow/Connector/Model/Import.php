@@ -183,7 +183,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
             }
         } else {
             // to activate lengow shipping method
-            Mage::getSingleton('core/session')->setIsFromlengow('true');
+            Mage::getSingleton('core/session')->setIsFromlengow(1);
             $this->_helper->log(
                 'Import',
                 $this->_helper->setLogMessage('log.import.start', array('type' => $this->_type_import)),
@@ -337,7 +337,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
             }
         }
         // Clear session
-        Mage::getSingleton('core/session')->setIsFromlengow('false');
+        Mage::getSingleton('core/session')->setIsFromlengow(0);
         if ($this->_import_one_order) {
             $result['error'] = $errors;
             return $result;

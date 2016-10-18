@@ -673,7 +673,11 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
         $lastname = (string)$this->_order_data->billing_address->last_name;
         $firstname = ucfirst(strtolower($firstname));
         $lastname = ucfirst(strtolower($lastname));
-        return $firstname.' '.$lastname;
+        if (empty($firstname) && empty($lastname)) {
+            return (string)$this->_order_data->billing_address->full_name;
+        } else {
+            return $firstname.' '.$lastname;
+        }
     }
 
     /**

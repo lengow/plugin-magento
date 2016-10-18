@@ -136,10 +136,10 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
      */
     public function setCmsOption($force = false)
     {
-        if ($this->isNewMerchant()) {
+        $config = Mage::helper('lengow_connector/config');
+        if ($this->isNewMerchant() || (bool)$config->get('preprod_mode_enable')) {
             return false;
         }
-        $config = Mage::helper('lengow_connector/config');
         if (!$force) {
             $updated_at = $config->get('last_option_cms_update');
             if (!is_null($updated_at) && (time() - strtotime($updated_at)) < $this->_cache_time) {

@@ -254,9 +254,10 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
                         if (!empty($trackings)) {
                             $last_track = end($trackings);
                         }
-                        $params['tracking_number'] = isset($last_track) ? $last_track->getNumber() : '';
+                        $params[$arg] = isset($last_track) ? $last_track->getNumber() : '';
                         break;
                     case 'carrier':
+                    case 'shipping_method':
                         if ($order_lengow) {
                             $carrier_code = strlen((string)$order_lengow->getData('carrier')) > 0
                                 ? (string)$order_lengow->getData('carrier')
@@ -270,16 +271,22 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
                             if (!empty($trackings)) {
                                 $last_track = end($trackings);
                             }
-                            $params['carrier'] = isset($last_track)
+                            $params[$arg] = isset($last_track)
                                 ? $this->_matchCarrier($last_track->getCarrierCode(), $last_track->getTitle())
                                 : '';
                         }
                         break;
                     case 'tracking_url':
-                        $params['tracking_url'] = '';
+                        $params[$arg] = 'tracking_url not available';
                         break;
                     case 'shipping_price':
-                        $params['shipping_price'] = $order->getShippingInclTax();
+                        $params[$arg] = $order->getShippingInclTax();
+                        break;
+                    case 'shipping_date':
+                        $params[$arg] = date('c');
+                        break;
+                    case 'cancel_reason':
+                        $params[$arg] = 'order canceled by merchant';
                         break;
                     default:
                         break;

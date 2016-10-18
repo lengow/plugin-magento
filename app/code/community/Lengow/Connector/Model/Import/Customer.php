@@ -20,6 +20,7 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
         'last_name',
         'first_name',
         'first_line',
+        'full_name',
         'second_line',
         'complement',
         'zipcode',
@@ -74,6 +75,7 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
         $temp_billing_names = array(
             'firstname' => $array['billing_address']['first_name'],
             'lastname'  => $array['billing_address']['last_name'],
+            'fullname'  => $array['billing_address']['full_name']
         );
         $billing_names = $this->_getNames($temp_billing_names);
         $array['billing_address']['first_name'] = $billing_names['firstname'];
@@ -83,7 +85,8 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
         // Shipping address
         $temp_shipping_names = array(
             'firstname' => $array['delivery_address']['first_name'],
-            'lastname' => $array['delivery_address']['last_name'],
+            'lastname'  => $array['delivery_address']['last_name'],
+            'fullname'  => $array['delivery_address']['full_name']
         );
         $shipping_names = $this->_getNames($temp_shipping_names);
         $array['delivery_address']['first_name'] = $shipping_names['firstname'];
@@ -198,6 +201,10 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
             if (!empty($array['firstname'])) {
                 $array = $this->_splitNames($array['firstname']);
             }
+        }
+        // check full name if last_name and first_name are empty
+        if (empty($array['lastname']) && empty($array['firstname'])) {
+            $array = $this->_splitNames($array['fullname']);
         }
         if (empty($array['lastname'])) {
             $array['lastname'] = '__';

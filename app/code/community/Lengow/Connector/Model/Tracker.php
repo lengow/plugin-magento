@@ -21,17 +21,24 @@ class Lengow_Connector_Model_Tracker extends Varien_Object
     {
         if ($quote instanceof Mage_Sales_Model_Order || $quote instanceof Mage_Sales_Model_Quote) {
             $quote_items = $quote->getAllVisibleItems();
-            $ids = array();
+            $products_cart = array();
             foreach ($quote_items as $item) {
                 if ($item->hasProduct()) {
                     $product = $item->getProduct();
                 } else {
                     $product = Mage::getModel('catalog/product')->load($item->getProductId());
                 }
+                $quantity = (int) $item->getQtyOrdered();
+                $price = round((float)$item->getRowTotalInclTax() / $quantity, 2);
                 $identifier =  Mage::helper('lengow_connector/config')->get('tracking_id');
-                $ids[] = $product->getData($identifier);
+                $product_datas = array(
+                    'product_id' => $product->getData($identifier),
+                    'price'      => $price,
+                    'quantity'   => $quantity
+                );
+                $products_cart[] = $product_datas;
             }
-            return implode('|', $ids);
+            return json_encode($products_cart);
         }
         return false;
     }

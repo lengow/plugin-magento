@@ -23,13 +23,14 @@ class Lengow_Connector_Block_Tag_Simple extends Mage_Core_Block_Template
                 'account_id',
                 Mage::helper('lengow_connector/config')->get('account_id', Mage::app()->getStore())
             );
+            $cart = Mage::getModel('lengow/tracker')->getIdsProducts($order);
             $this->setData('order_ref', $order_id);
             $this->setData('amount', $order->getGrandTotal());
             $this->setData('currency', $order->getOrderCurrencyCode());
             $this->setData('payment_method', $order->getPayment()->getMethodInstance()->getCode());
-            $this->setData('cart', Mage::getModel('lengow/tracker')->getIdsProducts($order));
+            $this->setData('cart', htmlspecialchars($cart));
+            $this->setData('cart_number', $order->getQuoteId());
             $this->setData('newbiz', 1);
-            $this->setData('secure', 0);
             $this->setData('valid', 1);
             $this->setTemplate('lengow/tracker/simpletag.phtml');
         }

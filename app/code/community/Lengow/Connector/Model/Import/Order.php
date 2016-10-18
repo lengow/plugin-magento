@@ -149,7 +149,9 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
     public function getOrderIdIfExist($marketplace_sku, $marketplace_name, $delivery_address_id, $marketplace_legacy)
     {
         // V2 compatibility
-        $in = is_null($marketplace_legacy) ? array($marketplace) : array($marketplace, strtolower($marketplace_legacy));
+        $in = is_null($marketplace_legacy)
+            ? array($marketplace_name)
+            : array($marketplace_name, strtolower($marketplace_legacy));
 
         // get order id from Magento flat order table
         $results = Mage::getModel('sales/order')->getCollection()

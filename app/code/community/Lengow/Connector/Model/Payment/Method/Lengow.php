@@ -45,6 +45,6 @@ class Lengow_Connector_Model_Payment_Method_Lengow extends Mage_Payment_Model_Me
      */
     public function isAvailable($quote = null)
     {
-        return Mage::getSingleton('core/session')->getIsFromlengow();
+        return (bool)Mage::getSingleton('core/session')->getIsFromlengow();
     }
 }

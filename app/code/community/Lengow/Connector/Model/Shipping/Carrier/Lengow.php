@@ -62,7 +62,7 @@ class Lengow_Connector_Model_Shipping_Carrier_Lengow extends Mage_Shipping_Model
 
     public function isActive()
     {
-        return Mage::getSingleton('core/session')->getIsFromlengow();
+        return (bool)Mage::getSingleton('core/session')->getIsFromlengow();
     }
 
     public function getAllowedMethods()
