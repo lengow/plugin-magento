@@ -45,25 +45,27 @@ class Lengow_Connector_Model_Observer
      */
     public function updateAdminMenu()
     {
-        $is_new_merchant = Mage::helper('lengow_connector/sync')->isNewMerchant();
-        $is_status = Mage::helper('lengow_connector/sync')->getStatusAccount();
-        if ($is_new_merchant
-            || ($is_status['type'] == 'free_trial' && $is_status['day'] == 0)
-            || $is_status['type'] == 'bad_payer'
-        ) {
-            $update_value = 1;
-        } else {
-            $update_value = 0;
+        if (Mage::helper('lengow_connector/data')->lengowIsInstalled()) {
+            $is_new_merchant = Mage::helper('lengow_connector/sync')->isNewMerchant();
+            $is_status = Mage::helper('lengow_connector/sync')->getStatusAccount();
+            if ($is_new_merchant
+                || ($is_status['type'] == 'free_trial' && $is_status['day'] == 0)
+                || $is_status['type'] == 'bad_payer'
+            ) {
+                $update_value = 1;
+            } else {
+                $update_value = 0;
+            }
+            $menu = Mage::getSingleton('admin/config')->getAdminhtmlConfig()->getNode('menu/lengowtab/children');
+            foreach ($menu->children() as $childName => $child) {
+                $menu->setNode($childName.'/disabled', $update_value);
+            }
+            // Clean config cache to valid configuration
+            Mage::app()->getCache()->clean(
+                Zend_Cache::CLEANING_MODE_MATCHING_TAG,
+                array(Mage_Adminhtml_Block_Page_Menu::CACHE_TAGS)
+            );
         }
-        $menu = Mage::getSingleton('admin/config')->getAdminhtmlConfig()->getNode('menu/lengowtab/children');
-        foreach ($menu->children() as $childName => $child) {
-            $menu->setNode($childName.'/disabled', $update_value);
-        }
-        // Clean config cache to valid configuration
-        Mage::app()->getCache()->clean(
-            Zend_Cache::CLEANING_MODE_MATCHING_TAG,
-            array(Mage_Adminhtml_Block_Page_Menu::CACHE_TAGS)
-        );
     }
 
     /**

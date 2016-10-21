@@ -283,6 +283,8 @@ class Lengow_Connector_Model_Connector
      */
     protected function _makeRequest($type, $url, $args, $token, $body = '')
     {
+        // Define CURLE_OPERATION_TIMEDOUT for old php versions
+        defined("CURLE_OPERATION_TIMEDOUT") || define("CURLE_OPERATION_TIMEDOUT", CURLE_OPERATION_TIMEOUTED);
         $helper = Mage::helper('lengow_connector/data');
         $ch = curl_init();
         // Options
@@ -353,8 +355,11 @@ class Lengow_Connector_Model_Connector
      */
     public function isValidAuth($account_id)
     {
+        if (is_null($account_id) || $account_id == 0 || !is_integer($account_id)) {
+            return false;
+        }
         $result = $this->connect();
-        if (isset($result['token']) && $account_id != 0 && is_integer($account_id)) {
+        if (isset($result['token'])) {
             return true;
         } else {
             return false;
@@ -429,9 +434,9 @@ class Lengow_Connector_Model_Connector
         try {
             list($account_id, $access_token, $secret_token) = $this->getAccessId($store_id);
             $this->init($access_token, $secret_token);
-            // if (!$this->isValidAuth($account_id)) {
-            //     return false;
-            // }
+            if (!$this->isValidAuth($account_id)) {
+                return false;
+            }
             $results = $this->$type(
                 $url,
                 array_merge(array('account_id' => $account_id), $params),
