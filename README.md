@@ -15,6 +15,7 @@ Cloner le repo dans votre espace de travail :
 Exécuter le script suivant :
 
     cd ~/Documents/modules_lengow/magento/Lengow_Export/tools/
+    mkdir ~/Documents/sites/magento19/magento/var/connect
     sh install.sh ~/Documents/docker_images/magento19/magento
 
 Le script va créer des liens symboliques vers les sources du module, vous devez ensuite activer l'option 'symlinks' dans la configuration Magento 
