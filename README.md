@@ -1,66 +1,21 @@
-# Magento module #
-## Installation ##
+# Installation Magento #
 
-### Installation de magento ###
+## Installation du module ##
 
-1 - Aller sur le site de magento : https://www.magentocommerce.com/download
-
-2 - Dans l'onglet release archive, choisir la version a télécharger (ex: la 1.9.2)
-
-3 - Décompresser le projet dans /var/www/magento/magento-1-9
-
-4 - Modification du fichier /etc/hosts
-
-    echo "127.0.0.1 magento-1-9.local" >> /etc/hosts
-
-5 - Création du fichier virtualhost d'apache
-
-    sudo vim /etc/apache2/sites-enabled/magento_1_9.conf 
-    <VirtualHost *:80>
-    DocumentRoot /var/www/magento/magento-1-9/
-    ServerName magento-1-9.local
-    <Directory /var/www/magento/magento-1-9/>
-        Options FollowSymLinks Indexes MultiViews
-        AllowOverride All
-    </Directory>
-        ErrorLog /var/log/apache2/magento-1-9-error_log
-        CustomLog /var/log/apache2/magento-1-9-access_log common
-    </VirtualHost>
-6 - Rédémarrer apache
-
-    sudo service apache2 restart
-    
-7 - Creation de la base de données
-    
-    mysql -u root -p -e "CREATE DATABASE magento-1-9"; 
-    
-8 -  Récupération des Sample Data
-
-Les fichier sont dispo ici : https://github.com/Vinai/compressed-magento-sample-data
-
-    cd /tmp
-    wget https://raw.githubusercontent.com/Vinai/compressed-magento-sample-data/1.9.1.0/compressed-no-mp3-magento-sample-data-1.9.1.0.tgz
-    tar -zxvf compressed-magento-sample-data-1.9.1.0.tgz
-    cd magento-sample-data-1.9.1.0
-    mysql -u root -p magento-1-9 < magento_sample_data_for_1.9.1.0.sql
-    
-9 - Se connecter sur magento pour lancer l'installation
-    
-    http://magento-1-9.local
-
-### Récupération des sources ###
+### Cloner le repository de Bitbucket dans votre espace de travail ###
 
 Cloner le repo dans votre espace de travail :
 
-    cd /var/www/magento/
-    git clone git@bitbucket.org:lengow-dev/magento-v3.git
+    cd ~/Documents/modules_lengow/magento/
+    git clone git@bitbucket.org:lengow-dev/magento-v3.git Lengow_Export
+    chmod 777 -R ~/Documents/modules_lengow/magento/Lengow_Export
 
 ### Installation dans Magento ###
 
 Exécuter le script suivant :
 
-    cd /var/www/magento/magento-v3/tools/
-    ./install.sh /var/www/magento/magento-1-9
+    cd ~/Documents/modules_lengow/magento/Lengow_Export/tools/
+    sh install.sh ~/Documents/docker_images/magento19/magento
 
 Le script va créer des liens symboliques vers les sources du module, vous devez ensuite activer l'option 'symlinks' dans la configuration Magento 
 
@@ -70,7 +25,7 @@ Se déconnecter, puis se reconnecter sur l'admin magento.
 
 ## Traduction ##
 
-Pour traduire le projet il faut modifier les fichier *.yml dans le répertoire : /app/code/community/Lengow/Connector/locale/yml
+Pour traduire le projet il faut modifier les fichier *.yml dans le répertoire : Documents/modules_lengow/magento/lengow/Lengow_Export/app/code/community/Lengow/Connector/locale/yml
 
 ### Installation de Yaml Parser ###
 
@@ -81,79 +36,94 @@ Pour traduire le projet il faut modifier les fichier *.yml dans le répertoire :
 
 Une fois les traductions terminées, il suffit de lancer le script de mise à jour de traduction :
 
-    cd /var/www/magento/magento-v3/tools
+    cd ~/Documents/modules_lengow/magento/Lengow_Export/tools/
     php translate.php
 
-## Test ##
+## Mise à jour du fichier d'intégrité des données ##
+
+    cd ~/Documents/modules_lengow/magento/Lengow_Export/tools/
+    php checkmd5.php
+
+Le fichier checkmd5.csv sera directement créé dans le dossier /toolbox
+
+## Compiler le module ##
+
+La compilation du module se fait directement à partir de Magento :
+
+1 - Se rendre dans System => Magento Connect => Package Extensions
+2 - Dans l'onglet Load Local Package et cliquer sur Lengow_Magento
+3 - Dans l'onglet Release Info changer la version x.x.x
+4 - Cliquer sur "Save Data and Create Package" pour créer le package.
+5 - Récupérer l'archive Lengow_Export-x.x.x.tgz dans le dossier /var/connect de votre Magento
 
 
-### Modman Installation (https://github.com/colinmollenhour/modman) ###
+## Versionning GIT ##
 
-    bash < <(wget -q --no-check-certificate -O - https://raw.github.com/colinmollenhour/modman/master/modman-installer)
-    source ~/.profile
+1 - Prendre un ticket sur JIRA et cliquer sur Créer une branche dans le bloc développement à droite
 
-### Install EcomDev ###
+2 - Sélectionner en "Repository" lengow-dev/magento-v3, pour "Branch from" prendre dev et laisser le nom du ticket pour "Branch name"
 
-    cd /var/www/magento/magento-1-9
-    modman init
-    modman clone git://github.com/EcomDev/EcomDev_PHPUnit.git
+3 - Créer la nouvelle branche
 
-### create a new database magento_test ###
+4 - Exécuter le script suivant pour changer de branche 
 
-    cd shell
-    php ecomdev-phpunit.php -a magento-config --db-name TEST_DATABASE_NAME --base-url http://BASE_URL
+    cd ~/Documents/modules_lengow/magento/Lengow_Export/
+    git fetch
+    git checkout "Branch name"
 
-### Install phpunit 4.8 ###
+5 - Faire le développement spécifique
 
-    cd /tmp
-    wget https://phar.phpunit.de/phpunit-old.phar
-    chmod +x phpunit-old.phar
-    sudo mv phpunit-old.phar /usr/local/bin/phpunit
+6 - Lorsque que le développement est terminé, faire un push sur la branche du ticket
 
-### Check Phpunit and build test database ###
+    git add .
+    git commit -m 'My ticket is finished'
+    git pull origin "Branch name"
+    git push origin "Branch name"
 
-    cd /var/www/magento/magento-1-9
-    phpunit
-    
-Tester un controller 
-    
-    cd /var/www/magento/magento-1-9
-    phpunit --filter Nom_Du_Controller_Test
+7 - Dans Bitbucket, dans l'onglet Pull Requests créer une pull request
+
+8 - Sélectionner la branche du tiket et l'envoyer sur la branche de dev de lengow-dev/magento-v3
+
+9 - Bien nommer la pull request et mettre toutes les informations nécessaires à la vérification
+
+10 - Mettre tous les Reviewers nécessaires à la vérification et créer la pull request
+
+11 - Lorsque la pull request est validée, elle sera mergée sur la branche de dev
 
 ## Bugs connus ##
 
 Après installation, si vous obtenez une erreur 'Wrong type' lors de l'affichage des réglages du module, vous devez vous rendre dans les réglages des transporteurs et enregistrer la configuration.
 
-### Install With Magento <= 1.6 + php >= 5.5 ###
+### Installation avec Magento <= 1.6 + php >= 5.5 ###
 
-    Error :
-        CONNECT ERROR: Unsupported resource type
-    Solution :
-        Edit file downloader/lib/Mage/Archive/Tar.php
-        Change the line :
-            const FORMAT_PARSE_HEADER = 'a100name/a8mode/a8uid/a8gid/a12size/a12mtime/a8checksum/a1type/a100symlink/a6magic/a2version/a32uname/a32gname/a8devmajor/a8devminor/a155prefix/a12closer';
-        must be replaced by:
-            const FORMAT_PARSE_HEADER = 'Z100name/Z8mode/Z8uid/Z8gid/Z12size/Z12mtime/Z8checksum/Z1type/Z100symlink/Z6magic/Z2version/Z32uname/Z32gname/Z8devmajor/Z8devminor/Z155prefix/Z12closer';
+Error :
+    CONNECT ERROR: Unsupported resource type
+Solution :
+    Edit file downloader/lib/Mage/Archive/Tar.php
+    Change the line :
+        const FORMAT_PARSE_HEADER = 'a100name/a8mode/a8uid/a8gid/a12size/a12mtime/a8checksum/a1type/a100symlink/a6magic/a2version/a32uname/a32gname/a8devmajor/a8devminor/a155prefix/a12closer';
+    must be replaced by:
+        const FORMAT_PARSE_HEADER = 'Z100name/Z8mode/Z8uid/Z8gid/Z12size/Z12mtime/Z8checksum/Z1type/Z100symlink/Z6magic/Z2version/Z32uname/Z32gname/Z8devmajor/Z8devminor/Z155prefix/Z12closer';
             
-### Install With Magento <= 1.5 ###
+### Installation avec With Magento <= 1.5 ###
 
-    Error :
-        CONNECT ERROR: The 'community' channel is not installed.
-    Solution :
-        chmod 777 mage
-        ./mage mage-setup
+Error :
+    CONNECT ERROR: The 'community' channel is not installed.
+Solution :
+    chmod 777 mage
+    ./mage mage-setup
         
-### Magento Installation = 1.7 ###
+### Installation avec Magento = 1.7 ###
 
-    Error :
-        During installation : PHP Extensions "0" must be loaded.
-    Solution
-        Edit file app/code/core/Mage/Install/etc/config.xml
-        Change the line :
-            <extensions>
-                <pdo_mysql/>
-            </extensions>
-        must be replaced by :
-            <extensions>
-                <pdo_mysql>1</pdo_mysql>
-            </extensions>
+Error :
+    During installation : PHP Extensions "0" must be loaded.
+Solution
+    Edit file app/code/core/Mage/Install/etc/config.xml
+    Change the line :
+        <extensions>
+            <pdo_mysql/>
+        </extensions>
+    must be replaced by :
+        <extensions>
+            <pdo_mysql>1</pdo_mysql>
+        </extensions>

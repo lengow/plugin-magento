@@ -24,7 +24,6 @@ copy_directory(){
             unlink $DESTINATION_DIRECTORY
         fi
         ln -s $ORIGINAL_DIRECTORY $DESTINATION_DIRECTORY
-        #echo "ln -s $ORIGINAL_DIRECTORY $DESTINATION_DIRECTORY"
         echo "✔ Create directory : $DESTINATION_DIRECTORY"
     else
         echo "⚠ Missing directory : $ORIGINAL_DIRECTORY"
@@ -41,11 +40,11 @@ create_if_not_exist(){
 copy_file "/app/etc/modules/Lengow_Connector.xml"
 copy_file "/app/design/frontend/base/default/layout/lengow.xml"
 copy_file "/app/design/adminhtml/default/default/layout/lengow.xml"
+copy_file "/var/connect/Lengow_Magento.xml"
+copy_file "/var/connect/package.xml"
 copy_directory "/app/code/community/Lengow"
 copy_directory "/app/design/frontend/base/default/template/lengow"
 copy_directory "/app/design/adminhtml/default/default/template/lengow"
 copy_directory "/skin/adminhtml/default/default/lengow"
-copy_directory "/skin/frontend/base/default/lengow"
-copy_directory "/media/lengow"
 
 exit 0;
