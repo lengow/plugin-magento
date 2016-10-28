@@ -64,7 +64,7 @@
 /app/code/community/Lengow/Connector/Model/Resource/Import/Orderline/Collection.php|2570332bcb8ae76f57a4997f80c624ab
 /app/code/community/Lengow/Connector/Model/Resource/Import/Action/Collection.php|bfaf85570df729321cc7b3280a381ce5
 /app/code/community/Lengow/Connector/Model/Shipping/Carrier/Lengow.php|557d0e51b11e98168c7444edeeb50d29
-/app/code/community/Lengow/Connector/Model/Connector.php|3a7fc460788edafea1513cb012edf8fb
+/app/code/community/Lengow/Connector/Model/Connector.php|a092e869759b1c2a62478c15dd89e075
 /app/code/community/Lengow/Connector/Model/Export.php|3be9ce1dba29de426f501e7aa3ca1a72
 /app/code/community/Lengow/Connector/Model/Payment/Method/Lengow.php|b8bc3f189ab8315891c19f94f5392eae
 /app/code/community/Lengow/Connector/Model/System/Config/Source/Attribute.php|0ef7fcdfae445aeee9b5cba599731fd2
@@ -366,7 +366,7 @@
 /skin/adminhtml/default/default/lengow/fonts/Lato-Italic.ttf|56c4cb26fd6a48b9c0ebcc07b376ee38
 /skin/adminhtml/default/default/lengow/fonts/Lato-Regular.ttf|7f690e503a254e0b8349aec0177e07aa
 /skin/adminhtml/default/default/lengow/js/jquery-2.2.2.js|1d35678c5edbb639ab7aa5cce0856f57
-/skin/adminhtml/default/default/lengow/js/home.js|8ed8863780196d685c6c83a5862732f8
+/skin/adminhtml/default/default/lengow/js/home.js|72cec62f88826151729d3bc6cbed43e2
 /skin/adminhtml/default/default/lengow/js/order.js|ae516863dae6a3b3e46f438a5ebaefc5
 /skin/adminhtml/default/default/lengow/js/toolbox.js|3dda41ffd4db10d49754d1e4785a31f5
 /skin/adminhtml/default/default/lengow/js/noconflict.js|0471665ee04a2c68f993899eb8affe25
