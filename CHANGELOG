@@ -1,0 +1,77 @@
+=============================================================
+Version 3.0.0
+=============================================================
+
+	- Feature: Full rewrite for the new platform Lengow
+	- Feature: Add new lengow Dashbord
+	- Feature: Add new product selection by store
+	- Feature: Add new lengow order with new page
+	- Feature: Add new help page
+	- Feature: Add new Toolbox page with all Lengow informations
+	- Feature: Add new legals page
+	- Feature: Add new lengow simple tag
+	- Feature: New lengow settings with cleaning old options
+	- Feature: Creating new accounts directly from the module
+	- Feature: Management actions and error return
+	- Feature: Add new actions: re-import, resend and resync orders
+
+=============================================================
+Version 2.2.3
+=============================================================
+
+	- Feature: Add new parameters in marketplace call action with default value
+	- Bugfix: Change simple tag with new variables
+	- Bugfix: [import] Get full_name field in order API
+
+=============================================================
+Version 2.2.2
+=============================================================
+
+	- Bugfix: [import] Add new legacy_code in marketplace class
+
+=============================================================
+Version 2.2.1
+=============================================================
+
+	- Feature: Import process compatible with v2 and v3 platform Lengow at the same time
+
+=============================================================
+Version 2.2.0
+=============================================================
+
+	- Feature: New version compatible with v3 platform Lengow
+
+=============================================================
+Version 2.1.2
+=============================================================
+
+	- Feature: [Export] New way to export product (speed optimisation)
+	- Feature: [Export] Check if export feed is already launch
+	- Feature: [Export] Clean old timestamp export files in media / store > 10 days
+	- Feature: [Export] Clean lengow_feed file generate by cron if "active_store" is set to false
+	- Bugfix: [Import] Don't use Rate price conversion when importing Order
+	- Bugfix: [Import] Fix Exception Quote with a second parameter missing
+	- Bugfix: [Import] Fix use "," in group ID
+	- Bugfix: [Import] Fix search by id with regex
+	- Bugfix: [Export] Fix bug stores with different currency
+	- Bugfix: [ACL] Fix acl permissions
+	- Bugfix: [Export] Clean Json & Yaml format
+
+=============================================================
+Version 2.1.1
+=============================================================
+
+	- Feature: Debug interface (lengow_debug)
+	- Bugfix:[Export] Fix compatibility with old version of php ([] => array())
+
+=============================================================
+Version 2.1.0
+=============================================================
+
+	- Feature: The Group IP must be set for each store not globally
+	- Feature: New option to active feed by store (don't forget to active feed with that)
+	- Feature: You can choose product to export in "Manage Products Export" by store or Globally
+	- Feature: Cancelled products are no longer imported in orders
+	- Bugfix: [Export] Fix selection of products to export in "Manage Products Export" by store
+	- Bugfix: Optimizing the export process
+	- Bugfix: Rewriting the import process
