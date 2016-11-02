@@ -80,6 +80,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
         'description'                    => 'description',
         'description_html'               => 'description_html',
         'description_short'              => 'description_short',
+        'description_short_html'         => 'description_short_html',
     );
 
     /**
@@ -124,7 +125,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
         'product-url'           => 'url',
         'name'                  => 'name',
         'description'           => 'description_html',
-        'short_description'     => 'description_short',
+        'short_description'     => 'description_short_html',
         'parent_id'             => 'parent_id',
         'product_type'          => 'type',
         'product_variation'     => 'variation',
@@ -567,16 +568,16 @@ class Lengow_Connector_Model_Export extends Varien_Object
                     : $parent_instance->getProductUrl();
                 $datas['name'] = $this->_helper->cleanData($parent_instance->getName());
                 $datas['description'] = $this->_helper->cleanData($parent_instance->getDescription(), false);
-                $datas['description_html'] = $this->_helper->cleanData($parent_instance->getDescription(), false);
-                $datas['description_short'] = $this->_helper->cleanData($parent_instance->getShortDescription());
+                $datas['description_html'] = $this->_helper->cleanData($parent_instance->getDescription());
+                $datas['description_short'] = $this->_helper->cleanData($parent_instance->getShortDescription(), false);
+                $datas['description_short_html'] = $this->_helper->cleanData($parent_instance->getShortDescription());
             } else {
-                $datas['url'] = $product->getUrlInStore()
-                    ? $product->getUrlInStore()
-                    : $product->getProductUrl();
+                $datas['url'] = $product->getUrlInStore() ? $product->getUrlInStore() : $product->getProductUrl();
                 $datas['name'] = $this->_helper->cleanData($product->getName());
                 $datas['description'] = $this->_helper->cleanData($product->getDescription(), false);
                 $datas['description_html'] = $this->_helper->cleanData($product->getDescription());
-                $datas['description_short'] = $this->_helper->cleanData($product->getShortDescription());
+                $datas['description_short'] = $this->_helper->cleanData($product->getShortDescription(), false);
+                $datas['description_short_html'] = $this->_helper->cleanData($product->getShortDescription());
             }
             $datas['parent_id'] = $parent_id;
             // Product variation
@@ -595,7 +596,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
             // Selected attributes to export with Frond End value of current store
             if (!empty($attributes_to_export)) {
                 foreach ($attributes_to_export as $field => $attr) {
-                    if (!in_array($field, $this->_excludes) && !isset($product_datas[$field])) {
+                    if (!in_array($field, $this->_excludes) && !isset($product_datas[$field]) && $field != '') {
                         if ($product->getData($field) === null) {
                             $product_datas[$attr] = '';
                         } else {

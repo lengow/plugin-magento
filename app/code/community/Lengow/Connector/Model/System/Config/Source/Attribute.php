@@ -69,6 +69,7 @@ class Lengow_Connector_Model_System_Config_Source_Attribute extends Mage_Core_Mo
                     $attribute_list.= $attribute['value'].',';
                 }
             }
+            $attribute_list = rtrim($attribute_list, ',');
             Mage::getModel('core/config')->saveConfig(
                 'lengow_export_options/advanced/export_attribute',
                 $attribute_list,
