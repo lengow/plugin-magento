@@ -8,7 +8,8 @@
  * @copyright   2016 Lengow SAS
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Lengow_Connector_Block_Adminhtml_Order_Renderer_Action extends Mage_Adminhtml_Block_Widget_Grid_Column_Renderer_Abstract
+class Lengow_Connector_Block_Adminhtml_Order_Renderer_Action
+    extends Mage_Adminhtml_Block_Widget_Grid_Column_Renderer_Abstract
 {
     /**
      * Decorate Action values
@@ -57,9 +58,11 @@ class Lengow_Connector_Block_Adminhtml_Order_Renderer_Action extends Mage_Adminh
                 $last_action_type = $action->getLastOrderActionType($row->getData('order_id'));
                 if ($last_action_type) {
                     return '<a class="lengow_action lengow_tooltip lgw-btn lgw-btn-white">'
-                        .$helper->decodeLogMessage('order.table.action_sent', null, array(
-                            'action_type' => $last_action_type
-                        ))
+                        .$helper->decodeLogMessage(
+                            'order.table.action_sent',
+                            null,
+                            array('action_type' => $last_action_type)
+                        )
                         .'<span class="lengow_order_action">'
                         .$helper->decodeLogMessage('order.table.action_waiting_return')
                         .'</span></a>';

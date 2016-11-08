@@ -161,11 +161,14 @@ class Lengow_Connector_Model_Import_Quote extends Mage_Sales_Model_Quote
                 $found = true;
                 Mage::helper('lengow_connector/data')->log(
                     'Import',
-                    Mage::helper('lengow_connector/data')->setLogMessage('log.import.product_be_found', array(
-                        'product_id'      => $product->getId(),
-                        'attribute_name'  => $attribute_name,
-                        'attribute_value' => $attribute_value
-                    )),
+                    Mage::helper('lengow_connector/data')->setLogMessage(
+                        'log.import.product_be_found',
+                        array(
+                            'product_id'      => $product->getId(),
+                            'attribute_name'  => $attribute_name,
+                            'attribute_value' => $attribute_value
+                        )
+                    ),
                     $log_output,
                     $marketplace_sku
                 );
@@ -178,15 +181,17 @@ class Lengow_Connector_Model_Import_Quote extends Mage_Sales_Model_Quote
                 : (string)$product_line->marketplace_product_id
             );
             throw new Lengow_Connector_Model_Exception(
-                Mage::helper('lengow_connector/data')->setLogMessage('lengow_log.exception.product_not_be_found', array(
-                    'product_id' => $product_id
-                ))
+                Mage::helper('lengow_connector/data')->setLogMessage(
+                    'lengow_log.exception.product_not_be_found',
+                    array('product_id' => $product_id)
+                )
             );
         } elseif ($product->getTypeId() == Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE) {
             throw new Lengow_Connector_Model_Exception(
-                Mage::helper('lengow_connector/data')->setLogMessage('lengow_log.exception.product_is_a_parent', array(
-                    'product_id' => $product->getId()
-                ))
+                Mage::helper('lengow_connector/data')->setLogMessage(
+                    'lengow_log.exception.product_is_a_parent',
+                    array('product_id' => $product->getId())
+                )
             );
         }
         return $product;

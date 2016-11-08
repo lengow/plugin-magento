@@ -334,6 +334,7 @@ en:
       crendentials_not_valid: "account ID, token access or secret token are not valid in store %{store_name} (%{store_id})"
       error_lengow_webservice: "Lengow webservice : %{error_code} - %{error_message} in store %{store_name} (%{store_id})"
       timeout_api: "API call blocked due to a timeout"
+      error_curl: "Curl error %{error_code} - %{error_message}"
       marketplace_not_present: "Lengow error: %{marketplace_name} does not feature in the marketplace list"
       order_failed_with_quote: "unable to create order based on given quote"
       order_is_empty: "order could not be saved"

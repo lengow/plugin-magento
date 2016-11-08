@@ -31,10 +31,9 @@ class Lengow_Connector_Model_System_Config_Source_Attribute extends Mage_Core_Mo
      */
     public function toOptionArray()
     {
-        $attribute = Mage::getResourceModel('eav/entity_attribute_collection')
-                           ->setEntityTypeFilter(Mage::getModel('catalog/product')
-                           ->getResource()
-                           ->getTypeId());
+        $attribute = Mage::getResourceModel('eav/entity_attribute_collection')->setEntityTypeFilter(
+            Mage::getModel('catalog/product')->getResource()->getTypeId()
+        );
         $attributeArray = array();
         $attributeArray[] = array('value' => 'none', 'label' => '');
         foreach ($attribute as $option) {

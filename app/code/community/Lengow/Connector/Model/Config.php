@@ -59,22 +59,24 @@ class Lengow_Connector_Model_Config extends Mage_Core_Model_Config
                         $new_value = $value;
                     }
                     if ($scope == 'stores') {
-                        $message = Mage::helper('lengow_connector/translation')
-                            ->t(
-                                'log.setting.setting_change_for_store',
-                                array(
-                                    'key'       => $path,
-                                    'old_value' => $old_value,
-                                    'value'     => $new_value,
-                                    'store_id'  => $scope_id
-                                )
-                            );
+                        $message = Mage::helper('lengow_connector/translation')->t(
+                            'log.setting.setting_change_for_store',
+                            array(
+                                'key'       => $path,
+                                'old_value' => $old_value,
+                                'value'     => $new_value,
+                                'store_id'  => $scope_id
+                            )
+                        );
                     } else {
-                        $message = Mage::helper('lengow_connector/translation')->t('log.setting.setting_change', array(
-                            'key'       => $path,
-                            'old_value' => $old_value,
-                            'value'     => $new_value,
-                        ));
+                        $message = Mage::helper('lengow_connector/translation')->t(
+                            'log.setting.setting_change',
+                            array(
+                                'key'       => $path,
+                                'old_value' => $old_value,
+                                'value'     => $new_value,
+                            )
+                        );
                     }
                     Mage::helper('lengow_connector')->log('Config', $message);
                 }

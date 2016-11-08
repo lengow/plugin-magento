@@ -13,8 +13,12 @@ class Lengow_Connector_Test_Model_Log extends EcomDev_PHPUnit_Test_Case
     public function model()
     {
         $collection = Mage::getModel('lengow/log')->getCollection();
-        foreach($collection as $log){
-            $this->assertRegExp('/Test message/',$log->getMessage(), '[Log - Read] Message data should contain "Test message"');
+        foreach ($collection as $log){
+            $this->assertRegExp(
+                '/Test message/',
+                $log->getMessage(),
+                '[Log - Read] Message data should contain "Test message"'
+            );
         }
         $this->assertEquals(count($collection), 3, '[Log - Fixture] contain 3 messages');
 
@@ -31,7 +35,11 @@ class Lengow_Connector_Test_Model_Log extends EcomDev_PHPUnit_Test_Case
 
         $log = Mage::getModel('lengow/log')->load($insertLog->getId());
         $this->assertEquals($log->getId(), $insertLog->getId(), '[Log - Helper Insert] check data');
-        $this->assertEquals($log->getMessage(), '[Category] Test message by helper', '[Log - Helper Insert] check data');
+        $this->assertEquals(
+            $log->getMessage(),
+            '[Category] Test message by helper',
+            '[Log - Helper Insert] check data'
+        );
     }
 
     /**

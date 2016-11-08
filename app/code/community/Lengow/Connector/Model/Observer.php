@@ -57,8 +57,8 @@ class Lengow_Connector_Model_Observer
                 $update_value = 0;
             }
             $menu = Mage::getSingleton('admin/config')->getAdminhtmlConfig()->getNode('menu/lengowtab/children');
-            foreach ($menu->children() as $childName => $child) {
-                $menu->setNode($childName.'/disabled', $update_value);
+            foreach ($menu->children() as $child) {
+                $child->setNode('disabled', $update_value);
             }
             // Clean config cache to valid configuration
             Mage::app()->getCache()->clean(
@@ -125,7 +125,6 @@ class Lengow_Connector_Model_Observer
     {
         $shipment = $observer->getEvent()->getShipment();
         $order = $shipment->getOrder();
-        $helper = Mage::helper('lengow_connector');
         if ($order->getData('from_lengow') == 1
             && Mage::getSingleton('core/session')->getCurrentOrderLengow() != $order->getData('order_id_lengow')
             && !array_key_exists($order->getData('order_id_lengow'), $this->_alreadyShipped)
@@ -147,7 +146,6 @@ class Lengow_Connector_Model_Observer
         $track = $observer->getEvent()->getTrack();
         $shipment = $track->getShipment();
         $order = $shipment->getOrder();
-        $helper = Mage::helper('lengow_connector');
         if ($order->getData('from_lengow') == 1
             && Mage::getSingleton('core/session')->getCurrentOrderLengow() != $order->getData('order_id_lengow')
             && !array_key_exists($order->getData('order_id_lengow'), $this->_alreadyShipped)
@@ -168,7 +166,6 @@ class Lengow_Connector_Model_Observer
     {
         $payment = $observer->getEvent()->getPayment();
         $order = $payment->getOrder();
-        $helper = Mage::helper('lengow_connector');
         if ($order->getData('from_lengow') == 1
             && Mage::getSingleton('core/session')->getCurrentOrderLengow() != $order->getData('order_id_lengow')
         ) {
@@ -180,10 +177,8 @@ class Lengow_Connector_Model_Observer
 
     /**
      * Exports products for each store with cron job
-     *
-     * @param $observer
      */
-    public function exportCron(Varien_Event_Observer $observer)
+    public function exportCron()
     {
         $config = Mage::helper('lengow_connector/config');
         if ((bool)$config->get('export_cron_enable')) {
@@ -197,12 +192,15 @@ class Lengow_Connector_Model_Observer
                         // config store
                         Mage::app()->getStore()->setCurrentStore($store_id);
                         // launch export process
-                        $export = Mage::getModel('lengow/export', array(
-                            'store_id'           => $store_id,
-                            'stream'             => false,
-                            'update_export_date' => false,
-                            'type'               => 'magento cron'
-                        ));
+                        $export = Mage::getModel(
+                            'lengow/export',
+                            array(
+                                'store_id'           => $store_id,
+                                'stream'             => false,
+                                'update_export_date' => false,
+                                'type'               => 'magento cron'
+                            )
+                        );
                         $export->exec();
                     } catch (Exception $e) {
                         $error_message = '[Magento error] "'.$e->getMessage().'" '.$e->getFile().' line '.$e->getLine();
@@ -216,10 +214,8 @@ class Lengow_Connector_Model_Observer
 
     /**
      * Imports orders for each store with cron job
-     *
-     * @param $observer
      */
-    public function importCron(Varien_Event_Observer $observer)
+    public function importCron()
     {
         $config = Mage::helper('lengow_connector/config');
         if ((bool)$config->get('import_cron_enable')) {

@@ -2,7 +2,6 @@
 
 class Lengow_Connector_Test_Controller_Adminhtml_Lengow_ProductController extends Lengow_Connector_Test_Case
 {
-
     /**
      * test index action
      *
@@ -12,12 +11,10 @@ class Lengow_Connector_Test_Controller_Adminhtml_Lengow_ProductController extend
     public function indexAction()
     {
         $this->mockAdminUserSession();
-
         //test page
         $this->dispatch('adminhtml/lengow_product/index');
         $this->assertRequestRoute('adminhtml/lengow_product/index', '[Log - Url]');
     }
-
 
     /**
      * test grid action
@@ -28,12 +25,10 @@ class Lengow_Connector_Test_Controller_Adminhtml_Lengow_ProductController extend
     public function gridAction()
     {
         $this->mockAdminUserSession();
-
         //test page
         $this->dispatch('adminhtml/lengow_product/grid');
         $this->assertRequestRoute('adminhtml/lengow_product/grid', '[Log - Url]');
     }
-
 
     /**
      * test mass publish action
@@ -47,7 +42,6 @@ class Lengow_Connector_Test_Controller_Adminhtml_Lengow_ProductController extend
     public function massPublishAction()
     {
         $this->mockAdminUserSession();
-
         $this->publishProductGlobal();
         $this->unPublishProductGlobal();
         $this->publishProductStore();
@@ -60,7 +54,6 @@ class Lengow_Connector_Test_Controller_Adminhtml_Lengow_ProductController extend
      *  Publish one product Global
      *
      */
-
     private function publishProductGlobal()
     {
         //set lengow product to 0
@@ -73,11 +66,12 @@ class Lengow_Connector_Test_Controller_Adminhtml_Lengow_ProductController extend
         $product = Mage::getModel('catalog/product')->load(2);
         $this->assertTrue(!(boolean)$product->getLengowProduct());
 
-        $this->getRequest()->setMethod('POST')
-            ->setPost(array(
+        $this->getRequest()->setMethod('POST')->setPost(
+            array(
                 "product" => array(1),
                 "publish" => 1
-            ));
+            )
+        );
         $this->dispatch('adminhtml/lengow_product/massPublish/');
 
         $product = Mage::getModel('catalog/product')->load(1);
@@ -103,11 +97,12 @@ class Lengow_Connector_Test_Controller_Adminhtml_Lengow_ProductController extend
 
         // --------------------------------------
         // Test : UnPublish first product to global
-        $this->getRequest()->setMethod('POST')
-            ->setPost(array(
+        $this->getRequest()->setMethod('POST')->setPost(
+            array(
                 "product" => array(1),
                 "publish" => 0
-            ));
+            )
+        );
         $this->dispatch('adminhtml/lengow_product/massPublish/');
 
         $product = Mage::getModel('catalog/product')->load(1);
@@ -124,7 +119,6 @@ class Lengow_Connector_Test_Controller_Adminhtml_Lengow_ProductController extend
      */
     private function publishProductStore()
     {
-
         //reset product
         $product_action = Mage::getSingleton('catalog/product_action');
         $product_action->updateAttributes(array(1, 2), array('lengow_product' => 0), 0);
@@ -137,12 +131,13 @@ class Lengow_Connector_Test_Controller_Adminhtml_Lengow_ProductController extend
 
         // --------------------------------------
         // Test : Publish first product to store 1
-        $this->getRequest()->setMethod('POST')
-            ->setPost(array(
+        $this->getRequest()->setMethod('POST')->setPost(
+            array(
                 "product" => array(1),
                 "publish" => 1,
-                "store" => 1
-            ));
+                "store"   => 1
+            )
+        );
         $this->dispatch('adminhtml/lengow_product/massPublish/');
 
         $product = Mage::getModel('catalog/product')->setStoreId(1)->load(1);
@@ -159,7 +154,6 @@ class Lengow_Connector_Test_Controller_Adminhtml_Lengow_ProductController extend
      */
     public function unPublishProductStore()
     {
-
         //reset product
         $product_action = Mage::getSingleton('catalog/product_action');
         $product_action->updateAttributes(array(1, 2), array('lengow_product' => 1), 1);
@@ -172,12 +166,13 @@ class Lengow_Connector_Test_Controller_Adminhtml_Lengow_ProductController extend
 
         // --------------------------------------
         // Test : UnPublish first product to store 1
-        $this->getRequest()->setMethod('POST')
-            ->setPost(array(
+        $this->getRequest()->setMethod('POST')->setPost(
+            array(
                 "product" => array(1),
                 "publish" => 0,
-                "store" => 1
-            ));
+                "store"   => 1
+            )
+        );
         $this->dispatch('adminhtml/lengow_product/massPublish/');
 
         $product = Mage::getModel('catalog/product')->setStoreId(1)->load(1);
@@ -185,7 +180,6 @@ class Lengow_Connector_Test_Controller_Adminhtml_Lengow_ProductController extend
 
         $product = Mage::getModel('catalog/product')->setStoreId(1)->load(2);
         $this->assertTrue((boolean)$product->getLengowProduct());
-
     }
 
     /**
@@ -195,11 +189,9 @@ class Lengow_Connector_Test_Controller_Adminhtml_Lengow_ProductController extend
      */
     public function unPublishProductStoreGlobal()
     {
-
         //reset product
         $product_action = Mage::getSingleton('catalog/product_action');
         $product_action->updateAttributes(array(1,2), array('lengow_product' => 1), 2);
-        //$product_action->updateAttributes(array(1), array('lengow_product' => 0), 0);
 
         $product = Mage::getModel('catalog/product')->setStoreId(2)->load(1);
         $this->assertTrue((boolean)$product->getLengowProduct());
@@ -221,7 +213,5 @@ class Lengow_Connector_Test_Controller_Adminhtml_Lengow_ProductController extend
 
         $product = Mage::getModel('catalog/product')->setStoreId(2)->load(2);
         $this->assertTrue((boolean)$product->getLengowProduct());
-
     }
-
 }

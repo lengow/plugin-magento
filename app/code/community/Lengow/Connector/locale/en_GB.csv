@@ -304,6 +304,7 @@ lengow_log.exception.no_connection_webservice|connection didn't work with Lengow
 lengow_log.exception.crendentials_not_valid|account ID, token access or secret token are not valid in store %{store_name} (%{store_id})
 lengow_log.exception.error_lengow_webservice|Lengow webservice : %{error_code} - %{error_message} in store %{store_name} (%{store_id})
 lengow_log.exception.timeout_api|API call blocked due to a timeout
+lengow_log.exception.error_curl|Curl error %{error_code} - %{error_message}
 lengow_log.exception.marketplace_not_present|Lengow error: %{marketplace_name} does not feature in the marketplace list
 lengow_log.exception.order_failed_with_quote|unable to create order based on given quote
 lengow_log.exception.order_is_empty|order could not be saved

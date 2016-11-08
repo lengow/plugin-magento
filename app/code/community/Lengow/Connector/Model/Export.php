@@ -312,7 +312,8 @@ class Lengow_Connector_Model_Export extends Varien_Object
         $this->_config['directory_path'] = Mage::getBaseDir('media').DS.'lengow'.DS.$this->_store->getCode().DS;
         $this->setOriginalCurrency(isset($params['currency'])
             ? $params['currency']
-            : Mage::app()->getStore($storeId)->getCurrentCurrencyCode());
+            : Mage::app()->getStore($storeId)->getCurrentCurrencyCode()
+        );
     }
 
     /**
@@ -366,10 +367,13 @@ class Lengow_Connector_Model_Export extends Varien_Object
         );
         $this->_helper->log(
             'Export',
-            $this->_helper->__('log.export.start_for_store', array(
-                'store_name' => $this->_store->getName(),
-                'store_id'   => $this->_store_id
-            )),
+            $this->_helper->__(
+                'log.export.start_for_store',
+                array(
+                    'store_name' => $this->_store->getName(),
+                    'store_id'   => $this->_store_id
+                )
+            ),
             $this->_log_output
         );
         // set legacy fields option
@@ -635,10 +639,15 @@ class Lengow_Connector_Model_Export extends Varien_Object
                 $this->_write($feed->makeHeader());
                 $first = false;
             }
-            $this->_write($feed->makeData($product_datas, array(
-                'last'          => $last,
-                'max_character' => $max_character
-            )));
+            $this->_write(
+                $feed->makeData(
+                    $product_datas,
+                    array(
+                        'last'          => $last,
+                        'max_character' => $max_character
+                    )
+                )
+            );
             // Save 10 logs maximum in database
             if ($pi % $modulo_export == 0) {
                 $this->_helper->log(
@@ -664,23 +673,27 @@ class Lengow_Connector_Model_Export extends Varien_Object
         $total = $count_configurable + $count_grouped + $count_downloadable + $count_virtual + $total_simple;
         $this->_helper->log(
             'Export',
-            $this->_helper->__('log.export.total_product_exported', array(
-                'nb_product'      => $total,
-                'nb_simple'       => $total_simple,
-                'nb_configurable' => $count_configurable,
-                'nb_grouped'      => $count_grouped,
-                'nb_virtual'      => $count_virtual,
-                'nb_downloadable' => $count_downloadable,
-            )),
+            $this->_helper->__(
+                'log.export.total_product_exported',
+                array(
+                    'nb_product'      => $total,
+                    'nb_simple'       => $total_simple,
+                    'nb_configurable' => $count_configurable,
+                    'nb_grouped'      => $count_grouped,
+                    'nb_virtual'      => $count_virtual,
+                    'nb_downloadable' => $count_downloadable,
+                )
+            ),
             $this->_log_output
         );
         // Warning for simple product associated with configurable products disabled
         if ($count_simple_disabled > 0) {
             $this->_helper->log(
                 'Export',
-                $this->_helper->__('log.export.error_configurable_product_disabled', array(
-                    'nb_product' => $count_simple_disabled
-                )),
+                $this->_helper->__(
+                    'log.export.error_configurable_product_disabled',
+                    array('nb_product' => $count_simple_disabled)
+                ),
                 $this->_log_output
             );
         }
@@ -691,11 +704,14 @@ class Lengow_Connector_Model_Export extends Varien_Object
                 .'lengow'.DS.$this->_store->getCode().DS.$this->_fileName.'.'.$this->_fileFormat;
             $this->_helper->log(
                 'Export',
-                $this->_helper->__('log.export.generate_feed_available_here', array(
-                    'store_name' => $this->_store->getName(),
-                    'store_id'   => $this->_store_id,
-                    'feed_url'   => $url_file
-                )),
+                $this->_helper->__(
+                    'log.export.generate_feed_available_here',
+                    array(
+                        'store_name' => $this->_store->getName(),
+                        'store_id'   => $this->_store_id,
+                        'feed_url'   => $url_file
+                    )
+                ),
                 $this->_log_output
             );
         }
@@ -933,9 +949,10 @@ class Lengow_Connector_Model_Export extends Varien_Object
         } catch (Exception $e) {
             $this->_helper->log(
                 'Export',
-                $this->_helper->__('log.export.error_folder_not_created', array(
-                    'folder_path' => $this->_config['directory_path']
-                )),
+                $this->_helper->__(
+                    'log.export.error_folder_not_created',
+                    array('folder_path' => $this->_config['directory_path'])
+                ),
                 $this->_log_output
             );
             return false;
@@ -959,9 +976,10 @@ class Lengow_Connector_Model_Export extends Varien_Object
         } catch (Exception $e) {
             $this->_helper->log(
                 'Export',
-                $this->_helper->__('log.export.error_folder_not_writable', array(
-                    'folder_path' => $this->_config['directory_path']
-                )),
+                $this->_helper->__(
+                    'log.export.error_folder_not_writable',
+                    array('folder_path' => $this->_config['directory_path'])
+                ),
                 $this->_log_output
             );
             exit();
@@ -992,7 +1010,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
         $file_path = $this->_config['directory_path'];
         copy(
             $file_path.$this->_fileName.'.'.$this->_fileTimeStamp.'.'.$this->_fileFormat,
-            $file_path . $this->_fileName . '.' . $this->_fileFormat
+            $file_path . $this->_fileName.'.'.$this->_fileFormat
         );
         unlink($file_path.$this->_fileName.'.'.$this->_fileTimeStamp.'.'.$this->_fileFormat);
     }

@@ -55,9 +55,10 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
         $array['billing_address']['email'] = $marketplace_sku.'-'.$order_data->marketplace.'@'.$domain;
         Mage::helper('lengow_connector/data')->log(
             'Import',
-            Mage::helper('lengow_connector/data')->setLogMessage('log.import.generate_unique_email', array(
-                'email' => $array['billing_address']['email']
-            )),
+            Mage::helper('lengow_connector/data')->setLogMessage(
+                'log.import.generate_unique_email',
+                array('email' => $array['billing_address']['email'])
+            ),
             $log_output,
             $marketplace_sku
         );

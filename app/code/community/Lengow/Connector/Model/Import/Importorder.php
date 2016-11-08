@@ -202,10 +202,13 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
             $decoded_message = $this->_helper->decodeLogMessage($import_log['message'], 'en_GB');
             $this->_helper->log(
                 'Import',
-                $this->_helper->setLogMessage('log.import.error_already_created', array(
-                    'decoded_message' => $decoded_message,
-                    'date_message'    => $import_log['created_at']
-                )),
+                $this->_helper->setLogMessage(
+                    'log.import.error_already_created',
+                    array(
+                        'decoded_message' => $decoded_message,
+                        'date_message'    => $import_log['created_at']
+                    )
+                ),
                 $this->_log_output,
                 $this->_marketplace_sku
             );
@@ -233,9 +236,10 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
         if ($order_magento_id && !$this->_preprod_mode && !$this->_is_reimported) {
             $this->_helper->log(
                 'Import',
-                $this->_helper->setLogMessage('log.import.external_id_exist', array(
-                    'order_id' => $order_magento_id
-                )),
+                $this->_helper->setLogMessage(
+                    'log.import.external_id_exist',
+                    array('order_id' => $order_magento_id)
+                ),
                 $this->_log_output,
                 $this->_marketplace_sku
             );
@@ -245,10 +249,13 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
         if (!$this->_import_helper->checkState($this->_order_state_marketplace, $this->_marketplace)) {
             $this->_helper->log(
                 'Import',
-                $this->_helper->setLogMessage('log.import.current_order_state_unavailable', array(
-                    'order_state_marketplace' => $this->_order_state_marketplace,
-                    'marketplace_name'        => $this->_marketplace->name
-                )),
+                $this->_helper->setLogMessage(
+                    'log.import.current_order_state_unavailable',
+                    array(
+                        'order_state_marketplace' => $this->_order_state_marketplace,
+                        'marketplace_name'        => $this->_marketplace->name
+                    )
+                ),
                 $this->_log_output,
                 $this->_marketplace_sku
             );
@@ -295,37 +302,42 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
             : (string)$this->_package_data->delivery->email
         );
         // update Lengow order with new informations
-        $order_lengow->updateOrder(array(
-            'currency'             => $this->_order_data->currency->iso_a3,
-            'total_paid'           => $this->_order_amount,
-            'order_item'           => $this->_order_items,
-            'customer_name'        => $customer_name,
-            'customer_email'       => $customer_email,
-            'commission'           => (float) $this->_order_data->commission,
-            'carrier'              => $this->_carrier_name,
-            'method'               => $this->_carrier_method,
-            'tracking'             => $this->_tracking_number,
-            'sent_marketplace'     => $this->_shipped_by_mp,
-            'delivery_country_iso' => $this->_package_data->delivery->common_country_iso_a2,
-            'order_lengow_state'   => $this->_order_state_lengow
-        ));
+        $order_lengow->updateOrder(
+            array(
+                'currency'             => $this->_order_data->currency->iso_a3,
+                'total_paid'           => $this->_order_amount,
+                'order_item'           => $this->_order_items,
+                'customer_name'        => $customer_name,
+                'customer_email'       => $customer_email,
+                'commission'           => (float) $this->_order_data->commission,
+                'carrier'              => $this->_carrier_name,
+                'method'               => $this->_carrier_method,
+                'tracking'             => $this->_tracking_number,
+                'sent_marketplace'     => $this->_shipped_by_mp,
+                'delivery_country_iso' => $this->_package_data->delivery->common_country_iso_a2,
+                'order_lengow_state'   => $this->_order_state_lengow
+            )
+        );
         // try to import order
         try {
             // check if the order is shipped by marketplace
             if ($this->_shipped_by_mp) {
                 $this->_helper->log(
                     'Import',
-                    $this->_helper->setLogMessage('log.import.order_shipped_by_marketplace', array(
-                        'marketplace_name' => $this->_marketplace->name
-                    )),
+                    $this->_helper->setLogMessage(
+                        'log.import.order_shipped_by_marketplace',
+                        array('marketplace_name' => $this->_marketplace->name)
+                    ),
                     $this->_log_output,
                     $this->_marketplace_sku
                 );
                 if (!$this->_config->get('import_ship_mp_enabled', $this->_store_id)) {
-                    $order_lengow->updateOrder(array(
-                        'order_process_state' => 2,
-                        'extra'               => Mage::helper('core')->jsonEncode($this->_order_data)
-                    ));
+                    $order_lengow->updateOrder(
+                        array(
+                            'order_process_state' => 2,
+                            'extra'               => Mage::helper('core')->jsonEncode($this->_order_data)
+                        )
+                    );
                     return false;
                 }
             }
@@ -348,17 +360,19 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
                 $order_line_saved = $this->_saveLengowOrderLine($order, $quote);
                 $this->_helper->log(
                     'Import',
-                    $this->_helper->setLogMessage('log.import.lengow_order_line_saved', array(
-                        'order_line_saved' => $order_line_saved
-                    )),
+                    $this->_helper->setLogMessage(
+                        'log.import.lengow_order_line_saved',
+                        array('order_line_saved' => $order_line_saved)
+                    ),
                     $this->_log_output,
                     $this->_marketplace_sku
                 );
                 $this->_helper->log(
                     'Import',
-                    $this->_helper->setLogMessage('log.import.order_successfully_imported', array(
-                        'order_id' => $order->getIncrementId()
-                    )),
+                    $this->_helper->setLogMessage(
+                        'log.import.order_successfully_imported',
+                        array('order_id' => $order->getIncrementId())
+                    ),
                     $this->_log_output,
                     $this->_marketplace_sku
                 );
@@ -372,22 +386,25 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
                     );
                     $this->_helper->log(
                         'Import',
-                        $this->_helper->setLogMessage('log.import.order_state_updated', array(
-                            'state_name' => 'Complete'
-                        )),
+                        $this->_helper->setLogMessage(
+                            'log.import.order_state_updated',
+                            array('state_name' => 'Complete')
+                        ),
                         $this->_log_output,
                         $this->_marketplace_sku
                     );
                 }
                 // Update Lengow order record
-                $order_lengow->updateOrder(array(
-                    'order_id'            => $order->getId(),
-                    'order_sku'           => $order->getIncrementId(),
-                    'order_process_state' => $this->_model_order->getOrderProcessState($this->_order_state_lengow),
-                    'extra'               => Mage::helper('core')->jsonEncode($this->_order_data),
-                    'order_lengow_state'  => $this->_order_state_lengow,
-                    'is_in_error'         => 0
-                ));
+                $order_lengow->updateOrder(
+                    array(
+                        'order_id'            => $order->getId(),
+                        'order_sku'           => $order->getIncrementId(),
+                        'order_process_state' => $this->_model_order->getOrderProcessState($this->_order_state_lengow),
+                        'extra'               => Mage::helper('core')->jsonEncode($this->_order_data),
+                        'order_lengow_state'  => $this->_order_state_lengow,
+                        'is_in_error'         => 0
+                    )
+                );
                 $this->_helper->log(
                     'Import',
                     $this->_helper->setLogMessage('log.import.lengow_order_updated'),
@@ -420,24 +437,29 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
         }
         if (isset($error_message)) {
             $order_error = Mage::getModel('lengow/import_ordererror');
-            $order_error->createOrderError(array(
-                'order_lengow_id' => $this->_order_lengow_id,
-                'message'         => $error_message,
-                'type'            => 'import'
-            ));
+            $order_error->createOrderError(
+                array(
+                    'order_lengow_id' => $this->_order_lengow_id,
+                    'message'         => $error_message,
+                    'type'            => 'import'
+                )
+            );
             $decoded_message = $this->_helper->decodeLogMessage($error_message, 'en_GB');
             $this->_helper->log(
                 'Import',
-                $this->_helper->setLogMessage('log.import.order_import_failed', array(
-                    'decoded_message' => $decoded_message
-                )),
+                $this->_helper->setLogMessage(
+                    'log.import.order_import_failed',
+                    array('decoded_message' => $decoded_message)
+                ),
                 $this->_log_output,
                 $this->_marketplace_sku
             );
-            $order_lengow->updateOrder(array(
-                'extra'              => Mage::helper('core')->jsonEncode($this->_order_data),
-                'order_lengow_state' => $this->_order_state_lengow,
-            ));
+            $order_lengow->updateOrder(
+                array(
+                    'extra'              => Mage::helper('core')->jsonEncode($this->_order_data),
+                    'order_lengow_state' => $this->_order_state_lengow,
+                )
+            );
             return $this->_returnResult('error', $this->_order_lengow_id);
         }
         return $this->_returnResult('new', $this->_order_lengow_id, $order->getId());
@@ -479,9 +501,10 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
         $order = Mage::getModel('sales/order')->load($order_id);
         $this->_helper->log(
             'Import',
-            $this->_helper->setLogMessage('log.import.order_already_imported', array(
-                'order_id' => $order->getIncrementId()
-            )),
+            $this->_helper->setLogMessage(
+                'log.import.order_already_imported',
+                array('order_id' => $order->getIncrementId())
+            ),
             $this->_log_output,
             $this->_marketplace_sku
         );
@@ -491,9 +514,10 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
         if ($order->getData('is_reimported_lengow') == 1) {
             $this->_helper->log(
                 'Import',
-                $this->_helper->setLogMessage('log.import.order_ready_to_reimport', array(
-                    'order_id' => $order->getIncrementId()
-                )),
+                $this->_helper->setLogMessage(
+                    'log.import.order_ready_to_reimport',
+                    array('order_id' => $order->getIncrementId())
+                ),
                 $this->_log_output,
                 $this->_marketplace_sku
             );
@@ -512,7 +536,10 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
                 $result['update'] = true;
                 $this->_helper->log(
                     'Import',
-                    $this->_helper->setLogMessage('log.import.order_state_updated', array('state_name' => $order_updated)),
+                    $this->_helper->setLogMessage(
+                        'log.import.order_state_updated',
+                        array('state_name' => $order_updated)
+                    ),
                     $this->_log_output,
                     $this->_marketplace_sku
                 );
@@ -550,17 +577,20 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
         if (count($error_messages) > 0) {
             foreach ($error_messages as $error_message) {
                 $order_error = Mage::getModel('lengow/import_ordererror');
-                $order_error->createOrderError(array(
-                    'order_lengow_id' => $this->_order_lengow_id,
-                    'message'         => $error_message,
-                    'type'            => 'import'
-                ));
+                $order_error->createOrderError(
+                    array(
+                        'order_lengow_id' => $this->_order_lengow_id,
+                        'message'         => $error_message,
+                        'type'            => 'import'
+                    )
+                );
                 $decoded_message = $this->_helper->decodeLogMessage($error_message, 'en_GB');
                 $this->_helper->log(
                     'Import',
-                    $this->_helper->setLogMessage('log.import.order_import_failed', array(
-                        'decoded_message' => $decoded_message
-                    )),
+                    $this->_helper->setLogMessage(
+                        'log.import.order_import_failed',
+                        array('decoded_message' => $decoded_message)
+                    ),
                     $this->_log_output,
                     $this->_marketplace_sku
                 );
@@ -998,10 +1028,12 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
         $lengow_products = $quote->getLengowProducts();
         foreach ($lengow_products as $product) {
             $order_line = Mage::getModel('lengow/import_orderline');
-            $order_line->createOrderLine(array(
-                'order_id'      => (int)$order->getId(),
-                'order_line_id' => $product['order_line_id']
-            ));
+            $order_line->createOrderLine(
+                array(
+                    'order_id'      => (int)$order->getId(),
+                    'order_line_id' => $product['order_line_id']
+                )
+            );
             $order_line_saved .= (!$order_line_saved ? $product['order_line_id'] : ' / '.$product['order_line_id']);
         }
         return $order_line_saved;

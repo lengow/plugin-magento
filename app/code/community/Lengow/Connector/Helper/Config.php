@@ -224,14 +224,13 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
     {
         $tab = array();
         $attributeSelected = array();
-        $val = $this->get('export_attribute', $store_id);
-        if (!empty($val)) {
-            $tab = explode(',', $val);
-            $attributeSelected = array_flip($tab);
+        $attributes = $this->get('export_attribute', $store_id);
+        if (!empty($attributes)) {
+            $tab = explode(',', $attributes);
         }
         if (!empty($tab)) {
-            foreach ($attributeSelected as $key => $value) {
-                $attributeSelected[$key] = $key;
+            foreach ($tab as $value) {
+                $attributeSelected[$value] = $value;
             }
         }
         return $attributeSelected;

@@ -32,7 +32,6 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
                         $params =  array('type' => 'manual');
                         $import = Mage::getModel('lengow/import', $params);
                         $results = $import->exec();
-                        $messages = $this->getMessages($results);
                         $informations = $this->getInformations();
                         $informations['messages'] = $this->getMessages($results);
                         $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($informations));
@@ -197,19 +196,22 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
             return $messages;
         }
         if (isset($results['order_new']) && $results['order_new'] > 0) {
-            $messages[]= $helper->__('lengow_log.error.nb_order_imported', array(
-                'nb_order' => $results['order_new']
-            ));
+            $messages[]= $helper->__(
+                'lengow_log.error.nb_order_imported',
+                array('nb_order' => $results['order_new'])
+            );
         }
         if (isset($results['order_update']) && $results['order_update'] > 0) {
-            $messages[]= $helper->__('lengow_log.error.nb_order_updated', array(
-                'nb_order' => $results['order_update']
-            ));
+            $messages[]= $helper->__(
+                'lengow_log.error.nb_order_updated',
+                array('nb_order' => $results['order_update'])
+            );
         }
         if (isset($results['order_error']) && $results['order_error'] > 0) {
-            $messages[]= $helper->__('lengow_log.error.nb_order_with_error', array(
-                'nb_order' => $results['order_error']
-            ));
+            $messages[]= $helper->__(
+                'lengow_log.error.nb_order_with_error',
+                array('nb_order' => $results['order_error'])
+            );
         }
         if (count($messages) == 0) {
             $messages[]= $helper->__('lengow_log.error.no_notification');
@@ -242,16 +244,19 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
         $last_import = Mage::helper('lengow_connector/import')->getLastImport();
         $last_import_date = $helper->getDateInCorrectFormat(time());
         $order = Mage::getModel('lengow/import_order');
-        $informations['order_with_error'] = $helper->__('order.screen.order_with_error', array(
-            'nb_order' => $order->countOrderWithError(),
-        ));
-        $informations['order_to_be_sent'] = $helper->__('order.screen.order_to_be_sent', array(
-            'nb_order' => $order->countOrderToBeSent(),
-        ));
+        $informations['order_with_error'] = $helper->__(
+            'order.screen.order_with_error',
+            array('nb_order' => $order->countOrderWithError())
+        );
+        $informations['order_to_be_sent'] = $helper->__(
+            'order.screen.order_to_be_sent',
+            array('nb_order' => $order->countOrderToBeSent())
+        );
         if ($last_import['type'] != 'none') {
-            $informations['last_importation'] = $helper->__('order.screen.last_order_importation', array(
-                'last_importation' => '<b>'.$last_import_date.'</b>'
-            ));
+            $informations['last_importation'] = $helper->__(
+                'order.screen.last_order_importation',
+                array('last_importation' => '<b>'.$last_import_date.'</b>')
+            );
         } else {
             $informations['last_importation'] = $helper->__('order.screen.no_order_importation');
         }

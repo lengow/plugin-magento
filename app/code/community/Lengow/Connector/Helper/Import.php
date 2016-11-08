@@ -186,9 +186,13 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
         $errors = Mage::getModel('lengow/import_ordererror')->getImportErrors();
         if ($errors) {
             foreach ($errors as $error) {
-                $mail_body.= '<li>'.$helper->decodeLogMessage('lengow_log.mail_report.order', null, array(
+                $mail_body.= '<li>'.$helper->decodeLogMessage(
+                    'lengow_log.mail_report.order',
+                    null,
+                    array(
                         'marketplace_sku' => $error['marketplace_sku']
-                    ));
+                    )
+                );
                 if ($error['message'] != '') {
                     $mail_body.= ' - '.$helper->decodeLogMessage($error['message']);
                 } else {

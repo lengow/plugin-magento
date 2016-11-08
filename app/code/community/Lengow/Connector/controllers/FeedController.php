@@ -62,24 +62,27 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action
                 // config store
                 Mage::app()->getStore()->setCurrentStore($store_id);
                 // launch export process
-                $export = Mage::getModel('lengow/export', array(
-                    'store_id'           => $store_id,
-                    'format'             => $format,
-                    'mode'               => $mode,
-                    'get_params'         => $get_params,
-                    'product_types'      => $product_types,
-                    'product_status'     => $product_status,
-                    'out_of_stock'       => $out_of_stock,
-                    'selection'          => $selection,
-                    'stream'             => $stream,
-                    'limit'              => $limit,
-                    'offset'             => $offset,
-                    'product_ids'        => $product_ids,
-                    'currency'           => $currency,
-                    'legacy_fields'      => $legacy_fields,
-                    'update_export_date' => $update_export_date,
-                    'log_output'         => $log_output,
-                ));
+                $export = Mage::getModel(
+                    'lengow/export',
+                    array(
+                        'store_id'           => $store_id,
+                        'format'             => $format,
+                        'mode'               => $mode,
+                        'get_params'         => $get_params,
+                        'product_types'      => $product_types,
+                        'product_status'     => $product_status,
+                        'out_of_stock'       => $out_of_stock,
+                        'selection'          => $selection,
+                        'stream'             => $stream,
+                        'limit'              => $limit,
+                        'offset'             => $offset,
+                        'product_ids'        => $product_ids,
+                        'currency'           => $currency,
+                        'legacy_fields'      => $legacy_fields,
+                        'update_export_date' => $update_export_date,
+                        'log_output'         => $log_output,
+                    )
+                );
                 $export->exec();
             } catch (Exception $e) {
                 $error_message = '[Magento error] "'.$e->getMessage().'" '.$e->getFile().' line '.$e->getLine();

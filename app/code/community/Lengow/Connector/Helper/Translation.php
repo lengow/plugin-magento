@@ -11,11 +11,11 @@
  */
 class Lengow_Connector_Helper_Translation extends Mage_Core_Helper_Abstract
 {
-    protected static $translation = null;
+    protected static $_translation = null;
 
     public $fallbackIsoCode = 'en_GB';
 
-    protected $isoCode = null;
+    protected $_isoCode = null;
 
     public static $forceIsoCode = null;
 
@@ -24,7 +24,7 @@ class Lengow_Connector_Helper_Translation extends Mage_Core_Helper_Abstract
      */
     public function __construct()
     {
-        $this->isoCode = Mage::app()->getLocale()->getLocaleCode();
+        $this->_isoCode = Mage::app()->getLocale()->getLocaleCode();
     }
 
     /**
@@ -42,19 +42,19 @@ class Lengow_Connector_Helper_Translation extends Mage_Core_Helper_Abstract
             $iso_code = self::$forceIsoCode;
         }
         if (is_null($iso_code)) {
-            $iso_code = $this->isoCode;
+            $iso_code = $this->_isoCode;
         }
-        if (!isset(self::$translation[$iso_code])) {
+        if (!isset(self::$_translation[$iso_code])) {
             $this->loadFile($iso_code);
         }
-        if (isset(self::$translation[$iso_code][$message])) {
-            return $this->translateFinal(self::$translation[$iso_code][$message], $args);
+        if (isset(self::$_translation[$iso_code][$message])) {
+            return $this->translateFinal(self::$_translation[$iso_code][$message], $args);
         } else {
-            if (!isset(self::$translation[$this->fallbackIsoCode])) {
+            if (!isset(self::$_translation[$this->fallbackIsoCode])) {
                 $this->loadFile($this->fallbackIsoCode);
             }
-            if (isset(self::$translation[$this->fallbackIsoCode][$message])) {
-                return $this->translateFinal(self::$translation[$this->fallbackIsoCode][$message], $args);
+            if (isset(self::$_translation[$this->fallbackIsoCode][$message])) {
+                return $this->translateFinal(self::$_translation[$this->fallbackIsoCode][$message], $args);
             } else {
                 return 'Missing Translation ['.$message.']';
             }
@@ -106,7 +106,7 @@ class Lengow_Connector_Helper_Translation extends Mage_Core_Helper_Abstract
                 fclose($handle);
             }
         }
-        self::$translation[$iso_code] = $translation;
+        self::$_translation[$iso_code] = $translation;
         return count($translation) > 0;
     }
 }

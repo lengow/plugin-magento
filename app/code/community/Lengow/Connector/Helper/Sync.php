@@ -148,7 +148,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
         }
         $options = Mage::helper('core')->jsonEncode($this->getOptionData());
         $connector = Mage::getModel('lengow/connector');
-        $return = $connector->queryApi('put', '/v3.0/cms', null, array(), $options);
+        $connector->queryApi('put', '/v3.0/cms', null, array(), $options);
         $config->set('last_option_cms_update', date('Y-m-d H:i:s'));
         return true;
     }

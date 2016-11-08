@@ -17,26 +17,16 @@ abstract class Lengow_Connector_Model_Export_Feed_Abstract
 
     protected $_fields;
 
-    protected $_content_type;
+    abstract public function getContentType();
 
-    public function getContentType()
-    {
-    }
+    abstract public function makeHeader();
+
+    abstract public function makeData($array, $args);
+
+    abstract public function makeFooter();
 
     public function setFields($array = array())
     {
         $this->_fields = $array;
-    }
-
-    public function makeHeader()
-    {
-    }
-
-    public function makeData($array, $args = array())
-    {
-    }
-
-    public function makeFooter()
-    {
     }
 }

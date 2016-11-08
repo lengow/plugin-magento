@@ -144,9 +144,10 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
             $last_import_type = $this->_helper->__('toolbox.screen.last_import_manual');
         }
         if ($this->_import_helper->importIsInProcess()) {
-            $import_in_progress = $this->_helper->__('toolbox.screen.rest_time_to_import', array(
-                'rest_time' => $this->_import_helper->restTimeToImport()
-            ));
+            $import_in_progress = $this->_helper->__(
+                'toolbox.screen.rest_time_to_import',
+                array('rest_time' => $this->_import_helper->restTimeToImport())
+            );
         } else {
             $import_in_progress = $this->_helper->__('toolbox.screen.no_import');
         }
@@ -304,21 +305,24 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
                 fclose($file);
             }
             $checklist[] = array(
-                'title' => $this->_helper->__('toolbox.screen.file_checked', array(
-                    'nb_file' => $file_counter
-                )),
+                'title' => $this->_helper->__(
+                    'toolbox.screen.file_checked',
+                    array('nb_file' => $file_counter)
+                ),
                 'state' => true
             );
             $checklist[] = array(
-                'title' => $this->_helper->__('toolbox.screen.file_modified', array(
-                    'nb_file' => count($file_errors)
-                )),
+                'title' => $this->_helper->__(
+                    'toolbox.screen.file_modified',
+                    array('nb_file' => count($file_errors))
+                ),
                 'state' => (count($file_errors) > 0 ? false : true)
             );
             $checklist[] = array(
-                'title' => $this->_helper->__('toolbox.screen.file_deleted', array(
-                    'nb_file' => count($file_deletes)
-                )),
+                'title' => $this->_helper->__(
+                    'toolbox.screen.file_deleted',
+                    array('nb_file' => count($file_deletes))
+                ),
                 'state' => (count($file_deletes) > 0 ? false : true)
             );
             $html.= $this->_getContent($checklist);

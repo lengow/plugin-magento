@@ -9,7 +9,7 @@ ini_set("display_errors", 1);
 $base = dirname(dirname(__FILE__));
 $fp = fopen($base.'/app/code/community/Lengow/Connector/etc/checkmd5.csv', 'w+');
 
-$list_folders = array(
+$listFolders = array(
     '/app/code/community/Lengow/Connector/Block',
     '/app/code/community/Lengow/Connector/Helper',
     '/app/code/community/Lengow/Connector/Model',
@@ -22,21 +22,21 @@ $list_folders = array(
     '/skin/adminhtml/default/default/lengow',
 );
 
-$file_paths = array(
+$filePaths = array(
     $base.'/app/design/adminhtml/default/default/layout/lengow.xml',
     $base.'/app/design/frontend/base/default/layout/lengow.xml',
     $base.'/app/etc/modules/Lengow_Connector.xml',
 );
 
-foreach ($list_folders as $folder) {
+foreach ($listFolders as $folder) {
     if (file_exists($base.$folder)) {
         $result = explorer($base.$folder);
-        $file_paths = array_merge($file_paths, $result);
+        $filePaths = array_merge($filePaths, $result);
     }
 }
-foreach ($file_paths as $file_path) {
-    if (file_exists($file_path)) {
-        $checksum = array(str_replace($base, '', $file_path) => md5_file($file_path));
+foreach ($filePaths as $filePath) {
+    if (file_exists($filePath)) {
+        $checksum = array(str_replace($base, '', $filePath) => md5_file($filePath));
         writeCsv($fp, $checksum);
     }
 }

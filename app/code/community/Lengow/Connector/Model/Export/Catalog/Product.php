@@ -44,8 +44,7 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
             return $datas;
         }
         $carrierTab = explode('_', $carrier);
-        list($carrierCode, $methodCode) = $carrierTab;
-        $datas['shipping_method'] = ucfirst($methodCode);
+        $datas['shipping_method'] = ucfirst($carrierTab[1]);
         $countryCode = $this->_config_helper->get('shipping_country', $store_id);
         $shippingPrice = $this->_getShippingPrice($product_instance, $carrier, $countryCode);
         if (!$shippingPrice) {
@@ -67,14 +66,12 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
     public function _getShippingPrice($product_instance, $carrierValue, $countryCode = 'FR')
     {
         $carrierTab = explode('_', $carrierValue);
-        list($carrierCode, $methodCode) = $carrierTab;
         $shipping = Mage::getModel('shipping/shipping');
-        $methodModel = $shipping->getCarrierByCode($carrierCode);
+        $methodModel = $shipping->getCarrierByCode($carrierTab[0]);
         if ($methodModel) {
-            $result = $methodModel->collectRates($this->_getShippingRateRequest(
-                $product_instance,
-                $countryCode = 'FR'
-            ));
+            $result = $methodModel->collectRates(
+                $this->_getShippingRateRequest($product_instance, $countryCode)
+            );
             if ($result != null) {
                 if ($result->getError()) {
                     Mage::logException(new Exception($result->getError()));
@@ -159,7 +156,6 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
             if ($attributes) {
                 foreach ($attributes as $attribute) {
                     $productAttribute = $attribute->getProductAttribute();
-                    $productAttributeId = $productAttribute->getId();
                     $attributeValue = $product_instance->getData($productAttribute->getAttributeCode());
                     if (count($attribute->getPrices()) > 0) {
                         foreach ($attribute->getPrices() as $priceChange) {
@@ -239,26 +235,38 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
                 $this->getOriginalCurrency(),
                 $this->getCurrentCurrencyCode()
             );
-            $datas['price_excl_tax'] = round(Mage::helper('directory')->currencyConvert(
-                $final_price_excluding_tax,
-                $this->getOriginalCurrency(),
-                $this->getCurrentCurrencyCode()
-            ), 2);
-            $datas['price_incl_tax'] = round(Mage::helper('directory')->currencyConvert(
-                $final_price_including_tax,
-                $this->getOriginalCurrency(),
-                $this->getCurrentCurrencyCode()
-            ), 2);
-            $datas['price_before_discount_excl_tax'] = round(Mage::helper('directory')->currencyConvert(
-                $price_excluding_tax,
-                $this->getOriginalCurrency(),
-                $this->getCurrentCurrencyCode()
-            ), 2);
-            $datas['price_before_discount_incl_tax'] = round(Mage::helper('directory')->currencyConvert(
-                $price_including_tax,
-                $this->getOriginalCurrency(),
-                $this->getCurrentCurrencyCode()
-            ), 2);
+            $datas['price_excl_tax'] = round(
+                Mage::helper('directory')->currencyConvert(
+                    $final_price_excluding_tax,
+                    $this->getOriginalCurrency(),
+                    $this->getCurrentCurrencyCode()
+                ),
+                2
+            );
+            $datas['price_incl_tax'] = round(
+                Mage::helper('directory')->currencyConvert(
+                    $final_price_including_tax,
+                    $this->getOriginalCurrency(),
+                    $this->getCurrentCurrencyCode()
+                ),
+                2
+            );
+            $datas['price_before_discount_excl_tax'] = round(
+                Mage::helper('directory')->currencyConvert(
+                    $price_excluding_tax,
+                    $this->getOriginalCurrency(),
+                    $this->getCurrentCurrencyCode()
+                ),
+                2
+            );
+            $datas['price_before_discount_incl_tax'] = round(
+                Mage::helper('directory')->currencyConvert(
+                    $price_including_tax,
+                    $this->getOriginalCurrency(),
+                    $this->getCurrentCurrencyCode()
+                ),
+                2
+            );
         }
         $datas['discount_amount'] = $discount_amount > 0 ? round($discount_amount, 2) : '0';
         $datas['discount_percent'] = $discount_amount > 0

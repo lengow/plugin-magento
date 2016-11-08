@@ -8,7 +8,9 @@
  * @copyright   2016 Lengow SAS
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Lengow_Connector_Block_Adminhtml_Order_Tab extends Mage_Adminhtml_Block_Sales_Order_Abstract implements Mage_Adminhtml_Block_Widget_Tab_Interface
+class Lengow_Connector_Block_Adminhtml_Order_Tab
+    extends Mage_Adminhtml_Block_Sales_Order_Abstract
+    implements Mage_Adminhtml_Block_Widget_Tab_Interface
 {
     /**
      * Construct

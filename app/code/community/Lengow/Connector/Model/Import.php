@@ -166,19 +166,22 @@ class Lengow_Connector_Model_Import extends Varien_Object
         // clean logs > 20 days
         $this->_helper->cleanLog();
         if ($this->_import_helper->importIsInProcess() && !$this->_preprod_mode && !$this->_import_one_order) {
-            $global_error = $this->_helper->setLogMessage('lengow_log.error.rest_time_to_import', array(
-                'rest_time' => $this->_import_helper->restTimeToImport()
-            ));
+            $global_error = $this->_helper->setLogMessage(
+                'lengow_log.error.rest_time_to_import',
+                array('rest_time' => $this->_import_helper->restTimeToImport())
+            );
             $this->_helper->log('Import', $global_error, $this->_log_output);
             $errors[0] = $global_error;
             if (!is_null($this->_order_lengow_id)) {
                 $lengow_order_error = Mage::getModel('lengow/import_ordererror');
                 $lengow_order_error->finishOrderErrors($this->_order_lengow_id);
-                $lengow_order_error->createOrderError(array(
-                    'order_lengow_id' => $this->_order_lengow_id,
-                    'message'         => $global_error,
-                    'type'            => 'import'
-                ));
+                $lengow_order_error->createOrderError(
+                    array(
+                        'order_lengow_id' => $this->_order_lengow_id,
+                        'message'         => $global_error,
+                        'type'            => 'import'
+                    )
+                );
                 unset($lengow_order_error);
             }
         } else {
@@ -210,10 +213,13 @@ class Lengow_Connector_Model_Import extends Varien_Object
                 if ($this->_config->get('store_enable', (int)$store->getId())) {
                     $this->_helper->log(
                         'Import',
-                        $this->_helper->setLogMessage('log.import.start_for_store', array(
-                            'store_name' => $store->getName(),
-                            'store_id'   => (int)$store->getId()
-                        )),
+                        $this->_helper->setLogMessage(
+                            'log.import.start_for_store',
+                            array(
+                                'store_name' => $store->getName(),
+                                'store_id'   => (int)$store->getId()
+                            )
+                        ),
                         $this->_log_output
                     );
                     try {
@@ -230,21 +236,27 @@ class Lengow_Connector_Model_Import extends Varien_Object
                         if ($this->_import_one_order) {
                             $this->_helper->log(
                                 'Import',
-                                $this->_helper->setLogMessage('log.import.find_one_order', array(
-                                    'nb_order'         => $total_orders,
-                                    'marketplace_sku'  => $this->_marketplace_sku,
-                                    'marketplace_name' => $this->_marketplace_name,
-                                    'account_id'       => $this->_account_id
-                                )),
+                                $this->_helper->setLogMessage(
+                                    'log.import.find_one_order',
+                                    array(
+                                        'nb_order'         => $total_orders,
+                                        'marketplace_sku'  => $this->_marketplace_sku,
+                                        'marketplace_name' => $this->_marketplace_name,
+                                        'account_id'       => $this->_account_id
+                                    )
+                                ),
                                 $this->_log_output
                             );
                         } else {
                             $this->_helper->log(
                                 'Import',
-                                $this->_helper->setLogMessage('log.import.find_all_orders', array(
-                                    'nb_order'   => $total_orders,
-                                    'account_id' => $this->_account_id
-                                )),
+                                $this->_helper->setLogMessage(
+                                    'log.import.find_all_orders',
+                                    array(
+                                        'nb_order'   => $total_orders,
+                                        'account_id' => $this->_account_id
+                                    )
+                                ),
                                 $this->_log_output
                             );
                         }
@@ -273,19 +285,22 @@ class Lengow_Connector_Model_Import extends Varien_Object
                         if (!is_null($this->_order_lengow_id)) {
                             $lengow_order_error = Mage::getModel('lengow/import_ordererror');
                             $lengow_order_error->finishOrderErrors($this->_order_lengow_id);
-                            $lengow_order_error->createOrderError(array(
-                                'order_lengow_id' => $this->_order_lengow_id,
-                                'message'         => $error_message,
-                                'type'            => 'import'
-                            ));
+                            $lengow_order_error->createOrderError(
+                                array(
+                                    'order_lengow_id' => $this->_order_lengow_id,
+                                    'message'         => $error_message,
+                                    'type'            => 'import'
+                                )
+                            );
                             unset($lengow_order_error);
                         }
                         $decoded_message = $this->_helper->decodeLogMessage($error_message, 'en_GB');
                         $this->_helper->log(
                             'Import',
-                            $this->_helper->setLogMessage('log.import.import_failed', array(
-                                'decoded_message' => $decoded_message
-                            )),
+                            $this->_helper->setLogMessage(
+                                'log.import.import_failed',
+                                array('decoded_message' => $decoded_message)
+                            ),
                             $this->_log_output
                         );
                         $errors[(int)$store->getId()] = $error_message;
@@ -298,23 +313,26 @@ class Lengow_Connector_Model_Import extends Varien_Object
             if (!$this->_import_one_order) {
                 $this->_helper->log(
                     'Import',
-                    $this->_helper->setLogMessage('lengow_log.error.nb_order_imported', array(
-                        'nb_order' => $order_new
-                    )),
+                    $this->_helper->setLogMessage(
+                        'lengow_log.error.nb_order_imported',
+                        array('nb_order' => $order_new)
+                    ),
                     $this->_log_output
                 );
                 $this->_helper->log(
                     'Import',
-                    $this->_helper->setLogMessage('lengow_log.error.nb_order_updated', array(
-                        'nb_order' => $order_update
-                    )),
+                    $this->_helper->setLogMessage(
+                        'lengow_log.error.nb_order_updated',
+                        array('nb_order' => $order_update)
+                    ),
                     $this->_log_output
                 );
                 $this->_helper->log(
                     'Import',
-                    $this->_helper->setLogMessage('lengow_log.error.nb_order_with_error', array(
-                        'nb_order' => $order_error
-                    )),
+                    $this->_helper->setLogMessage(
+                        'lengow_log.error.nb_order_with_error',
+                        array('nb_order' => $order_error)
+                    ),
                     $this->_log_output
                 );
             }
@@ -365,18 +383,24 @@ class Lengow_Connector_Model_Import extends Varien_Object
         $this->_access_token = $this->_config->get('access_token', $store_id);
         $this->_secret_token = $this->_config->get('secret_token', $store_id);
         if (!$this->_account_id || !$this->_access_token || !$this->_secret_token) {
-            $message = $this->_helper->setLogMessage('lengow_log.error.account_id_empty', array(
-                'store_name' => $store_name,
-                'store_id'   => $store_id
-            ));
+            $message = $this->_helper->setLogMessage(
+                'lengow_log.error.account_id_empty',
+                array(
+                    'store_name' => $store_name,
+                    'store_id'   => $store_id
+                )
+            );
             return $message;
         }
         if (array_key_exists($this->_account_id, $this->_account_ids)) {
-            $message = $this->_helper->setLogMessage('lengow_log.error.account_id_already_used', array(
-                'account_id' => $this->_account_id,
-                'store_name' => $this->_account_ids[$this->_account_id]['store_name'],
-                'store_id'   => $this->_account_ids[$this->_account_id]['store_id'],
-            ));
+            $message = $this->_helper->setLogMessage(
+                'lengow_log.error.account_id_already_used',
+                array(
+                    'account_id' => $this->_account_id,
+                    'store_name' => $this->_account_ids[$this->_account_id]['store_name'],
+                    'store_id'   => $this->_account_ids[$this->_account_id]['store_id'],
+                )
+            );
             return $message;
         }
         $this->_account_ids[$this->_account_id] = array('store_id' => $store_id, 'store_name' => $store_name);
@@ -405,20 +429,26 @@ class Lengow_Connector_Model_Import extends Varien_Object
             if ($this->_import_one_order) {
                 $this->_helper->log(
                     'Import',
-                    $this->_helper->setLogMessage('log.import.connector_get_order', array(
-                        'marketplace_sku'  => $this->_marketplace_sku,
-                        'marketplace_name' => $this->_marketplace_name
-                    )),
+                    $this->_helper->setLogMessage(
+                        'log.import.connector_get_order',
+                        array(
+                            'marketplace_sku'  => $this->_marketplace_sku,
+                            'marketplace_name' => $this->_marketplace_name
+                        )
+                    ),
                     $this->_log_output
                 );
             } else {
                 $this->_helper->log(
                     'Import',
-                    $this->_helper->setLogMessage('log.import.connector_get_all_order', array(
-                        'date_from'  => date('Y-m-d', strtotime((string)$date_from)),
-                        'date_to'    => date('Y-m-d', strtotime((string)$date_to)),
-                        'account_id' => $this->_account_id
-                    )),
+                    $this->_helper->setLogMessage(
+                        'log.import.connector_get_all_order',
+                        array(
+                            'date_from'  => date('Y-m-d', strtotime((string)$date_from)),
+                            'date_to'    => date('Y-m-d', strtotime((string)$date_to)),
+                            'account_id' => $this->_account_id
+                        )
+                    ),
                     $this->_log_output
                 );
             }
@@ -448,29 +478,38 @@ class Lengow_Connector_Model_Import extends Varien_Object
                 }
                 if (is_null($results)) {
                     throw new Lengow_Connector_Model_Exception(
-                        $this->_helper->setLogMessage('lengow_log.exception.no_connection_webservice', array(
-                            'store_name' => $store->getName(),
-                            'store_id'   => $store->getId()
-                        ))
+                        $this->_helper->setLogMessage(
+                            'lengow_log.exception.no_connection_webservice',
+                            array(
+                                'store_name' => $store->getName(),
+                                'store_id'   => $store->getId()
+                            )
+                        )
                     );
                 }
                 $results = json_decode($results);
                 if (!is_object($results)) {
                     throw new Lengow_Connector_Model_Exception(
-                        $this->_helper->setLogMessage('lengow_log.exception.no_connection_webservice', array(
-                            'store_name' => $store->getName(),
-                            'store_id'   => $store->getId()
-                        ))
+                        $this->_helper->setLogMessage(
+                            'lengow_log.exception.no_connection_webservice',
+                            array(
+                                'store_name' => $store->getName(),
+                                'store_id'   => $store->getId()
+                            )
+                        )
                     );
                 }
                 if (isset($results->error)) {
                     throw new Lengow_Connector_Model_Exception(
-                        $this->_helper->setLogMessage('lengow_log.exception.error_lengow_webservice', array(
-                            'error_code'    => $results->error->code,
-                            'error_message' => $results->error->message,
-                            'store_name'    => $store->getName(),
-                            'store_id'      => $store->getId()
-                        ))
+                        $this->_helper->setLogMessage(
+                            'lengow_log.exception.error_lengow_webservice',
+                            array(
+                                'error_code'    => $results->error->code,
+                                'error_message' => $results->error->message,
+                                'store_name'    => $store->getName(),
+                                'store_id'      => $store->getId()
+                            )
+                        )
                     );
                 }
                 // Construct array orders
@@ -481,10 +520,13 @@ class Lengow_Connector_Model_Import extends Varien_Object
             } while ($results->next != null);
         } else {
             throw new Lengow_Connector_Model_Exception(
-                $this->_helper->setLogMessage('lengow_log.exception.crendentials_not_valid', array(
-                    'store_name' => $store->getName(),
-                    'store_id'   => $store->getId()
-                ))
+                $this->_helper->setLogMessage(
+                    'lengow_log.exception.crendentials_not_valid',
+                    array(
+                        'store_name' => $store->getName(),
+                        'store_id'   => $store->getId()
+                    )
+                )
             );
         }
         return $orders;
@@ -580,9 +622,10 @@ class Lengow_Connector_Model_Import extends Varien_Object
                     $decoded_message =  $this->_helper->decodeLogMessage($error_message, 'en_GB');
                     $this->_helper->log(
                         'Import',
-                        $this->_helper->setLogMessage('log.import.order_import_failed', array(
-                            'decoded_message' => $decoded_message
-                        )),
+                        $this->_helper->setLogMessage(
+                            'log.import.order_import_failed',
+                            array('decoded_message' => $decoded_message)
+                        ),
                         $this->_log_output,
                         $marketplace_sku
                     );

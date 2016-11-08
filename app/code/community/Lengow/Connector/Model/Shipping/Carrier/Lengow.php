@@ -9,7 +9,9 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-class Lengow_Connector_Model_Shipping_Carrier_Lengow extends Mage_Shipping_Model_Carrier_Abstract implements Mage_Shipping_Model_Carrier_Interface
+class Lengow_Connector_Model_Shipping_Carrier_Lengow
+    extends Mage_Shipping_Model_Carrier_Abstract
+    implements Mage_Shipping_Model_Carrier_Interface
 {
 
     protected $_code = 'lengow';

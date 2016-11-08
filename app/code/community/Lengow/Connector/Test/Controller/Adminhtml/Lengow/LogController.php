@@ -8,7 +8,8 @@ class Lengow_Connector_Test_Controller_Adminhtml_Lengow_LogController extends Le
      * @test
      *
      */
-    public function indexAction(){
+    public function indexAction()
+    {
         $this->mockAdminUserSession();
 
         //test page
@@ -22,7 +23,8 @@ class Lengow_Connector_Test_Controller_Adminhtml_Lengow_LogController extends Le
      * @test
      *
      */
-    public function gridAction(){
+    public function gridAction()
+    {
         $this->mockAdminUserSession();
 
         //test page

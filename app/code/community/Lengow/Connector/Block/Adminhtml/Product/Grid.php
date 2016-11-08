@@ -259,23 +259,26 @@ class Lengow_Connector_Block_Adminhtml_Product_Grid extends Mage_Adminhtml_Block
         $this->setMassactionIdField('entity_id');
         $this->getMassactionBlock()->setFormFieldName('product');
         $this->getMassactionBlock()->setUseAjax(true);
-        $this->getMassactionBlock()->addItem('publish', array(
-            'label'      => Mage::helper('lengow_connector')->__('product.table.change_publication'),
-            'url'        => $this->getUrl('*/*/massPublish', array('_current' => true)),
-            'complete'   => 'reloadGrid',
-            'additional' => array(
-                'visibility' => array(
-                    'name'   => 'publish',
-                    'type'   => 'select',
-                    'class'  => 'required-entry',
-                    'label'  => Mage::helper('lengow_connector')->__('product.table.publication'),
-                    'values' => array(
-                        0 => Mage::helper('lengow_connector')->__('global.just_no'),
-                        1 => Mage::helper('lengow_connector')->__('global.just_yes')
+        $this->getMassactionBlock()->addItem(
+            'publish',
+            array(
+                'label'      => Mage::helper('lengow_connector')->__('product.table.change_publication'),
+                'url'        => $this->getUrl('*/*/massPublish', array('_current' => true)),
+                'complete'   => 'reloadGrid',
+                'additional' => array(
+                    'visibility' => array(
+                        'name'   => 'publish',
+                        'type'   => 'select',
+                        'class'  => 'required-entry',
+                        'label'  => Mage::helper('lengow_connector')->__('product.table.publication'),
+                        'values' => array(
+                            0 => Mage::helper('lengow_connector')->__('global.just_no'),
+                            1 => Mage::helper('lengow_connector')->__('global.just_yes')
+                        )
                     )
                 )
             )
-        ));
+        );
         return $this;
     }
 
