@@ -90,71 +90,71 @@ class Lengow_Connector_Block_Adminhtml_Order_Tab
         $fields = array();
         $order = $this->getOrder();
         $helper = Mage::helper('lengow_connector');
-        $order_lengow = Mage::getModel('lengow/import_order');
-        $order_lengow_id = $order_lengow->getLengowOrderIdWithOrderId($order->getData('entity_id'));
+        $orderLengow = Mage::getModel('lengow/import_order');
+        $orderLengowId = $orderLengow->getLengowOrderIdWithOrderId($order->getData('entity_id'));
         // Get all Lengow informations
-        if ($order_lengow_id) {
-            $order_lengow = $order_lengow->load($order_lengow_id);
-            $marketplace_sku = $order_lengow->getData('marketplace_sku');
-            $marketplace_label = $order_lengow->getData('marketplace_label');
-            $feed_id = $order_lengow->getData('feed_id');
-            $delivery_address_id = $order_lengow->getData('delivery_address_id');
-            $currency = $order_lengow->getData('currency');
-            $total_paid = $order_lengow->getData('total_paid');
-            $commission = $order_lengow->getData('commission');
-            $customer_name = $order_lengow->getData('customer_name');
-            $customer_email = $order_lengow->getData('customer_email');
-            $carrier = $order_lengow->getData('carrier');
-            $carrier_method = $order_lengow->getData('carrier_method');
-            $carrier_tracking = $order_lengow->getData('carrier_tracking');
-            $carrier_id_relay = $order_lengow->getData('carrier_id_relay');
-            $sent_marketplace = $order_lengow->getData('sent_marketplace');
-            $imported_at = $helper->getDateInCorrectFormat(strtotime($order_lengow->getData('created_at')));
-            $message = $order_lengow->getData('message');
-            $extra = $order_lengow->getData('extra');
+        if ($orderLengowId) {
+            $orderLengow = $orderLengow->load($orderLengowId);
+            $marketplaceSku = $orderLengow->getData('marketplace_sku');
+            $marketplaceLabel = $orderLengow->getData('marketplace_label');
+            $feedId = $orderLengow->getData('feed_id');
+            $deliveryAddressId = $orderLengow->getData('delivery_address_id');
+            $currency = $orderLengow->getData('currency');
+            $totalPaid = $orderLengow->getData('total_paid');
+            $commission = $orderLengow->getData('commission');
+            $customerName = $orderLengow->getData('customer_name');
+            $customerEmail = $orderLengow->getData('customer_email');
+            $carrier = $orderLengow->getData('carrier');
+            $carrierMethod = $orderLengow->getData('carrier_method');
+            $carrierTracking = $orderLengow->getData('carrier_tracking');
+            $carrierIdRelay = $orderLengow->getData('carrier_id_relay');
+            $sentMarketplace = $orderLengow->getData('sent_marketplace');
+            $importedAt = $helper->getDateInCorrectFormat(strtotime($orderLengow->getData('created_at')));
+            $message = $orderLengow->getData('message');
+            $extra = $orderLengow->getData('extra');
         } else {
-            $marketplace_sku = $order->getData('order_id_lengow');
-            $marketplace_label = $order->getData('marketplace_lengow');
-            $feed_id = $order->getData('feed_id_lengow');
-            $delivery_address_id = $order->getData('delivery_address_id_lengow');
+            $marketplaceSku = $order->getData('order_id_lengow');
+            $marketplaceLabel = $order->getData('marketplace_lengow');
+            $feedId = $order->getData('feed_id_lengow');
+            $deliveryAddressId = $order->getData('delivery_address_id_lengow');
             $currency = $order->getData('base_currency_code');
-            $total_paid = $order->getData('total_paid_lengow');
+            $totalPaid = $order->getData('total_paid_lengow');
             $commission = $order->getData('fees_lengow');
-            $customer_name = $order->getData('customer_firstname').' '.$order->getData('customer_lastname');
-            $customer_email = $order->getData('customer_email');
+            $customerName = $order->getData('customer_firstname').' '.$order->getData('customer_lastname');
+            $customerEmail = $order->getData('customer_email');
             $carrier = $order->getData('carrier_lengow');
-            $carrier_method = $order->getData('carrier_method_lengow');
-            $carrier_tracking = $order->getData('carrier_tracking_lengow');
-            $carrier_id_relay = $order->getData('carrier_id_relay_lengow');
-            $sent_marketplace = 0;
-            $imported_at = $helper->getDateInCorrectFormat(strtotime($order->getData('carrier_id_relay_lengow')));
+            $carrierMethod = $order->getData('carrier_method_lengow');
+            $carrierTracking = $order->getData('carrier_tracking_lengow');
+            $carrierIdRelay = $order->getData('carrier_id_relay_lengow');
+            $sentMarketplace = 0;
+            $importedAt = $helper->getDateInCorrectFormat(strtotime($order->getData('carrier_id_relay_lengow')));
             $message = $order->getData('created_at');
             $extra = $order->getData('xml_node_lengow');
         }
-        $sent_marketplace = $sent_marketplace == 1 ? $helper->__('global.just_yes') : $helper->__('global.just_no');
+        $sentMarketplace = $sentMarketplace == 1 ? $helper->__('global.just_yes') : $helper->__('global.just_no');
         // Construct fields list
-        $fields[] = array('label' => $helper->__('order.table.marketplace_sku'), 'value' => $marketplace_sku);
-        $fields[] = array('label' => $helper->__('order.table.marketplace_name'), 'value' => $marketplace_label);
+        $fields[] = array('label' => $helper->__('order.table.marketplace_sku'), 'value' => $marketplaceSku);
+        $fields[] = array('label' => $helper->__('order.table.marketplace_name'), 'value' => $marketplaceLabel);
         if ($feed_id != 0) {
-            $fields[] = array('label' => $helper->__('order.screen.feed_id'), 'value' => $feed_id);
+            $fields[] = array('label' => $helper->__('order.screen.feed_id'), 'value' => $feedId);
         } else {
             $fields[] = array(
                 'label' => $helper->__('order.screen.delivery_address_id'),
-                'value' => $delivery_address_id
+                'value' => $deliveryAddressId
             );
         }
-        $fields[] = array('label' => $helper->__('order.table.total_paid'), 'value' => $total_paid);
+        $fields[] = array('label' => $helper->__('order.table.total_paid'), 'value' => $totalPaid);
         $fields[] = array('label' => $helper->__('order.screen.commission'), 'value' => $commission);
         $fields[] = array('label' => $helper->__('order.screen.currency'), 'value' => $currency);
-        $fields[] = array('label' => $helper->__('order.table.customer_name'), 'value' => $customer_name);
-        $fields[] = array('label' => $helper->__('order.screen.customer_email'), 'value' => $customer_email);
+        $fields[] = array('label' => $helper->__('order.table.customer_name'), 'value' => $customerName);
+        $fields[] = array('label' => $helper->__('order.screen.customer_email'), 'value' => $customerEmail);
         $fields[] = array('label' => $helper->__('order.screen.carrier'), 'value' => $carrier);
-        $fields[] = array('label' => $helper->__('order.screen.carrier_method'), 'value' => $carrier_method);
-        $fields[] = array('label' => $helper->__('order.screen.carrier_tracking'), 'value' => $carrier_tracking);
-        $fields[] = array('label' => $helper->__('order.screen.carrier_id_relay'), 'value' => $carrier_id_relay);
-        $fields[] = array('label' => $helper->__('order.screen.sent_marketplace'), 'value' => $sent_marketplace);
+        $fields[] = array('label' => $helper->__('order.screen.carrier_method'), 'value' => $carrierMethod);
+        $fields[] = array('label' => $helper->__('order.screen.carrier_tracking'), 'value' => $carrierTracking);
+        $fields[] = array('label' => $helper->__('order.screen.carrier_id_relay'), 'value' => $carrierIdRelay);
+        $fields[] = array('label' => $helper->__('order.screen.sent_marketplace'), 'value' => $sentMarketplace);
         $fields[] = array('label' => $helper->__('order.screen.message'), 'value' => $message);
-        $fields[] = array('label' => $helper->__('order.screen.imported_at'), 'value' => $imported_at);
+        $fields[] = array('label' => $helper->__('order.screen.imported_at'), 'value' => $importedAt);
         $fields[] = array(
             'label' => $helper->__('order.screen.extra'),
             'value' => '<textarea disabled="disabled">'.$extra.'</textarea>',
@@ -194,13 +194,13 @@ class Lengow_Connector_Block_Adminhtml_Order_Tab
         if (Mage::getModel('lengow/import_action')->getActiveActionByOrderId($order->getData('entity_id'))) {
             return false;
         }
-        $magento_status = $order->getData('status');
-        if ($magento_status == 'complete' || $magento_status == 'cancel') {
-            $order_lengow = Mage::getModel('lengow/import_order');
-            $order_lengow_id = $order_lengow->getLengowOrderIdWithOrderId($order->getData('entity_id'));
-            if ($order_lengow_id) {
-                $order_lengow = $order_lengow->load($order_lengow_id);
-                if ($order_lengow->getData('order_process_state') != $order_lengow->getOrderProcessState('closed')) {
+        $magentoStatus = $order->getData('status');
+        if ($magentoStatus == 'complete' || $magentoStatus == 'cancel') {
+            $orderLengow = Mage::getModel('lengow/import_order');
+            $orderLengowId = $orderLengow->getLengowOrderIdWithOrderId($order->getData('entity_id'));
+            if ($orderLengowId) {
+                $orderLengow = $orderLengow->load($orderLengowId);
+                if ($orderLengow->getData('order_process_state') != $orderLengow->getOrderProcessState('closed')) {
                     return true;
                 }
             } else {

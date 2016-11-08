@@ -30,31 +30,31 @@ class Lengow_Connector_Adminhtml_Lengow_ProductController extends Mage_Adminhtml
                 switch ($action) {
                     case 'change_option_selected':
                         $state = Mage::app()->getRequest()->getParam('state');
-                        $store_id = Mage::app()->getRequest()->getParam('store_id');
+                        $storeId = Mage::app()->getRequest()->getParam('store_id');
                         if ($state !== null) {
-                            Mage::helper('lengow_connector/config')->set('selection_enable', $state, $store_id);
+                            Mage::helper('lengow_connector/config')->set('selection_enable', $state, $storeId);
                             $this->getResponse()->setBody($state);
                         }
                         break;
                     case 'change_option_product_out_of_stock':
-                        $store_id = Mage::app()->getRequest()->getParam('store_id');
+                        $storeId = Mage::app()->getRequest()->getParam('store_id');
                         $state = Mage::app()->getRequest()->getParam('state');
                         if ($state !== null) {
-                            Mage::helper('lengow_connector/config')->set('out_stock', $state, $store_id);
+                            Mage::helper('lengow_connector/config')->set('out_stock', $state, $storeId);
                             $this->getResponse()->setBody($state);
                         }
                         break;
                     case 'check_store':
-                        $store_id = Mage::app()->getRequest()->getParam('store_id');
-                        $sync = Mage::helper('lengow_connector/sync')->checkSyncStore($store_id);
+                        $storeId = Mage::app()->getRequest()->getParam('store_id');
+                        $sync = Mage::helper('lengow_connector/sync')->checkSyncStore($storeId);
                         $helper = Mage::helper('lengow_connector');
                         $datas = array();
                         $datas['result'] = $sync;
                         if ($sync == true) {
-                            $last_export = Mage::helper('lengow_connector/config')->get('last_export', $store_id);
-                            if ($last_export != null) {
+                            $lastExport = Mage::helper('lengow_connector/config')->get('last_export', $storeId);
+                            if ($lastExport != null) {
                                 $datas['message'] = $helper->__('product.screen.store_last_indexation').'<br />'.
-                                    $helper->getDateInCorrectFormat($last_export);
+                                    $helper->getDateInCorrectFormat($lastExport);
                             } else {
                                 $datas['message'] = $helper->__('product.screen.store_not_index');
                             }
@@ -93,37 +93,37 @@ class Lengow_Connector_Adminhtml_Lengow_ProductController extends Mage_Adminhtml
      */
     public function massPublishAction()
     {
-        $product_ids = (array)$this->getRequest()->getParam('product');
-        $store_id = (integer)$this->getRequest()->getParam('store', Mage::app()->getStore()->getId());
-        // set default store if store_id is global
-        if ($store_id == 0) {
-            $store_id = Mage::app()->getWebsite(true)->getDefaultGroup()->getDefaultStoreId();
+        $productIds = (array)$this->getRequest()->getParam('product');
+        $storeId = (integer)$this->getRequest()->getParam('store', Mage::app()->getStore()->getId());
+        // set default store if storeId is global
+        if ($storeId == 0) {
+            $storeId = Mage::app()->getWebsite(true)->getDefaultGroup()->getDefaultStoreId();
         }
         $publish = (integer)$this->getRequest()->getParam('publish');
         //update all attribute in one query
-        $product_action = Mage::getSingleton('catalog/product_action');
-        if ($store_id != 0) {
+        $productAction = Mage::getSingleton('catalog/product_action');
+        if ($storeId != 0) {
             $defaultStoreProductToUpdate = array();
-            foreach ($product_ids as $product_id) {
-                $lengow_product_value = Mage::getResourceModel('catalog/product')->getAttributeRawValue(
-                    $product_id,
+            foreach ($productIds as $productId) {
+                $lengowProductValue = Mage::getResourceModel('catalog/product')->getAttributeRawValue(
+                    $productId,
                     'lengow_product',
                     0
                 );
-                if ($lengow_product_value === false) {
-                    $defaultStoreProductToUpdate[] = $product_id;
+                if ($lengowProductValue === false) {
+                    $defaultStoreProductToUpdate[] = $productId;
                 }
             }
             // need to set default value if not set
             if (count($defaultStoreProductToUpdate) > 0) {
-                $product_action->updateAttributes($defaultStoreProductToUpdate, array('lengow_product' => 0), 0);
+                $productAction->updateAttributes($defaultStoreProductToUpdate, array('lengow_product' => 0), 0);
             }
-            if ($store_id != 0) {
+            if ($storeId != 0) {
                 //set value for other store
-                $product_action->updateAttributes($product_ids, array('lengow_product' => $publish), $store_id);
+                $productAction->updateAttributes($productIds, array('lengow_product' => $publish), $storeId);
             }
         } else {
-            $product_action->updateAttributes($product_ids, array('lengow_product' => $publish), $store_id);
+            $productAction->updateAttributes($productIds, array('lengow_product' => $publish), $storeId);
         }
     }
 

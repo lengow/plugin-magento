@@ -23,7 +23,7 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
     /**
      * @var array valid states lengow to create a Lengow order
      */
-    protected $_lengow_states = array(
+    protected $_lengowStates = array(
         'accepted',
         'waiting_shipment',
         'shipped',
@@ -41,19 +41,19 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
     /**
      * Get Marketplace singleton
      *
-     * @param string  $name     markeplace name
-     * @param integer $store_id store Id
+     * @param string  $name    markeplace name
+     * @param integer $storeId store Id
      *
      * @return array Lengow marketplace
      */
-    public static function getMarketplaceSingleton($name, $store_id = null)
+    public static function getMarketplaceSingleton($name, $storeId = null)
     {
         if (!array_key_exists($name, self::$marketplaces)) {
             self::$marketplaces[$name] = Mage::getModel(
                 'lengow/import_marketplace',
                 array(
                     'name'     => $name,
-                    'store_id' => $store_id
+                    'store_id' => $storeId
                 )
             );
         }
@@ -116,17 +116,17 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
     /**
      * Check if order status is valid for import
      *
-     * @param string                                    $order_state_marketplace order state
-     * @param Lengow_Connector_Model_Import_Marketplace $marketplace             order marketplace
+     * @param string                                    $orderStateMarketplace order state
+     * @param Lengow_Connector_Model_Import_Marketplace $marketplace           order marketplace
      *
      * @return boolean
      */
-    public function checkState($order_state_marketplace, $marketplace)
+    public function checkState($orderStateMarketplace, $marketplace)
     {
-        if (empty($order_state_marketplace)) {
+        if (empty($orderStateMarketplace)) {
             return false;
         }
-        if (!in_array($marketplace->getStateLengow($order_state_marketplace), $this->_lengow_states)) {
+        if (!in_array($marketplace->getStateLengow($orderStateMarketplace), $this->_lengowStates)) {
             return false;
         }
         return true;
@@ -155,19 +155,19 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
      */
     public function getLastImport()
     {
-        $timestamp_cron = $this->_config->get('last_import_cron');
-        $timestamp_manual = $this->_config->get('last_import_manual');
+        $timestampCron = $this->_config->get('last_import_cron');
+        $timestampManual = $this->_config->get('last_import_manual');
 
-        if ($timestamp_cron && $timestamp_manual) {
-            if ((int)$timestamp_cron > (int) $timestamp_manual) {
-                return array('type' => 'cron', 'timestamp' => (int)$timestamp_cron);
+        if ($timestampCron && $timestampManual) {
+            if ((int)$timestampCron > (int) $timestampManual) {
+                return array('type' => 'cron', 'timestamp' => (int)$timestampCron);
             } else {
-                return array('type' => 'manual', 'timestamp' => (int)$timestamp_manual);
+                return array('type' => 'manual', 'timestamp' => (int)$timestampManual);
             }
-        } elseif ($timestamp_cron && !$timestamp_manual) {
-            return array('type' => 'cron', 'timestamp' => (int)$timestamp_cron);
-        } elseif ($timestamp_manual && !$timestamp_cron) {
-            return array('type' => 'manual', 'timestamp' => (int)$timestamp_manual);
+        } elseif ($timestampCron && !$timestampManual) {
+            return array('type' => 'cron', 'timestamp' => (int)$timestampCron);
+        } elseif ($timestampManual && !$timestampCron) {
+            return array('type' => 'manual', 'timestamp' => (int)$timestampManual);
         }
 
         return array('type' => 'none', 'timestamp' => 'none');
@@ -176,17 +176,17 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
     /**
      * Check logs table and send mail for order not imported correctly
      *
-     * @param  boolean $log_output See log or not
+     * @param  boolean $logOutput See log or not
      */
-    public function sendMailAlert($log_output = false)
+    public function sendMailAlert($logOutput = false)
     {
         $helper = Mage::helper('lengow_connector');
         $subject = '<h2>'.$helper->decodeLogMessage('lengow_log.mail_report.subject_report_mail').'</h2>';
-        $mail_body = '<p><ul>';
+        $mailBody = '<p><ul>';
         $errors = Mage::getModel('lengow/import_ordererror')->getImportErrors();
         if ($errors) {
             foreach ($errors as $error) {
-                $mail_body.= '<li>'.$helper->decodeLogMessage(
+                $mailBody.= '<li>'.$helper->decodeLogMessage(
                     'lengow_log.mail_report.order',
                     null,
                     array(
@@ -194,21 +194,21 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
                     )
                 );
                 if ($error['message'] != '') {
-                    $mail_body.= ' - '.$helper->decodeLogMessage($error['message']);
+                    $mailBody.= ' - '.$helper->decodeLogMessage($error['message']);
                 } else {
-                    $mail_body.= ' - '.$helper->decodeLogMessage('lengow_log.mail_report.no_error_in_report_mail');
+                    $mailBody.= ' - '.$helper->decodeLogMessage('lengow_log.mail_report.no_error_in_report_mail');
                 }
-                $mail_body.= '</li>';
-                $order_error = Mage::getModel('lengow/import_ordererror')->load($error['id']);
-                $order_error->updateOrderError(array('mail' => 1));
-                unset($order_error);
+                $mailBody.= '</li>';
+                $orderError = Mage::getModel('lengow/import_ordererror')->load($error['id']);
+                $orderError->updateOrderError(array('mail' => 1));
+                unset($orderError);
             }
-            $mail_body .=  '</ul></p>';
+            $mailBody .=  '</ul></p>';
             $emails = Mage::helper('lengow_connector/config')->getReportEmailAddress();
             foreach ($emails as $email) {
                 $mail = Mage::getModel('core/email');
                 $mail->setToEmail($email);
-                $mail->setBody($mail_body);
+                $mail->setBody($mailBody);
                 $mail->setSubject($subject);
                 $mail->setFromEmail(Mage::getStoreConfig('trans_email/ident_general/email'));
                 $mail->setFromName("Lengow");
@@ -218,13 +218,13 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
                     $helper->log(
                         'MailReport',
                         $helper->setLogMessage('log.mail_report.send_mail_to', array('email' => $email)),
-                        $log_output
+                        $logOutput
                     );
                 } catch (Exception $e) {
                     $helper->log(
                         'MailReport',
                         $helper->setLogMessage('log.mail_report.unable_send_mail_to', array('email' => $email)),
-                        $log_output
+                        $logOutput
                     );
                 }
                 unset($mail);

@@ -57,8 +57,8 @@ class Lengow_Connector_Test_Controller_Adminhtml_Lengow_ProductController extend
     private function publishProductGlobal()
     {
         //set lengow product to 0
-        $product_action = Mage::getSingleton('catalog/product_action');
-        $product_action->updateAttributes(array(1, 2), array('lengow_product' => 0), 0);
+        $productAction = Mage::getSingleton('catalog/product_action');
+        $productAction->updateAttributes(array(1, 2), array('lengow_product' => 0), 0);
 
         $product = Mage::getModel('catalog/product')->load(1);
         $this->assertTrue(!(boolean)$product->getLengowProduct());
@@ -68,8 +68,8 @@ class Lengow_Connector_Test_Controller_Adminhtml_Lengow_ProductController extend
 
         $this->getRequest()->setMethod('POST')->setPost(
             array(
-                "product" => array(1),
-                "publish" => 1
+                'product' => array(1),
+                'publish' => 1
             )
         );
         $this->dispatch('adminhtml/lengow_product/massPublish/');
@@ -89,8 +89,8 @@ class Lengow_Connector_Test_Controller_Adminhtml_Lengow_ProductController extend
     private function unPublishProductGlobal()
     {
         //set lengow product to 0
-        $product_action = Mage::getSingleton('catalog/product_action');
-        $product_action->updateAttributes(array(1), array('lengow_product' => 1), 0);
+        $productAction = Mage::getSingleton('catalog/product_action');
+        $productAction->updateAttributes(array(1), array('lengow_product' => 1), 0);
 
         $product = Mage::getModel('catalog/product')->load(1);
         $this->assertTrue((boolean)$product->getLengowProduct());
@@ -99,8 +99,8 @@ class Lengow_Connector_Test_Controller_Adminhtml_Lengow_ProductController extend
         // Test : UnPublish first product to global
         $this->getRequest()->setMethod('POST')->setPost(
             array(
-                "product" => array(1),
-                "publish" => 0
+                'product' => array(1),
+                'publish' => 0
             )
         );
         $this->dispatch('adminhtml/lengow_product/massPublish/');
@@ -120,8 +120,8 @@ class Lengow_Connector_Test_Controller_Adminhtml_Lengow_ProductController extend
     private function publishProductStore()
     {
         //reset product
-        $product_action = Mage::getSingleton('catalog/product_action');
-        $product_action->updateAttributes(array(1, 2), array('lengow_product' => 0), 0);
+        $productAction = Mage::getSingleton('catalog/product_action');
+        $productAction->updateAttributes(array(1, 2), array('lengow_product' => 0), 0);
 
         $product = Mage::getModel('catalog/product')->setStoreId(1)->load(1);
         $this->assertTrue(!(boolean)$product->getLengowProduct());
@@ -133,9 +133,9 @@ class Lengow_Connector_Test_Controller_Adminhtml_Lengow_ProductController extend
         // Test : Publish first product to store 1
         $this->getRequest()->setMethod('POST')->setPost(
             array(
-                "product" => array(1),
-                "publish" => 1,
-                "store"   => 1
+                'product' => array(1),
+                'publish' => 1,
+                'store'   => 1
             )
         );
         $this->dispatch('adminhtml/lengow_product/massPublish/');
@@ -155,8 +155,8 @@ class Lengow_Connector_Test_Controller_Adminhtml_Lengow_ProductController extend
     public function unPublishProductStore()
     {
         //reset product
-        $product_action = Mage::getSingleton('catalog/product_action');
-        $product_action->updateAttributes(array(1, 2), array('lengow_product' => 1), 1);
+        $productAction = Mage::getSingleton('catalog/product_action');
+        $productAction->updateAttributes(array(1, 2), array('lengow_product' => 1), 1);
 
         $product = Mage::getModel('catalog/product')->setStoreId(1)->load(1);
         $this->assertTrue((boolean)$product->getLengowProduct());
@@ -168,9 +168,9 @@ class Lengow_Connector_Test_Controller_Adminhtml_Lengow_ProductController extend
         // Test : UnPublish first product to store 1
         $this->getRequest()->setMethod('POST')->setPost(
             array(
-                "product" => array(1),
-                "publish" => 0,
-                "store"   => 1
+                'product' => array(1),
+                'publish' => 0,
+                'store'   => 1
             )
         );
         $this->dispatch('adminhtml/lengow_product/massPublish/');
@@ -190,8 +190,8 @@ class Lengow_Connector_Test_Controller_Adminhtml_Lengow_ProductController extend
     public function unPublishProductStoreGlobal()
     {
         //reset product
-        $product_action = Mage::getSingleton('catalog/product_action');
-        $product_action->updateAttributes(array(1,2), array('lengow_product' => 1), 2);
+        $productAction = Mage::getSingleton('catalog/product_action');
+        $productAction->updateAttributes(array(1,2), array('lengow_product' => 1), 2);
 
         $product = Mage::getModel('catalog/product')->setStoreId(2)->load(1);
         $this->assertTrue((boolean)$product->getLengowProduct());
@@ -201,11 +201,12 @@ class Lengow_Connector_Test_Controller_Adminhtml_Lengow_ProductController extend
 
         // --------------------------------------
         // Test : UnPublish first product to store 1
-        $this->getRequest()->setMethod('POST')
-            ->setPost(array(
-                "product" => array(1),
-                "publish" => 0
-            ));
+        $this->getRequest()->setMethod('POST')->setPost(
+            array(
+                'product' => array(1),
+                'publish' => 0
+            )
+        );
         $this->dispatch('adminhtml/lengow_product/massPublish/');
 
         $product = Mage::getModel('catalog/product')->setStoreId(2)->load(1);

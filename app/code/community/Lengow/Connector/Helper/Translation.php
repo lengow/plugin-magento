@@ -30,25 +30,25 @@ class Lengow_Connector_Helper_Translation extends Mage_Core_Helper_Abstract
     /**
      * Translate message
      *
-     * @param string $message  localization key
-     * @param array  $args     replace word in string
-     * @param array  $iso_code iso code
+     * @param string $message localization key
+     * @param array  $args    replace word in string
+     * @param array  $isoCode iso code
      *
      * @return mixed
      */
-    public function t($message, $args = array(), $iso_code = null)
+    public function t($message, $args = array(), $isoCode = null)
     {
         if (!is_null(self::$forceIsoCode)) {
-            $iso_code = self::$forceIsoCode;
+            $isoCode = self::$forceIsoCode;
         }
-        if (is_null($iso_code)) {
-            $iso_code = $this->_isoCode;
+        if (is_null($isoCode)) {
+            $isoCode = $this->_isoCode;
         }
-        if (!isset(self::$_translation[$iso_code])) {
-            $this->loadFile($iso_code);
+        if (!isset(self::$_translation[$isoCode])) {
+            $this->loadFile($isoCode);
         }
-        if (isset(self::$_translation[$iso_code][$message])) {
-            return $this->translateFinal(self::$_translation[$iso_code][$message], $args);
+        if (isset(self::$_translation[$isoCode][$message])) {
+            return $this->translateFinal(self::$_translation[$isoCode][$message], $args);
         } else {
             if (!isset(self::$_translation[$this->fallbackIsoCode])) {
                 $this->loadFile($this->fallbackIsoCode);
@@ -87,15 +87,15 @@ class Lengow_Connector_Helper_Translation extends Mage_Core_Helper_Abstract
     /**
      * Load csv file
      *
-     * @param string $iso_code
+     * @param string $isoCode
      * @param string $filename file location
      *
      * @return boolean
      */
-    public function loadFile($iso_code, $filename = null)
+    public function loadFile($isoCode, $filename = null)
     {
         if (!$filename) {
-            $filename = Mage::getModuleDir('locale', 'Lengow_Connector').DS.$iso_code.'.csv';
+            $filename = Mage::getModuleDir('locale', 'Lengow_Connector').DS.$isoCode.'.csv';
         }
         $translation = array();
         if (file_exists($filename)) {
@@ -106,7 +106,7 @@ class Lengow_Connector_Helper_Translation extends Mage_Core_Helper_Abstract
                 fclose($handle);
             }
         }
-        self::$_translation[$iso_code] = $translation;
+        self::$_translation[$isoCode] = $translation;
         return count($translation) > 0;
     }
 }

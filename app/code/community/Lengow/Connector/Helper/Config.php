@@ -167,33 +167,33 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
     /**
      * Get Value
      *
-     * @param string  $key      Lengow setting key
-     * @param integer $store_id Store id
+     * @param string  $key     Lengow setting key
+     * @param integer $storeId Store id
      *
      * @return null
      */
-    public function get($key, $store_id = 0)
+    public function get($key, $storeId = 0)
     {
         if (!array_key_exists($key, $this->options)) {
             return null;
         }
-        $value = Mage::getStoreConfig($this->options[$key]['path'], $store_id);
+        $value = Mage::getStoreConfig($this->options[$key]['path'], $storeId);
         return $value;
     }
 
     /**
      * Set Value
      *
-     * @param string  $key         Lengow setting key
-     * @param mixed   $value       Lengow setting value
-     * @param integer $store_id    Store id
-     * @param boolean $clean_cache Clean config cache to valid configuration
+     * @param string  $key        Lengow setting key
+     * @param mixed   $value      Lengow setting value
+     * @param integer $storeId    Store id
+     * @param boolean $cleanCache Clean config cache to valid configuration
      *
      * @return null
      */
-    public function set($key, $value, $store_id = 0, $clean_cache = true)
+    public function set($key, $value, $storeId = 0, $cleanCache = true)
     {
-        if ($store_id == 0) {
+        if ($storeId == 0) {
             Mage::getModel('core/config')->saveConfig(
                 $this->options[$key]['path'],
                 $value,
@@ -205,10 +205,10 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
                 $this->options[$key]['path'],
                 $value,
                 'stores',
-                $store_id
+                $storeId
             );
         }
-        if ($clean_cache) {
+        if ($cleanCache) {
             Mage::app()->getCacheInstance()->cleanType('config');
         }
     }
@@ -216,15 +216,15 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
     /**
      * Get Selected attributes
      *
-     * @param integer $store_id store id
+     * @param integer $storeId store id
      *
      * @return array
      */
-    public function getSelectedAttributes($store_id = 0)
+    public function getSelectedAttributes($storeId = 0)
     {
         $tab = array();
         $attributeSelected = array();
-        $attributes = $this->get('export_attribute', $store_id);
+        $attributes = $this->get('export_attribute', $storeId);
         if (!empty($attributes)) {
             $tab = explode(',', $attributes);
         }
@@ -239,18 +239,18 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
     /**
      * Generate token
      *
-     * @param integer $store_id store id
+     * @param integer $storeId store id
      *
      * @return array
      */
-    public function getToken($store_id = 0)
+    public function getToken($storeId = 0)
     {
-        $token = $this->get('token', $store_id);
+        $token = $this->get('token', $storeId);
         if ($token && strlen($token) > 0) {
             return $token;
         } else {
             $token = bin2hex(openssl_random_pseudo_bytes(16));
-            $this->set('token', $token, $store_id);
+            $this->set('token', $token, $storeId);
         }
         return $token;
     }
@@ -296,20 +296,20 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
     /**
      * Get Values by store or global
      *
-     * @param integer $store_id store id
+     * @param integer $storeId store id
      *
      * @return array
      */
-    public function getAllValues($store_id = null)
+    public function getAllValues($storeId = null)
     {
         $rows = array();
         foreach ($this->options as $key => $value) {
             if (isset($value['export']) && !$value['export']) {
                 continue;
             }
-            if ($store_id) {
+            if ($storeId) {
                 if (isset($value['store']) && $value['store']) {
-                    $rows[$key] = $this->get($key, $store_id);
+                    $rows[$key] = $this->get($key, $storeId);
                 }
             } else {
                 if (isset($value['global']) && $value['global']) {

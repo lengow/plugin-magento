@@ -37,20 +37,20 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
                         $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($informations));
                         break;
                     case 're_import':
-                        $order_lengow_id = Mage::app()->getRequest()->getParam('order_lengow_id');
-                        if (!is_null($order_lengow_id)) {
-                            $order_lengow = Mage::getModel('lengow/import_order');
-                            $result = $order_lengow->reImportOrder((int)$order_lengow_id);
+                        $orderLengowId = Mage::app()->getRequest()->getParam('order_lengow_id');
+                        if (!is_null($orderLengowId)) {
+                            $orderLengow = Mage::getModel('lengow/import_order');
+                            $result = $orderLengow->reImportOrder((int)$orderLengowId);
                             $informations = $this->getInformations();
                             $informations['import_order'] = $result;
                             $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($informations));
                         }
                         break;
                     case 're_send':
-                        $order_lengow_id = Mage::app()->getRequest()->getParam('order_lengow_id');
-                        if (!is_null($order_lengow_id)) {
-                            $order_lengow = Mage::getModel('lengow/import_order');
-                            $result = $order_lengow->reSendOrder((int)$order_lengow_id);
+                        $orderLengowId = Mage::app()->getRequest()->getParam('order_lengow_id');
+                        if (!is_null($orderLengowId)) {
+                            $orderLengow = Mage::getModel('lengow/import_order');
+                            $result = $orderLengow->reSendOrder((int)$orderLengowId);
                             $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($result));
                         }
                         break;
@@ -84,23 +84,23 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
      */
     public function synchronizeAction()
     {
-        $order_id = $this->getRequest()->getParam('order_id');
-        $order = Mage::getModel('sales/order')->load($order_id);
-        $marketplace_sku = $order->getData('order_id_lengow');
+        $orderId = $this->getRequest()->getParam('order_id');
+        $order = Mage::getModel('sales/order')->load($orderId);
+        $marketplaceSku = $order->getData('order_id_lengow');
         $synchro = Mage::getModel('lengow/import_order')->synchronizeOrder($order);
         if ($synchro) {
-            $synchro_message =  Mage::helper('lengow_connector/data')->setLogMessage(
+            $synchroMessage =  Mage::helper('lengow_connector/data')->setLogMessage(
                 'log.import.order_synchronized_with_lengow',
                 array('order_id' => $order->getIncrementId())
             );
         } else {
-            $synchro_message =  Mage::helper('lengow_connector/data')->setLogMessage(
+            $synchroMessage =  Mage::helper('lengow_connector/data')->setLogMessage(
                 'log.import.order_not_synchronized_with_lengow',
                 array('order_id' => $order->getIncrementId())
             );
         }
-        Mage::helper('lengow_connector/data')->log('Import', $synchro_message, false, $marketplace_sku);
-        $url = Mage::helper('adminhtml')->getUrl("adminhtml/sales_order/view", array('order_id' => $order_id));
+        Mage::helper('lengow_connector/data')->log('Import', $synchroMessage, false, $marketplaceSku);
+        $url = Mage::helper('adminhtml')->getUrl("adminhtml/sales_order/view", array('order_id' => $orderId));
         Mage::app()->getResponse()->setRedirect($url);
     }
 
@@ -109,13 +109,13 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
      */
     public function cancelAndReImportOrderAction()
     {
-        $order_id = $this->getRequest()->getParam('order_id');
-        $order = Mage::getModel('sales/order')->load($order_id);
-        $new_order_id = Mage::getModel('lengow/import_order')->cancelAndReImportOrder($order);
-        if (!$new_order_id) {
-            $new_order_id = $order_id;
+        $orderId = $this->getRequest()->getParam('order_id');
+        $order = Mage::getModel('sales/order')->load($orderId);
+        $newOrderId = Mage::getModel('lengow/import_order')->cancelAndReImportOrder($order);
+        if (!$newOrderId) {
+            $newOrderId = $orderId;
         }
-        $url = Mage::helper('adminhtml')->getUrl("adminhtml/sales_order/view", array('order_id' => $new_order_id));
+        $url = Mage::helper('adminhtml')->getUrl("adminhtml/sales_order/view", array('order_id' => $newOrderId));
         Mage::app()->getResponse()->setRedirect($url);
     }
 
@@ -124,14 +124,14 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
      */
     public function reSendAction()
     {
-        $order_id = $this->getRequest()->getParam('order_id');
+        $orderId = $this->getRequest()->getParam('order_id');
         $action = $this->getRequest()->getParam('action') == 'complete'
             ? 'ship'
             : $this->getRequest()->getParam('action');
-        $order = Mage::getModel('sales/order')->load($order_id);
+        $order = Mage::getModel('sales/order')->load($orderId);
         $shipment = $order->getShipmentsCollection()->getFirstItem();
         Mage::getModel('lengow/import_order')->callAction($action, $order, $shipment);
-        $url = Mage::helper('adminhtml')->getUrl("adminhtml/sales_order/view", array('order_id' => $order_id));
+        $url = Mage::helper('adminhtml')->getUrl("adminhtml/sales_order/view", array('order_id' => $orderId));
         Mage::app()->getResponse()->setRedirect($url);
     }
 
@@ -140,11 +140,11 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
      */
     public function massReImportAction()
     {
-        $order_lengow_ids = $this->getRequest()->getParam('order');
-        if (count($order_lengow_ids) > 0) {
-            $order_lengow = Mage::getModel('lengow/import_order');
-            foreach ($order_lengow_ids as $order_lengow_id) {
-                $order_lengow->reImportOrder((int)$order_lengow_id);
+        $orderLengowIds = $this->getRequest()->getParam('order');
+        if (count($orderLengowIds) > 0) {
+            $orderLengow = Mage::getModel('lengow/import_order');
+            foreach ($orderLengowIds as $orderLengowId) {
+                $orderLengow->reImportOrder((int)$orderLengowId);
             }
         }
     }
@@ -154,11 +154,11 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
      */
     public function massReSendAction()
     {
-        $order_lengow_ids = $this->getRequest()->getParam('order');
-        if (count($order_lengow_ids) > 0) {
-            $order_lengow = Mage::getModel('lengow/import_order');
-            foreach ($order_lengow_ids as $order_lengow_id) {
-                $order_lengow->reSendOrder((int)$order_lengow_id);
+        $orderLengowIds = $this->getRequest()->getParam('order');
+        if (count($orderLengowIds) > 0) {
+            $orderLengow = Mage::getModel('lengow/import_order');
+            foreach ($orderLengowIds as $orderLengowId) {
+                $orderLengow->reSendOrder((int)$orderLengowId);
             }
         }
     }
@@ -220,11 +220,11 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
             foreach ($results['error'] as $store_id => $values) {
                 if ((int)$store_id > 0) {
                     $store = Mage::getModel('core/store')->load($store_id);
-                    $store_name = $store->getName().' ('.$store->getId().') : ';
+                    $storeName = $store->getName().' ('.$store->getId().') : ';
                     if (is_array($values)) {
-                        $messages[] = $store_name.join(', ', $helper->decodeLogMessage($values));
+                        $messages[] = $storeName.join(', ', $helper->decodeLogMessage($values));
                     } else {
-                        $messages[] = $store_name.$helper->decodeLogMessage($values);
+                        $messages[] = $storeName.$helper->decodeLogMessage($values);
                     }
                 }
             }
@@ -241,8 +241,8 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
     {
         $informations = array();
         $helper = Mage::helper('lengow_connector');
-        $last_import = Mage::helper('lengow_connector/import')->getLastImport();
-        $last_import_date = $helper->getDateInCorrectFormat(time());
+        $lastImport = Mage::helper('lengow_connector/import')->getLastImport();
+        $lastImportDate = $helper->getDateInCorrectFormat(time());
         $order = Mage::getModel('lengow/import_order');
         $informations['order_with_error'] = $helper->__(
             'order.screen.order_with_error',
@@ -252,10 +252,10 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
             'order.screen.order_to_be_sent',
             array('nb_order' => $order->countOrderToBeSent())
         );
-        if ($last_import['type'] != 'none') {
+        if ($lastImport['type'] != 'none') {
             $informations['last_importation'] = $helper->__(
                 'order.screen.last_order_importation',
-                array('last_importation' => '<b>'.$last_import_date.'</b>')
+                array('last_importation' => '<b>'.$lastImportDate.'</b>')
             );
         } else {
             $informations['last_importation'] = $helper->__('order.screen.no_order_importation');

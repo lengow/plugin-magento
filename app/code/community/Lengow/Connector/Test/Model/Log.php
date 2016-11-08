@@ -13,7 +13,7 @@ class Lengow_Connector_Test_Model_Log extends EcomDev_PHPUnit_Test_Case
     public function model()
     {
         $collection = Mage::getModel('lengow/log')->getCollection();
-        foreach ($collection as $log){
+        foreach ($collection as $log) {
             $this->assertRegExp(
                 '/Test message/',
                 $log->getMessage(),

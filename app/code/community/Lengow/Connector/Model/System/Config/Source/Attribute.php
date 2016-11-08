@@ -56,24 +56,24 @@ class Lengow_Connector_Model_System_Config_Source_Attribute extends Mage_Core_Mo
     public function setDefaultAttributes($attributeArray = array())
     {
         if (strlen($code = Mage::getSingleton('adminhtml/config_data')->getStore())) {
-            $store_id = Mage::getModel('core/store')->load($code)->getId();
+            $storeId = Mage::getModel('core/store')->load($code)->getId();
         } else {
             $code = 'default';
-            $store_id = 0;
+            $storeId = 0;
         }
-        if (is_null(Mage::getStoreConfig('lengow_export_options/advanced/export_attribute', $store_id))) {
-            $attribute_list = '';
+        if (is_null(Mage::getStoreConfig('lengow_export_options/advanced/export_attribute', $storeId))) {
+            $attributeList = '';
             foreach ($attributeArray as $attribute) {
                 if ($attribute['value'] != 'none') {
-                    $attribute_list.= $attribute['value'].',';
+                    $attributeList.= $attribute['value'].',';
                 }
             }
-            $attribute_list = rtrim($attribute_list, ',');
+            $attributeList = rtrim($attributeList, ',');
             Mage::getModel('core/config')->saveConfig(
                 'lengow_export_options/advanced/export_attribute',
-                $attribute_list,
+                $attributeList,
                 $code,
-                $store_id
+                $storeId
             );
         }
     }

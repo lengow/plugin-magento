@@ -18,17 +18,17 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
     /**
      * @var Security helper
      */
-    protected $_security_helper;
+    protected $_securityHelper;
 
     /**
      * @var Configuration helper
      */
-    protected $_config_helper;
+    protected $_configHelper;
 
     /**
      * @var Import helper
      */
-    protected $_import_helper;
+    protected $_importHelper;
 
     /**
      * Construct
@@ -36,9 +36,9 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
     public function __construct()
     {
         $this->_helper = Mage::helper('lengow_connector');
-        $this->_security_helper = Mage::helper('lengow_connector/security');
-        $this->_config_helper = Mage::helper('lengow_connector/config');
-        $this->_import_helper = Mage::helper('lengow_connector/import');
+        $this->_securityHelper = Mage::helper('lengow_connector/security');
+        $this->_configHelper = Mage::helper('lengow_connector/config');
+        $this->_importHelper = Mage::helper('lengow_connector/import');
     }
 
     /**
@@ -55,7 +55,7 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
         );
         $checklist[] = array(
             'title'   => $this->_helper->__('lengow_setting.global_plugin_version_title'),
-            'message' => $this->_security_helper->getPluginVersion(),
+            'message' => $this->_securityHelper->getPluginVersion(),
         );
         $checklist[] = array(
             'title'   => $this->_helper->__('toolbox.screen.server_ip'),
@@ -63,31 +63,31 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
         );
         $checklist[] = array(
             'title'   => $this->_helper->__('toolbox.screen.authorized_ip'),
-            'message' => $this->_config_helper->get('authorized_ip'),
+            'message' => $this->_configHelper->get('authorized_ip'),
         );
         $checklist[] = array(
             'title'   => $this->_helper->__('toolbox.screen.legacy_enable'),
-            'state'   => (bool)$this->_config_helper->get('legacy_enable'),
+            'state'   => (bool)$this->_configHelper->get('legacy_enable'),
         );
         $checklist[] = array(
             'title'   => $this->_helper->__('toolbox.screen.export_on_a_file'),
-            'state'   => (bool)$this->_config_helper->get('file_enable'),
+            'state'   => (bool)$this->_configHelper->get('file_enable'),
         );
         $checklist[] = array(
             'title'   => $this->_helper->__('toolbox.screen.export_cron_enable'),
-            'state'   => (bool)$this->_config_helper->get('export_cron_enable'),
+            'state'   => (bool)$this->_configHelper->get('export_cron_enable'),
         );
         $checklist[] = array(
             'title'   => $this->_helper->__('toolbox.screen.pre_production_enable'),
-            'state'   => !(bool)$this->_config_helper->get('preprod_mode_enable'),
+            'state'   => !(bool)$this->_configHelper->get('preprod_mode_enable'),
         );
-        $file_path = Mage::getBaseDir('media').DS.'lengow'.DS.'test.txt';
-        $file = fopen($file_path, "w+");
+        $filePath = Mage::getBaseDir('media').DS.'lengow'.DS.'test.txt';
+        $file = fopen($filePath, "w+");
         if ($file == false) {
             $state = false;
         } else {
             $state = true;
-            unlink($file_path);
+            unlink($filePath);
         }
         $checklist[] = array(
             'title'   => $this->_helper->__('toolbox.screen.write_permission'),
@@ -106,7 +106,7 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
         $checklist = array();
         $checklist[] = array(
             'title'   => $this->_helper->__('toolbox.screen.global_token'),
-            'message' => $this->_config_helper->getToken(),
+            'message' => $this->_configHelper->getToken(),
         );
         $checklist[] = array(
             'title'   => $this->_helper->__('toolbox.screen.url_import'),
@@ -114,54 +114,54 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
         );
         $checklist[] = array(
             'title'   => $this->_helper->__('toolbox.screen.import_cron_enable'),
-            'state'   => (bool)$this->_config_helper->get('import_cron_enable'),
+            'state'   => (bool)$this->_configHelper->get('import_cron_enable'),
         );
         $order = Mage::getModel('lengow/import_order');
-        $nb_order_imported = $order->countOrderImportedByLengow();
-        $order_with_error = $order->countOrderWithError();
-        $order_to_be_sent = $order->countOrderToBeSent();
+        $nbOrderImported = $order->countOrderImportedByLengow();
+        $orderWithError = $order->countOrderWithError();
+        $orderToBeSent = $order->countOrderToBeSent();
         $checklist[] = array(
             'title'   => $this->_helper->__('toolbox.screen.nb_order_imported'),
-            'message' => $nb_order_imported,
+            'message' => $nbOrderImported,
         );
         $checklist[] = array(
             'title'   => $this->_helper->__('toolbox.screen.nb_order_to_be_sent'),
-            'message' => $order_to_be_sent,
+            'message' => $orderToBeSent,
         );
         $checklist[] = array(
             'title'   => $this->_helper->__('toolbox.screen.nb_order_with_error'),
-            'message' => $order_with_error,
+            'message' => $orderWithError,
         );
-        $last_import =  $this->_import_helper->getLastImport();
-        $last_import_date = $last_import['timestamp'] == 'none'
+        $lastImport =  $this->_importHelper->getLastImport();
+        $lastImportDate = $lastImport['timestamp'] == 'none'
             ? $this->_helper->__('toolbox.screen.last_import_none')
-            : $this->_helper->getDateInCorrectFormat($last_import['timestamp'], true);
-        if ($last_import['type'] == 'none') {
-            $last_import_type = $this->_helper->__('toolbox.screen.last_import_none');
-        } elseif ($last_import['type'] == 'cron') {
-            $last_import_type = $this->_helper->__('toolbox.screen.last_import_cron');
+            : $this->_helper->getDateInCorrectFormat($lastImport['timestamp'], true);
+        if ($lastImport['type'] == 'none') {
+            $lastImportType = $this->_helper->__('toolbox.screen.last_import_none');
+        } elseif ($lastImport['type'] == 'cron') {
+            $lastImportType = $this->_helper->__('toolbox.screen.last_import_cron');
         } else {
-            $last_import_type = $this->_helper->__('toolbox.screen.last_import_manual');
+            $lastImportType = $this->_helper->__('toolbox.screen.last_import_manual');
         }
-        if ($this->_import_helper->importIsInProcess()) {
-            $import_in_progress = $this->_helper->__(
+        if ($this->_importHelper->importIsInProcess()) {
+            $importInProgress = $this->_helper->__(
                 'toolbox.screen.rest_time_to_import',
-                array('rest_time' => $this->_import_helper->restTimeToImport())
+                array('rest_time' => $this->_importHelper->restTimeToImport())
             );
         } else {
-            $import_in_progress = $this->_helper->__('toolbox.screen.no_import');
+            $importInProgress = $this->_helper->__('toolbox.screen.no_import');
         }
         $checklist[] = array(
             'title'   => $this->_helper->__('toolbox.screen.import_in_progress'),
-            'message' => $import_in_progress,
+            'message' => $importInProgress,
         );
         $checklist[] = array(
             'title'   => $this->_helper->__('toolbox.screen.store_last_import'),
-            'message' => $last_import_date,
+            'message' => $lastImportDate,
         );
         $checklist[] = array(
             'title'   => $this->_helper->__('toolbox.screen.store_type_import'),
-            'message' => $last_import_type,
+            'message' => $lastImportType,
         );
         return $this->_getContent($checklist);
     }
@@ -182,7 +182,7 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
         );
         $checklist[] = array(
             'title'   => $this->_helper->__('toolbox.screen.store_active'),
-            'state'   => (bool)$this->_config_helper->get('store_enable', $store->getId()),
+            'state'   => (bool)$this->_configHelper->get('store_enable', $store->getId()),
         );
         $checklist[] = array(
             'title'   => $this->_helper->__('toolbox.screen.store_product_total'),
@@ -194,16 +194,16 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
         );
         $checklist[] = array(
             'title'   => $this->_helper->__('toolbox.screen.store_export_token'),
-            'message' => $this->_config_helper->getToken($store->getId()),
+            'message' => $this->_configHelper->getToken($store->getId()),
         );
         $checklist[] = array(
             'title'   => $this->_helper->__('toolbox.screen.url_export'),
             'message' => $export->getExportUrl(),
         );
-        $last_export_date = $this->_config_helper->get('last_export', $store->getId());
+        $lastExportDate = $this->_configHelper->get('last_export', $store->getId());
         $checklist[] = array(
             'title'   => $this->_helper->__('toolbox.screen.store_last_export'),
-            'message' => $this->_helper->getDateInCorrectFormat($last_export_date, true),
+            'message' => $this->_helper->getDateInCorrectFormat($lastExportDate, true),
         );
         return $this->_getContent($checklist);
     }
@@ -217,27 +217,27 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
      */
     public function getFileInformations($store)
     {
-        $folder_path = Mage::getBaseDir('media').DS.'lengow'.DS.$store->getCode().DS;
-        $folder_url = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).'lengow'.DS.$store->getCode().DS;
-        $files = @array_diff(scandir($folder_path), array('..', '.'));
+        $folderPath = Mage::getBaseDir('media').DS.'lengow'.DS.$store->getCode().DS;
+        $folderUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).'lengow'.DS.$store->getCode().DS;
+        $files = @array_diff(scandir($folderPath), array('..', '.'));
         $checklist = array();
         $checklist[] = array(
             'header'  => $store->getName().' ('.$store->getId().') '.$store->getBaseUrl(),
         );
         $checklist[] = array(
             'title'   => $this->_helper->__('toolbox.screen.folder_path'),
-            'message' => $folder_path,
+            'message' => $folderPath,
         );
         if (count($files) > 0) {
             $checklist[] = array(
                 'simple' => $this->_helper->__('toolbox.screen.file_list'),
             );
             foreach ($files as $file) {
-                $file_timestamp = filectime($folder_path.$file);
-                $file_link = '<a href="'.$folder_url.$file.'" target="_blank">'.$file.'</a>';
+                $fileTimestamp = filectime($folderPath.$file);
+                $fileLink = '<a href="'.$folderUrl.$file.'" target="_blank">'.$file.'</a>';
                 $checklist[] = array(
-                    'title'   => $file_link,
-                    'message' => $this->_helper->getDateInCorrectFormat($file_timestamp, true),
+                    'title'   => $fileLink,
+                    'message' => $this->_helper->getDateInCorrectFormat($fileTimestamp, true),
                 );
             }
         } else {
@@ -257,16 +257,16 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
      */
     public function getCronInformation($type)
     {
-        $job_code = $type == 'import' ? 'import_cron_lengow' : 'export_cron_lengow';
-        $cron_jobs = Mage::getModel('cron/schedule')->getCollection()->getData();
-        $lengow_cron_jobs = array();
-        foreach ($cron_jobs as $cron_job) {
-            if ($cron_job['job_code'] == $job_code) {
-                $lengow_cron_jobs[] = $cron_job;
+        $jobCode = $type == 'import' ? 'import_cron_lengow' : 'export_cron_lengow';
+        $cronJobs = Mage::getModel('cron/schedule')->getCollection()->getData();
+        $lengowCronJobs = array();
+        foreach ($cronJobs as $cronJob) {
+            if ($cronJob['job_code'] == $jobCode) {
+                $lengowCronJobs[] = $cronJob;
             }
         }
-        $lengow_cron_jobs = array_slice(array_reverse($lengow_cron_jobs), 0, 20);
-        return $this->_getCronContent($lengow_cron_jobs);
+        $lengowCronJobs = array_slice(array_reverse($lengowCronJobs), 0, 20);
+        return $this->_getCronContent($lengowCronJobs);
     }
 
     /**
@@ -277,27 +277,27 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
     public function checkFileMd5()
     {
         $checklist = array();
-        $file_name = Mage::getModuleDir('etc', 'Lengow_Connector').DS.'checkmd5.csv';
+        $fileName = Mage::getModuleDir('etc', 'Lengow_Connector').DS.'checkmd5.csv';
         $html = '<h3><i class="fa fa-commenting"></i> '.$this->_helper->__('toolbox.screen.summary').'</h3>';
-        $file_counter = 0;
-        if (file_exists($file_name)) {
-            $file_errors = array();
-            $file_deletes = array();
-            if (($file = fopen($file_name, "r")) !== false) {
+        $fileCounter = 0;
+        if (file_exists($fileName)) {
+            $fileErrors = array();
+            $fileDeletes = array();
+            if (($file = fopen($fileName, "r")) !== false) {
                 while (($data = fgetcsv($file, 1000, "|")) !== false) {
-                    $file_counter++;
-                    $file_path = Mage::getBaseDir().$data[0];
-                    if (file_exists($file_path)) {
-                        $file_md5 = md5_file($file_path);
-                        if ($file_md5 !== $data[1]) {
-                            $file_errors[] = array(
-                                'title' => $file_path,
+                    $fileCounter++;
+                    $filePath = Mage::getBaseDir().$data[0];
+                    if (file_exists($filePath)) {
+                        $fileMd5 = md5_file($filePath);
+                        if ($fileMd5 !== $data[1]) {
+                            $fileErrors[] = array(
+                                'title' => $filePath,
                                 'state' => false
                             );
                         }
                     } else {
-                        $file_deletes[] = array(
-                            'title' => $file_path,
+                        $fileDeletes[] = array(
+                            'title' => $filePath,
                             'state' => false
                         );
                     }
@@ -307,34 +307,34 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
             $checklist[] = array(
                 'title' => $this->_helper->__(
                     'toolbox.screen.file_checked',
-                    array('nb_file' => $file_counter)
+                    array('nb_file' => $fileCounter)
                 ),
                 'state' => true
             );
             $checklist[] = array(
                 'title' => $this->_helper->__(
                     'toolbox.screen.file_modified',
-                    array('nb_file' => count($file_errors))
+                    array('nb_file' => count($fileErrors))
                 ),
-                'state' => (count($file_errors) > 0 ? false : true)
+                'state' => (count($fileErrors) > 0 ? false : true)
             );
             $checklist[] = array(
                 'title' => $this->_helper->__(
                     'toolbox.screen.file_deleted',
-                    array('nb_file' => count($file_deletes))
+                    array('nb_file' => count($fileDeletes))
                 ),
-                'state' => (count($file_deletes) > 0 ? false : true)
+                'state' => (count($fileDeletes) > 0 ? false : true)
             );
             $html.= $this->_getContent($checklist);
-            if (count($file_errors) > 0) {
+            if (count($fileErrors) > 0) {
                 $html.= '<h3><i class="fa fa-list"></i> '
                     .$this->_helper->__('toolbox.screen.list_modified_file').'</h3>';
-                $html.= $this->_getContent($file_errors);
+                $html.= $this->_getContent($fileErrors);
             }
-            if (count($file_deletes) > 0) {
+            if (count($fileDeletes) > 0) {
                 $html.= '<h3><i class="fa fa-list"></i> '
                     .$this->_helper->__('toolbox.screen.list_deleted_file').'</h3>';
-                $html.= $this->_getContent($file_deletes);
+                $html.= $this->_getContent($fileDeletes);
             }
         } else {
             $checklist[] = array(
@@ -362,7 +362,7 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
         foreach ($checklist as $check) {
             $out.= '<tr>';
             if (isset($check['header'])) {
-                $out .= '<td colspan="2" align="center" style="border:0"><h4>'.$check['header'].'</h4></td>';
+                $out.= '<td colspan="2" align="center" style="border:0"><h4>'.$check['header'].'</h4></td>';
             } elseif (isset($check['simple'])) {
                 $out.= '<td colspan="2" align="center"><h5>'.$check['simple'].'</h5></td>';
             } else {
@@ -386,14 +386,14 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
     /**
      * Get HTML Table content of cron job
      *
-     * @param array $lengow_cron_jobs
+     * @param array $lengowCronJobs
      *
      * @return string
      */
-    protected function _getCronContent($lengow_cron_jobs = array())
+    protected function _getCronContent($lengowCronJobs = array())
     {
         $out = '<table cellpadding="0" cellspacing="0">';
-        if (count($lengow_cron_jobs) == 0) {
+        if (count($lengowCronJobs) == 0) {
             $out.= '<tr><td style="border:0">'.$this->_helper->__('toolbox.screen.no_cron_job_yet').'</td></tr>';
         } else {
             $out.= '<tr>';
@@ -403,29 +403,29 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
             $out.= '<th>'.$this->_helper->__('toolbox.screen.cron_executed_at').'</th>';
             $out.= '<th>'.$this->_helper->__('toolbox.screen.cron_finished_at').'</th>';
             $out.= '</tr>';
-            foreach ($lengow_cron_jobs as $lengow_cron_job) {
+            foreach ($lengowCronJobs as $lengowCronJob) {
                 $out.= '<tr>';
-                $out.= '<td>'.$lengow_cron_job['status'].'</td>';
-                if ($lengow_cron_job['messages'] != '') {
+                $out.= '<td>'.$lengowCronJob['status'].'</td>';
+                if ($lengowCronJob['messages'] != '') {
                     $out.= '<td><a class="lengow_tooltip" href="#">'
                         .$this->_helper->__('toolbox.screen.cron_see_message')
                         .'<span class="lengow_toolbox_message">'
-                        .$lengow_cron_job['messages'].'</span></a></td>';
+                        .$lengowCronJob['messages'].'</span></a></td>';
                 } else {
                     $out.= '<td></td>';
                 }
-                $scheduled_at = !is_null($lengow_cron_job['scheduled_at'])
-                    ? Mage::getModel('core/date')->date('Y-m-d H:i:s', strtotime($lengow_cron_job['scheduled_at']))
+                $scheduledAt = !is_null($lengowCronJob['scheduled_at'])
+                    ? Mage::getModel('core/date')->date('Y-m-d H:i:s', strtotime($lengowCronJob['scheduled_at']))
                     : '';
-                $out.= '<td>'.$scheduled_at.'</td>';
-                $executed_at = !is_null($lengow_cron_job['executed_at'])
-                    ? Mage::getModel('core/date')->date('Y-m-d H:i:s', strtotime($lengow_cron_job['executed_at']))
+                $out.= '<td>'.$scheduledAt.'</td>';
+                $executedAt = !is_null($lengowCronJob['executed_at'])
+                    ? Mage::getModel('core/date')->date('Y-m-d H:i:s', strtotime($lengowCronJob['executed_at']))
                     : '';
-                $out.= '<td>'.$executed_at.'</td>';
-                $finished_at = !is_null($lengow_cron_job['finished_at'])
-                    ? Mage::getModel('core/date')->date('Y-m-d H:i:s', strtotime($lengow_cron_job['finished_at']))
+                $out.= '<td>'.$executedAt.'</td>';
+                $finishedAt = !is_null($lengowCronJob['finished_at'])
+                    ? Mage::getModel('core/date')->date('Y-m-d H:i:s', strtotime($lengowCronJob['finished_at']))
                     : '';
-                $out.= '<td>'.$finished_at.'</td>';
+                $out.= '<td>'.$finishedAt.'</td>';
                 $out.= '</tr>';
             }
         }

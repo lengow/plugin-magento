@@ -30,12 +30,12 @@ class Lengow_Connector_Block_Adminhtml_Product_Grid extends Mage_Adminhtml_Block
     protected function _getStore()
     {
 
-        $store_id = (int)$this->getRequest()->getParam('store', 0);
-        // set default store if store_id is global
-        if ($store_id == 0) {
-            $store_id = Mage::app()->getWebsite(true)->getDefaultGroup()->getDefaultStoreId();
+        $storeId = (int)$this->getRequest()->getParam('store', 0);
+        // set default store if storeId is global
+        if ($storeId == 0) {
+            $storeId = Mage::app()->getWebsite(true)->getDefaultGroup()->getDefaultStoreId();
         }
-        return Mage::app()->getStore($store_id);
+        return Mage::app()->getStore($storeId);
     }
 
     /**

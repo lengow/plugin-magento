@@ -310,9 +310,8 @@ class Lengow_Connector_Model_Export extends Varien_Object
         $this->_config['limit'] = isset($params['limit']) ? (int)$params['limit'] : '';
         $this->_config['product_ids'] = isset($params['product_ids']) ? $params['product_ids'] : '';
         $this->_config['directory_path'] = Mage::getBaseDir('media').DS.'lengow'.DS.$this->_store->getCode().DS;
-        $this->setOriginalCurrency(isset($params['currency'])
-            ? $params['currency']
-            : Mage::app()->getStore($storeId)->getCurrentCurrencyCode()
+        $this->setOriginalCurrency(
+            isset($params['currency']) ? $params['currency'] : Mage::app()->getStore($storeId)->getCurrentCurrencyCode()
         );
     }
 

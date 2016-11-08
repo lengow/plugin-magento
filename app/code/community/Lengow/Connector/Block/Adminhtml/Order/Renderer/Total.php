@@ -22,10 +22,10 @@ class Lengow_Connector_Block_Adminhtml_Order_Renderer_Total
     {
         $value =  $row->getData($this->getColumn()->getIndex());
         if (!is_null($row->getData('currency')) && $value != '') {
-            $currency_symbol = Mage::app()->getLocale()->currency($row->getData('currency'))->getSymbol();
+            $currencySymbol = Mage::app()->getLocale()->currency($row->getData('currency'))->getSymbol();
         } else {
-            $currency_symbol = '';
+            $currencySymbol = '';
         }
-        return $value.' '.$currency_symbol;
+        return $value.' '.$currencySymbol;
     }
 }

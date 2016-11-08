@@ -326,7 +326,8 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
             ),
             'Order Process State'
         )
-        ->addColumn('order_date',
+        ->addColumn(
+            'order_date',
             Varien_Db_Ddl_Table::TYPE_TIMESTAMP,
             null,
             array(

@@ -20,12 +20,12 @@ class Lengow_Connector_Block_Adminhtml_Order_Renderer_Country
      */
     public function render(Varien_Object $row)
     {
-        $iso_code = $row->getData($this->getColumn()->getIndex());
-        if (!is_null($iso_code) && strlen($iso_code) === 2) {
-            $filename = $this->getSkinUrl('lengow/images/flag').DS.strtoupper($iso_code).'.png';
-            $country_name = Mage::getModel('directory/country')->loadByCode($iso_code)->getName();
+        $isoCode = $row->getData($this->getColumn()->getIndex());
+        if (!is_null($isoCode) && strlen($isoCode) === 2) {
+            $filename = $this->getSkinUrl('lengow/images/flag').DS.strtoupper($isoCode).'.png';
+            $countryName = Mage::getModel('directory/country')->loadByCode($isoCode)->getName();
             return '<a class="lengow_tooltip" href="#"><img src="'.$filename.'" />
-                <span class="lengow_order_country">'.$country_name.'</span></a>';
+                <span class="lengow_order_country">'.$countryName.'</span></a>';
         }
     }
 }

@@ -13,7 +13,7 @@ class Lengow_Connector_Helper_Security extends Mage_Core_Helper_Abstract
     /**
      * Lengow IP.
      */
-    public static $IPS_LENGOW = array(
+    public static $ipsLengow = array(
         '127.0.0.1',
         '46.19.183.204',
         '46.19.183.218',
@@ -59,10 +59,10 @@ class Lengow_Connector_Helper_Security extends Mage_Core_Helper_Abstract
         $ips = Mage::helper('lengow_connector/config')->get('authorized_ip');
         $ips = trim(str_replace(array("\r\n", ',', '-', '|', ' '), ';', $ips), ';');
         $ips = explode(';', $ips);
-        $authorized_ips = array_merge($ips, self::$IPS_LENGOW);
-        $authorized_ips[] = $_SERVER['SERVER_ADDR'];
-        $hostname_ip = Mage::helper('core/http')->getRemoteAddr();
-        if (in_array($hostname_ip, $authorized_ips)) {
+        $authorizedIps = array_merge($ips, self::$ipsLengow);
+        $authorizedIps[] = $_SERVER['SERVER_ADDR'];
+        $hostnameIp = Mage::helper('core/http')->getRemoteAddr();
+        if (in_array($hostnameIp, $authorizedIps)) {
             return true;
         }
         return false;

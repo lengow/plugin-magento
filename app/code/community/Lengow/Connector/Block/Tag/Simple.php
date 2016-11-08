@@ -17,14 +17,14 @@ class Lengow_Connector_Block_Tag_Simple extends Mage_Core_Block_Template
     {
         parent::_prepareLayout();
         if (Mage::app()->getRequest()->getActionName() == 'success') {
-            $order_id = Mage::getSingleton('checkout/session')->getLastOrderId();
-            $order = Mage::getModel('sales/order')->load($order_id);
+            $orderId = Mage::getSingleton('checkout/session')->getLastOrderId();
+            $order = Mage::getModel('sales/order')->load($orderId);
             $this->setData(
                 'account_id',
                 Mage::helper('lengow_connector/config')->get('account_id', Mage::app()->getStore())
             );
             $cart = Mage::getModel('lengow/tracker')->getIdsProducts($order);
-            $this->setData('order_ref', $order_id);
+            $this->setData('order_ref', $orderId);
             $this->setData('amount', $order->getGrandTotal());
             $this->setData('currency', $order->getOrderCurrencyCode());
             $this->setData('payment_method', $order->getPayment()->getMethodInstance()->getCode());

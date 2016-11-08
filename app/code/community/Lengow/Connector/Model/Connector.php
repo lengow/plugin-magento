@@ -76,7 +76,7 @@ class Lengow_Connector_Model_Connector
     /**
      * @var array lengow url for curl timeout
      */
-    protected $lengow_urls = array (
+    protected $_lengowUrls = array (
         '/v3.0/orders'          => 15,
         '/v3.0/orders/actions/' => 15,
         '/v3.0/marketplaces'    => 10,
@@ -303,8 +303,8 @@ class Lengow_Connector_Model_Connector
         // Options
         $opts = self::$CURL_OPTS;
         // get special timeout for specific Lengow API
-        if (array_key_exists($url, $this->lengow_urls)) {
-            $opts[CURLOPT_TIMEOUT] = $this->lengow_urls[$url];
+        if (array_key_exists($url, $this->_lengowUrls)) {
+            $opts[CURLOPT_TIMEOUT] = $this->_lengowUrls[$url];
         }
         // get url for a specific environment
         $url = self::LENGOW_API_URL.$url;

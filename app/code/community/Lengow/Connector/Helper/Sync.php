@@ -13,7 +13,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
     /**
      * Get Statistic with all store every 5 hours
      */
-    protected $_cache_time = 18000;
+    protected $_cacheTime = 18000;
 
     /**
      * Get Sync Data (Inscription / Update)
@@ -58,30 +58,30 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
     public function sync($params)
     {
         $config = Mage::helper('lengow_connector/config');
-        foreach ($params as $shop_token => $values) {
-            if ($store = $config->getStoreByToken($shop_token)) {
-                $list_key = array(
+        foreach ($params as $shopToken => $values) {
+            if ($store = $config->getStoreByToken($shopToken)) {
+                $listKey = array(
                     'account_id'   => false,
                     'access_token' => false,
                     'secret_token' => false
                 );
                 foreach ($values as $key => $value) {
-                    if (!in_array($key, array_keys($list_key))) {
+                    if (!in_array($key, array_keys($listKey))) {
                         continue;
                     }
                     if (strlen($value) > 0) {
-                        $list_key[$key] = true;
+                        $listKey[$key] = true;
                         $config->set($key, $value, $store->getId(), false);
                     }
                 }
-                $find_false_value = false;
-                foreach ($list_key as $key => $value) {
+                $findFalseValue = false;
+                foreach ($listKey as $key => $value) {
                     if (!$value) {
-                        $find_false_value = true;
+                        $findFalseValue = true;
                         break;
                     }
                 }
-                if (!$find_false_value) {
+                if (!$findFalseValue) {
                     $config->set('store_enable', true, $store->getId(), false);
                 } else {
                     $config->set('store_enable', false, $store->getId(), false);
@@ -95,14 +95,14 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
     /**
      * Check if store is follow by Lengow
      *
-     * @param $store_id
+     * @param $storeId
      *
      * @return boolean
      */
-    public function checkSyncStore($store_id)
+    public function checkSyncStore($storeId)
     {
-        return Mage::helper('lengow_connector/config')->get('store_enable', $store_id)
-            && Mage::getModel('lengow/connector')->getConnectorByStore($store_id);
+        return Mage::helper('lengow_connector/config')->get('store_enable', $storeId)
+            && Mage::getModel('lengow/connector')->getConnectorByStore($storeId);
     }
 
     /**
@@ -117,8 +117,8 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
             foreach ($website->getGroups() as $group) {
                 $stores = $group->getStores();
                 foreach ($stores as $store) {
-                    $account_id = $config->get('account_id', $store->getId());
-                    if (strlen($account_id) > 0) {
+                    $accountId = $config->get('account_id', $store->getId());
+                    if (strlen($accountId) > 0) {
                         return false;
                     }
                 }
@@ -141,8 +141,8 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
             return false;
         }
         if (!$force) {
-            $updated_at = $config->get('last_option_cms_update');
-            if (!is_null($updated_at) && (time() - strtotime($updated_at)) < $this->_cache_time) {
+            $updatedAt = $config->get('last_option_cms_update');
+            if (!is_null($updatedAt) && (time() - strtotime($updatedAt)) < $this->_cacheTime) {
                 return false;
             }
         }
@@ -164,8 +164,8 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
     {
         $config = Mage::helper('lengow_connector/config');
         if (!$force) {
-            $updated_at = $config->get('last_status_update');
-            if (!is_null($updated_at) && (time() - strtotime($updated_at)) < $this->_cache_time) {
+            $updatedAt = $config->get('last_status_update');
+            if (!is_null($updatedAt) && (time() - strtotime($updatedAt)) < $this->_cacheTime) {
                 return json_decode($config->get('account_status'), true);
             }
         }
@@ -200,8 +200,8 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
     {
         $config = Mage::helper('lengow_connector/config');
         if (!$force) {
-            $updated_at = $config->get('last_statistic_update');
-            if (!is_null($updated_at) && (time() - strtotime($updated_at)) < $this->_cache_time) {
+            $updatedAt = $config->get('last_statistic_update');
+            if (!is_null($updatedAt) && (time() - strtotime($updatedAt)) < $this->_cacheTime) {
                 return json_decode($config->get('order_statistic'), true);
             }
         }
@@ -210,13 +210,13 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
         $return['nb_order'] = 0;
         $return['currency'] = '';
         // get stats by store
-        $store_collection = Mage::getResourceModel('core/store_collection')->addFieldToFilter('is_active', 1);
+        $storeCollection = Mage::getResourceModel('core/store_collection')->addFieldToFilter('is_active', 1);
         $i = 0;
-        $all_currencies = array();
-        $account_ids = array();
-        foreach ($store_collection as $store) {
-            $account_id = $config->get('account_id', $store->getId());
-            if (is_null($account_id) || in_array($account_id, $account_ids) || empty($account_id)) {
+        $allCurrencies = array();
+        $accountIds = array();
+        foreach ($storeCollection as $store) {
+            $accountId = $config->get('account_id', $store->getId());
+            if (is_null($accountId) || in_array($accountId, $accountIds) || empty($accountId)) {
                 continue;
             }
             $connector = Mage::getModel('lengow/connector');
@@ -236,19 +236,19 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
                 $return['nb_order'] += $stats->transactions;
                 $return['currency'] = $result->currency->iso_a3;
             }
-            $account_ids[] = $account_id;
+            $accountIds[] = $accountId;
             $i++;
             // Get store currencies
-            $store_currencies = Mage::app()->getStore($store->getId())->getAvailableCurrencyCodes();
-            if (is_array($store_currencies)) {
-                foreach ($store_currencies as $currency) {
-                    if (!in_array($currency, $all_currencies)) {
-                        $all_currencies[] = $currency;
+            $storeCurrencies = Mage::app()->getStore($store->getId())->getAvailableCurrencyCodes();
+            if (is_array($storeCurrencies)) {
+                foreach ($storeCurrencies as $currency) {
+                    if (!in_array($currency, $allCurrencies)) {
+                        $allCurrencies[] = $currency;
                     }
                 }
             }
         }
-        if ($return['currency'] && in_array($return['currency'], $all_currencies)) {
+        if ($return['currency'] && in_array($return['currency'], $allCurrencies)) {
             $return['total_order'] = Mage::app()->getLocale()
                 ->currency($return['currency'])
                 ->toCurrency($return['total_order']);
