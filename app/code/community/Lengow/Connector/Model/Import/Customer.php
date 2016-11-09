@@ -140,37 +140,37 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
             $address->setIsDefaultShipping(true);
         }
         Mage::helper('core')->copyFieldset('lengow_convert_address', 'to_'.$type.'_address', $data, $address);
-        $address1 = $data['first_line'];
-        $address2 = $data['second_line'];
-        // Fix address 1
-        if (empty($address1) && !empty($address2)) {
-            $address1 = $address2;
-            $address2 = null;
+        $firstLine = $data['first_line'];
+        $secondLine = $data['second_line'];
+        // Fix first line address
+        if (empty($firstLine) && !empty($secondLine)) {
+            $firstLine = $secondLine;
+            $secondLine = null;
         }
-        // Fix address 2
-        if (!empty($address2)) {
-            $address1 = $address1."\n".$address2;
+        // Fix second line address
+        if (!empty($secondLine)) {
+            $firstLine = $firstLine."\n".$secondLine;
         }
-        $address3 = $data['complement'];
-        if (!empty($address3)) {
-            $address1 = $address1."\n".$address3;
+        $thirdLine = $data['complement'];
+        if (!empty($thirdLine)) {
+            $firstLine = $firstLine."\n".$thirdLine;
         }
         // adding relay to address
         if (isset($data['tracking_relay'])) {
-            $address1 .= ' - Relay : '.$data['tracking_relay'];
+            $firstLine .= ' - Relay : '.$data['tracking_relay'];
         }
-        $address->setStreet($address1);
-        $tel1 = $data['phone_office'];
-        $tel2 = $data['phone_mobile'];
-        $tel1 = empty($tel1) ? $tel2 : $tel1;
-        if (!empty($tel1)) {
-            $this->setTelephone($tel1);
+        $address->setStreet($firstLine);
+        $phoneOffice = $data['phone_office'];
+        $phoneMobile = $data['phone_mobile'];
+        $phoneOffice = empty($phoneOffice) ? $phoneMobile : $phoneOffice;
+        if (!empty($phoneOffice)) {
+            $this->setTelephone($phoneOffice);
         }
-        if (!empty($tel1)) {
-            $address->setFax($tel1);
+        if (!empty($phoneOffice)) {
+            $address->setFax($phoneOffice);
         } else {
-            if (!empty($tel2)) {
-                $address->setFax($tel2);
+            if (!empty($phoneMobile)) {
+                $address->setFax($phoneMobile);
             }
         }
         $codeRegion = substr(str_pad($address->getPostcode(), 5, '0', STR_PAD_LEFT), 0, 2);

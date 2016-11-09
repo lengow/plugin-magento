@@ -163,8 +163,8 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
             ->addFieldToFilter('state', self::STATE_NEW)
             ->addFieldToSelect('action_type');
         if (count($results) > 0) {
-            $last_action = $results->getLastItem()->getData();
-            return (string)$last_action['action_type'];
+            $lastAction = $results->getLastItem()->getData();
+            return (string)$lastAction['action_type'];
         }
         return false;
     }

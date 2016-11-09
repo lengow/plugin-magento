@@ -288,8 +288,8 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
                     $fileCounter++;
                     $filePath = Mage::getBaseDir().$data[0];
                     if (file_exists($filePath)) {
-                        $fileMd5 = md5_file($filePath);
-                        if ($fileMd5 !== $data[1]) {
+                        $fileMd = md5_file($filePath);
+                        if ($fileMd !== $data[1]) {
                             $fileErrors[] = array(
                                 'title' => $filePath,
                                 'state' => false

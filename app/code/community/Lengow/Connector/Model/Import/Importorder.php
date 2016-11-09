@@ -873,8 +873,8 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
     protected function _addQuantityBack($quote)
     {
         $lengowProducts = $quote->getLengowProducts();
-        foreach ($lengowProducts as $product_id => $product) {
-            Mage::getModel('cataloginventory/stock')->backItemQty($product_id, $product['quantity']);
+        foreach ($lengowProducts as $productId => $product) {
+            Mage::getModel('cataloginventory/stock')->backItemQty($productId, $product['quantity']);
         }
         return $this;
     }
