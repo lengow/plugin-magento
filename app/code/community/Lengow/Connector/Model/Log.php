@@ -11,11 +11,11 @@
 class Lengow_Connector_Model_Log extends Mage_Core_Model_Abstract
 {
     /**
-     * @var array $_field_list field list for the table lengow_order_line
+     * @var array $_fieldList field list for the table lengow_order_line
      * required => Required fields when creating registration
      * update   => Fields allowed when updating registration
      */
-    protected $_field_list = array(
+    protected $_fieldList = array(
         'message' => array('required' => true, 'updated' => false)
     );
 
@@ -37,7 +37,7 @@ class Lengow_Connector_Model_Log extends Mage_Core_Model_Abstract
      */
     public function createLog($params = array())
     {
-        foreach ($this->_field_list as $key => $value) {
+        foreach ($this->_fieldList as $key => $value) {
             if (!array_key_exists($key, $params) && $value['required']) {
                 return false;
             }

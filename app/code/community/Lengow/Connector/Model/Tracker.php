@@ -20,9 +20,9 @@ class Lengow_Connector_Model_Tracker extends Varien_Object
     public function getIdsProducts($quote)
     {
         if ($quote instanceof Mage_Sales_Model_Order || $quote instanceof Mage_Sales_Model_Quote) {
-            $quote_items = $quote->getAllVisibleItems();
-            $products_cart = array();
-            foreach ($quote_items as $item) {
+            $quoteItems = $quote->getAllVisibleItems();
+            $productsCart = array();
+            foreach ($quoteItems as $item) {
                 if ($item->hasProduct()) {
                     $product = $item->getProduct();
                 } else {
@@ -31,14 +31,14 @@ class Lengow_Connector_Model_Tracker extends Varien_Object
                 $quantity = (int) $item->getQtyOrdered();
                 $price = round((float)$item->getRowTotalInclTax() / $quantity, 2);
                 $identifier =  Mage::helper('lengow_connector/config')->get('tracking_id');
-                $product_datas = array(
+                $productDatas = array(
                     'product_id' => $product->getData($identifier),
                     'price'      => $price,
                     'quantity'   => $quantity
                 );
-                $products_cart[] = $product_datas;
+                $productsCart[] = $productDatas;
             }
-            return json_encode($products_cart);
+            return json_encode($productsCart);
         }
         return false;
     }

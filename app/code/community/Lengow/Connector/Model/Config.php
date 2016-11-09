@@ -13,7 +13,7 @@ class Lengow_Connector_Model_Config extends Mage_Core_Model_Config
     /**
      * Path for Lengow options
      */
-    private $_lengow_option = array(
+    protected $_lengowOptions = array(
         'lengow_global_options',
         'lengow_export_options',
         'lengow_import_options'
@@ -22,7 +22,7 @@ class Lengow_Connector_Model_Config extends Mage_Core_Model_Config
     /**
      * Excludes attributes for export
      */
-    protected $_exclude_options = array(
+    protected $_excludeOptions = array(
         'import_in_progress',
         'last_import_manual',
         'last_import_cron',
@@ -41,31 +41,31 @@ class Lengow_Connector_Model_Config extends Mage_Core_Model_Config
      * @param string  $path
      * @param string  $value
      * @param string  $scope
-     * @param integer $scope_id
+     * @param integer $scopeId
      *
      * @return Mage_Core_Store_Config
      */
-    public function saveConfig($path, $value, $scope = 'default', $scope_id = 0)
+    public function saveConfig($path, $value, $scope = 'default', $scopeId = 0)
     {
-        $path_explode = explode("/", $path);
-        if (isset($path_explode[0]) && in_array($path_explode[0], $this->_lengow_option)) {
+        $pathExplode = explode("/", $path);
+        if (isset($pathExplode[0]) && in_array($pathExplode[0], $this->_lengowOptions)) {
             if ($scope == 'default' || $scope == 'stores') {
-                $old_value = Mage::getStoreConfig($path, $scope_id);
-                if ($old_value!= $value && !in_array($path_explode[2], $this->_exclude_options)) {
-                    if ($path_explode[2] == 'global_access_token' || $path_explode[2] == 'global_secret_token') {
-                        $new_value = preg_replace("/[a-zA-Z0-9]/", '*', $value);
-                        $old_value = preg_replace("/[a-zA-Z0-9]/", '*', $old_value);
+                $oldValue = Mage::getStoreConfig($path, $scopeId);
+                if ($oldValue!= $value && !in_array($pathExplode[2], $this->_excludeOptions)) {
+                    if ($pathExplode[2] == 'global_access_token' || $pathExplode[2] == 'global_secret_token') {
+                        $newValue = preg_replace("/[a-zA-Z0-9]/", '*', $value);
+                        $oldValue = preg_replace("/[a-zA-Z0-9]/", '*', $oldValue);
                     } else {
-                        $new_value = $value;
+                        $newValue = $value;
                     }
                     if ($scope == 'stores') {
                         $message = Mage::helper('lengow_connector/translation')->t(
                             'log.setting.setting_change_for_store',
                             array(
                                 'key'       => $path,
-                                'old_value' => $old_value,
-                                'value'     => $new_value,
-                                'store_id'  => $scope_id
+                                'old_value' => $oldValue,
+                                'value'     => $newValue,
+                                'store_id'  => $scopeId
                             )
                         );
                     } else {
@@ -73,8 +73,8 @@ class Lengow_Connector_Model_Config extends Mage_Core_Model_Config
                             'log.setting.setting_change',
                             array(
                                 'key'       => $path,
-                                'old_value' => $old_value,
-                                'value'     => $new_value,
+                                'old_value' => $oldValue,
+                                'value'     => $newValue,
                             )
                         );
                     }
@@ -82,7 +82,7 @@ class Lengow_Connector_Model_Config extends Mage_Core_Model_Config
                 }
             }
         }
-        parent::saveConfig($path, $value, $scope, $scope_id);
+        parent::saveConfig($path, $value, $scope, $scopeId);
         return $this;
     }
 }

@@ -16,41 +16,6 @@ class Lengow_Connector_Model_Connector
     const VERSION = '1.0';
 
     /**
-     * @var mixed error returned by the API
-     */
-    public $error;
-
-    /**
-     * @var string the access token to connect
-     */
-    protected $_access_token;
-
-    /**
-     * @var string the secret to connect
-     */
-    protected $_secret;
-
-    /**
-     * @var string temporary token for the authorization
-     */
-    protected $_token;
-
-    /**
-     * @var integer ID account
-     */
-    protected $_account_id;
-
-    /**
-     * @var integer the user Id
-     */
-    protected $_user_id;
-
-    /**
-     * @var string
-     */
-    protected $_request;
-
-    /**
      * @var string URL of the API Lengow
      */
     // const LENGOW_API_URL = 'http://api.lengow.io:80';
@@ -66,12 +31,47 @@ class Lengow_Connector_Model_Connector
     /**
      * Default options for curl.
      */
-    public static $CURL_OPTS = array(
+    public static $curlOpts = array(
         CURLOPT_CONNECTTIMEOUT => 10,
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_TIMEOUT        => 300,
         CURLOPT_USERAGENT      => 'lengow-php-sdk',
     );
+
+    /**
+     * @var mixed error returned by the API
+     */
+    public $error;
+
+    /**
+     * @var string the access token to connect
+     */
+    protected $_accessToken;
+
+    /**
+     * @var string the secret to connect
+     */
+    protected $_secret;
+
+    /**
+     * @var string temporary token for the authorization
+     */
+    protected $_token;
+
+    /**
+     * @var integer ID account
+     */
+    protected $_accountId;
+
+    /**
+     * @var integer the user Id
+     */
+    protected $_userId;
+
+    /**
+     * @var string
+     */
+    protected $_request;
 
     /**
      * @var array lengow url for curl timeout
@@ -93,7 +93,7 @@ class Lengow_Connector_Model_Connector
      */
     public function init($access_token, $secret)
     {
-        $this->_access_token = $access_token;
+        $this->_accessToken = $access_token;
         $this->_secret = $secret;
     }
 
@@ -114,7 +114,7 @@ class Lengow_Connector_Model_Connector
         $data = $this->_callAction(
             '/access/get_token',
             array(
-                'access_token' => $this->_access_token,
+                'access_token' => $this->_accessToken,
                 'secret'       => $this->_secret,
                 'user_token'   => $user_token
             ),
@@ -122,8 +122,8 @@ class Lengow_Connector_Model_Connector
         );
         if (isset($data['token'])) {
             $this->_token = $data['token'];
-            $this->_account_id = $data['account_id'];
-            $this->_user_id = $data['user_id'];
+            $this->_accountId = $data['account_id'];
+            $this->_userId = $data['user_id'];
             return $data;
         } else {
             return false;
@@ -145,7 +145,7 @@ class Lengow_Connector_Model_Connector
         try {
             $this->connect();
             if (!array_key_exists('account_id', $array)) {
-                $array['account_id'] = $this->_account_id;
+                $array['account_id'] = $this->_accountId;
             }
             $data = $this->_callAction($method, $array, $type, $format, $body);
         } catch (Lengow_Connector_Model_Exception $e) {
@@ -301,7 +301,7 @@ class Lengow_Connector_Model_Connector
         $helper = Mage::helper('lengow_connector/data');
         $ch = curl_init();
         // Options
-        $opts = self::$CURL_OPTS;
+        $opts = self::$curlOpts;
         // get special timeout for specific Lengow API
         if (array_key_exists($url, $this->_lengowUrls)) {
             $opts[CURLOPT_TIMEOUT] = $this->_lengowUrls[$url];
@@ -348,32 +348,32 @@ class Lengow_Connector_Model_Connector
         // Exectute url request
         curl_setopt_array($ch, $opts);
         $result = curl_exec($ch);
-        $error_number = curl_errno($ch);
-        $error_text = curl_error($ch);
-        if (in_array($error_number, array(CURLE_OPERATION_TIMEDOUT, CURLE_OPERATION_TIMEOUTED))) {
+        $errorNumber = curl_errno($ch);
+        $errorText = curl_error($ch);
+        if (in_array($errorNumber, array(CURLE_OPERATION_TIMEDOUT, CURLE_OPERATION_TIMEOUTED))) {
             $timeout = $helper->setLogMessage('lengow_log.exception.timeout_api');
-            $error_message = $helper->setLogMessage(
+            $errorMessage = $helper->setLogMessage(
                 'log.connector.error_api',
                 array('error_code' => $helper->decodeLogMessage($timeout, 'en_GB'))
             );
-            $helper->log('Connector', $error_message);
+            $helper->log('Connector', $errorMessage);
             throw new Lengow_Connector_Model_Exception($timeout);
         }
         curl_close($ch);
         if ($result === false) {
-            $error_curl = $helper->setLogMessage(
+            $errorCurl = $helper->setLogMessage(
                 'lengow_log.exception.error_curl',
                 array(
-                    'error_code'    => $error_number,
-                    'error_message' => $error_text
+                    'error_code'    => $errorNumber,
+                    'error_message' => $errorText
                 )
             );
-            $error_message = $helper->setLogMessage(
+            $errorMessage = $helper->setLogMessage(
                 'log.connector.error_api',
-                array('error_code' => $helper->decodeLogMessage($error_curl, 'en_GB'))
+                array('error_code' => $helper->decodeLogMessage($errorCurl, 'en_GB'))
             );
-            $helper->log('Connector', $error_message);
-            throw new Lengow_Connector_Model_Exception($error_curl);
+            $helper->log('Connector', $errorMessage);
+            throw new Lengow_Connector_Model_Exception($errorCurl);
         }
         return $result;
     }
@@ -381,13 +381,13 @@ class Lengow_Connector_Model_Connector
     /**
      * Check API Authentification
      *
-     * @param integer $account_id Account id
+     * @param integer $accountId Account id
      *
      * @return boolean
      */
-    public function isValidAuth($account_id)
+    public function isValidAuth($accountId)
     {
-        if (is_null($account_id) || $account_id == 0 || !is_integer($account_id)) {
+        if (is_null($accountId) || $accountId == 0 || !is_integer($accountId)) {
             return false;
         }
         try {
@@ -405,30 +405,30 @@ class Lengow_Connector_Model_Connector
     /**
      * Get Valid Account / Access / Secret
      *
-     * @param integer $store_id Store Id
+     * @param integer $storeId Store Id
      *
      * @return array
      */
-    public function getAccessId($store_id = null)
+    public function getAccessId($storeId = null)
     {
         $config = Mage::helper('lengow_connector/config');
-        if ($store_id) {
-            $account_id = (int)$config->get('account_id', $store_id);
-            $access_token = $config->get('access_token', $store_id);
-            $secret_token = $config->get('secret_token', $store_id);
+        if ($storeId) {
+            $accountId = (int)$config->get('account_id', $storeId);
+            $accessToken = $config->get('access_token', $storeId);
+            $secretToken = $config->get('secret_token', $storeId);
         } else {
-            $store_collection = Mage::getResourceModel('core/store_collection')->addFieldToFilter('is_active', 1);
-            foreach ($store_collection as $store) {
-                $account_id = $config->get('account_id', $store->getId());
-                $access_token = $config->get('access_token', $store->getId());
-                $secret_token = $config->get('secret_token', $store->getId());
-                if (strlen($account_id) > 0 && strlen($access_token) > 0 && strlen($secret_token) > 0) {
+            $storeCollection = Mage::getResourceModel('core/store_collection')->addFieldToFilter('is_active', 1);
+            foreach ($storeCollection as $store) {
+                $accountId = $config->get('account_id', $store->getId());
+                $accessToken = $config->get('access_token', $store->getId());
+                $secretToken = $config->get('secret_token', $store->getId());
+                if (strlen($accountId) > 0 && strlen($accessToken) > 0 && strlen($secretToken) > 0) {
                     break;
                 }
             }
         }
-        if (strlen($account_id) > 0 && strlen($access_token) > 0 && strlen($secret_token) > 0) {
-            return array($account_id, $access_token, $secret_token);
+        if (strlen($accountId) > 0 && strlen($accessToken) > 0 && strlen($secretToken) > 0) {
+            return array($accountId, $accessToken, $secretToken);
         } else {
             return array(null, null, null);
         }
@@ -437,15 +437,15 @@ class Lengow_Connector_Model_Connector
     /**
      * Get Connector by store
      *
-     * @param integer $store_id Store Id
+     * @param integer $storeId Store Id
      *
      * @return boolean
      */
-    public function getConnectorByStore($store_id = null)
+    public function getConnectorByStore($storeId = null)
     {
-        list($account_id, $access_token, $secret_token) = $this->getAccessId($store_id);
-        $this->init($access_token, $secret_token);
-        if (!$this->isValidAuth($account_id)) {
+        list($accountId, $accessToken, $secretToken) = $this->getAccessId($storeId);
+        $this->init($accessToken, $secretToken);
+        if (!$this->isValidAuth($accountId)) {
             return false;
         }
         return true;
@@ -454,28 +454,28 @@ class Lengow_Connector_Model_Connector
     /**
      * Get result for a query Api
      *
-     * @param string  $type     (GET / POST / PUT / PATCH)
+     * @param string  $type    (GET / POST / PUT / PATCH)
      * @param string  $url
-     * @param integer $store_id
+     * @param integer $storeId
      * @param array   $params
      * @param string  $body
      *
      * @return api result as array
      */
-    public function queryApi($type, $url, $store_id = null, $params = array(), $body = '')
+    public function queryApi($type, $url, $storeId = null, $params = array(), $body = '')
     {
         if (!in_array($type, array('get', 'post', 'put', 'patch'))) {
             return false;
         }
         try {
-            list($account_id, $access_token, $secret_token) = $this->getAccessId($store_id);
-            $this->init($access_token, $secret_token);
-            if (!$this->isValidAuth($account_id)) {
+            list($accountId, $accessToken, $secretToken) = $this->getAccessId($storeId);
+            $this->init($accessToken, $secretToken);
+            if (!$this->isValidAuth($accountId)) {
                 return false;
             }
             $results = $this->$type(
                 $url,
-                array_merge(array('account_id' => $account_id), $params),
+                array_merge(array('account_id' => $accountId), $params),
                 'stream',
                 $body
             );
