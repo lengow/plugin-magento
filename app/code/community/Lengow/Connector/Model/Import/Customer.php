@@ -13,7 +13,7 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
     /**
      * @var array API fields for an address
      */
-    protected $_address_api_nodes = array(
+    protected $_addressApiNodes = array(
         'company',
         'civility',
         'email',
@@ -34,73 +34,73 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
     /**
      * Convert array to customer model
      *
-     * @param object  $order_data
-     * @param array   $shipping_address
-     * @param integer $store_id
-     * @param string  $marketplace_sku
-     * @param boolean $log_output
+     * @param object  $orderData
+     * @param array   $shippingAddress
+     * @param integer $storeId
+     * @param string  $marketplaceSku
+     * @param boolean $logOutput
      */
-    public function createCustomer($order_data, $shipping_address, $store_id, $marketplace_sku, $log_output)
+    public function createCustomer($orderData, $shippingAddress, $storeId, $marketplaceSku, $logOutput)
     {
-        $id_website = Mage::getModel('core/store')->load($store_id)->getWebsiteId();
+        $idWebsite = Mage::getModel('core/store')->load($storeId)->getWebsiteId();
         $array = array(
-            'billing_address'  => $this->_extractAddressDataFromAPI($order_data->billing_address),
-            'delivery_address' => $this->_extractAddressDataFromAPI($shipping_address)
+            'billing_address'  => $this->_extractAddressDataFromAPI($orderData->billing_address),
+            'delivery_address' => $this->_extractAddressDataFromAPI($shippingAddress)
         );
         // generation of fictitious email
-        $domain = (!Mage::helper('lengow_connector/data')->getHost($store_id)
+        $domain = (!Mage::helper('lengow_connector/data')->getHost($storeId)
             ? 'magento.shop'
-            : Mage::helper('lengow_connector/data')->getHost($store_id)
+            : Mage::helper('lengow_connector/data')->getHost($storeId)
         );
-        $array['billing_address']['email'] = $marketplace_sku.'-'.$order_data->marketplace.'@'.$domain;
+        $array['billing_address']['email'] = $marketplaceSku.'-'.$orderData->marketplace.'@'.$domain;
         Mage::helper('lengow_connector/data')->log(
             'Import',
             Mage::helper('lengow_connector/data')->setLogMessage(
                 'log.import.generate_unique_email',
                 array('email' => $array['billing_address']['email'])
             ),
-            $log_output,
-            $marketplace_sku
+            $logOutput,
+            $marketplaceSku
         );
         // first get by email
-        $this->setWebsiteId($id_website)->loadByEmail($array['billing_address']['email']);
+        $this->setWebsiteId($idWebsite)->loadByEmail($array['billing_address']['email']);
         if (!$this->getId()) {
             $this->setImportMode(true);
-            $this->setWebsiteId($id_website);
+            $this->setWebsiteId($idWebsite);
             $this->setConfirmation(null);
             $this->setForceConfirmed(true);
             $this->setPasswordHash($this->hashPassword($this->generatePassword(8)));
             $this->setFromLengow(1);
         }
         // Billing address
-        $temp_billing_names = array(
+        $tempBillingNames = array(
             'firstname' => $array['billing_address']['first_name'],
             'lastname'  => $array['billing_address']['last_name'],
             'fullname'  => $array['billing_address']['full_name']
         );
-        $billing_names = $this->_getNames($temp_billing_names);
-        $array['billing_address']['first_name'] = $billing_names['firstname'];
-        $array['billing_address']['last_name'] = $billing_names['lastname'];
-        $billing_address = $this->_convertAddress($array['billing_address']);
-        $this->addAddress($billing_address);
+        $billingNames = $this->_getNames($tempBillingNames);
+        $array['billing_address']['first_name'] = $billingNames['firstname'];
+        $array['billing_address']['last_name'] = $billingNames['lastname'];
+        $billingAddress = $this->_convertAddress($array['billing_address']);
+        $this->addAddress($billingAddress);
         // Shipping address
-        $temp_shipping_names = array(
+        $tempShippingNames = array(
             'firstname' => $array['delivery_address']['first_name'],
             'lastname'  => $array['delivery_address']['last_name'],
             'fullname'  => $array['delivery_address']['full_name']
         );
-        $shipping_names = $this->_getNames($temp_shipping_names);
-        $array['delivery_address']['first_name'] = $shipping_names['firstname'];
-        $array['delivery_address']['last_name'] = $shipping_names['lastname'];
+        $shippingNames = $this->_getNames($tempShippingNames);
+        $array['delivery_address']['first_name'] = $shippingNames['firstname'];
+        $array['delivery_address']['last_name'] = $shippingNames['lastname'];
         // Get relay id if exist
-        if (count($shipping_address->trackings) > 0 && !is_null($shipping_address->trackings[0]->relay->id)) {
-            $array['delivery_address']['tracking_relay'] = $shipping_address->trackings[0]->relay->id;
+        if (count($shippingAddress->trackings) > 0 && !is_null($shippingAddress->trackings[0]->relay->id)) {
+            $array['delivery_address']['tracking_relay'] = $shippingAddress->trackings[0]->relay->id;
         }
-        $shipping_address = $this->_convertAddress($array['delivery_address'], 'shipping');
-        $this->addAddress($shipping_address);
+        $shippingAddress = $this->_convertAddress($array['delivery_address'], 'shipping');
+        $this->addAddress($shippingAddress);
         Mage::helper('core')->copyFieldset('lengow_convert_address', 'to_customer', $array['billing_address'], $this);
         // set group
-        $this->setGroupId(Mage::helper('lengow_connector/config')->get('customer_group', $store_id));
+        $this->setGroupId(Mage::helper('lengow_connector/config')->get('customer_group', $storeId));
         $this->save();
         return $this;
     }
@@ -115,7 +115,7 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
     protected function _extractAddressDataFromAPI($api)
     {
         $temp = array();
-        foreach ($this->_address_api_nodes as $node) {
+        foreach ($this->_addressApiNodes as $node) {
             $temp[$node] = (string)$api->{$node};
         }
         return $temp;
@@ -140,46 +140,46 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
             $address->setIsDefaultShipping(true);
         }
         Mage::helper('core')->copyFieldset('lengow_convert_address', 'to_'.$type.'_address', $data, $address);
-        $address_1 = $data['first_line'];
-        $address_2 = $data['second_line'];
+        $address1 = $data['first_line'];
+        $address2 = $data['second_line'];
         // Fix address 1
-        if (empty($address_1) && !empty($address_2)) {
-            $address_1 = $address_2;
-            $address_2 = null;
+        if (empty($address1) && !empty($address2)) {
+            $address1 = $address2;
+            $address2 = null;
         }
         // Fix address 2
-        if (!empty($address_2)) {
-            $address_1 = $address_1."\n".$address_2;
+        if (!empty($address2)) {
+            $address1 = $address1."\n".$address2;
         }
-        $address_3 = $data['complement'];
-        if (!empty($address_3)) {
-            $address_1 = $address_1."\n".$address_3;
+        $address3 = $data['complement'];
+        if (!empty($address3)) {
+            $address1 = $address1."\n".$address3;
         }
         // adding relay to address
         if (isset($data['tracking_relay'])) {
-            $address_1 .= ' - Relay : '.$data['tracking_relay'];
+            $address1 .= ' - Relay : '.$data['tracking_relay'];
         }
-        $address->setStreet($address_1);
-        $tel_1 = $data['phone_office'];
-        $tel_2 = $data['phone_mobile'];
-        $tel_1 = empty($tel_1) ? $tel_2 : $tel_1;
-        if (!empty($tel_1)) {
-            $this->setTelephone($tel_1);
+        $address->setStreet($address1);
+        $tel1 = $data['phone_office'];
+        $tel2 = $data['phone_mobile'];
+        $tel1 = empty($tel1) ? $tel2 : $tel1;
+        if (!empty($tel1)) {
+            $this->setTelephone($tel1);
         }
-        if (!empty($tel_1)) {
-            $address->setFax($tel_1);
+        if (!empty($tel1)) {
+            $address->setFax($tel1);
         } else {
-            if (!empty($tel_2)) {
-                $address->setFax($tel_2);
+            if (!empty($tel2)) {
+                $address->setFax($tel2);
             }
         }
         $codeRegion = substr(str_pad($address->getPostcode(), 5, '0', STR_PAD_LEFT), 0, 2);
-        $id_region = Mage::getModel('directory/region')->getCollection()
+        $regionId = Mage::getModel('directory/region')->getCollection()
             ->addRegionCodeFilter($codeRegion)
             ->addCountryFilter($address->getCountry())
             ->getFirstItem()
             ->getId();
-        $address->setRegionId($id_region);
+        $address->setRegionId($regionId);
         $address->setCustomer($this);
         return $address;
     }

@@ -88,12 +88,12 @@ class Lengow_Connector_Model_Connector
     /**
      * Make a new Lengow API Connector.
      *
-     * @param varchar $access_token Your access token.
-     * @param varchar $secret Your secret.
+     * @param varchar $accessToken Your access token
+     * @param varchar $secret      Your secret
      */
-    public function init($access_token, $secret)
+    public function init($accessToken, $secret)
     {
-        $this->_accessToken = $access_token;
+        $this->_accessToken = $accessToken;
         $this->_secret = $secret;
     }
 
@@ -105,18 +105,18 @@ class Lengow_Connector_Model_Connector
     /**
      * Connectection to the API
      *
-     * @param varchar $user_token The user token if is connected
+     * @param varchar $userToken The user token if is connected
      *
      * @return mixed array [authorized token + account_id + user_id] or false
      */
-    public function connect($user_token = '')
+    public function connect($userToken = '')
     {
         $data = $this->_callAction(
             '/access/get_token',
             array(
                 'access_token' => $this->_accessToken,
                 'secret'       => $this->_secret,
-                'user_token'   => $user_token
+                'user_token'   => $userToken
             ),
             'POST'
         );
@@ -133,9 +133,9 @@ class Lengow_Connector_Model_Connector
     /**
      * The API method.
      *
-     * @param varchar $method Lengow method API call.
-     * @param varchar $array Lengow method API parameters
-     * @param varchar $type type of request GET|POST|PUT|HEAD|DELETE|PATCH
+     * @param varchar $method Lengow method API call
+     * @param varchar $array  Lengow method API parameters
+     * @param varchar $type   type of request GET|POST|PUT|HEAD|DELETE|PATCH
      * @param varchar $format return format of API
      *
      * @return array The formated data response

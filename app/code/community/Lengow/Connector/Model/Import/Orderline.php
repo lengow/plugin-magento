@@ -11,11 +11,11 @@
 class Lengow_Connector_Model_Import_Orderline extends Mage_Core_Model_Abstract
 {
     /**
-     * @var array $_field_list field list for the table lengow_order_line
+     * @var array $_fieldList field list for the table lengow_order_line
      * required => Required fields when creating registration
      * update   => Fields allowed when updating registration
      */
-    protected $_field_list = array(
+    protected $_fieldList = array(
         'order_id'      => array('required' => true, 'updated' => false),
         'order_line_id' => array('required' => true, 'updated' => false)
     );
@@ -38,7 +38,7 @@ class Lengow_Connector_Model_Import_Orderline extends Mage_Core_Model_Abstract
      */
     public function createOrderLine($params = array())
     {
-        foreach ($this->_field_list as $key => $value) {
+        foreach ($this->_fieldList as $key => $value) {
             if (!array_key_exists($key, $params) && $value['required']) {
                 return false;
             }
@@ -52,14 +52,14 @@ class Lengow_Connector_Model_Import_Orderline extends Mage_Core_Model_Abstract
     /**
      * Get all order line id by order id
      *
-     * @param integer $order_id Magento order id
+     * @param integer $orderId Magento order id
      *
      * @return mixed
      */
-    public function getOrderLineByOrderID($order_id)
+    public function getOrderLineByOrderID($orderId)
     {
         $results = $this->getCollection()
-            ->addFieldToFilter('order_id', $order_id)
+            ->addFieldToFilter('order_id', $orderId)
             ->addFieldToSelect('order_line_id')
             ->getData();
         if (count($results) > 0) {

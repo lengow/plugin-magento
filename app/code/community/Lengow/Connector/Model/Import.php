@@ -372,22 +372,22 @@ class Lengow_Connector_Model_Import extends Varien_Object
     /**
      * Check credentials for a store
      *
-     * @param integer $store_id   Store Id
-     * @param string  $store_name Store name
+     * @param integer $storeId   Store Id
+     * @param string  $storeName Store name
      *
      * @return boolean
      */
-    protected function _checkCredentials($store_id, $store_name)
+    protected function _checkCredentials($storeId, $storeName)
     {
-        $this->_accountId = (int)$this->_config->get('account_id', $store_id);
-        $this->_accessToken = $this->_config->get('access_token', $store_id);
-        $this->_secretToken = $this->_config->get('secret_token', $store_id);
+        $this->_accountId = (int)$this->_config->get('account_id', $storeId);
+        $this->_accessToken = $this->_config->get('access_token', $storeId);
+        $this->_secretToken = $this->_config->get('secret_token', $storeId);
         if (!$this->_accountId || !$this->_accessToken || !$this->_secretToken) {
             $message = $this->_helper->setLogMessage(
                 'lengow_log.error.account_id_empty',
                 array(
-                    'store_name' => $store_name,
-                    'store_id'   => $store_id
+                    'store_name' => $storeName,
+                    'store_id'   => $storeId
                 )
             );
             return $message;
@@ -403,7 +403,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
             );
             return $message;
         }
-        $this->_accountIds[$this->_accountId] = array('store_id' => $store_id, 'store_name' => $store_name);
+        $this->_accountIds[$this->_accountId] = array('store_id' => $storeId, 'store_name' => $storeName);
         return true;
     }
 
@@ -536,11 +536,11 @@ class Lengow_Connector_Model_Import extends Varien_Object
      * Create or update order in Magento
      *
      * @param mixed   $orders   API orders
-     * @param integer $store_id Store Id
+     * @param integer $storeId Store Id
      *
      * @return mixed
      */
-    protected function _importOrders($orders, $store_id)
+    protected function _importOrders($orders, $storeId)
     {
         $orderNew = 0;
         $orderUpdate = 0;
@@ -568,10 +568,10 @@ class Lengow_Connector_Model_Import extends Varien_Object
                 continue;
             }
             // start import
-            foreach ($orderData->packages as $package_data) {
+            foreach ($orderData->packages as $packageData) {
                 $nbPackage++;
                 // check whether the package contains a shipping address
-                if (!isset($package_data->delivery->id)) {
+                if (!isset($packageData->delivery->id)) {
                     $this->_helper->log(
                         'Import',
                         $this->_helper->setLogMessage('log.import.error_no_delivery_address'),
@@ -580,7 +580,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
                     );
                     continue;
                 }
-                $packageDeliveryAddressId = (int)$package_data->delivery->id;
+                $packageDeliveryAddressId = (int)$packageData->delivery->id;
                 $firstPackage = ($nbPackage > 1 ? false : true);
                 // check the package for re-import order
                 if ($this->_importOneOrder) {
@@ -601,13 +601,13 @@ class Lengow_Connector_Model_Import extends Varien_Object
                     $importOrder = Mage::getModel(
                         'lengow/import_importorder',
                         array(
-                            'store_id'            => $store_id,
+                            'store_id'            => $storeId,
                             'preprod_mode'        => $this->_preprodMode,
                             'log_output'          => $this->_logOutput,
                             'marketplace_sku'     => $marketplaceSku,
                             'delivery_address_id' => $packageDeliveryAddressId,
                             'order_data'          => $orderData,
-                            'package_data'        => $package_data,
+                            'package_data'        => $packageData,
                             'first_package'       => $firstPackage,
                             'import_helper'       => $this->_importHelper
                         )
@@ -669,8 +669,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
                     }
                 }
                 // clean process
-                unset($import_order);
-                unset($order);
+                unset($importOrder, $order);
                 // if limit is set
                 if ($this->_limit > 0 && $orderNew == $this->_limit) {
                     $importFinished = true;

@@ -26,11 +26,11 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
     const PROCESS_STATE_FINISH = 2;
 
     /**
-     * @var array $_field_list field list for the table lengow_order_line
+     * @var array $_fieldList field list for the table lengow_order_line
      * required => Required fields when creating registration
      * update   => Fields allowed when updating registration
      */
-    protected $_field_list = array(
+    protected $_fieldList = array(
         'order_id'              => array('required' => false, 'updated' => true),
         'order_sku'             => array('required' => false, 'updated' => true),
         'store_id'              => array('required' => true, 'updated' => false),
@@ -77,7 +77,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
      */
     public function createOrder($params = array())
     {
-        foreach ($this->_field_list as $key => $value) {
+        foreach ($this->_fieldList as $key => $value) {
             if (!array_key_exists($key, $params) && $value['required']) {
                 throw new Lengow_Connector_Model_Exception(
                     Mage::helper('lengow_connector')->setLogMessage(
@@ -111,9 +111,9 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
         if (!$this->id) {
             return false;
         }
-        $updated_fields = $this->getUpdatedFields();
+        $updatedFields = $this->getUpdatedFields();
         foreach ($params as $key => $value) {
-            if (in_array($key, $updated_fields)) {
+            if (in_array($key, $updatedFields)) {
                 $this->setData($key, $value);
             }
         }
@@ -128,35 +128,35 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
      */
     public function getUpdatedFields()
     {
-        $updated_fields = array();
-        foreach ($this->_field_list as $key => $value) {
+        $updatedFields = array();
+        foreach ($this->_fieldList as $key => $value) {
             if ($value['updated']) {
-                $updated_fields[] = $key;
+                $updatedFields[] = $key;
             }
         }
-        return $updated_fields;
+        return $updatedFields;
     }
 
     /**
      * if order is already Imported
      *
-     * @param string  $lengow_id           Lengow order id
-     * @param string  $marketplace_name    marketplace name
-     * @param integer $delivery_address_id delivery address id
-     * @param string  $marketplace_legacy  old marketplace name for v2 compatibility
+     * @param string  $marketplaceSku    marketplace sku
+     * @param string  $marketplaceName   marketplace name
+     * @param integer $deliveryAddressId delivery address id
+     * @param string  $marketplaceLegacy old marketplace name for v2 compatibility
      *
      * @return mixed
      */
-    public function getOrderIdIfExist($marketplace_sku, $marketplace_name, $delivery_address_id, $marketplace_legacy)
+    public function getOrderIdIfExist($marketplaceSku, $marketplaceName, $deliveryAddressId, $marketplaceLegacy)
     {
         // V2 compatibility
-        $in = is_null($marketplace_legacy)
-            ? array($marketplace_name)
-            : array($marketplace_name, strtolower($marketplace_legacy));
+        $in = is_null($marketplaceLegacy)
+            ? array($marketplaceName)
+            : array($marketplaceName, strtolower($marketplaceLegacy));
 
         // get order id from Magento flat order table
         $results = Mage::getModel('sales/order')->getCollection()
-            ->addAttributeToFilter('order_id_lengow', $marketplace_sku)
+            ->addAttributeToFilter('order_id_lengow', $marketplaceSku)
             ->addAttributeToFilter('marketplace_lengow', array('in' => $in))
             ->addAttributeToFilter('follow_by_lengow', array('eq' => 1))
             ->addAttributeToSelect('entity_id')
@@ -167,7 +167,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
             foreach ($results as $result) {
                 if ($result['delivery_address_id_lengow'] == 0 && $result['feed_id_lengow'] != 0) {
                     return $result['entity_id'];
-                } elseif ($result['delivery_address_id_lengow'] == $delivery_address_id) {
+                } elseif ($result['delivery_address_id_lengow'] == $deliveryAddressId) {
                     return $result['entity_id'];
                 }
             }
@@ -178,26 +178,26 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
     /**
      * Check if an order has an error
      *
-     * @param string  $marketplace_sku     Lengow order id
-     * @param integer $delivery_address_id Id delivery address
-     * @param string  $type                Type (import or send)
+     * @param string  $marketplaceSku    marketplace sku
+     * @param integer $deliveryAddressId delivery address id
+     * @param string  $type              type (import or send)
      *
      * @return mixed
      */
-    public function orderIsInError($marketplace_sku, $delivery_address_id, $type = 'import')
+    public function orderIsInError($marketplaceSku, $deliveryAddressId, $type = 'import')
     {
-        $order_error = Mage::getModel('lengow/import_ordererror');
-        $error_type = $order_error->getOrderErrorType($type);
+        $orderError = Mage::getModel('lengow/import_ordererror');
+        $errorType = $orderError->getOrderErrorType($type);
         // check if log already exists for the given order id
-        $results = $order_error->getCollection()
+        $results = $orderError->getCollection()
             ->join(
                 'lengow/import_order',
                 '`lengow/import_order`.id=main_table.order_lengow_id',
                 array('marketplace_sku' => 'marketplace_sku', 'delivery_address_id' => 'delivery_address_id')
             )
-            ->addFieldToFilter('marketplace_sku', $marketplace_sku)
-            ->addFieldToFilter('delivery_address_id', $delivery_address_id)
-            ->addFieldToFilter('type', $error_type)
+            ->addFieldToFilter('marketplace_sku', $marketplaceSku)
+            ->addFieldToFilter('delivery_address_id', $deliveryAddressId)
+            ->addFieldToFilter('type', $errorType)
             ->addFieldToFilter('is_finished', array('eq' => 0))
             ->addFieldToSelect('id')
             ->addFieldToSelect('message')
@@ -212,17 +212,17 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
     /**
      * Get Lengow ID with order ID Magento and delivery address ID
      *
-     * @param integer $order_id            magento order id
-     * @param string  $delivery_address_id delivery address id
+     * @param integer $orderId           magento order id
+     * @param string  $deliveryAddressId delivery address id
      *
      * @return mixed
      */
-    public function getOrderIdWithDeliveryAddress($order_id, $delivery_address_id)
+    public function getOrderIdWithDeliveryAddress($orderId, $deliveryAddressId)
     {
         // get marketplace_sku from Magento flat order table
         $results = Mage::getModel('sales/order')->getCollection()
-            ->addAttributeToFilter('entity_id', $order_id)
-            ->addAttributeToFilter('delivery_address_id_lengow', $delivery_address_id)
+            ->addAttributeToFilter('entity_id', $orderId)
+            ->addAttributeToFilter('delivery_address_id_lengow', $deliveryAddressId)
             ->addAttributeToFilter('follow_by_lengow', array('eq' => 1))
             ->addAttributeToSelect('order_id_lengow')
             ->getData();
@@ -235,16 +235,16 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
     /**
      * Get order ids from lengow order ID
      *
-     * @param string $marketplace_sku
-     * @param string $marketplace_name
+     * @param string $marketplaceSku  marketplace sku
+     * @param string $marketplaceName delivery address id
      *
      * @return array
      */
-    public function getAllOrderIds($marketplace_sku, $marketplace_name)
+    public function getAllOrderIds($marketplaceSku, $marketplaceName)
     {
         $results = Mage::getModel('sales/order')->getCollection()
-            ->addAttributeToFilter('order_id_lengow', $marketplace_sku)
-            ->addAttributeToFilter('marketplace_lengow', $marketplace_name)
+            ->addAttributeToFilter('order_id_lengow', $marketplaceSku)
+            ->addAttributeToFilter('marketplace_lengow', $marketplaceName)
             ->addAttributeToFilter('follow_by_lengow', array('eq' => 1))
             ->addAttributeToSelect('entity_id')
             ->getData();
@@ -257,16 +257,16 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
     /**
      * Get ID record from lengow orders table
      *
-     * @param string  $marketplace_sku     marketplace sku
-     * @param integer $delivery_address_id delivery address id
+     * @param string  $marketplaceSku    marketplace sku
+     * @param integer $deliveryAddressId delivery address id
      *
      * @return mixed
      */
-    public function getLengowOrderId($marketplace_sku, $delivery_address_id)
+    public function getLengowOrderId($marketplaceSku, $deliveryAddressId)
     {
         $results = $this->getCollection()
-            ->addFieldToFilter('marketplace_sku', $marketplace_sku)
-            ->addFieldToFilter('delivery_address_id', $delivery_address_id)
+            ->addFieldToFilter('marketplace_sku', $marketplaceSku)
+            ->addFieldToFilter('delivery_address_id', $deliveryAddressId)
             ->addFieldToSelect('id')
             ->getData();
         if (count($results) > 0) {
@@ -278,14 +278,14 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
     /**
      * Get ID record from lengow orders table with Magento order Id
      *
-     * @param integer $order_id Magento order id
+     * @param integer $orderId Magento order id
      *
      * @return mixed
      */
-    public function getLengowOrderIdWithOrderId($order_id)
+    public function getLengowOrderIdWithOrderId($orderId)
     {
         $results = $this->getCollection()
-            ->addFieldToFilter('order_id', $order_id)
+            ->addFieldToFilter('order_id', $orderId)
             ->addFieldToSelect('id')
             ->getData();
         if (count($results) > 0) {
@@ -298,11 +298,11 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
     /**
      * Get unset order by store
      *
-     * @param integer $store_id Magento store id
+     * @param integer $storeId Magento store id
      *
      * @return mixed
      */
-    public function getUnsentOrderByStore($store_id)
+    public function getUnsentOrderByStore($storeId)
     {
         // Compatibility for version 1.5
         if (Mage::getVersion() < '1.6.0.0') {
@@ -312,7 +312,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
                     'entity_id=main_table.order_id',
                     array('store_id' => 'store_id', 'follow_by_lengow' => 'follow_by_lengow', 'state' => 'state')
                 )
-                ->addFieldToFilter('`sales/order`.store_id', $store_id)
+                ->addFieldToFilter('`sales/order`.store_id', $storeId)
                 ->addFieldToFilter('follow_by_lengow', array('eq' => 1))
                 ->addFieldToFilter('state', array(array('in' => array('cancel', 'complete'))))
                 ->addFieldToFilter('order_process_state', array('eq' => 1))
@@ -325,7 +325,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
                     'magento_order.entity_id=main_table.order_id',
                     array('store_id' => 'store_id', 'follow_by_lengow' => 'follow_by_lengow', 'state' => 'state')
                 )
-                ->addFieldToFilter('magento_order.store_id', $store_id)
+                ->addFieldToFilter('magento_order.store_id', $storeId)
                 ->addFieldToFilter('magento_order.follow_by_lengow', array('eq' => 1))
                 ->addFieldToFilter('magento_order.state', array(array('in' => array('cancel', 'complete'))))
                 ->addFieldToFilter('main_table.order_process_state', array('eq' => 1))
@@ -333,17 +333,17 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
                 ->getData();
         }
         if (count($results) > 0) {
-            $unsent_orders = array();
+            $unsentOrders = array();
             foreach ($results as $result) {
                 if (!Mage::getModel('lengow/import_action')->getActiveActionByOrderId($result['order_id'])) {
-                    $unsent_orders[] = array(
+                    $unsentOrders[] = array(
                         'order_id' => $result['order_id'],
                         'action'   => $result['state'] == 'cancel' ? 'cancel' : 'ship'
                     );
                 }
             }
-            if (count($unsent_orders) > 0) {
-                return $unsent_orders;
+            if (count($unsentOrders) > 0) {
+                return $unsentOrders;
             }
         }
         return false;
@@ -352,21 +352,21 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
     /**
      * Re-import order lengow
      *
-     * @param integer $order_lengow_id
+     * @param integer $orderLengowId Order Lengow id
      *
      * @return mixed
      */
-    public function reImportOrder($order_lengow_id)
+    public function reImportOrder($orderLengowId)
     {
-        $order_lengow = Mage::getModel('lengow/import_order')->load($order_lengow_id);
-        if ($order_lengow->getData('order_process_state') == 0 && $order_lengow->getData('is_in_error') == 1) {
+        $orderLengow = Mage::getModel('lengow/import_order')->load($orderLengowId);
+        if ($orderLengow->getData('order_process_state') == 0 && $orderLengow->getData('is_in_error') == 1) {
             $params =  array(
                 'type'                => 'manual',
-                'order_lengow_id'     => $order_lengow_id,
-                'marketplace_sku'     => $order_lengow->getData('marketplace_sku'),
-                'marketplace_name'    => $order_lengow->getData('marketplace_name'),
-                'delivery_address_id' => $order_lengow->getData('delivery_address_id'),
-                'store_id'            => $order_lengow->getData('store_id')
+                'order_lengow_id'     => $orderLengow,
+                'marketplace_sku'     => $orderLengow->getData('marketplace_sku'),
+                'marketplace_name'    => $orderLengow->getData('marketplace_name'),
+                'delivery_address_id' => $orderLengow->getData('delivery_address_id'),
+                'store_id'            => $orderLengow->getData('store_id')
             );
             $import = Mage::getModel('lengow/import', $params);
             $result = $import->exec();
@@ -378,19 +378,19 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
     /**
      * Re-send order lengow
      *
-     * @param integer $order_lengow_id
+     * @param integer $orderLengowId Order Lengow id
      *
      * @return mixed
      */
-    public function reSendOrder($order_lengow_id)
+    public function reSendOrder($orderLengowId)
     {
-        $order_lengow = Mage::getModel('lengow/import_order')->load($order_lengow_id);
-        if ($order_lengow->getData('order_process_state') == 1 && $order_lengow->getData('is_in_error') == 1) {
-            $order_id = $order_lengow->getData('order_id');
-            if (!is_null($order_id)) {
-                $action = Mage::getModel('lengow/import_action')->getLastOrderActionType($order_id);
+        $orderLengow = Mage::getModel('lengow/import_order')->load($orderLengowId);
+        if ($orderLengow->getData('order_process_state') == 1 && $orderLengow->getData('is_in_error') == 1) {
+            $orderId = $orderLengow->getData('order_id');
+            if (!is_null($orderId)) {
+                $action = Mage::getModel('lengow/import_action')->getLastOrderActionType($orderId);
                 $action = $action ? $action : 'ship';
-                $order = Mage::getModel('sales/order')->load($order_id);
+                $order = Mage::getModel('sales/order')->load($orderId);
                 $shipment = $order->getShipmentsCollection()->getFirstItem();
                 $result = $this->callAction($action, $order, $shipment);
                 return $result;
@@ -460,13 +460,13 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
     /**
      * Get Magento equivalent to lengow order state
      *
-     * @param  string $order_state_lengow lengow state
+     * @param  string $orderStateLengow lengow state
      *
      * @return string
      */
-    public function getOrderState($order_state_lengow)
+    public function getOrderState($orderStateLengow)
     {
-        switch ($order_state_lengow) {
+        switch ($orderStateLengow) {
             case 'new':
             case 'waiting_acceptance':
                 return Mage_Sales_Model_Order::STATE_NEW;
@@ -512,7 +512,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
     /**
      * Create invoice
      *
-     * @param Mage_Sales_Model_Order $order
+     * @param Mage_Sales_Model_Order $order Magento Order
      */
     public function toInvoice($order)
     {
@@ -530,12 +530,12 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
     /**
      * Ship order
      *
-     * @param Mage_Sales_Model_Order $order
-     * @param string                 $carrier_name
-     * @param string                 $carrier_method
-     * @param string                 $tracking_number
+     * @param Mage_Sales_Model_Order $order          Magento Order
+     * @param string                 $carrierName    carrier name   
+     * @param string                 $carrierMethod  carrier method
+     * @param string                 $trackingNumber tracking number
      */
-    public function toShip($order, $carrier_name, $carrier_method, $tracking_number)
+    public function toShip($order, $carrierName, $carrierMethod, $trackingNumber)
     {
         if ($order->canShip()) {
             $shipment = Mage::getModel('sales/service_order', $order)->prepareShipment();
@@ -543,11 +543,11 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
                 $shipment->register();
                 $shipment->getOrder()->setIsInProcess(true);
                 // Add tracking information
-                if (!is_null($tracking_number)) {
+                if (!is_null($trackingNumber)) {
                     $track = Mage::getModel('sales/order_shipment_track')
-                        ->setNumber($tracking_number)
-                        ->setCarrierCode($carrier_name)
-                        ->setTitle($carrier_method);
+                        ->setNumber($trackingNumber)
+                        ->setCarrierCode($carrierName)
+                        ->setTitle($carrierMethod);
                     $shipment->addTrack($track);
                 }
                 $transactionSave = Mage::getModel('core/resource_transaction')
@@ -574,55 +574,55 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
     /**
      * Update order state to marketplace state
      *
-     * @param Mage_Sales_Model_Order $order              Magento Order
-     * @param string                 $order_state_lengow lengow status
-     * @param mixed                  $order_data         order data
-     * @param mixed                  $package_data       package data
-     * @param mixed                  $order_lengow_id    lengow order id or false
+     * @param Mage_Sales_Model_Order $order            Magento Order
+     * @param string                 $orderStateLengow lengow status
+     * @param mixed                  $orderData        order data
+     * @param mixed                  $packageData      package data
+     * @param mixed                  $orderLengowId    lengow order id or false
      *
      * @return mixed (Processing, Complete, Canceled or false)
      */
-    public function updateState($order, $order_state_lengow, $order_data, $package_data, $order_lengow_id)
+    public function updateState($order, $orderStateLengow, $orderData, $packageData, $orderLengowId)
     {
         // Finish actions if lengow order is shipped, closed or cancel
-        $order_process_state = $this->getOrderProcessState($order_state_lengow);
-        $trackings = $package_data->delivery->trackings;
-        if ($order_process_state == self::PROCESS_STATE_FINISH) {
+        $orderProcessState = $this->getOrderProcessState($orderStateLengow);
+        $trackings = $packageData->delivery->trackings;
+        if ($orderProcessState == self::PROCESS_STATE_FINISH) {
             Mage::getModel('lengow/import_action')->finishAllActions($order->getId());
         }
         // Update Lengow order if necessary
-        if ($order_lengow_id) {
-            $order_lengow = Mage::getModel('lengow/import_order')->load($order_lengow_id);
+        if ($orderLengowId) {
+            $orderLengow = Mage::getModel('lengow/import_order')->load($orderLengowId);
             $params = array();
-            if ($order_lengow->getData('order_lengow_state') != $order_state_lengow) {
-                $params['order_lengow_state'] = $order_state_lengow;
-                $params['extra'] = Mage::helper('core')->jsonEncode($order_data);
+            if ($orderLengow->getData('order_lengow_state') != $orderStateLengow) {
+                $params['order_lengow_state'] = $orderStateLengow;
+                $params['extra'] = Mage::helper('core')->jsonEncode($orderData);
                 $params['tracking'] = count($trackings) > 0 ? (string)$trackings[0]->number : null;
             }
-            if ($order_process_state == self::PROCESS_STATE_FINISH) {
-                if ((int)$order_lengow->getData('order_process_state') != $order_process_state) {
-                    $params['order_process_state'] = $order_process_state;
+            if ($orderProcessState == self::PROCESS_STATE_FINISH) {
+                if ((int)$orderLengow->getData('order_process_state') != $orderProcessState) {
+                    $params['order_process_state'] = $orderProcessState;
                 }
-                if ((int)$order_lengow->getData('is_in_error') != 0) {
+                if ((int)$orderLengow->getData('is_in_error') != 0) {
                     $params['is_in_error'] = 0;
                 }
             }
             if (count($params) > 0) {
-                $order_lengow->updateOrder($params);
+                $orderLengow->updateOrder($params);
             }
-            unset($order_lengow);
+            unset($orderLengow);
         }
         // Update Magento order's status only if in accepted, waiting_shipment, shipped, closed or cancel
-        if ($order->getState() != $this->getOrderState($order_state_lengow) && $order->getData('from_lengow') == 1) {
+        if ($order->getState() != $this->getOrderState($orderStateLengow) && $order->getData('from_lengow') == 1) {
             if ($order->getState() == $this->getOrderState('new')
-                && ($order_state_lengow == 'accepted' || $order_state_lengow == 'waiting_shipment')
+                && ($orderStateLengow == 'accepted' || $orderStateLengow == 'waiting_shipment')
             ) {
                 // Generate invoice
                 $this->toInvoice($order);
                 return 'Processing';
             } elseif (($order->getState() == $this->getOrderState('accepted')
                 || $order->getState() == $this->getOrderState('new'))
-                && ($order_state_lengow == 'shipped' || $order_state_lengow == 'closed')
+                && ($orderStateLengow == 'shipped' || $orderStateLengow == 'closed')
             ) {
                 // if order is new -> generate invoice
                 if ($order->getState() == $this->getOrderState('new')) {
@@ -639,7 +639,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
                 if (($order->getState() == $this->getOrderState('new')
                     || $order->getState() == $this->getOrderState('accepted')
                     || $order->getState() == $this->getOrderState('shipped'))
-                    && ($order_state_lengow == 'canceled' || $order_state_lengow == 'refused')
+                    && ($orderStateLengow == 'canceled' || $orderStateLengow == 'refused')
                 ) {
                     $this->toCancel($order);
                     return 'Canceled';
@@ -662,20 +662,20 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
         if ($order->getData('from_lengow') != 1) {
             return false;
         }
-        $store_id = $order->getStore()->getId();
-        $account_id = Mage::helper('lengow_connector/config')->get('account_id', $store_id);
+        $storeId = $order->getStore()->getId();
+        $accountId = Mage::helper('lengow_connector/config')->get('account_id', $storeId);
         if (is_null($connector)) {
             $connector = Mage::getModel('lengow/connector');
-            $connector_is_valid = $connector->getConnectorByStore($store_id);
-            if (!$connector_is_valid) {
+            $connectorIsValid = $connector->getConnectorByStore($storeId);
+            if (!$connectorIsValid) {
                 return false;
             }
         }
-        $order_ids = $this->getAllOrderIds($order->getData('order_id_lengow'), $order->getData('marketplace_lengow'));
-        if ($order_ids) {
-            $magento_ids = array();
-            foreach ($order_ids as $order_id) {
-                $magento_ids[] = $order_id['entity_id'];
+        $orderIds = $this->getAllOrderIds($order->getData('order_id_lengow'), $order->getData('marketplace_lengow'));
+        if ($orderIds) {
+            $magentoIds = array();
+            foreach ($orderIds as $orderId) {
+                $magentoIds[] = $orderId['entity_id'];
             }
             // compatibility V2
             if ($order->getData('feed_id_lengow') != 0) {
@@ -684,10 +684,10 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
             $result = $connector->patch(
                 '/v3.0/orders',
                 array(
-                    'account_id'           => $account_id,
+                    'account_id'           => $accountId,
                     'marketplace_order_id' => $order->getData('order_id_lengow'),
                     'marketplace'          => $order->getData('marketplace_lengow'),
-                    'merchant_order_id'    => $order_ids
+                    'merchant_order_id'    => $magentoIds
                 )
             );
             if (is_null($result)
@@ -715,12 +715,12 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
         if ($order->getData('from_lengow') != 1) {
             return false;
         }
-        $store_id = $order->getStore()->getId();
-        $account_id = Mage::helper('lengow_connector/config')->get('account_id', $store_id);
+        $storeId = $order->getStore()->getId();
+        $accountId = Mage::helper('lengow_connector/config')->get('account_id', $storeId);
         if (is_null($connector)) {
             $connector = Mage::getModel('lengow/connector');
-            $connector_is_valid = $connector->getConnectorByStore($store_id);
-            if (!$connector_is_valid) {
+            $connectorIsValid = $connector->getConnectorByStore($storeId);
+            if (!$connectorIsValid) {
                 return false;
             }
         }
@@ -729,7 +729,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
             array(
                 'marketplace_order_id' => $order->getData('order_id_lengow'),
                 'marketplace'          => $order->getData('marketplace_lengow'),
-                'account_id'           => $account_id
+                'account_id'           => $accountId
             ),
             'stream'
         );
@@ -776,14 +776,14 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
             $success = false;
         }
         if ($success) {
-            $order_lengow_id = $this->getLengowOrderIdWithOrderId($order->getId());
+            $orderLengowId = $this->getLengowOrderIdWithOrderId($order->getId());
             // Finish all order errors before API call
-            if ($order_lengow_id) {
-                $order_error = Mage::getModel('lengow/import_ordererror');
-                $order_error->finishOrderErrors($order_lengow_id, 'send');
-                $order_lengow = Mage::getModel('lengow/import_order')->load($order_lengow_id);
-                if ($order_lengow->getData('is_in_error') == 1) {
-                    $order_lengow->updateOrder(array('is_in_error' => 0));
+            if ($orderLengowId) {
+                $orderError = Mage::getModel('lengow/import_ordererror');
+                $orderError->finishOrderErrors($orderLengowId, 'send');
+                $orderLengow = Mage::getModel('lengow/import_order')->load($orderLengowId);
+                if ($orderLengow->getData('is_in_error') == 1) {
+                    $orderLengow->updateOrder(array('is_in_error' => 0));
                 }
             }
             try {
@@ -796,50 +796,50 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
                     $order->getStore()->getId()
                 );
                 if ($marketplace->containOrderLine($action)) {
-                    $order_line_collection = Mage::getModel('lengow/import_orderline')
+                    $orderLineCollection = Mage::getModel('lengow/import_orderline')
                         ->getOrderLineByOrderID($order->getId());
                     // compatibility V2 and security
-                    if (!$order_line_collection) {
-                        $order_line_collection = $this->getOrderLineByApi($order);
+                    if (!$orderLineCollection) {
+                        $orderLineCollection = $this->getOrderLineByApi($order);
                     }
-                    if (!$order_line_collection) {
+                    if (!$orderLineCollection) {
                         throw new Lengow_Connector_Model_Exception(
                             $helper->setLogMessage('lengow_log.exception.order_line_required')
                         );
                     }
                     $results = array();
-                    foreach ($order_line_collection as $order_line) {
-                        $results[] = $marketplace->callAction($action, $order, $shipment, $order_line['order_line_id']);
+                    foreach ($orderLineCollection as $orderLine) {
+                        $results[] = $marketplace->callAction($action, $order, $shipment, $orderLine['order_line_id']);
                     }
                     $success = !in_array(false, $results);
                 } else {
                     $success = $marketplace->callAction($action, $order, $shipment);
                 }
             } catch (Lengow_Connector_Model_Exception $e) {
-                $error_message = $e->getMessage();
+                $errorMessage = $e->getMessage();
             } catch (Exception $e) {
-                $error_message = '[Magento error]: "'.$e->getMessage().'" '.$e->getFile().' line '.$e->getLine();
+                $errorMessage = '[Magento error]: "'.$e->getMessage().'" '.$e->getFile().' line '.$e->getLine();
             }
-            if (isset($error_message)) {
-                if ($order_lengow_id) {
-                    if ((int)$order_lengow->getData('order_process_state') != self::PROCESS_STATE_FINISH) {
-                        $order_lengow->updateOrder(array('is_in_error' => 1));
-                        $order_error->createOrderError(
+            if (isset($errorMessage)) {
+                if ($orderLengowId) {
+                    if ((int)$orderLengow->getData('order_process_state') != self::PROCESS_STATE_FINISH) {
+                        $orderLengow->updateOrder(array('is_in_error' => 1));
+                        $orderError->createOrderError(
                             array(
-                                'order_lengow_id' => $order_lengow_id,
-                                'message'         => $error_message,
+                                'order_lengow_id' => $orderLengowId,
+                                'message'         => $errorMessage,
                                 'type'            => 'send'
                             )
                         );
                     }
-                    unset($order_lengow);
+                    unset($orderLengow);
                 }
-                $decoded_message = $helper->decodeLogMessage($error_message, 'en_GB');
+                $decodedMessage = $helper->decodeLogMessage($errorMessage, 'en_GB');
                 $helper->log(
                     'API-OrderAction',
                     $helper->setLogMessage(
                         'log.order_action.call_action_failed',
-                        array('decoded_message' => $decoded_message)
+                        array('decoded_message' => $decodedMessage)
                     ),
                     false,
                     $order->getData('order_id_lengow')
@@ -880,13 +880,13 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
         if ($order->getData('from_lengow') != 1) {
             return false;
         }
-        $order_lines = array();
-        $store_id = $order->getStore()->getId();
+        $orderLines = array();
+        $storeId = $order->getStore()->getId();
         $connector = Mage::getModel('lengow/connector');
         $results = $connector->queryApi(
             'get',
             '/v3.0/orders',
-            $store_id,
+            $storeId,
             array(
                 'marketplace_order_id' => $order->getData('order_id_lengow'),
                 'marketplace'          => $order->getData('marketplace_lengow')
@@ -895,19 +895,19 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
         if (isset($results->count) && $results->count == 0) {
             return false;
         }
-        $order_data = $results->results[0];
-        foreach ($order_data->packages as $package) {
-            $product_lines = array();
+        $orderData = $results->results[0];
+        foreach ($orderData->packages as $package) {
+            $productLines = array();
             foreach ($package->cart as $product) {
-                $product_lines[] = array('order_line_id' => (string)$product->marketplace_order_line_id);
+                $productLines[] = array('order_line_id' => (string)$product->marketplace_order_line_id);
             }
             if ($order->getData('delivery_address_id_lengow') == 0) {
-                return count($product_lines) > 0 ? $product_lines : false;
+                return count($productLines) > 0 ? $productLines : false;
             } else {
-                $order_lines[(int)$package->delivery->id] = $product_lines;
+                $orderLines[(int)$package->delivery->id] = $productLines;
             }
         }
-        $return = $order_lines[$order->getData('delivery_address_id_lengow')];
+        $return = $orderLines[$order->getData('delivery_address_id_lengow')];
         return count($return) > 0 ? $return : false;
     }
 
@@ -942,9 +942,9 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
      */
     public function countOrderImportedByLengow()
     {
-        $core_resource = Mage::getSingleton('core/resource');
-        $sfo = $core_resource->getTableName('sales_flat_order');
-        $connection = $core_resource->getConnection('core_read');
+        $coreResource = Mage::getSingleton('core/resource');
+        $sfo = $coreResource->getTableName('sales_flat_order');
+        $connection = $coreResource->getConnection('core_read');
         $query = 'SELECT COUNT(entity_id) as total FROM '.$sfo.'
             WHERE ('.$sfo.'.from_lengow = 1 AND '.$sfo.'.follow_by_lengow = 1)';
         $rows = $connection->fetchCol($query);
@@ -954,17 +954,17 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
     /**
      * Count old lengow order
      *
-     * @param boolean $is_processing get only order in processing
+     * @param boolean $isProcessing get only order in processing
      *
      * @return integer
      */
-    public function countNotMigrateOrder($is_processing = true)
+    public function countNotMigrateOrder($isProcessing = true)
     {
-        $core_resource = Mage::getSingleton('core/resource');
-        $sfo = $core_resource->getTableName('sales_flat_order');
-        $lo = $core_resource->getTableName('lengow_order');
-        $connection = $core_resource->getConnection('core_read');
-        $processing = $is_processing ? ' AND '.$sfo.'.state = \''.$this->getOrderState('accepted').'\'' : '';
+        $coreResource = Mage::getSingleton('core/resource');
+        $sfo = $coreResource->getTableName('sales_flat_order');
+        $lo = $coreResource->getTableName('lengow_order');
+        $connection = $coreResource->getConnection('core_read');
+        $processing = $isProcessing ? ' AND '.$sfo.'.state = \''.$this->getOrderState('accepted').'\'' : '';
         $query = 'SELECT COUNT(entity_id) as total FROM '.$sfo.'
             LEFT JOIN '.$lo.' AS `lo` ON lo.order_id = '.$sfo.'.entity_id
             WHERE ('.$sfo.'.from_lengow = 1 AND '.$sfo.'.follow_by_lengow = 1  AND lo.order_id IS NULL'.$processing.')';
@@ -979,73 +979,73 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
     /**
      * Migrate old order
      *
-     * @param boolean $is_processing migrate only order in processing
+     * @param boolean $isProcessing migrate only order in processing
      */
-    public function migrateOldOrder($is_processing = true)
+    public function migrateOldOrder($isProcessing = true)
     {
-        $total = $this->countNotMigrateOrder($is_processing);
+        $total = $this->countNotMigrateOrder($isProcessing);
         if ($total > 0) {
-            $per_page = 500;
-            $nb_page = ceil($total / $per_page);
-            for ($i = 1; $i <= $nb_page; $i++) {
-                $order_collection = Mage::getModel('sales/order')->getCollection()
+            $perPage = 500;
+            $nbPage = ceil($total / $perPage);
+            for ($i = 1; $i <= $nbPage; $i++) {
+                $orderCollection = Mage::getModel('sales/order')->getCollection()
                     ->addAttributeToFilter('from_lengow', 1)
                     ->addAttributeToFilter('follow_by_lengow', 1);
-                if ($is_processing) {
-                    $order_collection->addAttributeToFilter('state', $this->getOrderState('accepted'));
+                if ($isProcessing) {
+                    $orderCollection->addAttributeToFilter('state', $this->getOrderState('accepted'));
                 }
-                $order_collection->getSelect()->limit($per_page, ($i-1)*$per_page);
-                foreach ($order_collection as $order) {
-                    $old_order = Mage::getModel('lengow/import_order')->getCollection()
+                $orderCollection->getSelect()->limit($perPage, ($i-1)*$perPage);
+                foreach ($orderCollection as $order) {
+                    $oldOrder = Mage::getModel('lengow/import_order')->getCollection()
                         ->addFieldToFilter('order_id', $order->getId())->getFirstItem();
-                    if ($old_order->getId() > 0) {
-                        unset($old_order);
+                    if ($oldOrder->getId() > 0) {
+                        unset($oldOrder);
                         continue;
                     }
                     // Get old Lengow informations
-                    $lengow_node = json_decode($order->getXmlNodeLengow());
-                    $feed_id = isset($lengow_node->idFlux) ? $lengow_node->idFlux : $order->getFeedIdLengow();
-                    $marketplace_sku = isset($lengow_node->order_id_lengow)
-                        ? $lengow_node->order_id
+                    $lengowNode = json_decode($order->getXmlNodeLengow());
+                    $feedId = isset($lengowNode->idFlux) ? $lengowNode->idFlux : $order->getFeedIdLengow();
+                    $marketplaceSku = isset($lengowNode->order_id_lengow)
+                        ? $lengowNode->order_id
                         : $order->getOrderIdLengow();
-                    $country_iso = isset($lengow_node->delivery_address->delivery_country_iso)
-                        ? $lengow_node->delivery_address->delivery_country_iso
+                    $countryIso = isset($lengowNode->delivery_address->delivery_country_iso)
+                        ? $lengowNode->delivery_address->delivery_country_iso
                         : '';
-                    $marketplace_name = isset($lengow_node->marketplace)
-                        ? $lengow_node->marketplace
+                    $marketplaceName = isset($lengowNode->marketplace)
+                        ? $lengowNode->marketplace
                         : $order->getMarketplaceLengow();
-                    $send_by_marketplace = isset($lengow_node->tracking_informations->tracking_deliveringByMarketPlace)
-                        ? (bool)$lengow_node->tracking_informations->tracking_deliveringByMarketPlace
+                    $sendByMarketplace = isset($lengowNode->tracking_informations->tracking_deliveringByMarketPlace)
+                        ? (bool)$lengowNode->tracking_informations->tracking_deliveringByMarketPlace
                         : 0;
-                    $commission = isset($lengow_node->commission) ? $lengow_node->commission : 0;
-                    if (isset($lengow_node->order_purchase_date) && isset($lengow_node->order_purchase_heure)) {
-                        $order_date = $lengow_node->order_purchase_date.' '.$lengow_node->order_purchase_heure;
+                    $commission = isset($lengowNode->commission) ? $lengowNode->commission : 0;
+                    if (isset($lengowNode->order_purchase_date) && isset($lengowNode->order_purchase_heure)) {
+                        $orderDate = $lengowNode->order_purchase_date.' '.$lengowNode->order_purchase_heure;
                     } else {
-                        $order_date = $order->getCreatedAt();
+                        $orderDate = $order->getCreatedAt();
                     }
-                    if ($country_iso=='') {
+                    if ($countryIso=='') {
                         $address = $order->getShippingAddress();
-                        $country_iso = $address->getCountryId();
+                        $countryIso = $address->getCountryId();
                     }
-                    $order_process_state = $order->getState() == $this->getOrderState('accepted')
+                    $orderProcessState = $order->getState() == $this->getOrderState('accepted')
                         ? self::PROCESS_STATE_IMPORT
                         : self::PROCESS_STATE_FINISH;
                     // create new lengow order
-                    $new_order = Mage::getModel('lengow/import_order');
-                    $new_order->createOrder(
+                    $newOrder = Mage::getModel('lengow/import_order');
+                    $newOrder->createOrder(
                         array(
                             'order_id'             => $order->getId(),
                             'order_sku'            => $order->getIncrementId(),
                             'store_id'             => $order->getStoreId(),
-                            'feed_id'              => $feed_id,
+                            'feed_id'              => $feedId,
                             'delivery_address_id'  => $order->getDeliveryAddressIdLengow(),
-                            'delivery_country_iso' => $country_iso,
-                            'marketplace_sku'      => $marketplace_sku,
-                            'marketplace_name'     => $marketplace_name,
-                            'marketplace_label'    => $marketplace_name,
+                            'delivery_country_iso' => $countryIso,
+                            'marketplace_sku'      => $marketplaceSku,
+                            'marketplace_name'     => $marketplaceName,
+                            'marketplace_label'    => $marketplaceName,
                             'order_lengow_state'   => 'waiting_shipment',
-                            'order_process_state'  => $order_process_state,
-                            'order_date'           => $order_date,
+                            'order_process_state'  => $orderProcessState,
+                            'order_date'           => $orderDate,
                             'order_item'           => $order->getTotalItemCount(),
                             'currency'             => $order->getBaseCurrencyCode(),
                             'total_paid'           => $order->getTotalInvoiced(),
@@ -1055,14 +1055,14 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
                             'carrier'              => $order->getCarrierLengow(),
                             'carrier_method'       => $order->getCarrierMethodLengow(),
                             'carrier_tracking'     => $order->getCarrierTrackingLengow(),
-                            'sent_marketplace'     => $send_by_marketplace ,
+                            'sent_marketplace'     => $sendByMarketplace,
                             'created_at'           => $order->getCreatedAt(),
                             'updated_at'           => $order->getUpdateAt(),
                             'message'              => $order->getMessageLengow(),
                             'extra'                => $order->getXmlNodeLengow()
                         )
                     );
-                    unset($old_order);
+                    unset($oldOrder);
                 }
             }
         }
