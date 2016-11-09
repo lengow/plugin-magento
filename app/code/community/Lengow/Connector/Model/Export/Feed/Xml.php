@@ -13,7 +13,7 @@ class Lengow_Connector_Model_Export_Feed_Xml extends Lengow_Connector_Model_Expo
     /**
      * Content type
      */
-    protected $_content_type = 'application/xml';
+    protected $_contentType = 'application/xml';
 
     /**
      * Get content type
@@ -22,7 +22,7 @@ class Lengow_Connector_Model_Export_Feed_Xml extends Lengow_Connector_Model_Expo
      */
     public function getContentType()
     {
-        return $this->_content_type;
+        return $this->_contentType;
     }
 
     /**
@@ -37,6 +37,9 @@ class Lengow_Connector_Model_Export_Feed_Xml extends Lengow_Connector_Model_Expo
 
     /**
      * Make each data
+     *
+     * @param array $array All product datas
+     * @param array $args  Specific arguments for different format
      *
      * @return string
      */

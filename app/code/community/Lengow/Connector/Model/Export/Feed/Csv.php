@@ -13,22 +13,22 @@ class Lengow_Connector_Model_Export_Feed_Csv extends Lengow_Connector_Model_Expo
     /**
      * CSV separator
      */
-    public static $CSV_SEPARATOR = '|';
+    public static $csvSeparator = '|';
 
     /**
      * CSV protection
      */
-    public static $CSV_PROTECTION = '"';
+    public static $csvProtection = '"';
 
     /**
      * CSV End of line
      */
-    public static $CSV_EOL = "\r\n";
+    public static $csvEol = "\r\n";
 
     /**
      * Content type
      */
-    protected $_content_type = 'text/csv';
+    protected $_contentType = 'text/csv';
 
     /**
      * Get content type
@@ -37,7 +37,7 @@ class Lengow_Connector_Model_Export_Feed_Csv extends Lengow_Connector_Model_Expo
      */
     public function getContentType()
     {
-        return $this->_content_type;
+        return $this->_contentType;
     }
 
     /**
@@ -49,29 +49,32 @@ class Lengow_Connector_Model_Export_Feed_Csv extends Lengow_Connector_Model_Expo
     {
         $head = '';
         foreach ($this->_fields as $name) {
-            $head .= self::$CSV_PROTECTION.
+            $head .= self::$csvProtection.
                 $this->_clean(substr(str_replace('-', '_', $name), 0, 59)).
-                self::$CSV_PROTECTION.self::$CSV_SEPARATOR;
+                self::$csvProtection.self::$csvSeparator;
         }
-        return rtrim($head, self::$CSV_SEPARATOR) . self::$CSV_EOL;
+        return rtrim($head, self::$csvSeparator) . self::$csvEol;
     }
 
     /**
      * Make each data
      *
+     * @param array $array All product datas
+     * @param array $args  Specific arguments for different format
+     * 
      * @return string
      */
     public function makeData($array, $args = array())
     {
         $line = '';
         foreach ($this->_fields as $name) {
-            $line .= self::$CSV_PROTECTION.
+            $line .= self::$csvProtection.
                 (array_key_exists($name, $array)
-                    ? (str_replace(array(self::$CSV_PROTECTION, '\\'), '', $array[$name]))
+                    ? (str_replace(array(self::$csvProtection, '\\'), '', $array[$name]))
                     : ''
-                ).self::$CSV_PROTECTION.self::$CSV_SEPARATOR;
+                ).self::$csvProtection.self::$csvSeparator;
         }
-        return rtrim($line, self::$CSV_SEPARATOR) . self::$CSV_EOL;
+        return rtrim($line, self::$csvSeparator) . self::$csvEol;
     }
 
     /**

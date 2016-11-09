@@ -13,7 +13,7 @@ class Lengow_Connector_Model_Export_Feed_Json extends Lengow_Connector_Model_Exp
     /**
      * Content type
      */
-    protected $_content_type = 'application/json';
+    protected $_contentType = 'application/json';
 
     /**
      * Get content type
@@ -22,7 +22,7 @@ class Lengow_Connector_Model_Export_Feed_Json extends Lengow_Connector_Model_Exp
      */
     public function getContentType()
     {
-        return $this->_content_type;
+        return $this->_contentType;
     }
 
     /**
@@ -38,14 +38,18 @@ class Lengow_Connector_Model_Export_Feed_Json extends Lengow_Connector_Model_Exp
     /**
      * Make each data
      *
+     * @param array $array All product datas
+     * @param array $args  Specific arguments for different format
+     *
      * @return string
      */
     public function makeData($array, $args = array())
     {
+        $jsonArray = array();
         foreach ($this->_fields as $name) {
-            $json_array[$name] = array_key_exists($name, $array) ? $array[$name] : '';
+            $jsonArray[$name] = array_key_exists($name, $array) ? $array[$name] : '';
         }
-        $line = Mage::helper('core')->jsonEncode($json_array) . (!$args['last'] ? ',' : '');
+        $line = Mage::helper('core')->jsonEncode($jsonArray) . (!$args['last'] ? ',' : '');
         return $line;
     }
 

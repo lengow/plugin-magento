@@ -217,9 +217,9 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
             $messages[]= $helper->__('lengow_log.error.no_notification');
         }
         if (isset($results['error'])) {
-            foreach ($results['error'] as $store_id => $values) {
-                if ((int)$store_id > 0) {
-                    $store = Mage::getModel('core/store')->load($store_id);
+            foreach ($results['error'] as $storeId => $values) {
+                if ((int)$storeId > 0) {
+                    $store = Mage::getModel('core/store')->load($storeId);
                     $storeName = $store->getName().' ('.$store->getId().') : ';
                     if (is_array($values)) {
                         $messages[] = $storeName.join(', ', $helper->decodeLogMessage($values));

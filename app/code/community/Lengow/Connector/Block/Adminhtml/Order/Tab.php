@@ -135,7 +135,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Tab
         // Construct fields list
         $fields[] = array('label' => $helper->__('order.table.marketplace_sku'), 'value' => $marketplaceSku);
         $fields[] = array('label' => $helper->__('order.table.marketplace_name'), 'value' => $marketplaceLabel);
-        if ($feed_id != 0) {
+        if ($feedId != 0) {
             $fields[] = array('label' => $helper->__('order.screen.feed_id'), 'value' => $feedId);
         } else {
             $fields[] = array(

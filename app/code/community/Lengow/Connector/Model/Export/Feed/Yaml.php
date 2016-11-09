@@ -13,7 +13,7 @@ class Lengow_Connector_Model_Export_Feed_Yaml extends Lengow_Connector_Model_Exp
     /**
      * Content type
      */
-    protected $_content_type = 'text/x-yaml';
+    protected $_contentType = 'text/x-yaml';
 
     /**
      * Get content type
@@ -22,7 +22,7 @@ class Lengow_Connector_Model_Export_Feed_Yaml extends Lengow_Connector_Model_Exp
      */
     public function getContentType()
     {
-        return $this->_content_type;
+        return $this->_contentType;
     }
 
     /**
@@ -38,19 +38,22 @@ class Lengow_Connector_Model_Export_Feed_Yaml extends Lengow_Connector_Model_Exp
     /**
      * Make each data
      *
+     * @param array $array All product datas
+     * @param array $args  Specific arguments for different format
+     *
      * @return string
      */
     public function makeData($array, $args = array())
     {
         if ($args['max_character'] % 2 == 1) {
-            $max_character = $args['max_character'] + 1;
+            $maxCharacter = $args['max_character'] + 1;
         } else {
-            $max_character = $args['max_character'] + 2;
+            $maxCharacter = $args['max_character'] + 2;
         }
         $line = '  '.'"product":' . "\r\n";
         foreach ($this->_fields as $name) {
             $line .= '    '.'"'.$name.'":'.
-                $this->_addSpaces($name, $max_character).(isset($array[$name]) ? $array[$name] : '')."\r\n";
+                $this->_addSpaces($name, $maxCharacter).(isset($array[$name]) ? $array[$name] : '')."\r\n";
         }
         return $line;
     }
