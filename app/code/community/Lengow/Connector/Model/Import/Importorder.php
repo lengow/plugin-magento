@@ -180,7 +180,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
             (string)$this->_orderData->marketplace,
             $this->_storeId
         );
-        $this->_marketplaceLabel = $this->_marketplace->label_name;
+        $this->_marketplaceLabel = $this->_marketplace->labelName;
         $this->_orderStateMarketplace = (string)$this->_orderData->marketplace_status;
         $this->_orderStateLengow = $this->_marketplace->getStateLengow($this->_orderStateMarketplace);
     }
@@ -219,7 +219,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
             $this->_marketplaceSku,
             $this->_marketplace->name,
             $this->_deliveryAddressId,
-            $this->_marketplace->legacy_code
+            $this->_marketplace->legacyCode
         );
         // update order state if already imported
         if ($orderId) {

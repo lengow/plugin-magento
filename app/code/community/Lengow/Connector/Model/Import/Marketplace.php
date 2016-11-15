@@ -10,16 +10,6 @@
  */
 class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
 {
-     /**
-     * @var Lengow_Connector_Helper_Data
-     */
-    protected $_helper = null;
-
-    /**
-     * @var Lengow_Connector_Helper_Config
-     */
-    protected $_config = null;
-
     /**
      * @var array all valid actions
      */
@@ -77,11 +67,26 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
      * @var array all possible actions of the marketplace
      */
     public $actions = array();
+
+    /**
+     * @var array all possible values for actions of the marketplace
+     */
+    public $argValues = array();
    
     /**
      * @var array all carriers of the marketplace
      */
     public $carriers = array();
+
+    /**
+     * @var Lengow_Connector_Helper_Data
+     */
+    protected $_helper = null;
+
+    /**
+     * @var Lengow_Connector_Helper_Config
+     */
+    protected $_config = null;
 
     /**
      * Construct a new Marketplace instance with marketplace API
@@ -125,6 +130,19 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
                 foreach ($action->optional_args as $optional_arg) {
                     $this->actions[(string)$key]['optional_args'][(string)$optional_arg] = $optional_arg;
                 }
+                // foreach ($action->args_description as $key => $argDescription) {
+                //     $validValues = array();
+                //     if (isset($argDescription->valid_values)) {
+                //         foreach ($argDescription->valid_values as $code => $validValue) {
+                //             $validValues[(string)$code] = (string)$validValue->label;
+                //         }
+                //     }
+                //     $this->argValues[(string)$key] = array(
+                //         'default_value'      => (string)$argDescription->default_value,
+                //         'accept_free_values' => (bool)$argDescription->accept_free_values,
+                //         'valid_values'       => $validValues
+                //     );
+                // }
             }
             if (isset($this->marketplace->orders->carriers)) {
                 foreach ($this->marketplace->orders->carriers as $key => $carrier) {
@@ -169,6 +187,24 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
         if (array_key_exists($name, $this->statesLengow)) {
             return $this->statesLengow[$name];
         }
+    }
+
+    /**
+    * Get the default value for argument
+    *
+    * @param string $name The argument's name
+    *
+    * @return mixed
+    */
+    public function getDefaultValue($name)
+    {
+        if (array_key_exists($name, $this->argValues)) {
+            $defautlValue = $this->argValues[$name]['default_value'];
+            if (!empty($defautlValue)) {
+                return $defautlValue;
+            }
+        }
+        return false;
     }
 
     /**
@@ -278,19 +314,16 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
                                 : '';
                         }
                         break;
-                    case 'tracking_url':
-                        $params[$arg] = 'tracking_url not available';
-                        break;
                     case 'shipping_price':
                         $params[$arg] = $order->getShippingInclTax();
                         break;
                     case 'shipping_date':
                         $params[$arg] = date('c');
                         break;
-                    case 'cancel_reason':
-                        $params[$arg] = 'order canceled by merchant';
-                        break;
                     default:
+                        $defautlValue = $this->getDefaultValue((string)$arg);
+                        $paramValue = $defautlValue ? $defautlValue : $arg.' not available';
+                        $params[$arg] = $paramValue;
                         break;
                 }
             }

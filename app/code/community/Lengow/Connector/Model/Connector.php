@@ -34,14 +34,9 @@ class Lengow_Connector_Model_Connector
     public static $curlOpts = array(
         CURLOPT_CONNECTTIMEOUT => 10,
         CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_TIMEOUT        => 300,
+        CURLOPT_TIMEOUT        => 20,
         CURLOPT_USERAGENT      => 'lengow-php-sdk',
     );
-
-    /**
-     * @var mixed error returned by the API
-     */
-    public $error;
 
     /**
      * @var string the access token to connect
@@ -69,11 +64,6 @@ class Lengow_Connector_Model_Connector
     protected $_userId;
 
     /**
-     * @var string
-     */
-    protected $_request;
-
-    /**
      * @var array lengow url for curl timeout
      */
     protected $_lengowUrls = array (
@@ -97,13 +87,8 @@ class Lengow_Connector_Model_Connector
         $this->_secret = $secret;
     }
 
-    public function getRequest()
-    {
-        return $this->_request;
-    }
-
     /**
-     * Connectection to the API
+     * Connection to the API
      *
      * @param varchar $userToken The user token if is connected
      *
