@@ -1117,6 +1117,6 @@ class Lengow_Connector_Model_Export extends Varien_Object
             );
         }
         
-        return json_encode($params);
+        return Mage::helper('core')->jsonEncode($params);
     }
 }
