@@ -1,18 +1,18 @@
 (function( $ ) {
     $(function() {
 
-        var sync_link = $('#lengow_sync_link').val();
+        var syncLink = $('#lengow_sync_link').val();
 
         $('#lengow-container').hide();
         $('<iframe id="lengow-iframe">', {
             id:  'lengow-iframe',
             frameborder: 0,
-            scrolling: 'no'
+            scrolling: 'yes'
         }).appendTo('#lengow-iframe-container');
 
-        var sync_iframe = document.getElementById('lengow-iframe');
-        if (sync_iframe) {
-            sync_iframe.onload = function () {
+        var syncIframe = document.getElementById('lengow-iframe');
+        if (syncIframe) {
+            syncIframe.onload = function () {
                 $.ajax({
                     method: 'POST',
                     data: {action: 'get_sync_data', form_key: FORM_KEY},
@@ -23,16 +23,16 @@
                     }
                 });
             };
-            if (sync_link) {
-                // sync_iframe.src = 'http://cms.lengow.io/sync/';
-                // sync_iframe.src = 'http://cms.lengow.net/sync/';
-                sync_iframe.src = 'http://cms.lengow.rec/sync/';
-                // sync_iframe.src = 'http://cms.lengow.dev/sync/';
+            if (syncLink) {
+                // syncIframe.src = 'http://cms.lengow.io/sync/';
+                // syncIframe.src = 'http://cms.lengow.net/sync/';
+                syncIframe.src = 'http://cms.lengow.rec/sync/';
+                // syncIframe.src = 'http://cms.lengow.dev/sync/';
             } else {
-                // sync_iframe.src = 'http://cms.lengow.io/';
-                // sync_iframe.src = 'http://cms.lengow.net/';
-                sync_iframe.src = 'http://cms.lengow.rec/';
-                // sync_iframe.src = 'http://cms.lengow.dev/';
+                // syncIframe.src = 'http://cms.lengow.io/';
+                // syncIframe.src = 'http://cms.lengow.net/';
+                syncIframe.src = 'http://cms.lengow.rec/';
+                // syncIframe.src = 'http://cms.lengow.dev/';
             }
             $('#lengow-iframe').show();
         }

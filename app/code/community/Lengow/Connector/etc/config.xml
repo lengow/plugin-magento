@@ -272,8 +272,8 @@
         <lengow_export_options>
             <simple>
                 <export_selection_enable>0</export_selection_enable>
-                <export_out_stock>0</export_out_stock>
-                <export_product_type>simple,configurable</export_product_type>
+                <export_out_stock>1</export_out_stock>
+                <export_product_type>configurable,simple,downloadable,grouped,virtual</export_product_type>
             </simple>
             <advanced>
                 <export_default_shipping_country>FR</export_default_shipping_country>

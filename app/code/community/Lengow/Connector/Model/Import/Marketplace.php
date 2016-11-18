@@ -130,19 +130,19 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
                 foreach ($action->optional_args as $optional_arg) {
                     $this->actions[(string)$key]['optional_args'][(string)$optional_arg] = $optional_arg;
                 }
-                // foreach ($action->args_description as $key => $argDescription) {
-                //     $validValues = array();
-                //     if (isset($argDescription->valid_values)) {
-                //         foreach ($argDescription->valid_values as $code => $validValue) {
-                //             $validValues[(string)$code] = (string)$validValue->label;
-                //         }
-                //     }
-                //     $this->argValues[(string)$key] = array(
-                //         'default_value'      => (string)$argDescription->default_value,
-                //         'accept_free_values' => (bool)$argDescription->accept_free_values,
-                //         'valid_values'       => $validValues
-                //     );
-                // }
+                foreach ($action->args_description as $key => $argDescription) {
+                    $validValues = array();
+                    if (isset($argDescription->valid_values)) {
+                        foreach ($argDescription->valid_values as $code => $validValue) {
+                            $validValues[(string)$code] = (string)$validValue->label;
+                        }
+                    }
+                    $this->argValues[(string)$key] = array(
+                        'default_value'      => (string)$argDescription->default_value,
+                        'accept_free_values' => (bool)$argDescription->accept_free_values,
+                        'valid_values'       => $validValues
+                    );
+                }
             }
             if (isset($this->marketplace->orders->carriers)) {
                 foreach ($this->marketplace->orders->carriers as $key => $carrier) {

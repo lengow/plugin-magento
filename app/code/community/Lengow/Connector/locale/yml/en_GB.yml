@@ -57,8 +57,6 @@ en:
       title: "Export product"
       nb_exported: "products exported"
       nb_available: "products available"
-      include_out_of_stock: "Include out of stock products"
-      include_out_of_stock_support: "Use this option if you want to export out of stock products"
       include_specific_product: "Include specific products"
       include_specific_product_support: "Use this option to select products one by one"
       lengow_store_sync: "Store synchronized"

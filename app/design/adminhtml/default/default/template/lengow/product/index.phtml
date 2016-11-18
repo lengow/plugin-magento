@@ -57,26 +57,6 @@ $sync_data = Mage::helper('lengow_connector/sync')->getSyncData();
         <br>
         <br>
         <hr>
-        <div class="lgw-switch <?php if ($config->get('out_stock', $store_id) == '1'): ?> checked <?php endif; ?>">
-            <label>
-                <div><span></span>
-                    <input
-                        type="checkbox"
-                        name="lengow_export_selection" class="lengow_switch_option"
-                        data-href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_product/'); ?>?isAjax=true"
-                        data-action="change_option_product_out_of_stock"
-                        data-id_store="<?php echo $store_id ?>"
-                        value="1" <?php if ($config->get('out_stock', $store_id) == '1'): ?> 
-                        checked="checked" <?php endif; ?>>
-                </div> <?php echo $helper->__('product.screen.include_out_of_stock') ?>
-            </label>
-        </div>
-        <i class="fa fa-info-circle lengow_tooltip">
-            <span class="lengow_out_of_stock_suuport">
-                <?php echo $helper->__('product.screen.include_out_of_stock_support') ?>
-            </span>
-        </i>
-        <br>
         <div class="lgw-switch <?php if ($config->get('selection_enable', $store_id) == '1'): ?> checked <?php endif; ?>">
             <label>
                 <div><span></span>

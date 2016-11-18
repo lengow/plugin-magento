@@ -831,7 +831,10 @@ if (!$lengowTechnicalExists) {
         $statusTable,
         array('status', 'label'),
         array(
-            array('status' => 'lengow_technical_error', 'label' => 'Lengow Technical Error')
+            array(
+                'status' => 'lengow_technical_error',
+                'label'  => 'Lengow Technical Error'
+            )
         )
     );
     // Insert states and mapping of statuses to states
@@ -840,8 +843,8 @@ if (!$lengowTechnicalExists) {
         array('status', 'state', 'is_default'),
         array(
             array(
-                'status' => 'lengow_technical_error',
-                'state' => 'lengow_technical_error',
+                'status'     => 'lengow_technical_error',
+                'state'      => 'lengow_technical_error',
                 'is_default' => 1
             )
         )

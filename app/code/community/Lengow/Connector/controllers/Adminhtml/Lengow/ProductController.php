@@ -36,14 +36,6 @@ class Lengow_Connector_Adminhtml_Lengow_ProductController extends Mage_Adminhtml
                             $this->getResponse()->setBody($state);
                         }
                         break;
-                    case 'change_option_product_out_of_stock':
-                        $storeId = Mage::app()->getRequest()->getParam('store_id');
-                        $state = Mage::app()->getRequest()->getParam('state');
-                        if ($state !== null) {
-                            Mage::helper('lengow_connector/config')->set('out_stock', $state, $storeId);
-                            $this->getResponse()->setBody($state);
-                        }
-                        break;
                     case 'check_store':
                         $storeId = Mage::app()->getRequest()->getParam('store_id');
                         $sync = Mage::helper('lengow_connector/sync')->checkSyncStore($storeId);
@@ -63,8 +55,7 @@ class Lengow_Connector_Adminhtml_Lengow_ProductController extends Mage_Adminhtml
                         } else {
                             $datas['message'] = $helper->__('product.screen.lengow_store_no_sync');
                             $datas['link_title'] = $helper->__('product.screen.sync_your_store');
-                            $datas['link_href'] = Mage::helper('adminhtml')
-                                ->getUrl('adminhtml/lengow_home/').'?isSync=true';
+                            $datas['link_href'] = 'http://my.lengow.io/company/store';
                             $datas['id'] = 'lengow_store_no_sync';
                         }
                         $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($datas));

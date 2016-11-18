@@ -45,8 +45,6 @@ status.screen.refresh_action|Refresh my account
 product.screen.title|Export product
 product.screen.nb_exported|products exported
 product.screen.nb_available|products available
-product.screen.include_out_of_stock|Include out of stock products
-product.screen.include_out_of_stock_support|Use this option if you want to export out of stock products
 product.screen.include_specific_product|Include specific products
 product.screen.include_specific_product_support|Use this option to select products one by one
 product.screen.lengow_store_sync|Store synchronized

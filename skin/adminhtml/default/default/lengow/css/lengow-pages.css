@@ -70,20 +70,10 @@ body:not(.adminhtml-lengow-home-index) #lgw-counter {
   overflow-y: hidden;
 }
 
-
 /*Dashboard*/
 
 .adminhtml-lengow-home-index .lengow-nav {
   display: none;
-}
-
-.adminhtml-lengow-home-index #lgw-preprod {
-  color: white;
-  background: #e55a4d;
-  position: absolute;
-  font-size: 12px;
-  z-index: 1;
-  top: 170px;
 }
 
 /*Counter*/
@@ -161,14 +151,6 @@ span.publish-lgw {
   color: white;
   border-radius: 10px;
 }
-
-/*span.publish-lgw.green {
-  background:#89B963;
-}
-
-span.publish-lgw.red {
-  background:#C4676B;
-}*/
 
 #lengow_product_store_name {
   display: inline-block;

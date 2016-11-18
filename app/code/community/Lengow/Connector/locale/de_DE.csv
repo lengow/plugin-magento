@@ -45,8 +45,6 @@ status.screen.refresh_action| Meinen Account aktualisieren
 product.screen.title|Produkt exportieren
 product.screen.nb_exported|Produkte exportiert
 product.screen.nb_available|Produkte verfügbar
-product.screen.include_out_of_stock| Nicht lieferbare Produkte einbeziehen
-product.screen.include_out_of_stock_support|Verwenden Sie diese Option, um nicht lieferbare Produkte zu exportieren
 product.screen.include_specific_product|Spezifische Produkte einbeziehen
 product.screen.include_specific_product_support|Verwenden Sie diese Option, um Ihre Produkte einzeln auszuwählen
 product.screen.lengow_store_sync|Laden wurde synchronisiert
@@ -304,6 +302,7 @@ lengow_log.exception.no_connection_webservice|Verbindung mit dem Lengow Webservi
 lengow_log.exception.crendentials_not_valid|Konto-ID, Wertmarkenzugang oder Geheimwertmarke gelten im Laden nicht %{store_name} (%{store_id})
 lengow_log.exception.error_lengow_webservice|Lengow Webservice : %{error_code} - %{error_message} auf Lager %{store_name} (%{store_id})
 lengow_log.exception.timeout_api|API Anruf wegen Zeitüberschreitung blockiert
+lengow_log.exception.error_curl|Fehler Curl %{error_code} - %{error_message}
 lengow_log.exception.marketplace_not_present|Lengow Fehler: %{marketplace_name} erscheint nicht in der Marketplace-Liste
 lengow_log.exception.order_failed_with_quote|auf dem Angebot basierende Bestellung konnte nicht erstellt werden.
 lengow_log.exception.order_is_empty|Bestellung konnte nicht gespeichert werden.
