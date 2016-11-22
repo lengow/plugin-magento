@@ -40,12 +40,9 @@
         window.addEventListener("message", receiveMessage, false);
 
         function receiveMessage(event) {
-            //if (event.origin !== "http://solution.lengow.com")
-            //    return;
-
             switch (event.data.function) {
                 case 'sync':
-                    //Store lengow information into magento :
+                    // Store lengow information into Magento :
                     // account_id
                     // access_token
                     // secret_token
@@ -56,7 +53,7 @@
                     });
                     break;
                 case 'sync_and_reload':
-                    //Store lengow information into magento and reload it
+                    // Store lengow information into Magento and reload it
                     // account_id
                     // access_token
                     // secret_token
@@ -70,8 +67,13 @@
                     });
                     break;
                 case 'reload':
-                    //Reload the parent page (after sync is ok)
+                    // Reload the parent page (after sync is ok)
                     location.reload();
+                    break;
+                case 'cancel':
+                    // Reload Dashboard page
+                    var hrefCancel = location.href.replace('?isSync=true', '');
+                    window.location.replace(hrefCancel);
                     break;
             }
         }

@@ -55,7 +55,8 @@ class Lengow_Connector_Adminhtml_Lengow_ProductController extends Mage_Adminhtml
                         } else {
                             $datas['message'] = $helper->__('product.screen.lengow_store_no_sync');
                             $datas['link_title'] = $helper->__('product.screen.sync_your_store');
-                            $datas['link_href'] = 'http://my.lengow.io/company/store';
+                            $datas['link_href'] = Mage::helper('adminhtml')
+                                ->getUrl('adminhtml/lengow_home/').'?isSync=true';
                             $datas['id'] = 'lengow_store_no_sync';
                         }
                         $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($datas));
