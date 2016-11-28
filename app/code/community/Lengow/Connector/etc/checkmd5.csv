@@ -25,7 +25,7 @@
 /app/code/community/Lengow/Connector/Block/Tag/Simple.php|2605cfd27acb9f28475e505d80372646
 /app/code/community/Lengow/Connector/Block/Tracker.php|87ac4c5df186ef037040cc0eafe6effc
 /app/code/community/Lengow/Connector/Block/Payment/Info/Purchaseorder.php|24d9c91d52a25d7f2a8ce13fb7a38b09
-/app/code/community/Lengow/Connector/Helper/Sync.php|996019da7592c654f24592e6ab34b4af
+/app/code/community/Lengow/Connector/Helper/Sync.php|696267e2ce11765e14190a30aff3eb3e
 /app/code/community/Lengow/Connector/Helper/Toolbox.php|9a427e6d29dcd215947d9d01eefcd616
 /app/code/community/Lengow/Connector/Helper/Import.php|6b3e8fe82993bd6af60d2bc8f3356e23
 /app/code/community/Lengow/Connector/Helper/Config.php|b080add5201ed02579e3579aa99098b6
@@ -44,7 +44,7 @@
 /app/code/community/Lengow/Connector/Model/Observer.php|59fd8cbae7de9080be121026fc99ea04
 /app/code/community/Lengow/Connector/Model/Config.php|5d7cf1529ae7df91007e3d7024428362
 /app/code/community/Lengow/Connector/Model/Import/Ordererror.php|97a50359f7fa0a753815e8d55aa14952
-/app/code/community/Lengow/Connector/Model/Import/Customer.php|faa6b3bd663640ea2ab431fe094ede4a
+/app/code/community/Lengow/Connector/Model/Import/Customer.php|db8f5c56a973f57a1617633bd8ad9eab
 /app/code/community/Lengow/Connector/Model/Import/Quote/Item.php|0e12f6f3ee0fc4f64dcce02ece3f8c71
 /app/code/community/Lengow/Connector/Model/Import/Order.php|d35681afcc2352d3093bff9c7dbb7ff3
 /app/code/community/Lengow/Connector/Model/Import/Action.php|57e0fa8ef672c692dc9f3f8959ec5ab9
@@ -64,8 +64,8 @@
 /app/code/community/Lengow/Connector/Model/Resource/Import/Orderline/Collection.php|2570332bcb8ae76f57a4997f80c624ab
 /app/code/community/Lengow/Connector/Model/Resource/Import/Action/Collection.php|bfaf85570df729321cc7b3280a381ce5
 /app/code/community/Lengow/Connector/Model/Shipping/Carrier/Lengow.php|36fa213037f396a765807330abd9d852
-/app/code/community/Lengow/Connector/Model/Connector.php|1b99026a64224470d5da644a6b98184f
-/app/code/community/Lengow/Connector/Model/Export.php|fa967e1b24eead6e24f48a688c18d394
+/app/code/community/Lengow/Connector/Model/Connector.php|f9037bb35831614b715218a80798c8fe
+/app/code/community/Lengow/Connector/Model/Export.php|13bed0c0c44bea808b735929c667e014
 /app/code/community/Lengow/Connector/Model/Payment/Method/Lengow.php|b8bc3f189ab8315891c19f94f5392eae
 /app/code/community/Lengow/Connector/Model/System/Config/Source/Attribute.php|6adc7502e16cc859980b589c61ac9028
 /app/code/community/Lengow/Connector/Model/System/Config/Source/Types.php|993e4be35ac976c48424fc5dc83cdec9
@@ -97,7 +97,7 @@
 /app/design/adminhtml/default/default/template/lengow/toolbox/index.phtml|cf10d92f8d2f08df16362a8325c5f194
 /app/design/adminhtml/default/default/template/lengow/home/status.phtml|693d463da6ab9b74a167cbe911c6dfa7
 /app/design/adminhtml/default/default/template/lengow/home/new.phtml|194ccc2318a4dbcce9e11534ca6fee4a
-/app/design/adminhtml/default/default/template/lengow/home/dashboard.phtml|20ccdb298af532eb41d96b2b2d4e9e2c
+/app/design/adminhtml/default/default/template/lengow/home/dashboard.phtml|829007471a9c3fa1bd5804b4743f80b9
 /app/design/adminhtml/default/default/template/lengow/footer.phtml|222f5d10123ebbe7b9756468727d088a
 /app/design/adminhtml/default/default/template/lengow/legal/index.phtml|27da6ded27c687bcb6a4c020e8fba672
 /app/design/adminhtml/default/default/template/lengow/order/index.phtml|bdd129eee32711c332f7db1381647ca4
