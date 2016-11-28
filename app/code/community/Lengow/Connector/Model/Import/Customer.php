@@ -162,7 +162,9 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
         $address->setStreet($firstLine);
         $phoneOffice = $data['phone_office'];
         $phoneMobile = $data['phone_mobile'];
+        $phoneHome = $data['phone_home'];
         $phoneOffice = empty($phoneOffice) ? $phoneMobile : $phoneOffice;
+        $phoneOffice = empty($phoneOffice) ? $phoneHome : $phoneOffice;
         if (!empty($phoneOffice)) {
             $this->setTelephone($phoneOffice);
         }
@@ -171,6 +173,8 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
         } else {
             if (!empty($phoneMobile)) {
                 $address->setFax($phoneMobile);
+            } elseif (!empty($phoneHome)) {
+                $address->setFax($phoneHome);
             }
         }
         $codeRegion = substr(str_pad($address->getPostcode(), 5, '0', STR_PAD_LEFT), 0, 2);

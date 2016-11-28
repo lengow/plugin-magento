@@ -240,7 +240,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
      * integer store_id       ID of store
      * integer limit          The number of product to be exported
      * integer offset         From what product export
-     * string  mode           The mode of export = size : display only count of products to export
+     * string  mode           Export mode => size: display only exported products, total: display all products
      * string  format         Export Format (csv|yaml|xml|json)
      * string  types          Type(s) of product
      * string  product_type   Type of export (manual, cron or magento cron)
