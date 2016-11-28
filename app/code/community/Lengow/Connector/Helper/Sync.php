@@ -209,6 +209,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
         $return['total_order'] = 0;
         $return['nb_order'] = 0;
         $return['currency'] = '';
+	    $return['available']   = false;
         // get stats by store
         $storeCollection = Mage::getResourceModel('core/store_collection')->addFieldToFilter('is_active', 1);
         $i = 0;
@@ -235,6 +236,17 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
                 $return['total_order'] += $stats->revenue;
                 $return['nb_order'] += $stats->transactions;
                 $return['currency'] = $result->currency->iso_a3;
+            } else {
+	            if ( $config->get('last_statistic_update') ) {
+		            return json_decode($config->get('order_statistic'), true);
+	            } else {
+		            return array(
+			            'total_order' => 0,
+			            'nb_order'    => 0,
+			            'currency'    => '',
+			            'available'   => false
+		            );
+	            }
             }
             $accountIds[] = $accountId;
             $i++;
@@ -248,6 +260,9 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
                 }
             }
         }
+	    if ($return['total_order'] > 0 || $return['nb_order'] > 0) {
+		    $return['available'] = true;
+	    }
         if ($return['currency'] && in_array($return['currency'], $allCurrencies)) {
             $return['total_order'] = Mage::app()->getLocale()
                 ->currency($return['currency'])

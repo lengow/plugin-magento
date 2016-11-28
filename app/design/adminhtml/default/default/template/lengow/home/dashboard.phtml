@@ -30,7 +30,9 @@ $order_to_be_sent = Mage::getModel('lengow/import_order')->countOrderToBeSent();
                     <img src="<?php echo $this->getSkinUrl('lengow/images/') ?>home-orders.png" class="img-responsive">
                     <h2>
                         <?php echo $helper->__('dashboard.screen.orders_title'); ?>
-                        <span class="lgw-label lgw-label-red"><?php echo $order_to_be_sent; ?></span>
+                        <?php if( $order_to_be_sent > 0 ) { ?>
+                            <span class="lgw-label lgw-label-red"><?php echo $order_to_be_sent; ?></span>
+                        <?php } ?>
                     </h2>
                     <p><?php echo $helper->__('dashboard.screen.orders_text'); ?></p>
                 </div>
@@ -46,6 +48,7 @@ $order_to_be_sent = Mage::getModel('lengow/import_order')->countOrderToBeSent();
             </a>
         </div>
     </div>
+    <?php if($stats['available']) { ?>
     <div class="lgw-box text-center">
         <img src="<?php echo $this->getSkinUrl('lengow/images/') ?>picto-stats.png" class="img-responsive">
         <h2><?php echo $helper->__('dashboard.screen.partner_business'); ?></h2>
@@ -66,6 +69,7 @@ $order_to_be_sent = Mage::getModel('lengow/import_order')->countOrderToBeSent();
             </a>
         </p>
     </div>
+    <?php } ?>
     <div class="lgw-box">
         <h2><?php echo $helper->__('dashboard.screen.some_help_title'); ?></h2>
         <p>
