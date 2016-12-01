@@ -28,7 +28,7 @@
 /app/code/community/Lengow/Connector/Helper/Sync.php|696267e2ce11765e14190a30aff3eb3e
 /app/code/community/Lengow/Connector/Helper/Toolbox.php|9a427e6d29dcd215947d9d01eefcd616
 /app/code/community/Lengow/Connector/Helper/Import.php|6b3e8fe82993bd6af60d2bc8f3356e23
-/app/code/community/Lengow/Connector/Helper/Config.php|b080add5201ed02579e3579aa99098b6
+/app/code/community/Lengow/Connector/Helper/Config.php|d3086544bfb5d40478ff5bf8ea99dc5d
 /app/code/community/Lengow/Connector/Helper/Data.php|a7a1aa6df5aa7b86b370d066ca282060
 /app/code/community/Lengow/Connector/Helper/Translation.php|1ed0d792d5ec19c4d8fa2468a6d82ad5
 /app/code/community/Lengow/Connector/Helper/Security.php|3bd3e2648e16178ba7fc824ce4860e28
@@ -370,4 +370,4 @@
 /skin/adminhtml/default/default/lengow/js/order.js|ae516863dae6a3b3e46f438a5ebaefc5
 /skin/adminhtml/default/default/lengow/js/toolbox.js|3dda41ffd4db10d49754d1e4785a31f5
 /skin/adminhtml/default/default/lengow/js/noconflict.js|0471665ee04a2c68f993899eb8affe25
-/skin/adminhtml/default/default/lengow/js/product.js|f6c00a7885b3c5199b593611c60ded04
+/skin/adminhtml/default/default/lengow/js/product.js|97edf66b5c11c5de6a49d79a0572731a

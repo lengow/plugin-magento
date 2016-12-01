@@ -1,5 +1,5 @@
 <_>
-   <form_key>SYc0uSTVznVQFkai</form_key>
+   <form_key>5gKwjHVOM3JHfhTB</form_key>
    <name>Lengow_Export</name>
    <channel>community</channel>
    <version_ids>
@@ -41,7 +41,7 @@ Export your catalog, import your orders from all Marketplaces.</description>
             <max/>
          </max>
          <files>
-            <files>                                                                                            </files>
+            <files>                                                                                               </files>
          </files>
       </package>
       <extension>
@@ -108,8 +108,4 @@ Export your catalog, import your orders from all Marketplaces.</description>
          <ignore/>
       </ignore>
    </contents>
-   <page>1</page>
-   <limit>200</limit>
-   <folder/>
-   <package/>
 </_>

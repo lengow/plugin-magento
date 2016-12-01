@@ -22,7 +22,7 @@
                     if (data.result == false) {
                         $('.lengow_check_store').html('<span class="no_indexation">'+data.message+'</span>');
                         $('.lengow_check_store').attr('id', data.id);
-                        $('.lengow_check_store').after('<a href="'+data.link_href+'" target="_blank"><span>'+data.link_title+'</span></a>');
+                        $('.lengow_check_store').after('<a href="'+data.link_href+'"><span>'+data.link_title+'</span></a>');
                     } else {
                         $('.lengow_check_store').html('<span class="last_indexation">'+data.message+'</span>');
                         $('.lengow_check_store').attr('id', data.id);
