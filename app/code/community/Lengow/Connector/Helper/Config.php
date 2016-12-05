@@ -331,11 +331,19 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
      */
     public function getReportEmailAddress()
     {
-        $emails = explode(';', $this->get('report_mail_address'));
-        if ($emails[0] == '') {
-            $emails[0] = Mage::getStoreConfig('trans_email/ident_general/email');
+        $reportEmailAddress = array();
+        $emails = $this->get('report_mail_address');
+        $emails = trim(str_replace(array("\r\n", ',', ' '), ';', $emails), ';');
+        $emails = explode(';', $emails);
+        foreach ($emails as $email) {
+            if (strlen($email) > 0 && Zend_Validate::is($email, 'EmailAddress')) {
+                $reportEmailAddress[] = $email;
+            }
         }
-        return $emails;
+        if (count($reportEmailAddress) == 0) {
+            $reportEmailAddress[] = Mage::getStoreConfig('trans_email/ident_general/email');
+        }
+        return $reportEmailAddress;
     }
 
     /**

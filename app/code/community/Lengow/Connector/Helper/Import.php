@@ -206,28 +206,30 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
             $mailBody .=  '</ul></p>';
             $emails = Mage::helper('lengow_connector/config')->getReportEmailAddress();
             foreach ($emails as $email) {
-                $mail = Mage::getModel('core/email');
-                $mail->setToEmail($email);
-                $mail->setBody($mailBody);
-                $mail->setSubject($subject);
-                $mail->setFromEmail(Mage::getStoreConfig('trans_email/ident_general/email'));
-                $mail->setFromName("Lengow");
-                $mail->setType('html');
-                try {
-                    $mail->send();
-                    $helper->log(
-                        'MailReport',
-                        $helper->setLogMessage('log.mail_report.send_mail_to', array('email' => $email)),
-                        $logOutput
-                    );
-                } catch (Exception $e) {
-                    $helper->log(
-                        'MailReport',
-                        $helper->setLogMessage('log.mail_report.unable_send_mail_to', array('email' => $email)),
-                        $logOutput
-                    );
+                if (strlen($email) > 0) {
+                    $mail = Mage::getModel('core/email');
+                    $mail->setToEmail($email);
+                    $mail->setBody($mailBody);
+                    $mail->setSubject($subject);
+                    $mail->setFromEmail(Mage::getStoreConfig('trans_email/ident_general/email'));
+                    $mail->setFromName("Lengow");
+                    $mail->setType('html');
+                    try {
+                        $mail->send();
+                        $helper->log(
+                            'MailReport',
+                            $helper->setLogMessage('log.mail_report.send_mail_to', array('email' => $email)),
+                            $logOutput
+                        );
+                    } catch (Exception $e) {
+                        $helper->log(
+                            'MailReport',
+                            $helper->setLogMessage('log.mail_report.unable_send_mail_to', array('email' => $email)),
+                            $logOutput
+                        );
+                    }
+                    unset($mail);
                 }
-                unset($mail);
             }
         }
     }

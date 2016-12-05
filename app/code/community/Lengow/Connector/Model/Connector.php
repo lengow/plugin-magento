@@ -374,7 +374,10 @@ class Lengow_Connector_Model_Connector
      */
     public function isValidAuth($accountId)
     {
-        if (is_null($accountId) || $accountId == 0 || !is_integer($accountId)) {
+        if (!$this->isCurlActivated()) {
+            return false;
+        }
+        if (is_null($accountId) || $accountId == 0 || !is_numeric($accountId)) {
             return false;
         }
         try {
@@ -387,6 +390,16 @@ class Lengow_Connector_Model_Connector
         } else {
             return false;
         }
+    }
+
+    /**
+     * Check if PHP Curl is activated
+     *
+     * @return boolean
+     */
+    public function isCurlActivated()
+    {
+        return function_exists('curl_version');
     }
 
     /**
