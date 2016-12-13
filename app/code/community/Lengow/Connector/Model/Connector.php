@@ -34,7 +34,7 @@ class Lengow_Connector_Model_Connector
     public static $curlOpts = array(
         CURLOPT_CONNECTTIMEOUT => 10,
         CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_TIMEOUT        => 20,
+        CURLOPT_TIMEOUT        => 10,
         CURLOPT_USERAGENT      => 'lengow-php-sdk',
     );
 
@@ -68,11 +68,11 @@ class Lengow_Connector_Model_Connector
      */
     protected $_lengowUrls = array (
         '/v3.0/orders'          => 15,
-        '/v3.0/orders/actions/' => 15,
+        '/v3.0/orders/actions/' => 10,
         '/v3.0/marketplaces'    => 10,
-        '/v3.0/subscriptions'   => 5,
+        '/v3.0/subscriptions'   => 3,
         '/v3.0/stats'           => 3,
-        '/v3.0/cms'             => 5,
+        '/v3.0/cms'             => 3,
     );
 
     /**
