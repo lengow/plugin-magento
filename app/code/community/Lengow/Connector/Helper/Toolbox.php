@@ -66,10 +66,6 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
             'message' => $this->_configHelper->get('authorized_ip'),
         );
         $checklist[] = array(
-            'title'   => $this->_helper->__('toolbox.screen.legacy_enable'),
-            'state'   => (bool)$this->_configHelper->get('legacy_enable'),
-        );
-        $checklist[] = array(
             'title'   => $this->_helper->__('toolbox.screen.export_on_a_file'),
             'state'   => (bool)$this->_configHelper->get('file_enable'),
         );
@@ -198,7 +194,7 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
         );
         $checklist[] = array(
             'title'   => $this->_helper->__('toolbox.screen.url_export'),
-            'message' => $export->getExportUrl(),
+            'message' => $this->_helper->getExportUrl($store->getId()),
         );
         $lastExportDate = $this->_configHelper->get('last_export', $store->getId());
         $checklist[] = array(

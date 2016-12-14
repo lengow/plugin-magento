@@ -2,13 +2,13 @@
 $helper = Mage::helper('lengow_connector');
 $account = Mage::helper('lengow_connector/sync')->getStatusAccount();
 $status = ($account['type'] == 'free_trial') ? 'free_trial' : 'bad_payer';
-$left_day = $account['day'];
+$leftDay = $account['day'];
 ?>
 
 <div class="lgw-container">
     <div class="lgw-box">
         <div class="lgw-row">
-        <?php if ($status == 'free_trial' && $left_day == 0) : ?>
+        <?php if ($status == 'free_trial' && $leftDay == 0) : ?>
             <div class="lgw-col-6 display-inline-block">
                 <h2 class="text-center"><?php echo $helper->__('status.screen.title_end_free_trial'); ?></h2>
                 <h3 class="text-center"><?php echo $helper->__('status.screen.subtitle_end_free_trial'); ?></h3>

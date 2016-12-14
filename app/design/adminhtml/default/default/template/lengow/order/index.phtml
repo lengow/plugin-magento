@@ -1,30 +1,30 @@
 <?php
     $helper = Mage::helper('lengow_connector');
-    $config_helper = Mage::helper('lengow_connector/config');
-    $import_helper = Mage::helper('lengow_connector/import');
-    $last_import = $import_helper->getLastImport();
-    $report_mail_active = (bool)$config_helper->get('report_mail_enable');
-    $report_mail_link = Mage::helper('adminhtml')
+    $configHelper = Mage::helper('lengow_connector/config');
+    $importHelper = Mage::helper('lengow_connector/import');
+    $lastImport = $importHelper->getLastImport();
+    $reportMailActive = (bool)$configHelper->get('report_mail_enable');
+    $reportMailLink = Mage::helper('adminhtml')
         ->getUrl('adminhtml/system_config/edit/section/lengow_import_options/');
-    $report_mails = $config_helper->getReportEmailAddress();
+    $reportMails = $configHelper->getReportEmailAddress();
     $order = Mage::getModel('lengow/import_order');
-    $see_migrate_block = (bool)$config_helper->get('see_migrate_block');
-    $nb_order_imported = $order->countOrderImportedByLengow();
-    $order_not_migrate = $order->countNotMigrateOrder(false);
-    $order_with_error = $order->countOrderWithError();
-    $order_to_be_sent = $order->countOrderToBeSent();
+    $seeMigrateBlock = (bool)$configHelper->get('see_migrate_block');
+    $nbOrderImported = $order->countOrderImportedByLengow();
+    $orderNotMigrate = $order->countNotMigrateOrder(false);
+    $orderWithError = $order->countOrderWithError();
+    $orderToBeSent = $order->countOrderToBeSent();
 ?>
 
 <div class="lgw-box">
-    <?php if ((bool)$config_helper->get('preprod_mode_enable')) { ?>
+    <?php if ((bool)$configHelper->get('preprod_mode_enable')) { ?>
         <p class="blue_frame" style="line-height: 20px;">
-            <?php echo $helper->__('order.screen.preprod_warning_message', array('url' => $report_mail_link)); ?>
+            <?php echo $helper->__('order.screen.preprod_warning_message', array('url' => $reportMailLink)); ?>
         </p>
     <?php } ?>
-    <?php if ($see_migrate_block && $order_not_migrate > 0) { ?>
+    <?php if ($seeMigrateBlock && $orderNotMigrate > 0) { ?>
         <div id="lengow_migrate_order" class="blue_frame">
-            <p><?php echo $helper->__('order.screen.nb_old_order_imported', array('nb_order' => $nb_order_imported)); ?></p>
-            <p><?php echo $helper->__('order.screen.order_visible_in_page', array('nb_order' => $order_to_be_sent)); ?></p>
+            <p><?php echo $helper->__('order.screen.nb_old_order_imported', array('nb_order' => $nbOrderImported)); ?></p>
+            <p><?php echo $helper->__('order.screen.order_visible_in_page', array('nb_order' => $orderToBeSent)); ?></p>
             <p><?php echo $helper->__('order.screen.where_see_old_order'); ?></p>
             <button
                 type="button" 
@@ -37,16 +37,16 @@
     <?php } ?>
     <div class="lgw-col-8">
         <p id="lengow_order_with_error">
-            <?php echo $helper->__('order.screen.order_with_error', array('nb_order' => $order_with_error)); ?>
+            <?php echo $helper->__('order.screen.order_with_error', array('nb_order' => $orderWithError)); ?>
         </p>
         <p id="lengow_order_to_be_sent">
-            <?php echo $helper->__('order.screen.order_to_be_sent', array('nb_order' => $order_to_be_sent)); ?>
+            <?php echo $helper->__('order.screen.order_to_be_sent', array('nb_order' => $orderToBeSent)); ?>
         </p>
         <p id="lengow_last_importation">
             <?php
-            if ($last_import['type'] != 'none') {
+            if ($lastImport['type'] != 'none') {
                 echo $helper->__('order.screen.last_order_importation', array(
-                    'last_importation' => '<b>'.$helper->getDateInCorrectFormat($last_import['timestamp']).'</b>'
+                    'last_importation' => '<b>'.$helper->getDateInCorrectFormat($lastImport['timestamp']).'</b>'
                 ));
             } else {
                 echo $helper->__('order.screen.no_order_importation');
@@ -55,13 +55,13 @@
         </p>
         <p>
             <?php
-            if ($report_mail_active) {
+            if ($reportMailActive) {
                 echo $helper->__('order.screen.all_order_will_be_sent_to').' ';
-                echo implode(', ', $report_mails).' ';
+                echo implode(', ', $reportMails).' ';
             } else {
                 echo $helper->__('order.screen.no_order_will_be_sent').' ';
             }
-            echo '(<a href="'.$report_mail_link.'">'.$helper->__('order.screen.change_this').'</a>)';
+            echo '(<a href="'.$reportMailLink.'">'.$helper->__('order.screen.change_this').'</a>)';
             ?>
         </p>
     </div>

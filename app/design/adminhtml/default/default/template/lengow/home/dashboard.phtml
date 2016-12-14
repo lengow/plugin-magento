@@ -1,9 +1,9 @@
 <?php 
 $helper = Mage::helper('lengow_connector');
 $stats = Mage::helper('lengow_connector/sync')->getStatistic();
-$total_order = isset($stats['total_order']) ? $stats['total_order'] : 0;
-$nb_order = isset($stats['nb_order']) ? $stats['nb_order'] : 0;
-$order_to_be_sent = Mage::getModel('lengow/import_order')->countOrderToBeSent();
+$totalOrder = isset($stats['total_order']) ? $stats['total_order'] : 0;
+$nbOrder = isset($stats['nb_order']) ? $stats['nb_order'] : 0;
+$orderToBeSent = Mage::getModel('lengow/import_order')->countOrderToBeSent();
 ?>
 
 <div class="lgw-container">
@@ -30,8 +30,8 @@ $order_to_be_sent = Mage::getModel('lengow/import_order')->countOrderToBeSent();
                     <img src="<?php echo $this->getSkinUrl('lengow/images/') ?>home-orders.png" class="img-responsive">
                     <h2>
                         <?php echo $helper->__('dashboard.screen.orders_title'); ?>
-                        <?php if( $order_to_be_sent > 0 ) { ?>
-                            <span class="lgw-label lgw-label-red"><?php echo $order_to_be_sent; ?></span>
+                        <?php if( $orderToBeSent > 0 ) { ?>
+                            <span class="lgw-label lgw-label-red"><?php echo $orderToBeSent; ?></span>
                         <?php } ?>
                     </h2>
                     <p><?php echo $helper->__('dashboard.screen.orders_text'); ?></p>
@@ -55,11 +55,11 @@ $order_to_be_sent = Mage::getModel('lengow/import_order')->countOrderToBeSent();
         <div class="lgw-row lgw-home-stats">
             <div class="lgw-col-4 lgw-col-offset-2">
                 <h5><?php echo $helper->__('dashboard.screen.stat_turnover'); ?></h5>
-                <span class="stats-big-value"><?php echo $total_order; ?></span>
+                <span class="stats-big-value"><?php echo $totalOrder; ?></span>
             </div>
             <div class="lgw-col-4">
                 <h5><?php echo $helper->__('dashboard.screen.stat_nb_orders'); ?></h5>
-                <span class="stats-big-value"><?php echo $nb_order; ?></span>
+                <span class="stats-big-value"><?php echo $nbOrder; ?></span>
             </div>
         </div>
         <p>

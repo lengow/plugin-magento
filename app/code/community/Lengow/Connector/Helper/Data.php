@@ -51,6 +51,37 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * Get export Url
+     *
+     * @param integer $storeId
+     * @param array   $additionalParams
+     *
+     * @return string
+     */
+    public function getExportUrl($storeId, $additionalParams = array())
+    {
+        $defaultParams = array(
+            'store'         => $storeId,
+            '_nosid'        => true,
+            '_store_to_url' => false,
+        );
+        if (count($additionalParams) > 0) {
+            $defaultParams = array_merge($defaultParams, $additionalParams);
+        }
+        return Mage::getModel('core/url')->setStore($storeId)->getUrl('lengow/feed', $defaultParams);
+    }
+
+    /**
+     * Get Cron Url
+     *
+     * @return string
+     */
+    public function getCronUrl()
+    {
+        return Mage::getUrl('lengow/cron');
+    }
+
+    /**
      * Write log
      *
      * @param string  $category       Category

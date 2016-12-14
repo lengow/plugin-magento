@@ -1023,14 +1023,6 @@ class Lengow_Connector_Model_Export extends Varien_Object
     }
 
     /**
-     * get export Url
-     */
-    public function getExportUrl()
-    {
-        return Mage::getUrl('lengow/feed', array('store' => $this->_storeId));
-    }
-
-    /**
      * Get all export available parameters
      *
      * @return string
