@@ -682,7 +682,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
                 $this->checkAndChangeMarketplaceName($order, $connector);
             }
             $result = $connector->patch(
-                '/v3.0/orders',
+                '/v3.0/orders/moi',
                 array(
                     'account_id'           => $accountId,
                     'marketplace_order_id' => $order->getData('order_id_lengow'),

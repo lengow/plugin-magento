@@ -68,6 +68,7 @@ class Lengow_Connector_Model_Connector
      */
     protected $_lengowUrls = array (
         '/v3.0/orders'          => 15,
+        '/v3.0/orders/moi'      => 3,
         '/v3.0/orders/actions/' => 10,
         '/v3.0/marketplaces'    => 10,
         '/v3.0/subscriptions'   => 3,
