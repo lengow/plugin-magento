@@ -362,7 +362,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
         if ($orderLengow->getData('order_process_state') == 0 && $orderLengow->getData('is_in_error') == 1) {
             $params =  array(
                 'type'                => 'manual',
-                'order_lengow_id'     => $orderLengow,
+                'order_lengow_id'     => $orderLengowId,
                 'marketplace_sku'     => $orderLengow->getData('marketplace_sku'),
                 'marketplace_name'    => $orderLengow->getData('marketplace_name'),
                 'delivery_address_id' => $orderLengow->getData('delivery_address_id'),
@@ -682,7 +682,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
                 $this->checkAndChangeMarketplaceName($order, $connector);
             }
             $result = $connector->patch(
-                '/v3.0/orders/moi',
+                '/v3.0/orders/moi/',
                 array(
                     'account_id'           => $accountId,
                     'marketplace_order_id' => $order->getData('order_id_lengow'),

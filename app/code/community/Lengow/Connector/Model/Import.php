@@ -129,8 +129,8 @@ class Lengow_Connector_Model_Import extends Varien_Object
                 $this->_orderLengowId  = (int)$params['order_lengow_id'];
             }
             $this->_importOneOrder = true;
-            $this->_limit            = 1;
-            $this->_marketplaceSku  = (string)$params['marketplace_sku'];
+            $this->_limit = 1;
+            $this->_marketplaceSku = (string)$params['marketplace_sku'];
             $this->_marketplaceName = (string)$params['marketplace_name'];
             if (array_key_exists('delivery_address_id', $params) && $params['delivery_address_id'] != '') {
                 $this->_deliveryAddressId = $params['delivery_address_id'];
