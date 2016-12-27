@@ -401,9 +401,15 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
         if ($orderLengow->getData('order_process_state') == 1 && $orderLengow->getData('is_in_error') == 1) {
             $orderId = $orderLengow->getData('order_id');
             if (!is_null($orderId)) {
-                $action = Mage::getModel('lengow/import_action')->getLastOrderActionType($orderId);
-                $action = $action ? $action : 'ship';
                 $order = Mage::getModel('sales/order')->load($orderId);
+                $action = Mage::getModel('lengow/import_action')->getLastOrderActionType($orderId);
+                if (!$action) {
+                    if ($order->getData('status') == 'cancel') {
+                        $action = 'cancel';
+                    } else {
+                        $action = 'ship';
+                    }
+                }
                 $shipment = $order->getShipmentsCollection()->getFirstItem();
                 $result = $this->callAction($action, $order, $shipment);
                 return $result;
