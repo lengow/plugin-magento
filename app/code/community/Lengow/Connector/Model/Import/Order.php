@@ -304,17 +304,24 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
      */
     public function getUnsentOrderByStore($storeId)
     {
+        $date = strtotime('-5 days', time());
         // Compatibility for version 1.5
         if (Mage::getVersion() < '1.6.0.0') {
             $results = $this->getCollection()
                 ->join(
                     'sales/order',
                     'entity_id=main_table.order_id',
-                    array('store_id' => 'store_id', 'follow_by_lengow' => 'follow_by_lengow', 'state' => 'state')
+                    array(
+                        'store_id'         => 'store_id',
+                        'updated_at'       => 'updated_at',
+                        'follow_by_lengow' => 'follow_by_lengow',
+                        'state'            => 'state'
+                    )
                 )
                 ->addFieldToFilter('`sales/order`.store_id', $storeId)
-                ->addFieldToFilter('follow_by_lengow', array('eq' => 1))
-                ->addFieldToFilter('state', array(array('in' => array('cancel', 'complete'))))
+                ->addFieldToFilter('`sales/order`.updated_at', array('from' => $date, 'datetime' => true))
+                ->addFieldToFilter('`sales/order`.follow_by_lengow', array('eq' => 1))
+                ->addFieldToFilter('`sales/order`.state', array(array('in' => array('cancel', 'complete'))))
                 ->addFieldToFilter('order_process_state', array('eq' => 1))
                 ->addFieldToFilter('is_in_error', array('eq' => 0))
                 ->getData();
@@ -323,9 +330,15 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
                 ->join(
                     array('magento_order' => 'sales/order'),
                     'magento_order.entity_id=main_table.order_id',
-                    array('store_id' => 'store_id', 'follow_by_lengow' => 'follow_by_lengow', 'state' => 'state')
+                    array(
+                        'store_id'         => 'store_id',
+                        'updated_at'       => 'updated_at',
+                        'follow_by_lengow' => 'follow_by_lengow',
+                        'state'            => 'state'
+                    )
                 )
                 ->addFieldToFilter('magento_order.store_id', $storeId)
+                ->addFieldToFilter('magento_order.updated_at', array('from' => $date, 'datetime' => true))
                 ->addFieldToFilter('magento_order.follow_by_lengow', array('eq' => 1))
                 ->addFieldToFilter('magento_order.state', array(array('in' => array('cancel', 'complete'))))
                 ->addFieldToFilter('main_table.order_process_state', array('eq' => 1))

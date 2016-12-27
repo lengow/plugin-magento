@@ -311,7 +311,8 @@ lengow_log.exception.action_not_valid|action %{action} is not valid
 lengow_log.exception.marketplace_action_not_present|the marketplace action %{action} is not present
 lengow_log.exception.store_id_require|store ID is required
 lengow_log.exception.marketplace_name_require|marketplace name is required
-lengow_log.exception.arg_is_required|can't ship order: %{arg_name} is required
+lengow_log.exception.arg_is_required|can't send action: %{arg_name} is required
+lengow_log.exception.action_not_created|can't create action: %{error_message}
 lengow_log.exception.action_is_too_old|order action is too old. Please retry
 lengow_log.mail_report.subject_report_mail|Lengow imports errors
 lengow_log.mail_report.order|Order %{marketplace_sku}

@@ -38,6 +38,7 @@ class Lengow_Connector_Adminhtml_Lengow_HomeController extends Mage_Adminhtml_Co
                     case "sync":
                         $data = $this->getRequest()->getParam('data', 0);
                         Mage::helper('lengow_connector/sync')->sync($data);
+                        Mage::helper('lengow_connector/sync')->getStatusAccount(true);
                         break;
                 }
             }

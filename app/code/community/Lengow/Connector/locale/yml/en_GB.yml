@@ -341,7 +341,8 @@ en:
       marketplace_action_not_present: "the marketplace action %{action} is not present"
       store_id_require: "store ID is required"
       marketplace_name_require: "marketplace name is required"
-      arg_is_required: "can't ship order: %{arg_name} is required"
+      arg_is_required: "can't send action: %{arg_name} is required"
+      action_not_created: "can't create action: %{error_message}"
       action_is_too_old: "order action is too old. Please retry"
     mail_report:
       subject_report_mail: "Lengow imports errors"

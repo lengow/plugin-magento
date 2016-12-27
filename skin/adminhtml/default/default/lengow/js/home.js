@@ -2,6 +2,7 @@
     $(function() {
 
         var syncLink = $('#lengow_sync_link').val();
+        var isoCode = $('#lengow_lang_iso').val();
 
         $('#lengow-container').hide();
         $('<iframe id="lengow-iframe">', {
@@ -34,6 +35,7 @@
                 syncIframe.src = 'http://cms.lengow.rec/';
                 // syncIframe.src = 'http://cms.lengow.dev/';
             }
+            syncIframe.src = syncIframe.src+'?lang='+isoCode;
             $('#lengow-iframe').show();
         }
 

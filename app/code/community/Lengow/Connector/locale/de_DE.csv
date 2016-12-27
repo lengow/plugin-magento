@@ -292,27 +292,28 @@ lengow_log.error.order_not_found|Fehler Lengow: Bestellung kann in Lengow nicht 
 lengow_log.error.no_product| Fehler Lengow: keine Produkte in der Bestellung
 lengow_log.error.no_change_rate|Fehler Lengow: kein Wechselkurs für Bestellwert verfügbar
 lengow_log.error.no_currency|Fehler Lengow: keine Währung in der Bestellung
-lengow_log.error.currency_not_available|Währung %{currency_iso} in Ihrem Shop nicht verfügbar
+lengow_log.error.currency_not_available|währung %{currency_iso} in Ihrem Shop nicht verfügbar
 lengow_log.error.no_country_for_delivery_address|Fehler Lengow: Lieferaddresse enthält kein Land
 lengow_log.error.no_billing_address|Fehler Lengow: keine Rechnungsaddresse in der Bestellung
-lengow_log.error.no_country_for_billing_address|Lengow Fehler: Rechnungsadresse enthält das Land
-lengow_log.exception.product_not_be_found|Produkt %{product_id} konnte nicht gefunden werden
-lengow_log.exception.product_is_a_parent|Produkt %{product_id} hat eine Vorgänger-ID. Produktvariation wird benötigt
-lengow_log.exception.no_connection_webservice|Verbindung mit dem Lengow Webservice im Laden %{store_name} (%{store_id}) funktionierte nicht.
+lengow_log.error.no_country_for_billing_address|Fehler Lengow: Rechnungsadresse enthält das Land
+lengow_log.exception.product_not_be_found|produkt %{product_id} konnte nicht gefunden werden
+lengow_log.exception.product_is_a_parent|produkt %{product_id} hat eine Vorgänger-ID. Produktvariation wird benötigt
+lengow_log.exception.no_connection_webservice|verbindung mit dem Lengow Webservice im Laden %{store_name} (%{store_id}) funktionierte nicht.
 lengow_log.exception.crendentials_not_valid|Konto-ID, Wertmarkenzugang oder Geheimwertmarke gelten im Laden nicht %{store_name} (%{store_id})
 lengow_log.exception.error_lengow_webservice|Lengow Webservice : %{error_code} - %{error_message} auf Lager %{store_name} (%{store_id})
 lengow_log.exception.timeout_api|API Anruf wegen Zeitüberschreitung blockiert
-lengow_log.exception.error_curl|Fehler Curl %{error_code} - %{error_message}
+lengow_log.exception.error_curl|fehler Curl %{error_code} - %{error_message}
 lengow_log.exception.marketplace_not_present|Lengow Fehler: %{marketplace_name} erscheint nicht in der Marketplace-Liste
-lengow_log.exception.order_failed_with_quote|auf dem Angebot basierende Bestellung konnte nicht erstellt werden.
-lengow_log.exception.order_is_empty|Bestellung konnte nicht gespeichert werden.
-lengow_log.exception.order_line_required|Erforderliche Bestellzeile kann in der Bestellung nicht gefunden werden.
-lengow_log.exception.action_not_valid|Aktion %{action} ist ungültig
-lengow_log.exception.marketplace_action_not_present|Die Marktplatzaktion %{action} ist nicht vorhanden
-lengow_log.exception.store_id_require|Laden-ID ist erforderlich
-lengow_log.exception.marketplace_name_require|Marktplatzname ist erforderlich
-lengow_log.exception.arg_is_required|Bestellung kann nicht versandt werden: %{arg_name} ist erforderlich
-lengow_log.exception.action_is_too_old|Bestellungsaktion ist zu alt. Bitte erneut versuchen
+lengow_log.exception.order_failed_with_quote|auf dem Angebot basierende Bestellung konnte nicht erstellt werden
+lengow_log.exception.order_is_empty|bestellung konnte nicht gespeichert werden
+lengow_log.exception.order_line_required|erforderliche Bestellzeile kann in der Bestellung nicht gefunden werden
+lengow_log.exception.action_not_valid|aktion %{action} ist ungültig
+lengow_log.exception.marketplace_action_not_present|die Marktplatzaktion %{action} ist nicht vorhanden
+lengow_log.exception.store_id_require|laden-ID ist erforderlich
+lengow_log.exception.marketplace_name_require|marktplatzname ist erforderlich
+lengow_log.exception.arg_is_required|Aktion nicht ausführbar: %{arg_name} ist erforderlich
+lengow_log.exception.action_not_created|Aktion kann nicht erstellt werden: %{error_message}
+lengow_log.exception.action_is_too_old|bestellungsaktion ist zu alt. Bitte erneut versuchen
 lengow_log.mail_report.subject_report_mail|Lengow Importfehler
 lengow_log.mail_report.order|Bestellung %{marketplace_sku}
 lengow_log.mail_report.no_error_in_report_mail|Keine Fehlermeldung, kontaktieren Sie den Support auf https://supportlengow.zendesk.com/agent/

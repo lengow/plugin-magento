@@ -357,17 +357,17 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
             $params['action_type'] = $action;
 
             $connector = Mage::getModel('lengow/connector');
-            $results = $connector->queryApi(
+            $result = $connector->queryApi(
                 'get',
                 '/v3.0/orders/actions/',
                 $order->getStore()->getId(),
                 array_merge($params, array("queued" => "True"))
             );
-            if (isset($results->error) && isset($results->error->message)) {
-                throw new Lengow_Connector_Model_Exception($results->error->message);
+            if (isset($result->error) && isset($result->error->message)) {
+                throw new Lengow_Connector_Model_Exception($result->error->message);
             }
-            if (isset($results->count) && $results->count > 0) {
-                foreach ($results->results as $row) {
+            if (isset($result->count) && $result->count > 0) {
+                foreach ($result->results as $row) {
                     $orderActionId = Mage::getModel('lengow/import_action')->getActiveActionByActionId($row->id);
                     if ($orderActionId) {
                         $orderAction = Mage::getModel('lengow/import_action')->load($orderActionId);
@@ -389,21 +389,28 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
                 }
             } else {
                 if (!(bool)Mage::helper('lengow_connector/config')->get('preprod_mode_enable')) {
-                    $results = $connector->queryApi(
+                    $result = $connector->queryApi(
                         'post',
                         '/v3.0/orders/actions/',
                         $order->getStore()->getId(),
                         $params
                     );
-                    if (isset($results->id)) {
+                    if (isset($result->id)) {
                         $orderAction = Mage::getModel('lengow/import_action');
                         $orderAction->createAction(
                             array(
                                 'order_id'       => $order->getId(),
                                 'action_type'    => $action,
-                                'action_id'      => $results->id,
+                                'action_id'      => $result->id,
                                 'order_line_sku' => isset($params['line']) ? $params['line'] : null,
                                 'parameters'     => Mage::helper('core')->jsonEncode($params)
+                            )
+                        );
+                    } else {
+                        throw new Lengow_Connector_Model_Exception(
+                            $helper->setLogMessage(
+                                'lengow_log.exception.action_not_created',
+                                array('error_message' => Mage::helper('core')->jsonEncode($result))
                             )
                         );
                     }
