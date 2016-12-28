@@ -16,6 +16,13 @@ Version 3.0.0
 	- Feature: Add new actions: re-import, resend and resync orders
 
 =============================================================
+Version 2.2.4
+=============================================================
+
+	- Feature: Add new root for synchronise order with Lengow
+	- Feature: Add new logs to send actions 
+
+=============================================================
 Version 2.2.3
 =============================================================
 
