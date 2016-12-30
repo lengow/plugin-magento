@@ -1,17 +1,29 @@
 <?php
-
 /**
+ * Copyright 2017 Lengow SAS
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
  *
  * @category    Lengow
  * @package     Lengow_Connector
+ * @subpackage  Helper
  * @author      Team module <team-module@lengow.com>
- * @copyright   2016 Lengow SAS
+ * @copyright   2017 Lengow SAS
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+
+/**
+ * Helper config
  */
 class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
 {
     /**
-     * All Lengow Options Path
+     * @var array all Lengow options path
      */
     protected $_options = array(
         'token' => array(
@@ -205,9 +217,9 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
      * Get Value
      *
      * @param string  $key     Lengow setting key
-     * @param integer $storeId Store id
+     * @param integer $storeId Magento store id
      *
-     * @return null
+     * @return mixed
      */
     public function get($key, $storeId = 0)
     {
@@ -231,10 +243,8 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
      *
      * @param string  $key        Lengow setting key
      * @param mixed   $value      Lengow setting value
-     * @param integer $storeId    Store id
-     * @param boolean $cleanCache Clean config cache to valid configuration
-     *
-     * @return null
+     * @param integer $storeId    Magento store id
+     * @param boolean $cleanCache clean config cache to valid configuration
      */
     public function set($key, $value, $storeId = 0, $cleanCache = true)
     {
@@ -261,7 +271,7 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
     /**
      * Get Selected attributes
      *
-     * @param integer $storeId store id
+     * @param integer $storeId Magento store id
      *
      * @return array
      */
@@ -284,9 +294,9 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
     /**
      * Generate token
      *
-     * @param integer $storeId store id
+     * @param integer $storeId Magento store id
      *
-     * @return array
+     * @return string
      */
     public function getToken($storeId = 0)
     {
@@ -303,9 +313,9 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
     /**
      * Get Store by token
      *
-     * @param string $token
+     * @param string $token Lengow store token
      *
-     * @return mixed
+     * @return Mage_Core_Model_Store|false
      */
     public function getStoreByToken($token)
     {
@@ -349,7 +359,7 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
     /**
      * Get Values by store or global
      *
-     * @param integer $storeId store id
+     * @param integer $storeId Magento store id
      *
      * @return array
      */

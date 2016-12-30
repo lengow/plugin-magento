@@ -1,12 +1,24 @@
 <?php
-
 /**
+ * Copyright 2017 Lengow SAS
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
  *
  * @category    Lengow
  * @package     Lengow_Connector
+ * @subpackage  Helper
  * @author      Team module <team-module@lengow.com>
- * @copyright   2016 Lengow SAS
+ * @copyright   2017 Lengow SAS
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+
+/**
+ * Helper sync
  */
 class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
 {
@@ -52,9 +64,9 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Sync Lengow Information
+     * Set store configuration key from Lengow
      *
-     * @param $params
+     * @param array $params Lengow API credentials
      */
     public function sync($params)
     {
@@ -96,7 +108,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
     /**
      * Check if store is follow by Lengow
      *
-     * @param $storeId
+     * @param integer $storeId Magento store id
      *
      * @return boolean
      */
@@ -129,9 +141,48 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * Get options for all shops
+     *
+     * @return array
+     */
+    public static function getOptionData()
+    {
+        $helper = Mage::helper('lengow_connector');
+        $config = Mage::helper('lengow_connector/config');
+        $data = array();
+        $data['cms'] = array(
+            'token'          => $config->getToken(),
+            'type'           => 'magento',
+            'version'        => Mage::getVersion(),
+            'plugin_version' => (string)Mage::getConfig()->getNode()->modules->Lengow_Connector->version,
+            'options'        => $config->getAllValues()
+        );
+        foreach (Mage::app()->getWebsites() as $website) {
+            foreach ($website->getGroups() as $group) {
+                $stores = $group->getStores();
+                foreach ($stores as $store) {
+                    $export = Mage::getModel('lengow/export', array("store_id" => $store->getId()));
+                    $data['shops'][] = array(
+                        'enabled'                 => (bool)$config->get('store_enable', $store->getId()),
+                        'token'                   => $config->getToken($store->getId()),
+                        'store_name'              => $store->getName(),
+                        'domain_url'              => $store->getBaseUrl(),
+                        'feed_url'                => $helper->getExportUrl($store->getId()),
+                        'cron_url'                => $helper->getCronUrl(),
+                        'total_product_number'    => $export->getTotalProduct(),
+                        'exported_product_number' => $export->getTotalExportedProduct(),
+                        'options'                 => $config->getAllValues($store->getId())
+                    );
+                }
+            }
+        }
+        return $data;
+    }
+
+    /**
      * Set CMS options
      *
-     * @param boolean $force Force cache Update
+     * @param boolean $force force cache update
      *
      * @return boolean
      */
@@ -157,9 +208,9 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
     /**
      * Get Status Account
      *
-     * @param boolean $force Force cache Update
+     * @param boolean $force force cache update
      *
-     * @return mixed
+     * @return array|false
      */
     public function getStatusAccount($force = false)
     {
@@ -191,9 +242,9 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Get Statistic with all store
+     * Get Statistic for all stores
      *
-     * @param boolean $force Force cache Update
+     * @param boolean $force force cache update
      *
      * @return array
      */
@@ -275,44 +326,5 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
         $config->set('order_statistic', Mage::helper('core')->jsonEncode($return));
         $config->set('last_statistic_update', date('Y-m-d H:i:s'));
         return $return;
-    }
-
-    /**
-     * Get Sync Data (Inscription / Update)
-     *
-     * @return array
-     */
-    public static function getOptionData()
-    {
-        $helper = Mage::helper('lengow_connector');
-        $config = Mage::helper('lengow_connector/config');
-        $data = array();
-        $data['cms'] = array(
-            'token'          => $config->getToken(),
-            'type'           => 'magento',
-            'version'        => Mage::getVersion(),
-            'plugin_version' => (string)Mage::getConfig()->getNode()->modules->Lengow_Connector->version,
-            'options'        => $config->getAllValues()
-        );
-        foreach (Mage::app()->getWebsites() as $website) {
-            foreach ($website->getGroups() as $group) {
-                $stores = $group->getStores();
-                foreach ($stores as $store) {
-                    $export = Mage::getModel('lengow/export', array("store_id" => $store->getId()));
-                    $data['shops'][] = array(
-                        'enabled'                 => (bool)$config->get('store_enable', $store->getId()),
-                        'token'                   => $config->getToken($store->getId()),
-                        'store_name'              => $store->getName(),
-                        'domain_url'              => $store->getBaseUrl(),
-                        'feed_url'                => $helper->getExportUrl($store->getId()),
-                        'cron_url'                => $helper->getCronUrl(),
-                        'total_product_number'    => $export->getTotalProduct(),
-                        'exported_product_number' => $export->getTotalExportedProduct(),
-                        'options'                 => $config->getAllValues($store->getId())
-                    );
-                }
-            }
-        }
-        return $data;
     }
 }

@@ -1,12 +1,24 @@
 <?php
-
 /**
+ * Copyright 2017 Lengow SAS
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
  *
  * @category    Lengow
  * @package     Lengow_Connector
+ * @subpackage  Model
  * @author      Team module <team-module@lengow.com>
- * @copyright   2016 Lengow SAS
+ * @copyright   2017 Lengow SAS
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+
+/**
+ * Model resource import quote
  */
 class Lengow_Connector_Model_Import_Quote extends Mage_Sales_Model_Quote
 {
@@ -18,11 +30,11 @@ class Lengow_Connector_Model_Import_Quote extends Mage_Sales_Model_Quote
     /**
      * Add products from API to current quote
      *
-     * @param mixed                                     $products
-     * @param Lengow_Connector_Model_Import_Marketplace $marketplace
-     * @param string                                    $marketplaceSku
-     * @param boolean                                   $logOutput
-     * @param boolean                                   $priceIncludeTax
+     * @param mixed                                     $products        Lengow products list
+     * @param Lengow_Connector_Model_Import_Marketplace $marketplace     Lengow marketplace instance
+     * @param string                                    $marketplaceSku  marketplace sku
+     * @param boolean                                   $logOutput       see log or not
+     * @param boolean                                   $priceIncludeTax price include tax
      *
      * @return Lengow_Connector_Model_Import_Quote
      */
@@ -107,11 +119,13 @@ class Lengow_Connector_Model_Import_Quote extends Mage_Sales_Model_Quote
     /**
      * Find product in Magento based on API data
      *
-     * @param mixed   $productLine product data
-     * @param string  $marketplaceSku
-     * @param boolean $logOutput
+     * @param mixed   $productLine    product datas
+     * @param string  $marketplaceSku marketplace sku
+     * @param boolean $logOutput      see log or not
      *
-     * @return Mage_Catalog_Model_Product product found to be added
+     * @throws Lengow_Connector_Model_Exception product not be found / product is a parent
+     *
+     * @return Mage_Catalog_Model_Product
      */
     protected function _findProduct($productLine, $marketplaceSku, $logOutput)
     {
@@ -200,9 +214,9 @@ class Lengow_Connector_Model_Import_Quote extends Mage_Sales_Model_Quote
     /**
      * Get Lengow Products
      *
-     * @param string $productId product id
+     * @param string $productId Magento product id
      *
-     * @return string
+     * @return array
      */
     public function getLengowProducts($productId = null)
     {

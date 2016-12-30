@@ -1,23 +1,35 @@
 <?php
-
 /**
+ * Copyright 2017 Lengow SAS
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
  *
  * @category    Lengow
  * @package     Lengow_Connector
+ * @subpackage  Model
  * @author      Team module <team-module@lengow.com>
- * @copyright   2016 Lengow SAS
+ * @copyright   2017 Lengow SAS
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+
+/**
+ * Model resource import action
  */
 class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
 {
     /**
-    * integer action state for new action
-    */
+     * @var integer action state for new action
+     */
     const STATE_NEW = 0;
 
     /**
-    * integer action state for action finished
-    */
+     * @var integer action state for action finished
+     */
     const STATE_FINISH = 1;
 
     /**
@@ -47,9 +59,9 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
     /**
      * Create Lengow action
      *
-     * @param array $params
+     * @param array $params action parameters
      *
-     * @return Lengow_Connector_Model_Import_Action
+     * @return Lengow_Connector_Model_Import_Action|false
      */
     public function createAction($params = array())
     {
@@ -69,9 +81,9 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
     /**
      * Update Lengow action
      *
-     * @param array $params
+     * @param array $params action parameters
      *
-     * @return Lengow_Connector_Model_Import_Action
+     * @return Lengow_Connector_Model_Import_Action|false
      */
     public function updateAction($params = array())
     {
@@ -112,7 +124,7 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
      *
      * @param integer $actionId action id from API
      *
-     * @return mixed
+     * @return integer|false
      */
     public function getActiveActionByActionId($actionId)
     {
@@ -129,10 +141,10 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
     /**
      * Find active actions by order id
      *
-     * @param integer $orderId
-     * @param string  $actionType (ship or cancel)
+     * @param integer $orderId    Magento order id
+     * @param string  $actionType action type (ship or cancel)
      *
-     * @return mixed
+     * @return array|false
      */
     public function getActiveActionByOrderId($orderId, $actionType = null)
     {
@@ -152,9 +164,9 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
     /**
      * Get last order action type to re-send action
      *
-     * @param integer $orderId
+     * @param integer $orderId Magento order id
      *
-     * @return mixed
+     * @return string|false
      */
     public function getLastOrderActionType($orderId)
     {
@@ -172,9 +184,9 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
     /**
      * Find active actions by store
      *
-     * @param integer $storeId
+     * @param integer $storeId Magento store id
      *
-     * @return mixed
+     * @return array|false
      */
     public function getActiveActionByStore($storeId)
     {
@@ -210,7 +222,7 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
      * Removes all actions for one order Magento
      *
      * @param integer $orderId    Magento order id
-     * @param string  $actionType type (null, ship or cancel)
+     * @param string  $actionType action type (null, ship or cancel)
      *
      * @return boolean
      */
@@ -238,7 +250,7 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
     /**
      * Remove old actions > 3 days
      *
-     * @param string $actionType type (null, ship or cancel)
+     * @param string $actionType action type (null, ship or cancel)
      *
      * @return boolean
      */
@@ -307,7 +319,7 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
     /**
      * Check if active actions are finished
      *
-     * @return bool
+     * @return boolean
      */
     public function checkFinishAction()
     {
@@ -436,7 +448,7 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
     /**
      * Check if actions are not sent
      *
-     * @return bool
+     * @return boolean
      */
     public function checkActionNotSent()
     {

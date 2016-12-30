@@ -1,28 +1,40 @@
 <?php
-
 /**
+ * Copyright 2017 Lengow SAS
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
  *
  * @category    Lengow
  * @package     Lengow_Connector
+ * @subpackage  Model
  * @author      Team module <team-module@lengow.com>
- * @copyright   2016 Lengow SAS
+ * @copyright   2017 Lengow SAS
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+
+/**
+ * Model resource import order
  */
 class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
 {
     /**
-    * integer order process state for new order not imported
-    */
+     * @var integer order process state for new order not imported
+     */
     const PROCESS_STATE_NEW = 0;
 
     /**
-    * integer order process state for order imported
-    */
+     * @var integer order process state for order imported
+     */
     const PROCESS_STATE_IMPORT = 1;
 
     /**
-    * integer order process state for order finished
-    */
+     * @var integer order process state for order finished
+     */
     const PROCESS_STATE_FINISH = 2;
 
     /**
@@ -71,7 +83,9 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
     /**
      * Create Lengow order
      *
-     * @param array $params
+     * @param array $params order parameters
+     *
+     * @throws Lengow_Connector_Model_Exception value required
      *
      * @return Lengow_Connector_Model_Import_Order
      */
@@ -102,9 +116,9 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
     /**
      * Update Lengow order
      *
-     * @param array $params
+     * @param array $params order parameters
      *
-     * @return Lengow_Connector_Model_Import_Order
+     * @return Lengow_Connector_Model_Import_Order|false
      */
     public function updateOrder($params = array())
     {
@@ -145,7 +159,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
      * @param integer $deliveryAddressId delivery address id
      * @param string  $marketplaceLegacy old marketplace name for v2 compatibility
      *
-     * @return mixed
+     * @return integer|false
      */
     public function getOrderIdIfExist($marketplaceSku, $marketplaceName, $deliveryAddressId, $marketplaceLegacy)
     {
@@ -180,9 +194,9 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
      *
      * @param string  $marketplaceSku    marketplace sku
      * @param integer $deliveryAddressId delivery address id
-     * @param string  $type              type (import or send)
+     * @param string  $type              order error type (import or send)
      *
-     * @return mixed
+     * @return array|false
      */
     public function orderIsInError($marketplaceSku, $deliveryAddressId, $type = 'import')
     {
@@ -212,10 +226,10 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
     /**
      * Get Lengow ID with order ID Magento and delivery address ID
      *
-     * @param integer $orderId           magento order id
+     * @param integer $orderId           Magento order id
      * @param string  $deliveryAddressId delivery address id
      *
-     * @return mixed
+     * @return string|false
      */
     public function getOrderIdWithDeliveryAddress($orderId, $deliveryAddressId)
     {
@@ -238,7 +252,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
      * @param string $marketplaceSku  marketplace sku
      * @param string $marketplaceName delivery address id
      *
-     * @return array
+     * @return array|false
      */
     public function getAllOrderIds($marketplaceSku, $marketplaceName)
     {
@@ -260,7 +274,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
      * @param string  $marketplaceSku    marketplace sku
      * @param integer $deliveryAddressId delivery address id
      *
-     * @return mixed
+     * @return integer|false
      */
     public function getLengowOrderId($marketplaceSku, $deliveryAddressId)
     {
@@ -280,7 +294,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
      *
      * @param integer $orderId Magento order id
      *
-     * @return mixed
+     * @return integer|false
      */
     public function getLengowOrderIdWithOrderId($orderId)
     {
@@ -300,7 +314,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
      *
      * @param integer $storeId Magento store id
      *
-     * @return mixed
+     * @return array|false
      */
     public function getUnsentOrderByStore($storeId)
     {
@@ -365,9 +379,9 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
     /**
      * Re-import order lengow
      *
-     * @param integer $orderLengowId Order Lengow id
+     * @param integer $orderLengowId Lengow order id
      *
-     * @return mixed
+     * @return array|false
      */
     public function reImportOrder($orderLengowId)
     {
@@ -391,9 +405,9 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
     /**
      * Re-send order lengow
      *
-     * @param integer $orderLengowId Order Lengow id
+     * @param integer $orderLengowId Lengow order id
      *
-     * @return mixed
+     * @return boolean
      */
     public function reSendOrder($orderLengowId)
     {
@@ -421,9 +435,9 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
     /**
      * Cancel and re-import order
      *
-     * @param Mage_Sales_Model_Order $order Magento Order
+     * @param Mage_Sales_Model_Order $order Magento order instance
      *
-     * @return mixed
+     * @return integer|false
      */
     public function cancelAndReImportOrder($order)
     {
@@ -461,7 +475,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
     /**
      * Mark order as is_reimported in sales_flat_order table
      *
-     * @param Mage_Sales_Model_Order $order Magento Order
+     * @param Mage_Sales_Model_Order $order Magento order instance
      *
      * @return boolean
      */
@@ -479,9 +493,9 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
     /**
      * Get Magento equivalent to lengow order state
      *
-     * @param  string $orderStateLengow lengow state
+     * @param  string $orderStateLengow Lengow state
      *
-     * @return string
+     * @return integer
      */
     public function getOrderState($orderStateLengow)
     {
@@ -510,7 +524,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
      *
      * @param string $state state to be matched
      *
-     * @return mixed
+     * @return integer|false
      */
     public function getOrderProcessState($state)
     {
@@ -531,7 +545,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
     /**
      * Create invoice
      *
-     * @param Mage_Sales_Model_Order $order Magento Order
+     * @param Mage_Sales_Model_Order $order Magento order instance
      */
     public function toInvoice($order)
     {
@@ -549,7 +563,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
     /**
      * Ship order
      *
-     * @param Mage_Sales_Model_Order $order          Magento Order
+     * @param Mage_Sales_Model_Order $order          Magento order instance
      * @param string                 $carrierName    carrier name   
      * @param string                 $carrierMethod  carrier method
      * @param string                 $trackingNumber tracking number
@@ -581,7 +595,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
     /**
      * Cancel order
      *
-     * @param Mage_Sales_Model_Order $order
+     * @param Mage_Sales_Model_Order $order Magento order instance
      */
     public function toCancel($order)
     {
@@ -593,13 +607,13 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
     /**
      * Update order state to marketplace state
      *
-     * @param Mage_Sales_Model_Order $order            Magento Order
-     * @param string                 $orderStateLengow lengow status
+     * @param Mage_Sales_Model_Order $order            Magento order instance
+     * @param string                 $orderStateLengow lengow order status
      * @param mixed                  $orderData        order data
      * @param mixed                  $packageData      package data
      * @param mixed                  $orderLengowId    lengow order id or false
      *
-     * @return mixed (Processing, Complete, Canceled or false)
+     * @return string|false
      */
     public function updateState($order, $orderStateLengow, $orderData, $packageData, $orderLengowId)
     {
@@ -671,7 +685,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
     /**
      * Synchronize order with Lengow API
      *
-     * @param Mage_Sales_Model_Order           $order     Magento Order
+     * @param Mage_Sales_Model_Order           $order     Magento order instance
      * @param Lengow_Connector_Model_Connector $connector Lengow Connector for API calls
      *
      * @return boolean
@@ -724,7 +738,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
     /**
      * Check and change the name of the marketplace for v3 compatibility
      *
-     * @param Mage_Sales_Model_Order           $order     Magento Order
+     * @param Mage_Sales_Model_Order           $order     Magento order instance
      * @param Lengow_Connector_Model_Connector $connector Lengow Connector for API calls
      *
      * @return boolean
@@ -772,8 +786,12 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
      * Send Order action
      *
      * @param string                          $action   Lengow Actions (ship or cancel)
-     * @param Mage_Sales_Model_Order          $order    Magento Order
-     * @param Mage_Sales_Model_Order_Shipment $shipment Magento Shipment
+     * @param Mage_Sales_Model_Order          $order    Magento order instance
+     * @param Mage_Sales_Model_Order_Shipment $shipment Magento Shipment instance
+     *
+     * @throws Lengow_Connector_Model_Exception order line is required
+     *
+     * @return boolean
      */
     public function callAction($action, $order, $shipment = null)
     {
@@ -892,7 +910,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
      *
      * @param Mage_Sales_Model_Order $order Magento Order
      *
-     * @return mixed
+     * @return array|false
      */
     public function getOrderLineByApi($order)
     {
@@ -932,6 +950,8 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
 
     /**
      * Count order lengow with error
+     *
+     * @return integer
      */
     public function countOrderWithError()
     {
@@ -944,6 +964,8 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
 
     /**
      * Count order lengow to be sent
+     *
+     * @return integer
      */
     public function countOrderToBeSent()
     {

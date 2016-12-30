@@ -1,12 +1,24 @@
 <?php
-
 /**
+ * Copyright 2017 Lengow SAS
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
  *
  * @category    Lengow
  * @package     Lengow_Connector
+ * @subpackage  Model
  * @author      Team module <team-module@lengow.com>
- * @copyright   2016 Lengow SAS
+ * @copyright   2017 Lengow SAS
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+
+/**
+ * Model resource import marketplace
  */
 class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
 {
@@ -19,7 +31,7 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
     );
 
     /**
-     * @var mixed all markeplaces allowed for an account ID
+     * @var array all markeplaces allowed for an account ID
      */
     public static $marketplaces = array();
     
@@ -79,12 +91,12 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
     public $carriers = array();
 
     /**
-     * @var Lengow_Connector_Helper_Data
+     * @var Lengow_Connector_Helper_Data Lengow helper instance
      */
     protected $_helper = null;
 
     /**
-     * @var Lengow_Connector_Helper_Config
+     * @var Lengow_Connector_Helper_Config Lengow config helper instance
      */
     protected $_config = null;
 
@@ -94,6 +106,8 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
      * @param array params options
      * integer store_id Store Id for current order
      * string  name     Marketplace name
+     *
+     * @throws Lengow_Connector_Model_Exception marketplace not present
      */
     public function __construct($params = array())
     {
@@ -194,7 +208,7 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
     *
     * @param string $name The argument's name
     *
-    * @return mixed
+    * @return string|false
     */
     public function getDefaultValue($name)
     {
@@ -210,7 +224,7 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
     /**
      * Is marketplace contain order Line
      *
-     * @param string $action (ship, cancel or refund)
+     * @param string $action order action (ship or cancel)
      *
      * @return bool
      */
@@ -233,12 +247,16 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
      /**
      * Call Action with marketplace
      *
-     * @param string                          $action
-     * @param Mage_Sales_Model_Order          $order
-     * @param Mage_Sales_Model_Order_Shipment $shipment
-     * @param string                          $orderLineId
+     * @param string                          $action      order action (ship or cancel)
+     * @param Mage_Sales_Model_Order          $order       Magento order instance
+     * @param Mage_Sales_Model_Order_Shipment $shipment    Magento shipment instance
+     * @param string                          $orderLineId Lengow order line id
      *
-     * @return bool
+     * @throws Lengow_Connector_Model_Exception action not valid / marketplace action not present
+     *                                          store id is required / marketplace name is required
+     *                                          argument is required / action not created
+     *
+     * @return boolean
      */
     public function callAction($action, $order, $shipment = null, $orderLineId = null)
     {
@@ -465,10 +483,10 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
     /**
      * Match carrier's name with accepted values
      *
-     * @param string $code
-     * @param string $title
+     * @param string $code  carrier code
+     * @param string $title carrier title
      *
-     * @return string The matching carrier name
+     * @return string
      */
     private function _matchCarrier($code, $title)
     {

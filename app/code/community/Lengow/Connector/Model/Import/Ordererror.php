@@ -1,23 +1,35 @@
 <?php
-
 /**
+ * Copyright 2017 Lengow SAS
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
  *
  * @category    Lengow
  * @package     Lengow_Connector
+ * @subpackage  Model
  * @author      Team module <team-module@lengow.com>
- * @copyright   2016 Lengow SAS
+ * @copyright   2017 Lengow SAS
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+
+/**
+ * Model resource import ordererror
  */
 class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
 {
     /**
-    * integer order error import type
-    */
+     * @var integer order error import type
+     */
     const TYPE_ERROR_IMPORT = 1;
 
     /**
-    * integer order error send type
-    */
+     * @var integer order error send type
+     */
     const TYPE_ERROR_SEND = 2;
 
     /**
@@ -45,9 +57,9 @@ class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
     /**
      * Create Lengow order error
      *
-     * @param array $params
+     * @param array $params ordererror parameters
      *
-     * @return Lengow_Connector_Model_Import_Ordererror
+     * @return Lengow_Connector_Model_Import_Ordererror|false
      */
     public function createOrderError($params = array())
     {
@@ -69,9 +81,9 @@ class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
     /**
      * Update Lengow order error
      *
-     * @param array $params
+     * @param array $params ordererror parameters
      *
-     * @return Lengow_Connector_Model_Import_Ordererror
+     * @return Lengow_Connector_Model_Import_Ordererror|false
      */
     public function updateOrderError($params = array())
     {
@@ -107,7 +119,7 @@ class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
     /**
      * Return type value
      *
-     * @param string $type Type (import or send)
+     * @param string $type order error type (import or send)
      *
      * @return integer
      */
@@ -130,10 +142,10 @@ class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
      * Get all order errors
      *
      * @param integer $orderLengowId Lengow order id
-     * @param string  $type          type (import or send)
-     * @param boolean $finished      log finished (true or false)
+     * @param string  $type          order error type (import or send)
+     * @param boolean $finished      log finished
      *
-     * @return mixed
+     * @return array|false
      *
      */
     public function getOrderErrors($orderLengowId, $type = null, $finished = null)
@@ -159,7 +171,7 @@ class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
      * Removes all order error for one order lengow
      *
      * @param integer $orderLengowId Lengow order id
-     * @param string  $type            type (import or send)
+     * @param string  $type          order error type (import or send)
      *
      * @return boolean
      */
@@ -187,7 +199,7 @@ class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
     /**
      * Get error import logs never send by mail
      *
-     * @return mixed
+     * @return array|false
      */
     public function getImportErrors()
     {

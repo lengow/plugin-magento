@@ -1,32 +1,44 @@
 <?php
-
 /**
+ * Copyright 2017 Lengow SAS
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
  *
  * @category    Lengow
  * @package     Lengow_Connector
+ * @subpackage  Helper
  * @author      Team module <team-module@lengow.com>
- * @copyright   2016 Lengow SAS
+ * @copyright   2017 Lengow SAS
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+
+/**
+ * Helper toolbox
  */
 class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
 {
     /**
-     * @var Main helper
+     * @var Lengow_Connector_Helper_Data Lengow helper instance
      */
     protected $_helper;
 
     /**
-     * @var Security helper
+     * @var Lengow_Connector_Helper_Security Lengow security helper instance
      */
     protected $_securityHelper;
 
     /**
-     * @var Configuration helper
+     * @var Lengow_Connector_Helper_Config Lengow config helper instance
      */
     protected $_configHelper;
 
     /**
-     * @var Import helper
+     * @var Lengow_Connector_Helper_Import Lengow import helper instance
      */
     protected $_importHelper;
 
@@ -165,7 +177,7 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
     /**
      * Get array of export informations
      *
-     * @param $store Magento store
+     * @param Mage_Core_Model_Store $store Magento store instance
      *
      * @return string
      */
@@ -207,7 +219,7 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
     /**
      * Get array of file informations
      *
-     * @param $store Magento store
+     * @param Mage_Core_Model_Store $store Magento store instance
      *
      * @return string
      */
@@ -247,7 +259,7 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
     /**
      * Get array of file informations
      *
-     * @param string $type type of action (export or import)
+     * @param string $type cron type (export or import)
      *
      * @return string
      */
@@ -345,7 +357,7 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
     /**
      * Get HTML Table content of checklist
      *
-     * @param array $checklist
+     * @param array $checklist all information for toolbox
      *
      * @return string
      */
@@ -382,7 +394,7 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
     /**
      * Get HTML Table content of cron job
      *
-     * @param array $lengowCronJobs
+     * @param array $lengowCronJobs Lengow cron jobs
      *
      * @return string
      */

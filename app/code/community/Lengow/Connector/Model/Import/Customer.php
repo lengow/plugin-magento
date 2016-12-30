@@ -1,12 +1,24 @@
 <?php
-
 /**
+ * Copyright 2017 Lengow SAS
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
  *
  * @category    Lengow
  * @package     Lengow_Connector
+ * @subpackage  Model
  * @author      Team module <team-module@lengow.com>
- * @copyright   2016 Lengow SAS
+ * @copyright   2017 Lengow SAS
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+
+/**
+ * Model resource import customer
  */
 class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Customer
 {
@@ -34,11 +46,11 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
     /**
      * Convert array to customer model
      *
-     * @param object  $orderData
-     * @param array   $shippingAddress
-     * @param integer $storeId
-     * @param string  $marketplaceSku
-     * @param boolean $logOutput
+     * @param object  $orderData       order data
+     * @param array   $shippingAddress shipping address data
+     * @param integer $storeId         Magento store id
+     * @param string  $marketplaceSku  marketplace sku
+     * @param boolean $logOutput       see log or not
      */
     public function createCustomer($orderData, $shippingAddress, $storeId, $marketplaceSku, $logOutput)
     {
@@ -124,8 +136,8 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
     /**
      * Convert a array to customer address model
      *
-     * @param array  $data
-     * @param string $type
+     * @param array  $data address data
+     * @param string $type address type (billing or shipping)
      *
      * @return Mage_Customer_Model_Address
      */
@@ -191,7 +203,7 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
     /**
      * Check if firstname or lastname are empty
      *
-     * @param array $array
+     * @param array $array name and lastname of the customer
      *
      * @return array
      */
@@ -223,7 +235,7 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
     /**
      * Split fullname
      *
-     * @param string $fullname
+     * @param string $fullname fullname of the customer
      *
      * @return array
      */

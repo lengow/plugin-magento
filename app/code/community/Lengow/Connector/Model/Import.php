@@ -1,37 +1,49 @@
 <?php
-
 /**
+ * Copyright 2017 Lengow SAS
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
  *
  * @category    Lengow
  * @package     Lengow_Connector
+ * @subpackage  Model
  * @author      Team module <team-module@lengow.com>
- * @copyright   2016 Lengow SAS
+ * @copyright   2017 Lengow SAS
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+
+/**
+ * Model import
  */
 class Lengow_Connector_Model_Import extends Varien_Object
 {
     /**
-     * @var Lengow_Connector_Helper_Data
+     * @var Lengow_Connector_Helper_Data Lengow helper instance
      */
     protected $_helper = null;
 
     /**
-     * @var Lengow_Connector_Helper_Import
+     * @var Lengow_Connector_Helper_Import Lengow import helper instance
      */
     protected $_importHelper = null;
 
     /**
-     * @var Lengow_Connector_Helper_Config
+     * @var Lengow_Connector_Helper_Config Lengow config helper instance
      */
     protected $_config = null;
 
     /**
-     * @var integer store id
+     * @var integer Magento store id 
      */
     protected $_storeId = null;
 
     /**
-     * @var integer order Lengow id
+     * @var integer Lengow order id
      */
     protected $_orderLengowId = null;
 
@@ -56,7 +68,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
     protected $_limit = 0;
 
     /**
-     * @var string type import (manual, cron or magento cron)
+     * @var string import type (manual, cron or magento cron)
      */
     protected $_typeImport;
 
@@ -153,6 +165,8 @@ class Lengow_Connector_Model_Import extends Varien_Object
 
     /**
      * Execute import: fetch orders and import them
+     *
+     * @throws Lengow_Connector_Model_Exception order not found
      *
      * @return array
      */
@@ -372,8 +386,8 @@ class Lengow_Connector_Model_Import extends Varien_Object
     /**
      * Check credentials for a store
      *
-     * @param integer $storeId   Store Id
-     * @param string  $storeName Store name
+     * @param integer $storeId   Magento store Id
+     * @param string  $storeName Magento store name
      *
      * @return boolean
      */
@@ -410,9 +424,11 @@ class Lengow_Connector_Model_Import extends Varien_Object
     /**
      * Call Lengow order API
      *
-     * @param $store
+     * @param Mage_Core_Model_Store $store Magento store instance
      *
-     * @return mixed
+     * @throws Lengow_Connector_Model_Exception no connection with webservices / credentials not valid
+     *
+     * @return array
      */
     protected function _getOrdersFromApi($store)
     {
@@ -535,10 +551,10 @@ class Lengow_Connector_Model_Import extends Varien_Object
     /**
      * Create or update order in Magento
      *
-     * @param mixed   $orders   API orders
-     * @param integer $storeId Store Id
+     * @param mixed   $orders  API orders
+     * @param integer $storeId Magento store Id
      *
-     * @return mixed
+     * @return array|false
      */
     protected function _importOrders($orders, $storeId)
     {

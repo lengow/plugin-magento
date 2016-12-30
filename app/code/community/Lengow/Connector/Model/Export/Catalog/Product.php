@@ -1,21 +1,33 @@
 <?php
-
 /**
+ * Copyright 2017 Lengow SAS
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
  *
  * @category    Lengow
  * @package     Lengow_Connector
+ * @subpackage  Model
  * @author      Team module <team-module@lengow.com>
- * @copyright   2016 Lengow SAS
+ * @copyright   2017 Lengow SAS
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+
+/**
+ * Model export catalog product
  */
 class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_Product
 {
     /**
      * Config model export
      *
-     * @var object
+     * @var Lengow_Connector_Helper_Config Lengow config helper instance
      */
-    protected $_configHelper = true;
+    protected $_configHelper;
 
     /**
      * Initialize resources
@@ -29,8 +41,8 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
     /**
      * Get Shipping info
      *
-     * @param Mage_Catalog_Model_Product $productInstance
-     * @param integer                    $storeId
+     * @param Mage_Catalog_Model_Product $productInstance Magento product instance
+     * @param integer                    $storeId         Magento store id
      *
      * @return array
      */
@@ -57,11 +69,11 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
     /**
      * Get shipping price
      *
-     * @param Mage_Catalog_Model_Product $productInstance
-     * @param string                     $carrierValue
-     * @param string                     $countryCode
+     * @param Mage_Catalog_Model_Product $productInstance Magento product instance
+     * @param string                     $carrierValue    Magento carrier value
+     * @param string                     $countryCode     country iso code
      *
-     * @return mixed
+     * @return float|false
      */
     public function _getShippingPrice($productInstance, $carrierValue, $countryCode = 'FR')
     {
@@ -90,8 +102,8 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
     /**
      * Get Shipping rate request
      *
-     * @param Mage_Catalog_Model_Product $productInstance
-     * @param string                     $countryCode
+     * @param Mage_Catalog_Model_Product $productInstance Magento product instance
+     * @param string                     $countryCode     country iso code
      *
      * @return Mage_Shipping_Model_Rate_Request
      */
@@ -130,9 +142,9 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
     /**
      * Get price
      *
-     * @param Mage_Catalog_Model_Product $productInstance
-     * @param integer                    $storeId
-     * @param Mage_Catalog_Model_Product $configurableInstance
+     * @param Mage_Catalog_Model_Product $productInstance      Magento product instance
+     * @param integer                    $storeId              Magento store id
+     * @param Mage_Catalog_Model_Product $configurableInstance Magento product instance for configurable
      *
      * @return array
      */
@@ -312,10 +324,10 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
     /**
      * Get categories and breadcrumb
      *
-     * @param Mage_Catalog_Model_Product $productInstance
-     * @param Mage_Catalog_Model_Product $parentInstance
-     * @param integer                    $storeId
-     * @param array                      $categoryCache
+     * @param Mage_Catalog_Model_Product $productInstance Magento product instance
+     * @param Mage_Catalog_Model_Product $parentInstance  Magento product instance for parent
+     * @param integer                    $storeId         Magento store id
+     * @param array                      $categoryCache   category cache
      *
      * @return array
      */
@@ -398,8 +410,8 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
     /**
      * Merge images child with images' parents
      *
-     * @param array $images       of child's product
-     * @param array $parentimages of parent's product
+     * @param array $images       images of child's product
+     * @param array $parentimages images of parent's product
      *
      * @return array images merged
      */

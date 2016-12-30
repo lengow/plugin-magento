@@ -1,17 +1,29 @@
 <?php
-
 /**
+ * Copyright 2017 Lengow SAS
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
  *
  * @category    Lengow
  * @package     Lengow_Connector
+ * @subpackage  Model
  * @author      Team module <team-module@lengow.com>
- * @copyright   2016 Lengow SAS
+ * @copyright   2017 Lengow SAS
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+
+/**
+ * Model export
  */
 class Lengow_Connector_Model_Export extends Varien_Object
 {
     /**
-     * All available params for export
+     * @var array all available params for export
      */
     protected $_exportParams = array(
         'mode',
@@ -35,12 +47,12 @@ class Lengow_Connector_Model_Export extends Varien_Object
     );
 
     /**
-     * Default fields
+     * @var array default fields
      */
     protected $_defaultFields;
 
     /**
-     * New fields for v3
+     * @var array new fields for v3
      */
     protected $_newFields = array(
         'id'                             => 'id',
@@ -84,7 +96,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
     );
 
     /**
-     * Legacy fields for retro-compatibility
+     * @var array legacy fields for retro-compatibility
      */
     protected $_legacyFields = array(
         'sku'                   => 'sku',
@@ -134,7 +146,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
     );
 
     /**
-     * Excludes attributes for export
+     * @var array excludes attributes for export
      */
     protected $_excludes = array(
         'media_gallery',
@@ -148,7 +160,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
     );
 
     /**
-     * Available formats for export
+     * @var array available formats for export
      */
     protected $_availableFormats = array(
         'csv',
@@ -158,57 +170,52 @@ class Lengow_Connector_Model_Export extends Varien_Object
     );
 
     /**
-     * boolean is the export output stream ?
+     * @var boolean is the export output stream ?
      */
     protected $_stream;
 
     /**
-     * mixed use legacy fields or not
+     * @var boolean use legacy fields or not
      */
     protected $_legacy;
 
     /**
-     * object
+     * @var Mage_Core_Model_Store Magento store instance
      */
     protected $_store;
 
     /**
-     * integer Store Id
+     * @var integer Magento store id
      */
     protected $_storeId;
 
     /**
-     * object
+     * @var Varien_Io_File Magento varien io file instance
      */
     protected $_file;
 
     /**
-     * string filename of output file
+     * @var string filename of output file
      */
     protected $_fileName = 'lengow_feed';
 
     /**
-     * integer timestamp of output file
+     * @var integer timestamp of output file
      */
     protected $_fileTimeStamp = null;
 
     /**
-     * array all config options
+     * @var array all config options
      */
     protected $_config = array();
 
     /**
-     * object
-     */
-    protected $_configHelper;
-
-    /**
-     * string file format for export
+     * @var string file format for export
      */
     protected $_fileFormat;
 
     /**
-     * boolean update export date or not
+     * @var boolean update export date or not
      */
     protected $_updateExportDate;
 
@@ -223,15 +230,28 @@ class Lengow_Connector_Model_Export extends Varien_Object
     protected $_logOutput = false;
 
     /**
-     * object
+     * @var Lengow_Connector_Helper_Config Lengow config helper instance
+     */
+    protected $_configHelper;
+
+    /**
+     * @var Lengow_Connector_Helper_Data Lengow helper instance
      */
     protected $_helper;
 
     /**
-     * Export cache
+     * @var array cache parent products
      */
     protected $_cacheParentProducts = array();
+
+    /**
+     * @var integer clear parent cache
+     */
     protected $_clearParentCache = 0;
+
+    /**
+     * @var array cache category
+     */
     protected $_cacheCategory = array();
 
     /**
@@ -759,9 +779,9 @@ class Lengow_Connector_Model_Export extends Varien_Object
     /**
      * Temporary store Parent Identity
      *
-     * @param integer $parentId Parent Entity Id
+     * @param integer $parentId Magento parent entity id
      *
-     * @return object Catalog/product
+     * @return Mage_Catalog_Model_Product
      */
     protected function _getParentEntity($parentId)
     {
@@ -846,7 +866,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
     /**
      * Get total available products
      *
-     * @return string
+     * @return integer
      **/
     public function getTotalProduct()
     {
@@ -872,7 +892,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
     /**
      * Get total exported products
      *
-     * @return string
+     * @return integer
      **/
     public function getTotalExportedProduct()
     {
@@ -884,7 +904,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
     /**
      * Filter out of stock product
      *
-     * @param boolean $outOfStock
+     * @param boolean $outOfStock get out of stock products
      *
      * @return string
      **/
@@ -903,7 +923,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
     /**
      * File generation
      *
-     * @param array $data
+     * @param array $data product datas
      */
     protected function _write($data)
     {
@@ -1108,7 +1128,6 @@ class Lengow_Connector_Model_Export extends Varien_Object
                 'example'           => $example
             );
         }
-        
         return Mage::helper('core')->jsonEncode($params);
     }
 }

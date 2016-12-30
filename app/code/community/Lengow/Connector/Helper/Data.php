@@ -1,12 +1,24 @@
 <?php
-
 /**
+ * Copyright 2017 Lengow SAS
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
  *
  * @category    Lengow
  * @package     Lengow_Connector
+ * @subpackage  Helper
  * @author      Team module <team-module@lengow.com>
- * @copyright   2016 Lengow SAS
+ * @copyright   2017 Lengow SAS
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+
+/**
+ * Helper data
  */
 class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
 {
@@ -16,12 +28,12 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
     const LOG_LIFE = 20;
 
     /**
-     * @var string Plugin version
+     * @var string plugin version
      */
     const PLUGIN_VERSION = '3.0.0';
 
     /**
-     * @var string Plugin code
+     * @var string plugin code
      */
     const PLUGIN_CODE = 'lengow_connector_setup';
 
@@ -53,8 +65,8 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Get export Url
      *
-     * @param integer $storeId
-     * @param array   $additionalParams
+     * @param integer $storeId          Magento store id
+     * @param array   $additionalParams additional parameters for export url
      *
      * @return string
      */
@@ -84,10 +96,10 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Write log
      *
-     * @param string  $category       Category
+     * @param string  $category       log category
      * @param string  $message        log message
      * @param boolean $display        display on screen
-     * @param string  $marketplaceSku lengow order id
+     * @param string  $marketplaceSku Lengow order id
      *
      * @return boolean
      */
@@ -111,8 +123,8 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Set message with params for translation
      *
-     * @param string $key
-     * @param array  $params
+     * @param string $key    log key
+     * @param array  $params log parameters
      *
      * @return string
      */
@@ -133,9 +145,9 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Decode message with params for translation
      *
-     * @param string $message
-     * @param string $isoCode
-     * @param mixed  $params
+     * @param string $message log message
+     * @param string $isoCode iso code for translation
+     * @param mixed  $params  log parameters
      *
      * @return string
      */
@@ -161,7 +173,7 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Delete log files when too old
      *
-     * @param integer $nbDays
+     * @param integer $nbDays number of days for deletion
      */
     public function cleanLog($nbDays = 20)
     {
@@ -198,7 +210,7 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Get host for generated email
      *
-     * @param integer $storeId store id
+     * @param integer $storeId Magento store id
      *
      * @return string Hostname
      */
@@ -218,7 +230,7 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
      * @param integer $timestamp linux timestamp
      * @param boolean $second    see seconds or not
      *
-     * @return integer $timestamp in gmt format
+     * @return string in gmt format
      */
     public function getDateInCorrectFormat($timestamp, $second = false)
     {
@@ -234,10 +246,10 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
      * Convert specials chars to html chars
      * Clean None utf-8 characters
      *
-     * @param string  $value The content
+     * @param string  $value the content
      * @param boolean $html  keep html or not
      *
-     * @return string $value
+     * @return string
      */
     public function cleanData($value, $html = true)
     {

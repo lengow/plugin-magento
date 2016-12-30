@@ -1,37 +1,49 @@
 <?php
-
 /**
+ * Copyright 2017 Lengow SAS
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
  *
  * @category    Lengow
  * @package     Lengow_Connector
+ * @subpackage  Model
  * @author      Team module <team-module@lengow.com>
- * @copyright   2016 Lengow SAS
+ * @copyright   2017 Lengow SAS
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+
+/**
+ * Model resource import importorder
  */
 class Lengow_Connector_Model_Import_Importorder extends Varien_Object
 {
     /**
-     * @var Lengow_Connector_Helper_Data
+     * @var Lengow_Connector_Helper_Data Lengow helper instance
      */
     protected $_helper = null;
 
     /**
-     * @var Lengow_Connector_Helper_Import
+     * @var Lengow_Connector_Helper_Import Lengow import helper instance
      */
     protected $_importHelper = null;
 
     /**
-     * @var Lengow_Connector_Helper_Config
+     * @var Lengow_Connector_Helper_Config Lengow config helper instance
      */
     protected $_config = null;
 
     /**
-     * @var Lengow_Connector_Model_Import_Order
+     * @var Lengow_Connector_Model_Import_Order Lengow import order instance
      */
     protected $_modelOrder = null;
 
     /**
-     * @var integer store id
+     * @var integer Magento store id 
      */
     protected $_storeId = null;
 
@@ -46,7 +58,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
     protected $_logOutput = false;
 
     /**
-     * @var Lengow_Connector_Model_Import_Marketplace
+     * @var Lengow_Connector_Model_Import_Marketplace Lengow marketplace instance
      */
     protected $_marketplace;
 
@@ -66,17 +78,17 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
     protected $_deliveryAddressId;
 
     /**
-     * @var mixed
+     * @var mixed order data
      */
     protected $_orderData;
 
     /**
-     * @var mixed
+     * @var mixed package data
      */
     protected $_packageData;
 
     /**
-     * @var boolean
+     * @var boolean is first package
      */
     protected $_firstPackage;
 
@@ -91,57 +103,57 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
     protected $_orderLengowId;
 
     /**
-     * @var string
+     * @var string marketplace order state
      */
     protected $_orderStateMarketplace;
 
     /**
-     * @var string
+     * @var string Lengow order state
      */
     protected $_orderStateLengow;
 
     /**
-     * @var float
+     * @var float order processing fees
      */
     protected $_processingFee;
 
     /**
-     * @var float
+     * @var float order shipping costs
      */
     protected $_shippingCost;
 
     /**
-     * @var float
+     * @var float order amount
      */
     protected $_orderAmount;
 
     /**
-     * @var integer
+     * @var integer order items
      */
     protected $_orderItems;
 
     /**
-     * @var string
+     * @var string carrier name
      */
     protected $_carrierName = null;
 
     /**
-     * @var string
+     * @var string carrier method
      */
     protected $_carrierMethod = null;
 
     /**
-     * @var string
+     * @var string carrier tracking number
      */
     protected $_trackingNumber = null;
 
     /**
-     * @var boolean
+     * @var boolean order shipped by marketplace
      */
     protected $_shippedByMp = false;
 
     /**
-     * @var string
+     * @var string carrier relay id
      */
     protected $_relayId = null;
 
@@ -188,7 +200,9 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
     /**
      * Create or update order
      *
-     * @return mixed
+     * @throws Lengow_Connector_Model_Exception order is empty
+     *
+     * @return array|false
      */
     public function importOrder()
     {
@@ -468,9 +482,9 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
     /**
      * Return an array of result for each order
      *
-     * @param string  $typeResult      Type of result (new, update, error)
-     * @param integer $orderLengowId  ID of the lengow order record
-     * @param integer $orderId         Order ID Magento
+     * @param string  $typeResult     Type of result (new, update, error)
+     * @param integer $orderLengowId  Lengow order id
+     * @param integer $orderId        Magento order id
      *
      * @return array
      */
@@ -492,7 +506,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
      /**
      * Check the command and updates data if necessary
      *
-     * @param integer $orderId Order ID Magento
+     * @param integer $orderId Magento order id
      *
      * @return boolean
      */
@@ -603,9 +617,9 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
     /**
      * Checks if an external id already exists
      *
-     * @param array $externalIds
+     * @param array $externalIds API external ids
      *
-     * @return mixed
+     * @return integer|false
      */
     protected function _checkExternalIds($externalIds)
     {
@@ -673,10 +687,6 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
 
     /**
      * Get tracking data and update Lengow order record
-     *
-     * @param mixed $package
-     *
-     * @return mixed
      */
     protected function _loadTrackingData()
     {
@@ -713,7 +723,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
     /**
      * Create quote
      *
-     * @param Lengow_Connector_Model_Import_Customer $customer
+     * @param Lengow_Connector_Model_Import_Customer $customer Lengow customer instance
      *
      * @return Lengow_Connector_Model_Import_Quote
      */
@@ -866,7 +876,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
     /**
      * Add quantity back to stock
      *
-     * @param Lengow_Connector_Model_Import_Quote $quote
+     * @param Lengow_Connector_Model_Import_Quote $quote Lengow quote instance
      *
      * @return this
      */
@@ -882,7 +892,9 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
     /**
      * Create order
      *
-     * @param Lengow_Connector_Model_Import_Quote $quote
+     * @param Lengow_Connector_Model_Import_Quote $quote Lengow quote instance
+     *
+     * @throws Lengow_Connector_Model_Exception order failed with quote
      *
      * @return Mage_Sales_Model_Order
      */
@@ -1017,8 +1029,8 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
     /**
      * Save order line in lengow orders line table
      *
-     * @param Mage_Sales_Model_Order $order Magento order
-     * @param Mage_Sales_Model_Quote $quote Magento quote
+     * @param Mage_Sales_Model_Order              $order Magento order instance
+     * @param Lengow_Connector_Model_Import_Quote $quote Lengow quote instance
      *
      * @return string
      */

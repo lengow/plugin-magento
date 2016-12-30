@@ -1,17 +1,29 @@
 <?php
-
 /**
+ * Copyright 2017 Lengow SAS
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
  *
  * @category    Lengow
  * @package     Lengow_Connector
+ * @subpackage  Model
  * @author      Team module <team-module@lengow.com>
- * @copyright   2016 Lengow SAS
+ * @copyright   2017 Lengow SAS
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+
+/**
+ * Model observer
  */
 class Lengow_Connector_Model_Observer
 {
     /**
-     * Path for Lengow options
+     * @var array path for Lengow options
      */
     protected $_lengowOptions = array(
         'lengow_global_options',
@@ -20,7 +32,7 @@ class Lengow_Connector_Model_Observer
     );
 
     /**
-     * Excludes attributes for export
+     * @var array excludes attributes for export
      */
     protected $_excludeOptions = array(
         'import_in_progress',
@@ -36,7 +48,7 @@ class Lengow_Connector_Model_Observer
     );
 
     /**
-     * Order already shipped
+     * @var array order already shipped
      */
     protected $_alreadyShipped = array();
 
@@ -71,7 +83,7 @@ class Lengow_Connector_Model_Observer
     /**
      * Save Change on lengow data
      *
-     * @param $observer
+     * @param Varien_Event_Observer $observer Magento varien event observer instance
      */
     public function onAfterSave(Varien_Event_Observer $observer)
     {
@@ -119,7 +131,9 @@ class Lengow_Connector_Model_Observer
     /**
      * Sending a call WSDL for a new order shipment
      *
-     * @param $observer
+     * @param Varien_Event_Observer $observer Magento varien event observer instance
+     *
+     * @return Lengow_Connector_Model_Observer
      */
     public function salesOrderShipmentSaveAfter(Varien_Event_Observer $observer)
     {
@@ -139,7 +153,9 @@ class Lengow_Connector_Model_Observer
     /**
      * Sending a call WSDL for a new tracking
      *
-     * @param $observer
+     * @param Varien_Event_Observer $observer Magento varien event observer instance
+     *
+     * @return Lengow_Connector_Model_Observer
      */
     public function salesOrderShipmentTrackSaveAfter(Varien_Event_Observer $observer)
     {
@@ -160,7 +176,9 @@ class Lengow_Connector_Model_Observer
     /**
      * Sending a call for a cancellation of order
      *
-     * @param $observer
+     * @param Varien_Event_Observer $observer Magento varien event observer instance
+     *
+     * @return Lengow_Connector_Model_Observer
      */
     public function salesOrderPaymentCancel(Varien_Event_Observer $observer)
     {
@@ -177,6 +195,8 @@ class Lengow_Connector_Model_Observer
 
     /**
      * Exports products for each store with cron job
+     *
+     * @return Lengow_Connector_Model_Observer
      */
     public function exportCron()
     {
@@ -214,6 +234,8 @@ class Lengow_Connector_Model_Observer
 
     /**
      * Imports orders for each store with cron job
+     *
+     * @return Lengow_Connector_Model_Observer
      */
     public function importCron()
     {
