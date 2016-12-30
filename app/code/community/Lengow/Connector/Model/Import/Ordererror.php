@@ -18,7 +18,7 @@
  */
 
 /**
- * Model resource import ordererror
+ * Model import ordererror
  */
 class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
 {

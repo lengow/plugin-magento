@@ -18,7 +18,7 @@
  */
 
 /**
- * Model resource import customer
+ * Model import customer
  */
 class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Customer
 {

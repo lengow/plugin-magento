@@ -18,7 +18,7 @@
  */
 
 /**
- * Model resource import orderline
+ * Model import orderline
  */
 class Lengow_Connector_Model_Import_Orderline extends Mage_Core_Model_Abstract
 {

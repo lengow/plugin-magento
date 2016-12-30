@@ -18,7 +18,7 @@
  */
 
 /**
- * Model resource import action
+ * Model import action
  */
 class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
 {

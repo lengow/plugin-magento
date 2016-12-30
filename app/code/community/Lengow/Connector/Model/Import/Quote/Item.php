@@ -18,7 +18,7 @@
  */
 
 /**
- * Model resource import quote item
+ * Model import quote item
  */
 class  Lengow_Connector_Model_Import_Quote_Item extends Mage_Sales_Model_Quote_Item
 {

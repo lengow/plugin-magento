@@ -18,7 +18,7 @@
  */
 
 /**
- * Model resource import order
+ * Model import order
  */
 class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
 {

@@ -18,7 +18,7 @@
  */
 
 /**
- * Model resource import marketplace
+ * Model import marketplace
  */
 class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
 {

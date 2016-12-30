@@ -18,7 +18,7 @@
  */
 
 /**
- * Model resource import importorder
+ * Model import importorder
  */
 class Lengow_Connector_Model_Import_Importorder extends Varien_Object
 {
