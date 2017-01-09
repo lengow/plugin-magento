@@ -23,6 +23,11 @@
 class Lengow_Connector_Helper_Security extends Mage_Core_Helper_Abstract
 {
     /**
+     * @var string plugin code
+     */
+    const PLUGIN_CODE = 'lengow_connector_setup';
+
+    /**
      * @var array lengow authorized ips
      */
     public static $ipsLengow = array(
@@ -72,9 +77,27 @@ class Lengow_Connector_Helper_Security extends Mage_Core_Helper_Abstract
         $ips = trim(str_replace(array("\r\n", ',', '-', '|', ' '), ';', $ips), ';');
         $ips = explode(';', $ips);
         $authorizedIps = array_merge($ips, self::$ipsLengow);
-        $authorizedIps[] = $_SERVER['SERVER_ADDR'];
+        $authorizedIps[] = $this->getRealIP();
         $hostnameIp = Mage::helper('core/http')->getRemoteAddr();
         if (in_array($hostnameIp, $authorizedIps)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Check if lengow_connector_setup is present in core_ressource table
+     *
+     * @return boolean
+     */
+    public function lengowIsInstalled()
+    {
+        $resource = Mage::getSingleton('core/resource');
+        $readConnection = $resource->getConnection('core_read');
+        $table = $resource->getTableName('core/resource');
+        $query = 'SELECT version FROM '.$table.' WHERE code = \''.self::PLUGIN_CODE.'\'';
+        $version = $readConnection->fetchOne($query);
+        if ($version === $this->getPluginVersion()) {
             return true;
         }
         return false;
@@ -117,6 +140,6 @@ class Lengow_Connector_Helper_Security extends Mage_Core_Helper_Abstract
      */
     public function checkValidMagentoVersion()
     {
-        return (Mage::getVersion() < '1.5.0.0') ? false : true;
+        return ($this->getMagentoVersion() < '1.5.0.0') ? false : true;
     }
 }

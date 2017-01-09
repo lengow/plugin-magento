@@ -28,16 +28,6 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
     const LOG_LIFE = 20;
 
     /**
-     * @var string plugin version
-     */
-    const PLUGIN_VERSION = '3.0.0';
-
-    /**
-     * @var string plugin code
-     */
-    const PLUGIN_CODE = 'lengow_connector_setup';
-
-    /**
      * User another translation system (key based)
      *
      * @return string
@@ -186,26 +176,6 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
         $query = "DELETE FROM ".$table." WHERE `date` < DATE_SUB(NOW(),INTERVAL ".$nbDays." DAY)";
         $writeConnection->query($query);
     }
-
-
-    /**
-     * Check if lengow_connector_setup is present in core_ressource table
-     *
-     * @return boolean
-     */
-    public function lengowIsInstalled()
-    {
-        $resource = Mage::getSingleton('core/resource');
-        $readConnection = $resource->getConnection('core_read');
-        $table = $resource->getTableName('core/resource');
-        $query = 'SELECT version FROM '.$table.' WHERE code = \''.self::PLUGIN_CODE.'\'';
-        $version = $readConnection->fetchOne($query);
-        if ($version === self::PLUGIN_VERSION) {
-            return true;
-        }
-        return false;
-    }
-
 
     /**
      * Get host for generated email
