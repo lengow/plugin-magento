@@ -649,7 +649,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
                     continue;
                 }
                 // Sync to lengow if no preprod_mode
-                if (!$this->_preprodMode && $order['order_new'] == true) {
+                if (!$this->_preprodMode && isset($order['order_new']) && $order['order_new'] == true) {
                     $magentoOrder = Mage::getModel('sales/order')->load($order['order_id']);
                     $synchro = Mage::getModel('lengow/import_order')->synchronizeOrder(
                         $magentoOrder,
@@ -676,11 +676,11 @@ class Lengow_Connector_Model_Import extends Varien_Object
                     return $order;
                 }
                 if ($order) {
-                    if ($order['order_new'] == true) {
+                    if (isset($order['order_new']) && $order['order_new'] == true) {
                         $orderNew++;
-                    } elseif ($order['order_update'] == true) {
+                    } elseif (isset($order['order_update']) && $order['order_update'] == true) {
                         $orderUpdate++;
-                    } elseif ($order['order_error'] == true) {
+                    } elseif (isset($order['order_error']) && $order['order_error'] == true) {
                         $orderError++;
                     }
                 }

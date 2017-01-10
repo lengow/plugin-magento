@@ -27,6 +27,19 @@ class Lengow_Connector_CronController extends Mage_Core_Controller_Front_Action
      */
     public function indexAction()
     {
+        /**
+         * List params
+         * string  sync                Number of products exported
+         * integer days                Import period
+         * integer limit               Number of orders to import
+         * integer store_id            Store id to import
+         * string  $marketplace_sku    Lengow marketplace order id to import
+         * string  marketplace_name    Lengow marketplace name to import
+         * integer delivery_address_id Lengow delivery address id to import
+         * boolean preprod_mode        Activate preprod mode
+         * boolean log_output          See logs (1) or not (0)
+         * boolean get_sync            See synchronisation parameters in json format (1) or not (0)
+         */
         $security = Mage::helper('lengow_connector/security');
         if ($security->checkIp()) {
             // get all store datas for synchronisation with Lengow
