@@ -66,7 +66,7 @@ class Lengow_Connector_Helper_Security extends Mage_Core_Helper_Abstract
         '82.127.207.67',
         '88.164.17.227',
         '88.164.17.216',
-        '109.190.78.5',   
+        '109.190.78.5',
     );
 
     /**
