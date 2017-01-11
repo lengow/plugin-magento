@@ -23,7 +23,7 @@
 class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
 {
     /**
-     * Get Statistic with all store every 5 hours
+     * @var integer cache time for statistic, account status and cms options
      */
     protected $_cacheTime = 18000;
 
@@ -106,7 +106,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Check if store is follow by Lengow
+     * Check that a store is activated and has account id and tokens non-empty
      *
      * @param integer $storeId Magento store id
      *

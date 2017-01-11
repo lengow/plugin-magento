@@ -86,8 +86,8 @@ class Lengow_Connector_Model_Connector
     /**
      * Make a new Lengow API Connector.
      *
-     * @param varchar $accessToken your access token
-     * @param varchar $secret      your secret
+     * @param string $accessToken your access token
+     * @param string $secret      your secret
      */
     public function init($accessToken, $secret)
     {
@@ -98,7 +98,7 @@ class Lengow_Connector_Model_Connector
     /**
      * Connection to the API
      *
-     * @param varchar $userToken the user token if is connected
+     * @param string $userToken the user token if is connected
      *
      * @return array|false
      */
@@ -126,10 +126,11 @@ class Lengow_Connector_Model_Connector
     /**
      * The API method
      *
-     * @param varchar $method Lengow method API call
-     * @param varchar $array  Lengow method API parameters
-     * @param varchar $type   type of request GET|POST|PUT|HEAD|DELETE|PATCH
-     * @param varchar $format return format of API
+     * @param string $method Lengow method API call
+     * @param array  $array  Lengow method API parameters
+     * @param string $type   type of request GET|POST|PUT|HEAD|DELETE|PATCH
+     * @param string $format return format of API
+     * @param string $body   body datas for request
      *
      * @return array
      */

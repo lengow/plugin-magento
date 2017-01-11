@@ -24,13 +24,13 @@
 /app/code/community/Lengow/Connector/Block/Tag/Simple.php|73b54a379aff4cf35315c91d057382ff
 /app/code/community/Lengow/Connector/Block/Tracker.php|a761b55210129bfebc71c083a9942579
 /app/code/community/Lengow/Connector/Block/Payment/Info/Purchaseorder.php|ab166ba499ff7bd11e696a6384ef73a7
-/app/code/community/Lengow/Connector/Helper/Sync.php|e950190955ed466b9ecf9336e737983f
+/app/code/community/Lengow/Connector/Helper/Sync.php|c3c1621368f53777de6399121202d0ad
 /app/code/community/Lengow/Connector/Helper/Toolbox.php|e1f3465dd9984d1067d30b9a41e817b9
 /app/code/community/Lengow/Connector/Helper/Import.php|0e545026a71d11a70130fd555e4acc58
 /app/code/community/Lengow/Connector/Helper/Config.php|29994d449b5313ad0b43df95b5fa3b62
 /app/code/community/Lengow/Connector/Helper/Data.php|cb9d1a0b74316d74e0eed66927b7fde0
 /app/code/community/Lengow/Connector/Helper/Translation.php|67b7c4fa439d9f72871c7027fcee84e9
-/app/code/community/Lengow/Connector/Helper/Security.php|b5ae0bbd9b099751076503fba8f478c8
+/app/code/community/Lengow/Connector/Helper/Security.php|f8f87a4b448d2b1dae3a113e237f96f1
 /app/code/community/Lengow/Connector/Model/Log.php|30a06729ed4addb484e42ea9a7b05ea4
 /app/code/community/Lengow/Connector/Model/Export/Catalog/Product.php|6ecb5fad93b03ec5b630fb340013d9a6
 /app/code/community/Lengow/Connector/Model/Export/Feed/Json.php|5a5bc5e43c01938cee32366bcb5317b2
@@ -63,7 +63,7 @@
 /app/code/community/Lengow/Connector/Model/Resource/Import/Orderline/Collection.php|c7a7549b65bec61a2c4c70126ff595ad
 /app/code/community/Lengow/Connector/Model/Resource/Import/Action/Collection.php|d0e35af1a6106cbd8964999b2f3d158d
 /app/code/community/Lengow/Connector/Model/Shipping/Carrier/Lengow.php|4ebbc57777880bc518a65ba083843a73
-/app/code/community/Lengow/Connector/Model/Connector.php|846357c0266c0e4bc87cdd6e4e08e928
+/app/code/community/Lengow/Connector/Model/Connector.php|ac8b713590e9596ace7885f2322a9dd1
 /app/code/community/Lengow/Connector/Model/Export.php|e444731755d459d6befe26c2e079c220
 /app/code/community/Lengow/Connector/Model/Payment/Method/Lengow.php|98628f6a0e34d0f95c378f48efd02ac3
 /app/code/community/Lengow/Connector/Model/System/Config/Source/Attribute.php|13e9ba321e9a5d72178f32d460d7fdab
