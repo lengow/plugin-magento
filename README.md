@@ -45,7 +45,7 @@ Une fois les traductions terminées, il suffit de lancer le script de mise à jo
     cd ~/Documents/modules_lengow/magento/Lengow_Export/tools/
     php checkmd5.php
 
-Le fichier checkmd5.csv sera directement créé dans le dossier /toolbox
+Le fichier checkmd5.csv sera directement créé dans le dossier /app/code/community/Lengow/Connector/etc
 
 ## Compiler le module ##
 

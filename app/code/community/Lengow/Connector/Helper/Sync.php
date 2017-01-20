@@ -237,6 +237,10 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
                 $config->set('last_status_update', date('Y-m-d H:i:s'));
                 return $status;
             }
+        } else {
+            if ($config->get('last_status_update')) {
+                return json_decode($config->get('account_status'), true);
+            }
         }
         return false;
     }
@@ -289,7 +293,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
                 $return['nb_order'] += $stats->transactions;
                 $return['currency'] = $result->currency->iso_a3;
             } else {
-	            if ( $config->get('last_statistic_update') ) {
+	            if ($config->get('last_statistic_update')) {
 		            return json_decode($config->get('order_statistic'), true);
 	            } else {
 		            return array(

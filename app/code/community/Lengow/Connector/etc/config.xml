@@ -279,7 +279,6 @@
                 <export_default_shipping_country>FR</export_default_shipping_country>
                 <export_default_shipping_method>flatrate_flatrate</export_default_shipping_method>
                 <export_parent_image>0</export_parent_image>
-                <export_legacy_enable>0</export_legacy_enable>
                 <export_file_enable>0</export_file_enable>
                 <export_cron_enable>0</export_cron_enable>
             </advanced>
@@ -291,6 +290,9 @@
                 <import_default_shipping_method>lengow_lengow</import_default_shipping_method>
             </simple>
             <advanced>
+                <import_report_mail_enable>1</import_report_mail_enable>
+                <import_ship_mp_enabled>0</import_ship_mp_enabled>
+                <import_stock_ship_mp>0</import_stock_ship_mp>
                 <import_preprod_mode_enable>0</import_preprod_mode_enable>
                 <import_cron_enable>0</import_cron_enable>
             </advanced>
