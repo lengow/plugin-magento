@@ -816,15 +816,20 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
                 }
             }
         }
+        // get payment informations
+        $paymentInfo = '';
+        if (count($this->_orderData->payments) > 0) {
+            $payment = $this->_orderData->payments[0];
+            $paymentInfo.= ' - '.(string)$payment->type;
+            if (isset($payment->payment_terms->external_transaction_id)) {
+                $paymentInfo.= ' - '.(string)$payment->payment_terms->external_transaction_id;
+            }
+        }
         // set payment method lengow
-        $paymentType = (string)(count($this->_orderData->payments) > 0
-            ? $this->_orderData->payments[0]->type
-            : null
-        );
         $quote->getPayment()->importData(
             array(
                 'method'      => 'lengow',
-                'marketplace' => (string)$this->_orderData->marketplace.' - '.$paymentType,
+                'marketplace' => (string)$this->_orderData->marketplace.$paymentInfo,
             )
         );
         $quote->save();
