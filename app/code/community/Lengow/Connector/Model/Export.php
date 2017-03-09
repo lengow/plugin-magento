@@ -330,7 +330,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
         $this->_config['limit'] = isset($params['limit']) ? (int)$params['limit'] : '';
         $this->_config['product_ids'] = isset($params['product_ids']) ? $params['product_ids'] : '';
         $this->_config['directory_path'] = Mage::getBaseDir('media').DS.'lengow'.DS.$this->_store->getCode().DS;
-        $this->setOriginalCurrency(
+        $this->setCurrentCurrencyCode(
             isset($params['currency']) ? $params['currency'] : Mage::app()->getStore($storeId)->getCurrentCurrencyCode()
         );
     }
@@ -440,7 +440,6 @@ class Lengow_Connector_Model_Export extends Varien_Object
             // Load first parent if exist
             $parents = null;
             $parentInstance = null;
-            $configurableInstance = null;
             $parentId = null;
             $productType = 'simple';
             $variationName = '';
@@ -567,14 +566,13 @@ class Lengow_Connector_Model_Export extends Varien_Object
                 $datas,
                 $product->getCategories($product, $parentInstance, $this->_storeId, $this->_cacheCategory)
             );
-            $datas = array_merge(
-                $datas,
-                $product->getPrices($product, $this->_storeId, $configurableInstance)
-            );
+            $datas = array_merge($datas,$product->getPrices($product, $this->_storeId));
             $datas = array_merge($datas, $product->getShippingInfo($product, $this->_storeId));
             // Images, gestion de la fusion parent / enfant
-            if ($this->_configHelper->get('parent_image', $this->_storeId) &&
-                isset($parentInstance) && $parentInstance !== false) {
+            if ($this->_configHelper->get('parent_image', $this->_storeId)
+                && isset($parentInstance) 
+                && $parentInstance !== false
+            ) {
                 $datas = array_merge(
                     $datas,
                     $product->getImages($data['media_gallery']['images'], $parentInstance->getData('media_gallery'))
@@ -785,24 +783,23 @@ class Lengow_Connector_Model_Export extends Varien_Object
      */
     protected function _getParentEntity($parentId)
     {
-        $this->_clearParentCache++;
         if (!isset($this->_cacheParentProducts[$parentId])) {
+            if ($this->_clearParentCache > 300) {
+                foreach ($this->_cacheParentProducts as $parentProduct) {
+                    if (method_exists($parentProduct, 'clearInstance')) {
+                        $parentProduct->clearInstance();
+                    }
+                }
+                $this->_clearParentCache = 0;
+                $this->_cacheParentProducts = array();
+            }
             $parent = Mage::getModel('lengow/export_catalog_product')
                 ->setStoreId($this->_storeId)
                 ->setOriginalCurrency($this->getOriginalCurrency())
                 ->setCurrentCurrencyCode($this->getCurrentCurrencyCode())
                 ->load($parentId);
             $this->_cacheParentProducts[$parentId] = $parent;
-        }
-        if ($this->_clearParentCache > 300) {
-            if (method_exists($this->_cacheParentProducts[0], 'clearInstance')) {
-                $maxStoreParent = count($this->_cacheParentProducts);
-                for ($i = 0; $i < $maxStoreParent; $i++) {
-                    $this->_cacheParentProducts[0]->clearInstance();
-                }
-            }
-            $this->_clearParentCache = 0;
-            $this->_cacheParentProducts = null;
+            $this->_clearParentCache++;
         }
         return $this->_cacheParentProducts[$parentId];
     }

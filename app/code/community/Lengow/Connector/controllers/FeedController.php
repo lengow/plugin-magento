@@ -118,6 +118,7 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action
                         'log_output'         => $logOutput,
                     )
                 );
+                $export->setOriginalCurrency(Mage::app()->getStore($storeId)->getCurrentCurrencyCode());
                 $export->exec();
             } catch (Exception $e) {
                 $errorMessage = '[Magento error] "'.$e->getMessage().'" '.$e->getFile().' line '.$e->getLine();

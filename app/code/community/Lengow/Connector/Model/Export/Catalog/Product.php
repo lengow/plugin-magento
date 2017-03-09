@@ -142,13 +142,12 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
     /**
      * Get price
      *
-     * @param Mage_Catalog_Model_Product $productInstance      Magento product instance
-     * @param integer                    $storeId              Magento store id
-     * @param Mage_Catalog_Model_Product $configurableInstance Magento product instance for configurable
+     * @param Mage_Catalog_Model_Product $productInstance Magento product instance
+     * @param integer                    $storeId         Magento store id
      *
      * @return array
      */
-    public function getPrices($productInstance, $storeId, $configurableInstance = null)
+    public function getPrices($productInstance, $storeId)
     {
         $store = Mage::app()->getStore($storeId);
         $config = Mage::helper('tax')->priceIncludesTax($store);
@@ -156,60 +155,19 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
         $taxClassId = $productInstance->getTaxClassId();
         $request = $calculator->getRateRequest(null, null, null, $store);
         $taxPercent = $calculator->getRate($request->setProductClassId($taxClassId));
-        /* @var $configurableInstance Mage_Catalog_Model_Product */
-        if ($configurableInstance) {
-            $price = $configurableInstance->getPrice();
-            $finalPrice = $configurableInstance->getFinalPrice();
-            $configurablePrice = 0;
-            $configurableOldPrice = 0;
-            $attributes = $configurableInstance->getTypeInstance(true)
-                ->getConfigurableAttributes($configurableInstance);
-            $attributes = Mage::helper('core')->decorateArray($attributes);
-            if ($attributes) {
-                foreach ($attributes as $attribute) {
-                    $productAttribute = $attribute->getProductAttribute();
-                    $attributeValue = $productInstance->getData($productAttribute->getAttributeCode());
-                    if (count($attribute->getPrices()) > 0) {
-                        foreach ($attribute->getPrices() as $priceChange) {
-                            if (is_array($price)
-                                && array_key_exists('value_index', $price)
-                                && $price['value_index'] == $attributeValue
-                            ) {
-                                $configurableOldPrice += (float)($priceChange['is_percent']
-                                    ? (((float)$priceChange['pricing_value']) * $price / 100)
-                                    : $priceChange['pricing_value']);
-                                $configurablePrice += (float)($priceChange['is_percent']
-                                    ? (((float)$priceChange['pricing_value']) * $finalPrice / 100)
-                                    : $priceChange['pricing_value']);
-                            }
-                        }
-                    }
-                }
+        if ($productInstance->getTypeId() == 'grouped') {
+            $price = 0;
+            $finalPrice = 0;
+            $childs = Mage::getModel('catalog/product_type_grouped')->getChildrenIds($productInstance->getId());
+            $childs = $childs[Mage_Catalog_Model_Product_Link::LINK_TYPE_GROUPED];
+            foreach ($childs as $value) {
+                $product = Mage::getModel('lengow/export_catalog_product')->load($value);
+                $price += $product->getPrice();
+                $finalPrice += $product->getFinalPrice();
             }
-            $configurableInstance->setConfigurablePrice($configurablePrice);
-            $configurableInstance->setParentId(true);
-            Mage::dispatchEvent(
-                'catalog_product_type_configurable_price',
-                array('product' => $configurableInstance)
-            );
-            $configurablePrice = $configurableInstance->getConfigurablePrice();
-            $price = $productInstance->getPrice() + $configurableOldPrice;
-            $finalPrice = $productInstance->getFinalPrice() + $configurablePrice;
         } else {
-            if ($productInstance->getTypeId() == 'grouped') {
-                $price = 0;
-                $finalPrice = 0;
-                $childs = Mage::getModel('catalog/product_type_grouped')->getChildrenIds($productInstance->getId());
-                $childs = $childs[Mage_Catalog_Model_Product_Link::LINK_TYPE_GROUPED];
-                foreach ($childs as $value) {
-                    $product = Mage::getModel('lengow/export_catalog_product')->load($value);
-                    $price += $product->getPrice();
-                    $finalPrice += $product->getFinalPrice();
-                }
-            } else {
-                $price = $productInstance->getPrice();
-                $finalPrice = $productInstance->getFinalPrice();
-            }
+            $price = $productInstance->getPrice();
+            $finalPrice = $productInstance->getFinalPrice();
         }
         if (!$config) {
             $priceExcludingTax = $price;
@@ -288,35 +246,19 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
         $datas['discount_end_date'] = $productInstance->getSpecialToDate();
         // retrieving promotions
         $dateTs = Mage::app()->getLocale()->storeTimeStamp($productInstance->getStoreId());
-        if (method_exists(Mage::getResourceModel('catalogrule/rule'), 'getRulesFromProduct')) {
-            $promo = Mage::getResourceModel('catalogrule/rule')->getRulesFromProduct(
-                $dateTs,
-                $productInstance->getStoreId(),
-                1,
-                $productInstance->getId()
-            );
-        } elseif (method_exists(Mage::getResourceModel('catalogrule/rule'), 'getRulesForProduct')) {
-            $promo = Mage::getResourceModel('catalogrule/rule')->getRulesForProduct(
-                $dateTs,
-                $productInstance->getStoreId(),
-                $productInstance->getId()
-            );
-        }
+        $promo = Mage::getResourceModel('catalogrule/rule')->getRulesFromProduct(
+            (int)$dateTs,
+            $store->getWebsiteId(),
+            1,
+            $productInstance->getId()
+        );
         if (count($promo)) {
-            $promo = $promo[0];
-            if (isset($promo['from_time'])) {
-                $from = $promo['from_time'];
-            } else {
-                $from = $promo['from_date'];
-            }
-
-            if (isset($promo['to_time'])) {
-                $to = $promo['to_time'];
-            } else {
-                $to = $promo['to_date'];
-            }
-            $datas['discount_start_date'] = date('Y-m-d H:i:s', strtotime($from));
-            $datas['discount_end_date'] = is_null($to) ? '' : date('Y-m-d H:i:s', strtotime($to));
+            $from = isset($promo[0]['from_time']) ? $promo[0]['from_time'] : $promo[0]['from_date'];
+            $from = !is_numeric($from) ? strtotime($from) : $from;
+            $to = isset($promo[0]['to_time']) ? $promo[0]['to_time'] : $promo[0]['to_date'];
+            $to = !is_numeric($to) ? strtotime($to) : $to;
+            $datas['discount_start_date'] = $from ? date('Y-m-d H:i:s', $from) : '';
+            $datas['discount_end_date'] = $to ? date('Y-m-d H:i:s', $to) : '';
         }
         return $datas;
     }
@@ -346,11 +288,11 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
                 ->exportToArray();
         }
         if (is_array($categories) && count($categories) > 0) {
-            if (isset($categoryCache[key(end($categories))])) {
-                return $categoryCache[key(end($categories))];
+            if (isset($categoryCache[key($categories)])) {
+                return $categoryCache[key($categories)];
             }
         }
-        //old config value #levelcategory
+        // Old config value #levelcategory
         $maxLevel = 5;
         $currentLevel = 0;
         $categoryBuffer = false;
@@ -411,38 +353,38 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
      * Merge images child with images' parents
      *
      * @param array $images       images of child's product
-     * @param array $parentimages images of parent's product
+     * @param array $parentImages images of parent's product
      *
      * @return array images merged
      */
-    public function getImages($images, $parentimages = false)
+    public function getImages($images, $parentImages = array())
     {
-        if ($parentimages !== false) {
-            $images = array_merge($parentimages, $images);
-            $_images = array();
-            $_ids = array();
-            foreach ($images['images'] as $image) {
-                if (array_key_exists('value_id', $image) && !in_array($image['value_id'], $_ids)) {
-                    $_ids[] = $image['value_id'];
-                    $_images[]['file'] = $image['file'];
+        $data = array();
+        if (count($parentImages) > 0 && isset($parentImages['images'])) {
+            $images = array_merge($parentImages['images'], $images);
+            $tempImages = array();
+            $files = array();
+            foreach ($images as $image) {
+                if (array_key_exists('value_id', $image) && !in_array($image['file'], $files)) {
+                    $files[] = $image['file'];
+                    $tempImages[]['file'] = $image['file'];
                 }
             }
-            $images = $_images;
-            unset($_images, $_ids, $parentimages);
+            $images = $tempImages;
+            unset($tempImages, $files, $parentImages);
         }
-        $data = array();
-        // old config value #maxImage
-        $maxImage = 10;
-        for ($i = 1; $i < $maxImage + 1; $i++) {
+        // Old config value #maxImage
+        for ($i = 1; $i < 11; $i++) {
             $data['image_url_'.$i] = '';
         }
-        $c = 1;
-        foreach ($images as $i) {
-            $url = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).'catalog/product'.$i['file'];
-            $data['image_url_'.$c++] = $url;
-            if ($i == $maxImage + 1) {
+        $counter = 1;
+        foreach ($images as $image) {
+            $url = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).'catalog/product'.$image['file'];
+            $data['image_url_'.$counter] = $url;
+            if ($counter === 10) {
                 break;
             }
+            $counter++;
         }
         return $data;
     }
