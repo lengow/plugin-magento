@@ -78,7 +78,7 @@ en:
       status: "Status"
       websites: "Websites"
       publish_on_lengow: "Include in export?"
-      change_publication: "Change Lengow's post"
+      change_publication: "Include / Exclude"
       publication: "Post"
   order:
     screen:
@@ -158,7 +158,7 @@ en:
   help:
     screen:
       title: "Get a little help from your support team!"
-      contain_text_support: "Ask us anything about Lengow or share your feedback at"
+      contain_text_support: "Ask us anything about Lengow or share your feedback with"
       title_lengow_support: "Lengow Support."
       link_lengow_support: "https://supportlengow.zendesk.com/hc/en-us/requests/new"
       need_some_help: "Need some help?"
@@ -182,7 +182,7 @@ en:
       gobal_information: "Global information"
       plugin_information: "Plugin information"
       server_ip: "Server IP"
-      authorized_ip: "Authorized IP"
+      authorized_ip: "Authorised IP"
       legacy_enable: "Legacy fields enabled"
       export_on_a_file: "Export in a file enabled"
       export_cron_enable: "Magento cron job enabled for export"
@@ -250,9 +250,9 @@ en:
       updated_at: "Updated at"
   lengow_setting:
     global_setting: "Global settings"
-    global_plugin_version_title: "Plugin's version"
-    global_magento_version_title: "Magento's version"
-    global_plugin_compatibility_title: "Plugin's compatibility"
+    global_plugin_version_title: "Plugin version"
+    global_magento_version_title: "Magento version"
+    global_plugin_compatibility_title: "Plugin compatibility"
     global_plugin_compatibility_yes: "Magento version is compatible"
     global_plugin_compatibility_no: "Magento version is not compatible"
     global_serveur_ip_title: "IP of your server"
@@ -268,8 +268,8 @@ en:
     global_secret_token_comment: "Your Lengow Secret Token"
     global_advanced_setting: "All advanced settings"
     global_tracking_id_label: "Tracker Product ID"
-    global_authorized_ip_label: "IP authorized"
-    global_authorized_ip_comment: "Authorized access by IP, separated by ;"
+    global_authorized_ip_label: "Authorised IPs"
+    global_authorized_ip_comment: "Authorised access by IP, separated by ;"
     export_setting: "Export settings"
     export_simple_setting: "Simple export settings"
     export_selection_enable_label: "Export selected products only"

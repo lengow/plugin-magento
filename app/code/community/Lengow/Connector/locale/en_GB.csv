@@ -65,7 +65,7 @@ product.table.visibility|Visibility
 product.table.status|Status
 product.table.websites|Websites
 product.table.publish_on_lengow|Include in export?
-product.table.change_publication|Change Lengow's post
+product.table.change_publication|Include / Exclude
 product.table.publication|Post
 order.screen.title|Orders
 order.screen.button_import|Synchronize Orders
@@ -137,7 +137,7 @@ log.table.id|ID
 log.table.date|Date
 log.table.message|Message
 help.screen.title|Get a little help from your support team!
-help.screen.contain_text_support|Ask us anything about Lengow or share your feedback at
+help.screen.contain_text_support|Ask us anything about Lengow or share your feedback with
 help.screen.title_lengow_support|Lengow Support.
 help.screen.link_lengow_support|https://supportlengow.zendesk.com/hc/en-us/requests/new
 help.screen.need_some_help|Need some help?
@@ -157,7 +157,7 @@ toolbox.screen.title|Lengow Toolbox
 toolbox.screen.gobal_information|Global information
 toolbox.screen.plugin_information|Plugin information
 toolbox.screen.server_ip|Server IP
-toolbox.screen.authorized_ip|Authorized IP
+toolbox.screen.authorized_ip|Authorised IP
 toolbox.screen.legacy_enable|Legacy fields enabled
 toolbox.screen.export_on_a_file|Export in a file enabled
 toolbox.screen.export_cron_enable|Magento cron job enabled for export
@@ -223,9 +223,9 @@ toolbox.table.state_complete|complete
 toolbox.table.created_at|Created at
 toolbox.table.updated_at|Updated at
 lengow_setting.global_setting|Global settings
-lengow_setting.global_plugin_version_title|Plugin's version
-lengow_setting.global_magento_version_title|Magento's version
-lengow_setting.global_plugin_compatibility_title|Plugin's compatibility
+lengow_setting.global_plugin_version_title|Plugin version
+lengow_setting.global_magento_version_title|Magento version
+lengow_setting.global_plugin_compatibility_title|Plugin compatibility
 lengow_setting.global_plugin_compatibility_yes|Magento version is compatible
 lengow_setting.global_plugin_compatibility_no|Magento version is not compatible
 lengow_setting.global_serveur_ip_title|IP of your server
@@ -241,8 +241,8 @@ lengow_setting.global_secret_token_title|Secret token
 lengow_setting.global_secret_token_comment|Your Lengow Secret Token
 lengow_setting.global_advanced_setting|All advanced settings
 lengow_setting.global_tracking_id_label|Tracker Product ID
-lengow_setting.global_authorized_ip_label|IP authorized
-lengow_setting.global_authorized_ip_comment|Authorized access by IP, separated by ;
+lengow_setting.global_authorized_ip_label|Authorised IPs
+lengow_setting.global_authorized_ip_comment|Authorised access by IP, separated by ;
 lengow_setting.export_setting|Export settings
 lengow_setting.export_simple_setting|Simple export settings
 lengow_setting.export_selection_enable_label|Export selected products only
