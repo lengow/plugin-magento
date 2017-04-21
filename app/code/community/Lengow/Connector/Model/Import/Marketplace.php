@@ -144,16 +144,24 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
                 foreach ($action->optional_args as $optional_arg) {
                     $this->actions[(string)$key]['optional_args'][(string)$optional_arg] = $optional_arg;
                 }
-                foreach ($action->args_description as $key => $argDescription) {
+                foreach ($action->args_description as $argKey => $argDescription) {
                     $validValues = array();
                     if (isset($argDescription->valid_values)) {
                         foreach ($argDescription->valid_values as $code => $validValue) {
-                            $validValues[(string)$code] = (string)$validValue->label;
+                            $validValues[(string)$code] = isset($validValue->label)
+                                ? (string)$validValue->label
+                                : (string)$validValue;
                         }
                     }
-                    $this->argValues[(string)$key] = array(
-                        'default_value'      => (string)$argDescription->default_value,
-                        'accept_free_values' => (bool)$argDescription->accept_free_values,
+                    $defaultValue = isset($argDescription->default_value)
+                        ? (string)$argDescription->default_value
+                        : '';
+                    $acceptFreeValue = isset($argDescription->accept_free_values)
+                        ? (bool)$argDescription->accept_free_values
+                        : true;
+                    $this->argValues[(string)$argKey] = array(
+                        'default_value'      => $defaultValue,
+                        'accept_free_values' => $acceptFreeValue,
                         'valid_values'       => $validValues
                     );
                 }
@@ -494,9 +502,9 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
             // search by code
             foreach ($this->carriers as $key => $carrier) {
                 if (preg_match('`'.$key.'`i', trim($code))) {
-                    return $value;
+                    return $key;
                 } elseif (preg_match('`.*?'.$key.'.*?`i', $code)) {
-                    return $value;
+                    return $key;
                 }
             }
             // search by title
