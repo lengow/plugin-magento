@@ -77,7 +77,7 @@ class Lengow_Connector_Model_System_Config_Source_Attribute extends Mage_Core_Mo
             $attributeList = '';
             foreach ($attributeArray as $attribute) {
                 if ($attribute['value'] != 'none') {
-                    $attributeList.= $attribute['value'].',';
+                    $attributeList .= $attribute['value'] . ',';
                 }
             }
             $attributeList = rtrim($attributeList, ',');

@@ -51,7 +51,7 @@ class Lengow_Connector_Model_Export_Feed_Json extends Lengow_Connector_Model_Exp
      * Make each data
      *
      * @param array $array All product datas
-     * @param array $args  Specific arguments for different format
+     * @param array $args Specific arguments for different format
      *
      * @return string
      */

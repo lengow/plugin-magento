@@ -45,7 +45,7 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
             if ($action) {
                 switch ($action) {
                     case 'import_all':
-                        $params =  array('type' => 'manual');
+                        $params = array('type' => 'manual');
                         $import = Mage::getModel('lengow/import', $params);
                         $results = $import->exec();
                         $informations = $this->getInformations();
@@ -105,12 +105,12 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
         $marketplaceSku = $order->getData('order_id_lengow');
         $synchro = Mage::getModel('lengow/import_order')->synchronizeOrder($order);
         if ($synchro) {
-            $synchroMessage =  Mage::helper('lengow_connector/data')->setLogMessage(
+            $synchroMessage = Mage::helper('lengow_connector/data')->setLogMessage(
                 'log.import.order_synchronized_with_lengow',
                 array('order_id' => $order->getIncrementId())
             );
         } else {
-            $synchroMessage =  Mage::helper('lengow_connector/data')->setLogMessage(
+            $synchroMessage = Mage::helper('lengow_connector/data')->setLogMessage(
                 'log.import.order_not_synchronized_with_lengow',
                 array('order_id' => $order->getIncrementId())
             );
@@ -216,35 +216,35 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
             return $messages;
         }
         if (isset($results['order_new']) && $results['order_new'] > 0) {
-            $messages[]= $helper->__(
+            $messages[] = $helper->__(
                 'lengow_log.error.nb_order_imported',
                 array('nb_order' => $results['order_new'])
             );
         }
         if (isset($results['order_update']) && $results['order_update'] > 0) {
-            $messages[]= $helper->__(
+            $messages[] = $helper->__(
                 'lengow_log.error.nb_order_updated',
                 array('nb_order' => $results['order_update'])
             );
         }
         if (isset($results['order_error']) && $results['order_error'] > 0) {
-            $messages[]= $helper->__(
+            $messages[] = $helper->__(
                 'lengow_log.error.nb_order_with_error',
                 array('nb_order' => $results['order_error'])
             );
         }
         if (count($messages) == 0) {
-            $messages[]= $helper->__('lengow_log.error.no_notification');
+            $messages[] = $helper->__('lengow_log.error.no_notification');
         }
         if (isset($results['error'])) {
             foreach ($results['error'] as $storeId => $values) {
                 if ((int)$storeId > 0) {
                     $store = Mage::getModel('core/store')->load($storeId);
-                    $storeName = $store->getName().' ('.$store->getId().') : ';
+                    $storeName = $store->getName() . ' (' . $store->getId() . ') : ';
                     if (is_array($values)) {
-                        $messages[] = $storeName.join(', ', $helper->decodeLogMessage($values));
+                        $messages[] = $storeName . join(', ', $helper->decodeLogMessage($values));
                     } else {
-                        $messages[] = $storeName.$helper->decodeLogMessage($values);
+                        $messages[] = $storeName . $helper->decodeLogMessage($values);
                     }
                 }
             }
@@ -275,7 +275,7 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
         if ($lastImport['type'] != 'none') {
             $informations['last_importation'] = $helper->__(
                 'order.screen.last_order_importation',
-                array('last_importation' => '<b>'.$lastImportDate.'</b>')
+                array('last_importation' => '<b>' . $lastImportDate . '</b>')
             );
         } else {
             $informations['last_importation'] = $helper->__('order.screen.no_order_importation');

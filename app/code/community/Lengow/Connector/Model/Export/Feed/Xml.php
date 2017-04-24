@@ -44,24 +44,25 @@ class Lengow_Connector_Model_Export_Feed_Xml extends Lengow_Connector_Model_Expo
      */
     public function makeHeader()
     {
-        return '<?xml version="1.0" encoding="UTF-8"?>'."\r\n".'<catalog>'."\r\n";
+        return '<?xml version="1.0" encoding="UTF-8"?>' . "\r\n" . '<catalog>' . "\r\n";
     }
 
     /**
      * Make each data
      *
      * @param array $array All product datas
-     * @param array $args  Specific arguments for different format
+     * @param array $args Specific arguments for different format
      *
      * @return string
      */
     public function makeData($array, $args = array())
     {
-        $line = '<product>'."\r\n";
+        $line = '<product>' . "\r\n";
         foreach ($this->_fields as $name) {
-            $line .= '<'.$name.'><![CDATA['.(isset($array[$name]) ? $array[$name] : '').']]></'.$name.'>'."\r\n";
+            $line .= '<' . $name . '><![CDATA['
+                . (isset($array[$name]) ? $array[$name] : '') . ']]></' . $name . '>' . "\r\n";
         }
-        $line .= '</product>'."\r\n";
+        $line .= '</product>' . "\r\n";
         return $line;
     }
 

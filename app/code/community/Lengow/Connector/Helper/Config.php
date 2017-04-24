@@ -27,188 +27,188 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
      */
     protected $_options = array(
         'token' => array(
-            'path'     => 'lengow_global_options/store_credential/token',
-            'store'    => true,
+            'path' => 'lengow_global_options/store_credential/token',
+            'store' => true,
             'no_cache' => true,
         ),
         'store_enable' => array(
-            'path'     => 'lengow_global_options/store_credential/global_store_enable',
-            'store'    => true,
+            'path' => 'lengow_global_options/store_credential/global_store_enable',
+            'store' => true,
             'no_cache' => false,
         ),
         'account_id' => array(
-            'path'     => 'lengow_global_options/store_credential/global_account_id',
-            'store'    => true,
+            'path' => 'lengow_global_options/store_credential/global_account_id',
+            'store' => true,
             'no_cache' => false,
         ),
         'access_token' => array(
-            'path'     => 'lengow_global_options/store_credential/global_access_token',
-            'store'    => true,
+            'path' => 'lengow_global_options/store_credential/global_access_token',
+            'store' => true,
             'no_cache' => false,
         ),
         'secret_token' => array(
-            'path'     => 'lengow_global_options/store_credential/global_secret_token',
-            'store'    => true,
+            'path' => 'lengow_global_options/store_credential/global_secret_token',
+            'store' => true,
             'no_cache' => false,
         ),
         'tracking_id' => array(
-            'path'     => 'lengow_global_options/advanced/global_tracking_id',
-            'global'   => true,
+            'path' => 'lengow_global_options/advanced/global_tracking_id',
+            'global' => true,
             'no_cache' => false,
         ),
         'authorized_ip' => array(
-            'path'     => 'lengow_global_options/advanced/global_authorized_ip',
-            'global'   => true,
+            'path' => 'lengow_global_options/advanced/global_authorized_ip',
+            'global' => true,
             'no_cache' => false,
         ),
         'last_statistic_update' => array(
-            'path'     => 'lengow_global_options/advanced/last_statistic_update',
-            'export'   => false,
+            'path' => 'lengow_global_options/advanced/last_statistic_update',
+            'export' => false,
             'no_cache' => false,
         ),
         'order_statistic' => array(
-            'path'     => 'lengow_global_options/advanced/order_statistic',
-            'export'   => false,
+            'path' => 'lengow_global_options/advanced/order_statistic',
+            'export' => false,
             'no_cache' => false,
         ),
         'last_status_update' => array(
-            'path'     => 'lengow_global_options/advanced/last_status_update',
-            'export'   => false,
+            'path' => 'lengow_global_options/advanced/last_status_update',
+            'export' => false,
             'no_cache' => false,
         ),
         'account_status' => array(
-            'path'     => 'lengow_global_options/advanced/account_status',
-            'export'   => false,
+            'path' => 'lengow_global_options/advanced/account_status',
+            'export' => false,
             'no_cache' => false,
         ),
         'last_option_cms_update' => array(
-            'path'     => 'lengow_global_options/advanced/last_option_cms_update',
-            'export'   => false,
+            'path' => 'lengow_global_options/advanced/last_option_cms_update',
+            'export' => false,
             'no_cache' => false,
         ),
         'selection_enable' => array(
-            'path'     => 'lengow_export_options/simple/export_selection_enable',
-            'store'    => true,
+            'path' => 'lengow_export_options/simple/export_selection_enable',
+            'store' => true,
             'no_cache' => false,
         ),
         'out_stock' => array(
-            'path'     => 'lengow_export_options/simple/export_out_stock',
-            'store'    => true,
+            'path' => 'lengow_export_options/simple/export_out_stock',
+            'store' => true,
             'no_cache' => false,
         ),
         'product_type' => array(
-            'path'     => 'lengow_export_options/simple/export_product_type',
-            'store'    => true,
+            'path' => 'lengow_export_options/simple/export_product_type',
+            'store' => true,
             'no_cache' => false,
         ),
         'product_status' => array(
-            'path'     => 'lengow_export_options/simple/export_product_status',
-            'store'    => true,
+            'path' => 'lengow_export_options/simple/export_product_status',
+            'store' => true,
             'no_cache' => false,
         ),
         'export_attribute' => array(
-            'path'     => 'lengow_export_options/advanced/export_attribute',
-            'export'   => false,
+            'path' => 'lengow_export_options/advanced/export_attribute',
+            'export' => false,
             'no_cache' => false,
         ),
         'shipping_country' => array(
-            'path'     => 'lengow_export_options/advanced/export_default_shipping_country',
-            'store'    => true,
+            'path' => 'lengow_export_options/advanced/export_default_shipping_country',
+            'store' => true,
             'no_cache' => false,
         ),
         'shipping_method' => array(
-            'path'     => 'lengow_export_options/advanced/export_default_shipping_method',
-            'store'    => true,
+            'path' => 'lengow_export_options/advanced/export_default_shipping_method',
+            'store' => true,
             'no_cache' => false,
         ),
         'shipping_price' => array(
-            'path'     => 'lengow_export_options/advanced/export_default_shipping_price',
-            'store'    => true,
+            'path' => 'lengow_export_options/advanced/export_default_shipping_price',
+            'store' => true,
             'no_cache' => false,
         ),
         'parent_image' => array(
-            'path'     => 'lengow_export_options/advanced/export_parent_image',
-            'store'    => true,
+            'path' => 'lengow_export_options/advanced/export_parent_image',
+            'store' => true,
             'no_cache' => false,
         ),
         'file_enable' => array(
-            'path'     => 'lengow_export_options/advanced/export_file_enable',
-            'global'   => true,
+            'path' => 'lengow_export_options/advanced/export_file_enable',
+            'global' => true,
             'no_cache' => false,
         ),
         'export_cron_enable' => array(
-            'path'     => 'lengow_export_options/advanced/export_cron_enable',
-            'global'   => true,
+            'path' => 'lengow_export_options/advanced/export_cron_enable',
+            'global' => true,
             'no_cache' => false,
         ),
         'last_export' => array(
-            'path'     => 'lengow_export_options/advanced/export_last_export',
-            'store'    => true,
+            'path' => 'lengow_export_options/advanced/export_last_export',
+            'store' => true,
             'no_cache' => false,
         ),
         'days' => array(
-            'path'     => 'lengow_import_options/simple/import_days',
-            'store'    => true,
+            'path' => 'lengow_import_options/simple/import_days',
+            'store' => true,
             'no_cache' => false,
         ),
         'customer_group' => array(
-            'path'     => 'lengow_import_options/simple/import_customer_group',
-            'store'    => true,
+            'path' => 'lengow_import_options/simple/import_customer_group',
+            'store' => true,
             'no_cache' => false,
         ),
         'import_shipping_method' => array(
-            'path'     => 'lengow_import_options/simple/import_default_shipping_method',
-            'store'    => true,
+            'path' => 'lengow_import_options/simple/import_default_shipping_method',
+            'store' => true,
             'no_cache' => false,
         ),
         'report_mail_enable' => array(
-            'path'     => 'lengow_import_options/advanced/import_report_mail_enable',
-            'global'   => true,
+            'path' => 'lengow_import_options/advanced/import_report_mail_enable',
+            'global' => true,
             'no_cache' => false,
         ),
         'report_mail_address' => array(
-            'path'     => 'lengow_import_options/advanced/import_report_mail_address',
-            'global'   => true,
+            'path' => 'lengow_import_options/advanced/import_report_mail_address',
+            'global' => true,
             'no_cache' => false,
         ),
         'import_ship_mp_enabled' => array(
-            'path'     =>  'lengow_import_options/advanced/import_ship_mp_enabled',
-            'global'   => true,
+            'path' => 'lengow_import_options/advanced/import_ship_mp_enabled',
+            'global' => true,
             'no_cache' => false,
         ),
         'import_stock_ship_mp' => array(
-            'path'     =>  'lengow_import_options/advanced/import_stock_ship_mp',
-            'global'   => true,
+            'path' => 'lengow_import_options/advanced/import_stock_ship_mp',
+            'global' => true,
             'no_cache' => false,
         ),
         'preprod_mode_enable' => array(
-            'path'     => 'lengow_import_options/advanced/import_preprod_mode_enable',
-            'global'   => true,
+            'path' => 'lengow_import_options/advanced/import_preprod_mode_enable',
+            'global' => true,
             'no_cache' => false,
         ),
         'import_cron_enable' => array(
-            'path'     => 'lengow_import_options/advanced/import_cron_enable',
-            'global'   => true,
+            'path' => 'lengow_import_options/advanced/import_cron_enable',
+            'global' => true,
             'no_cache' => false,
         ),
         'import_in_progress' => array(
-            'path'     => 'lengow_import_options/advanced/import_in_progress',
-            'global'   => true,
+            'path' => 'lengow_import_options/advanced/import_in_progress',
+            'global' => true,
             'no_cache' => false,
         ),
         'last_import_manual' => array(
-            'path'     => 'lengow_import_options/advanced/last_import_manual',
-            'global'   => true,
+            'path' => 'lengow_import_options/advanced/last_import_manual',
+            'global' => true,
             'no_cache' => false,
         ),
         'last_import_cron' => array(
-            'path'     => 'lengow_import_options/advanced/last_import_cron',
-            'global'   => true,
+            'path' => 'lengow_import_options/advanced/last_import_cron',
+            'global' => true,
             'no_cache' => false,
         ),
         'see_migrate_block' => array(
-            'path'     => 'lengow_import_options/advanced/see_migrate_block',
-            'export'   => false,
+            'path' => 'lengow_import_options/advanced/see_migrate_block',
+            'export' => false,
             'no_cache' => false,
         ),
     );
@@ -216,7 +216,7 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
     /**
      * Get Value
      *
-     * @param string  $key     Lengow setting key
+     * @param string $key Lengow setting key
      * @param integer $storeId Magento store id
      *
      * @return mixed
@@ -233,7 +233,7 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
                 ->getData();
             $value = count($collections) > 0 ? $collections[0]['value'] : '';
         } else {
-            $value = Mage::getStoreConfig($this->_options[$key]['path'], $storeId); 
+            $value = Mage::getStoreConfig($this->_options[$key]['path'], $storeId);
         }
         return $value;
     }
@@ -241,9 +241,9 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
     /**
      * Set Value
      *
-     * @param string  $key        Lengow setting key
-     * @param mixed   $value      Lengow setting value
-     * @param integer $storeId    Magento store id
+     * @param string $key Lengow setting key
+     * @param mixed $value Lengow setting value
+     * @param integer $storeId Magento store id
      * @param boolean $cleanCache clean config cache to valid configuration
      */
     public function set($key, $value, $storeId = 0, $cleanCache = true)

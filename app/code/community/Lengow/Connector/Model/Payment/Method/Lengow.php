@@ -26,7 +26,7 @@ class Lengow_Connector_Model_Payment_Method_Lengow extends Mage_Payment_Model_Me
      * @var string Lengow payment code
      */
     protected $_code = 'lengow';
-    
+
     /**
      * @var string info block type
      */

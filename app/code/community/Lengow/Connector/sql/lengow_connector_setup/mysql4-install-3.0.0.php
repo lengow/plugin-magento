@@ -31,21 +31,21 @@ if (!$lengowProduct) {
         'catalog_product',
         'lengow_product',
         array(
-            'type'                    => 'int',
-            'backend'                 => '',
-            'frontend'                => '',
-            'label'                   => 'Publish on Lengow',
-            'input'                   => 'boolean',
-            'global'                  => Mage_Catalog_Model_Resource_Eav_Attribute::SCOPE_STORE,
-            'visible'                 => 1,
-            'required'                => 0,
-            'user_defined'            => 1,
-            'default'                 => 1,
-            'searchable'              => 0,
-            'filterable'              => 0,
-            'comparable'              => 0,
-            'unique'                  => 0,
-            'visible_on_front'        => 0,
+            'type' => 'int',
+            'backend' => '',
+            'frontend' => '',
+            'label' => 'Publish on Lengow',
+            'input' => 'boolean',
+            'global' => Mage_Catalog_Model_Resource_Eav_Attribute::SCOPE_STORE,
+            'visible' => 1,
+            'required' => 0,
+            'user_defined' => 1,
+            'default' => 1,
+            'searchable' => 0,
+            'filterable' => 0,
+            'comparable' => 0,
+            'unique' => 0,
+            'visible_on_front' => 0,
             'used_in_product_listing' => 1
         )
     );
@@ -66,15 +66,15 @@ if (!$fromLengowCustomer) {
         'customer',
         'from_lengow',
         array(
-            'type'       => 'int',
-            'label'      => 'From Lengow',
-            'visible'    => true,
-            'required'   => false,
-            'unique'     => false,
+            'type' => 'int',
+            'label' => 'From Lengow',
+            'visible' => true,
+            'required' => false,
+            'unique' => false,
             'sort_order' => 700,
-            'default'    => 0,
-            'input'      => 'select',
-            'source'     => 'eav/entity_attribute_source_boolean'
+            'default' => 0,
+            'input' => 'select',
+            'source' => 'eav/entity_attribute_source_boolean'
         )
     );
     $usedInForms = array('adminhtml_customer');
@@ -87,67 +87,67 @@ if (!$fromLengowCustomer) {
 // create attribute from_lengow for order
 $listAttributes = array();
 $listAttributes[] = array(
-    'name'    => 'from_lengow',
-    'label'   => 'From Lengow',
-    'type'    => 'int',
-    'input'   => 'select',
-    'source'  => 'eav/entity_attribute_source_boolean',
+    'name' => 'from_lengow',
+    'label' => 'From Lengow',
+    'type' => 'int',
+    'input' => 'select',
+    'source' => 'eav/entity_attribute_source_boolean',
     'default' => 0,
-    'grid'    => true,
+    'grid' => true,
 );
 $listAttributes[] = array(
-    'name'    => 'order_id_lengow',
-    'label'   => 'Lengow order ID',
-    'type'    => 'text',
-    'input'   => 'text',
-    'source'  => '',
+    'name' => 'order_id_lengow',
+    'label' => 'Lengow order ID',
+    'type' => 'text',
+    'input' => 'text',
+    'source' => '',
     'default' => '',
-    'grid'    => true,
+    'grid' => true,
 );
 $listAttributes[] = array(
-    'name'    => 'feed_id_lengow',
-    'label'   => 'Feed ID',
-    'type'    => 'float',
-    'input'   => 'text',
-    'source'  => '',
+    'name' => 'feed_id_lengow',
+    'label' => 'Feed ID',
+    'type' => 'float',
+    'input' => 'text',
+    'source' => '',
     'default' => 0,
-    'grid'    => false,
+    'grid' => false,
 );
 $listAttributes[] = array(
-    'name'    => 'marketplace_lengow',
-    'label'   => 'marketplace',
-    'type'    => 'text',
-    'input'   => 'text',
-    'source'  => '',
+    'name' => 'marketplace_lengow',
+    'label' => 'marketplace',
+    'type' => 'text',
+    'input' => 'text',
+    'source' => '',
     'default' => '',
-    'grid'    => true,
+    'grid' => true,
 );
 $listAttributes[] = array(
-    'name'    => 'delivery_address_id_lengow',
-    'label'   => 'Delivery address id lengow',
-    'type'    => 'int',
-    'input'   => 'text',
-    'source'  => '',
+    'name' => 'delivery_address_id_lengow',
+    'label' => 'Delivery address id lengow',
+    'type' => 'int',
+    'input' => 'text',
+    'source' => '',
     'default' => 0,
-    'grid'    => false,
+    'grid' => false,
 );
 $listAttributes[] = array(
-    'name'    => 'is_reimported_lengow',
-    'label'   => 'Is Reimported Lengow',
-    'type'    => 'int',
-    'input'   => 'select',
-    'source'  => 'eav/entity_attribute_source_boolean',
+    'name' => 'is_reimported_lengow',
+    'label' => 'Is Reimported Lengow',
+    'type' => 'int',
+    'input' => 'select',
+    'source' => 'eav/entity_attribute_source_boolean',
     'default' => 0,
-    'grid'    => false,
+    'grid' => false,
 );
 $listAttributes[] = array(
-    'name'    => 'follow_by_lengow',
-    'label'   => 'Follow By Lengow',
-    'type'    => 'int',
-    'input'   => 'select',
-    'source'  => 'eav/entity_attribute_source_boolean',
+    'name' => 'follow_by_lengow',
+    'label' => 'Follow By Lengow',
+    'type' => 'int',
+    'input' => 'select',
+    'source' => 'eav/entity_attribute_source_boolean',
     'default' => 1,
-    'grid'    => false,
+    'grid' => false,
 );
 
 foreach ($listAttributes as $attr) {
@@ -157,18 +157,18 @@ foreach ($listAttributes as $attr) {
             'order',
             $attr['name'],
             array(
-                'name'       => $attr['name'],
-                'label'      => $attr['label'],
-                'type'       => $attr['type'],
-                'visible'    => true,
-                'required'   => false,
-                'unique'     => false,
+                'name' => $attr['name'],
+                'label' => $attr['label'],
+                'type' => $attr['type'],
+                'visible' => true,
+                'required' => false,
+                'unique' => false,
                 'filterable' => 1,
                 'sort_order' => 700,
-                'default'    => $attr['default'],
-                'input'      => $attr['input'],
-                'source'     => $attr['source'],
-                'grid'       => $attr['grid']
+                'default' => $attr['default'],
+                'input' => $attr['input'],
+                'source' => $attr['source'],
+                'grid' => $attr['grid']
             )
         );
     }
@@ -216,7 +216,7 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
                 'identity' => true,
                 'unsigned' => true,
                 'nullable' => false,
-                'primary'  => true,
+                'primary' => true,
             ),
             'Id'
         )
@@ -227,7 +227,7 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
             array(
                 'nullable' => true,
                 'unsigned' => true,
-                'default'  => null
+                'default' => null
             ),
             'Order Id'
         )
@@ -237,7 +237,7 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
             40,
             array(
                 'nullable' => true,
-                'default'  => null,
+                'default' => null,
             ),
             'Order sku'
         )
@@ -258,7 +258,7 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
             array(
                 'nullable' => true,
                 'unsigned' => true,
-                'default'  => null
+                'default' => null
             ),
             'Feed Id'
         )
@@ -269,7 +269,7 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
             array(
                 'nullable' => true,
                 'unsigned' => true,
-                'default'  => null
+                'default' => null
             ),
             'Delivery Address Id'
         )
@@ -279,8 +279,8 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
             3,
             array(
                 'nullable' => true,
-                'default'  => null,
-                'length'   => 3
+                'default' => null,
+                'length' => 3
             ),
             'Delivery Country Iso'
         )
@@ -290,7 +290,7 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
             100,
             array(
                 'nullable' => false,
-                'length'   => 100
+                'length' => 100
             ),
             'Marketplace Sku'
         )
@@ -300,7 +300,7 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
             100,
             array(
                 'nullable' => false,
-                'length'   => 100
+                'length' => 100
             ),
             'Marketplace Name'
         )
@@ -310,8 +310,8 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
             100,
             array(
                 'nullable' => true,
-                'default'  => null,
-                'length'   => 100
+                'default' => null,
+                'length' => 100
             ),
             'Marketplace Label'
         )
@@ -321,7 +321,7 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
             100,
             array(
                 'nullable' => false,
-                'length'   => 100
+                'length' => 100
             ),
             'Order Lengow State'
         )
@@ -351,7 +351,7 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
             array(
                 'nullable' => true,
                 'unsigned' => true,
-                'default'  => null
+                'default' => null
             ),
             'Order Item'
         )
@@ -361,8 +361,8 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
             3,
             array(
                 'nullable' => true,
-                'default'  => null,
-                'length'   => 3
+                'default' => null,
+                'length' => 3
             ),
             'Currency'
         )
@@ -371,11 +371,11 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
             Varien_Db_Ddl_Table::TYPE_DECIMAL,
             null,
             array(
-                'nullable'  => true,
-                'unsigned'  => true,
+                'nullable' => true,
+                'unsigned' => true,
                 'precision' => 17,
-                'scale'     => 2,
-                'default'   => null
+                'scale' => 2,
+                'default' => null
             ),
             'Total Paid'
         )
@@ -384,11 +384,11 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
             Varien_Db_Ddl_Table::TYPE_DECIMAL,
             null,
             array(
-                'nullable'  => true,
-                'unsigned'  => true,
+                'nullable' => true,
+                'unsigned' => true,
                 'precision' => 17,
-                'scale'     => 2,
-                'default'   => null
+                'scale' => 2,
+                'default' => null
             ),
             'Commission'
         )
@@ -398,8 +398,8 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
             255,
             array(
                 'nullable' => true,
-                'length'   => 255,
-                'default'  => null
+                'length' => 255,
+                'default' => null
             ),
             'Customer Name'
         )
@@ -409,8 +409,8 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
             255,
             array(
                 'nullable' => true,
-                'length'   => 255,
-                'default'  => null
+                'length' => 255,
+                'default' => null
             ),
             'Customer Email'
         )
@@ -420,8 +420,8 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
             100,
             array(
                 'nullable' => true,
-                'length'   => 100,
-                'default'  => null
+                'length' => 100,
+                'default' => null
             ),
             'Carrier'
         )
@@ -431,8 +431,8 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
             100,
             array(
                 'nullable' => true,
-                'length'   => 100,
-                'default'  => null
+                'length' => 100,
+                'default' => null
             ),
             'Carrier Method'
         )
@@ -442,8 +442,8 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
             100,
             array(
                 'nullable' => true,
-                'length'   => 100,
-                'default'  => null
+                'length' => 100,
+                'default' => null
             ),
             'Carrier Tracking'
         )
@@ -453,8 +453,8 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
             100,
             array(
                 'nullable' => true,
-                'length'   => 100,
-                'default'  => null
+                'length' => 100,
+                'default' => null
             ),
             'Carrier Id Relay'
         )
@@ -464,7 +464,7 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
             null,
             array(
                 'nullable' => false,
-                'default'  => 0
+                'default' => 0
             ),
             'Sent Marketplace'
         )
@@ -474,7 +474,7 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
             null,
             array(
                 'nullable' => false,
-                'default'  => 0
+                'default' => 0
             ),
             'Is In Error'
         )
@@ -484,7 +484,7 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
             null,
             array(
                 'nullable' => true,
-                'default'  => null
+                'default' => null
             ),
             'Message'
         )
@@ -503,7 +503,7 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
             null,
             array(
                 'nullable' => true,
-                'default'  => null
+                'default' => null
             ),
             'Updated At'
         )
@@ -513,7 +513,7 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
             null,
             array(
                 'nullable' => true,
-                'default'  => null
+                'default' => null
             ),
             'Extra'
         );
@@ -539,7 +539,7 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
                 'identity' => true,
                 'unsigned' => true,
                 'nullable' => false,
-                'primary'  => true,
+                'primary' => true,
             ),
             'Id'
         )
@@ -559,7 +559,7 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
             100,
             array(
                 'nullable' => false,
-                'length'   => 100
+                'length' => 100
             ),
             'Order Line Id'
         );
@@ -583,7 +583,7 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
                 'identity' => true,
                 'unsigned' => true,
                 'nullable' => false,
-                'primary'  => true,
+                'primary' => true,
             ),
             'Id'
         )
@@ -603,7 +603,7 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
             null,
             array(
                 'nullable' => true,
-                'default'  => null
+                'default' => null
             ),
             'Message'
         )
@@ -623,7 +623,7 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
             null,
             array(
                 'nullable' => false,
-                'default'  => 0
+                'default' => 0
             ),
             'Is Finished'
         )
@@ -633,7 +633,7 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
             null,
             array(
                 'nullable' => false,
-                'default'  => 0
+                'default' => 0
             ),
             'Mail'
         )
@@ -652,7 +652,7 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
             null,
             array(
                 'nullable' => true,
-                'default'  => null
+                'default' => null
             ),
             'Updated At'
         );
@@ -676,7 +676,7 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
                 'identity' => true,
                 'unsigned' => true,
                 'nullable' => false,
-                'primary'  => true,
+                'primary' => true,
             ),
             'Id'
         )
@@ -706,8 +706,8 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
             100,
             array(
                 'nullable' => true,
-                'length'   => 100,
-                'default'  => null
+                'length' => 100,
+                'default' => null
             ),
             'Order Line Sku'
         )
@@ -717,7 +717,7 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
             32,
             array(
                 'nullable' => false,
-                'length'   => 32
+                'length' => 32
             ),
             'Action Type'
         )
@@ -728,7 +728,7 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
             array(
                 'nullable' => false,
                 'unsigned' => true,
-                'default'  => 0
+                'default' => 0
             ),
             'Retry'
         )
@@ -766,7 +766,7 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
             null,
             array(
                 'nullable' => true,
-                'default'  => null
+                'default' => null
             ),
             'Updated At'
         );
@@ -790,7 +790,7 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
                 'identity' => true,
                 'unsigned' => true,
                 'nullable' => false,
-                'primary'  => true
+                'primary' => true
             ),
             'Id'
         )
@@ -842,7 +842,7 @@ if (!$lengowTechnicalExists) {
         array(
             array(
                 'status' => 'lengow_technical_error',
-                'label'  => 'Lengow Technical Error'
+                'label' => 'Lengow Technical Error'
             )
         )
     );
@@ -852,8 +852,8 @@ if (!$lengowTechnicalExists) {
         array('status', 'state', 'is_default'),
         array(
             array(
-                'status'     => 'lengow_technical_error',
-                'state'      => 'lengow_technical_error',
+                'status' => 'lengow_technical_error',
+                'state' => 'lengow_technical_error',
                 'is_default' => 1
             )
         )
@@ -871,112 +871,112 @@ $newSettings = array(
     array(
         'old_path' => 'lensync/orders/active_store',
         'new_path' => 'lengow_global_options/store_credential/global_store_enable',
-        'store'    => true
+        'store' => true
     ),
     array(
         'old_path' => 'lentracker/general/account_id',
         'new_path' => 'lengow_global_options/store_credential/global_account_id',
-        'store'    => true
+        'store' => true
     ),
     array(
         'old_path' => 'lentracker/general/access_token',
         'new_path' => 'lengow_global_options/store_credential/global_access_token',
-        'store'    => true
+        'store' => true
     ),
     array(
         'old_path' => 'lentracker/general/secret',
         'new_path' => 'lengow_global_options/store_credential/global_secret_token',
-        'store'    => true
+        'store' => true
     ),
     array(
         'old_path' => 'lentracker/tag/identifiant',
         'new_path' => 'lengow_global_options/advanced/global_tracking_id',
-        'store'    => false
+        'store' => false
     ),
     array(
         'old_path' => 'lenexport/performances/valid_ip',
         'new_path' => 'lengow_global_options/advanced/global_authorized_ip',
-        'store'    => false
+        'store' => false
     ),
     array(
         'old_path' => 'lenexport/global/export_only_selected',
         'new_path' => 'lengow_export_options/simple/export_selection_enable',
-        'store'    => true
+        'store' => true
     ),
     array(
         'old_path' => 'lenexport/global/export_soldout',
         'new_path' => 'lengow_export_options/simple/export_out_stock',
-        'store'    => true
+        'store' => true
     ),
     array(
         'old_path' => 'lenexport/global/producttype',
         'new_path' => 'lengow_export_options/simple/export_product_type',
-        'store'    => true
+        'store' => true
     ),
     array(
         'old_path' => 'lenexport/global/productstatus',
         'new_path' => 'lengow_export_options/simple/export_product_status',
-        'store'    => true
+        'store' => true
     ),
     array(
         'old_path' => 'lenexport/data/parentsimages',
         'new_path' => 'lengow_export_options/advanced/export_parent_image',
-        'store'    => true
+        'store' => true
     ),
     array(
         'old_path' => 'lenexport/data/shipping_price_based_on',
         'new_path' => 'lengow_export_options/advanced/export_default_shipping_country',
-        'store'    => true
+        'store' => true
     ),
     array(
         'old_path' => 'lenexport/data/default_shipping_method',
         'new_path' => 'lengow_export_options/advanced/export_default_shipping_method',
-        'store'    => true
+        'store' => true
     ),
     array(
         'old_path' => 'lenexport/data/default_shipping_price',
         'new_path' => 'lengow_export_options/advanced/export_default_shipping_price',
-        'store'    => true
+        'store' => true
     ),
     array(
         'old_path' => 'lenexport/attributelist/attributes',
         'new_path' => 'lengow_export_options/advanced/export_attribute',
-        'store'    => true
+        'store' => true
     ),
     array(
         'old_path' => 'lenexport/performances/usesavefile',
         'new_path' => 'lengow_export_options/advanced/export_file_enable',
-        'store'    => false
+        'store' => false
     ),
     array(
         'old_path' => 'lenexport/performances/active_cron',
         'new_path' => 'lengow_export_options/advanced/export_cron_enable',
-        'store'    => false
+        'store' => false
     ),
     array(
         'old_path' => 'lensync/orders/period',
         'new_path' => 'lengow_import_options/simple/import_days',
-        'store'    => true
+        'store' => true
     ),
     array(
         'old_path' => 'lensync/orders/customer_group',
         'new_path' => 'lengow_import_options/simple/import_customer_group',
-        'store'    => true
+        'store' => true
     ),
     array(
         'old_path' => 'lensync/orders/default_shipping',
         'new_path' => 'lengow_import_options/simple/import_default_shipping_method',
-        'store'    => true
+        'store' => true
     ),
     array(
         'old_path' => 'lensync/performances/debug',
         'new_path' => 'lengow_import_options/advanced/import_preprod_mode_enable',
-        'store'    => false
+        'store' => false
     ),
     array(
         'old_path' => 'lensync/performances/active_cron',
         'new_path' => 'lengow_import_options/advanced/import_cron_enable',
-        'store'    => false
+        'store' => false
     )
 );
 // All the settings to delete

@@ -21,7 +21,7 @@ class Lengow_Connector_Test_Model_Export extends EcomDev_PHPUnit_Test_Case
         );
         $this->assertEquals(4, $export->getTotalProduct());
     }
-    
+
     /**
      * Test getTotalExportedProduct
      *
@@ -34,11 +34,11 @@ class Lengow_Connector_Test_Model_Export extends EcomDev_PHPUnit_Test_Case
         $export = Mage::getModel(
             'lengow/export',
             array(
-                'store_id'     => 1,
-                'currency'     => 'USD',
-                'types'        => 'simple',
+                'store_id' => 1,
+                'currency' => 'USD',
+                'types' => 'simple',
                 'out_of_stock' => '1',
-                'status'       => ''
+                'status' => ''
             )
         );
         $this->assertEquals(7, $export->getTotalExportedProduct(), 'Test All Products');
@@ -46,11 +46,11 @@ class Lengow_Connector_Test_Model_Export extends EcomDev_PHPUnit_Test_Case
         $export = Mage::getModel(
             'lengow/export',
             array(
-                'store_id'     => 1,
-                'currency'     => 'USD',
-                'types'        => 'simple',
+                'store_id' => 1,
+                'currency' => 'USD',
+                'types' => 'simple',
                 'out_of_stock' => '0',
-                'status'       => ''
+                'status' => ''
             )
         );
         $this->assertEquals(5, $export->getTotalExportedProduct(), 'Test Out of Stock Products');
@@ -58,11 +58,11 @@ class Lengow_Connector_Test_Model_Export extends EcomDev_PHPUnit_Test_Case
         $export = Mage::getModel(
             'lengow/export',
             array(
-                'store_id'     => 1,
-                'currency'     => 'USD',
-                'types'        => 'simple',
+                'store_id' => 1,
+                'currency' => 'USD',
+                'types' => 'simple',
                 'out_of_stock' => '1',
-                'status'       => '1'
+                'status' => '1'
             )
         );
         $this->assertEquals(4, $export->getTotalExportedProduct(), 'Test Active Products');
@@ -70,11 +70,11 @@ class Lengow_Connector_Test_Model_Export extends EcomDev_PHPUnit_Test_Case
         $export = Mage::getModel(
             'lengow/export',
             array(
-                'store_id'     => 1,
-                'currency'     => 'USD',
-                'types'        => 'simple',
+                'store_id' => 1,
+                'currency' => 'USD',
+                'types' => 'simple',
                 'out_of_stock' => '1',
-                'status'       => '2'
+                'status' => '2'
             )
         );
         $this->assertEquals(3, $export->getTotalExportedProduct(), 'Test Inactive Products');
@@ -82,11 +82,11 @@ class Lengow_Connector_Test_Model_Export extends EcomDev_PHPUnit_Test_Case
         $export = Mage::getModel(
             'lengow/export',
             array(
-                'store_id'     => 1,
-                'currency'     => 'USD',
-                'types'        => 'simple',
+                'store_id' => 1,
+                'currency' => 'USD',
+                'types' => 'simple',
                 'out_of_stock' => '1',
-                'status'       => '1,2'
+                'status' => '1,2'
             )
         );
         $this->assertEquals(7, $export->getTotalExportedProduct(), 'Test Inactive And Active Products');

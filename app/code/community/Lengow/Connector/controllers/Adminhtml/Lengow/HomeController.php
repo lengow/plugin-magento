@@ -43,12 +43,12 @@ class Lengow_Connector_Adminhtml_Lengow_HomeController extends Mage_Adminhtml_Co
         $isAjax = Mage::app()->getRequest()->isAjax();
         if ($isAjax) {
             $action = (string)$this->getRequest()->getParam('action');
-            if (strlen($action)>0) {
+            if (strlen($action) > 0) {
                 switch ($action) {
                     case "get_sync_data":
                         $data = array();
                         $data['function'] = 'sync';
-                        $data['parameters'] =  Mage::helper('lengow_connector/sync')->getSyncData();
+                        $data['parameters'] = Mage::helper('lengow_connector/sync')->getSyncData();
                         echo json_encode($data);
                         break;
                     case "sync":

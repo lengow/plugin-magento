@@ -22,7 +22,7 @@
  */
 class Lengow_Connector_Model_Resource_Import_Orderline_Collection extends Mage_Core_Model_Mysql4_Collection_Abstract
 {
-     /**
+    /**
      * Construct
      */
     protected function _construct()

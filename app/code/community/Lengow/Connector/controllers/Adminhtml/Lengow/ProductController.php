@@ -61,7 +61,7 @@ class Lengow_Connector_Adminhtml_Lengow_ProductController extends Mage_Adminhtml
                         if ($sync == true) {
                             $lastExport = Mage::helper('lengow_connector/config')->get('last_export', $storeId);
                             if ($lastExport != null) {
-                                $datas['message'] = $helper->__('product.screen.store_last_indexation').'<br />'.
+                                $datas['message'] = $helper->__('product.screen.store_last_indexation') . '<br />' .
                                     $helper->getDateInCorrectFormat($lastExport);
                             } else {
                                 $datas['message'] = $helper->__('product.screen.store_not_index');
@@ -72,7 +72,7 @@ class Lengow_Connector_Adminhtml_Lengow_ProductController extends Mage_Adminhtml
                             $datas['message'] = $helper->__('product.screen.lengow_store_no_sync');
                             $datas['link_title'] = $helper->__('product.screen.sync_your_store');
                             $datas['link_href'] = Mage::helper('adminhtml')
-                                ->getUrl('adminhtml/lengow_home/').'?isSync=true';
+                                    ->getUrl('adminhtml/lengow_home/') . '?isSync=true';
                             $datas['id'] = 'lengow_store_no_sync';
                         }
                         $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($datas));
@@ -83,7 +83,7 @@ class Lengow_Connector_Adminhtml_Lengow_ProductController extends Mage_Adminhtml
             $this->_initAction()->renderLayout();
             return $this;
         }
-        
+
     }
 
     /**

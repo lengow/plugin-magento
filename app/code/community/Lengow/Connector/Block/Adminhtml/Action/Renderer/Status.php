@@ -35,10 +35,10 @@ class Lengow_Connector_Block_Adminhtml_Action_Renderer_Status
         $status = $row->getData($this->getColumn()->getIndex());
         if ($status == 0) {
             return '<span class="lgw-label orange">'
-                .Mage::helper('lengow_connector')->__('toolbox.table.state_processing').'</span>';
+                . Mage::helper('lengow_connector')->__('toolbox.table.state_processing') . '</span>';
         } else {
             return '<span class="lgw-label">'
-                .Mage::helper('lengow_connector')->__('toolbox.table.state_complete').'</span>';
+                . Mage::helper('lengow_connector')->__('toolbox.table.state_complete') . '</span>';
         }
     }
 }

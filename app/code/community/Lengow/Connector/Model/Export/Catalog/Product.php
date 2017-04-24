@@ -42,7 +42,7 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
      * Get Shipping info
      *
      * @param Mage_Catalog_Model_Product $productInstance Magento product instance
-     * @param integer                    $storeId         Magento store id
+     * @param integer $storeId Magento store id
      *
      * @return array
      */
@@ -70,8 +70,8 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
      * Get shipping price
      *
      * @param Mage_Catalog_Model_Product $productInstance Magento product instance
-     * @param string                     $carrierValue    Magento carrier value
-     * @param string                     $countryCode     country iso code
+     * @param string $carrierValue Magento carrier value
+     * @param string $countryCode country iso code
      *
      * @return float|false
      */
@@ -103,7 +103,7 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
      * Get Shipping rate request
      *
      * @param Mage_Catalog_Model_Product $productInstance Magento product instance
-     * @param string                     $countryCode     country iso code
+     * @param string $countryCode country iso code
      *
      * @return Mage_Shipping_Model_Rate_Request
      */
@@ -143,7 +143,7 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
      * Get price
      *
      * @param Mage_Catalog_Model_Product $productInstance Magento product instance
-     * @param integer                    $storeId         Magento store id
+     * @param integer $storeId Magento store id
      *
      * @return array
      */
@@ -197,14 +197,14 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
             $datas['price_before_discount_incl_tax'] = round($priceIncludingTax, 2);
         } else {
             $discountAmount = Mage::helper('directory')->currencyConvert(
-                $priceIncludingTax,
-                $this->getOriginalCurrency(),
-                $toCurrency
-            ) - Mage::helper('directory')->currencyConvert(
-                $finalPriceIncludingTax,
-                $this->getOriginalCurrency(),
-                $this->getCurrentCurrencyCode()
-            );
+                    $priceIncludingTax,
+                    $this->getOriginalCurrency(),
+                    $toCurrency
+                ) - Mage::helper('directory')->currencyConvert(
+                    $finalPriceIncludingTax,
+                    $this->getOriginalCurrency(),
+                    $this->getCurrentCurrencyCode()
+                );
             $datas['price_excl_tax'] = round(
                 Mage::helper('directory')->currencyConvert(
                     $finalPriceExcludingTax,
@@ -267,9 +267,9 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
      * Get categories and breadcrumb
      *
      * @param Mage_Catalog_Model_Product $productInstance Magento product instance
-     * @param Mage_Catalog_Model_Product $parentInstance  Magento product instance for parent
-     * @param integer                    $storeId         Magento store id
-     * @param array                      $categoryCache   category cache
+     * @param Mage_Catalog_Model_Product $parentInstance Magento product instance for parent
+     * @param integer $storeId Magento store id
+     * @param array $categoryCache category cache
      *
      * @return array
      */
@@ -280,11 +280,11 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
             && isset($parentInstance)
         ) {
             $categories = $parentInstance->getCategoryCollection()
-                ->addPathsFilter('1/'.$idRootCategory.'/')
+                ->addPathsFilter('1/' . $idRootCategory . '/')
                 ->exportToArray();
         } else {
             $categories = $productInstance->getCategoryCollection()
-                ->addPathsFilter('1/'.$idRootCategory.'/')
+                ->addPathsFilter('1/' . $idRootCategory . '/')
                 ->exportToArray();
         }
         if (is_array($categories) && count($categories) > 0) {
@@ -314,8 +314,8 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
         $datas['category'] = '';
         $datas['category_url'] = '';
         for ($i = 1; $i <= $maxLevel; $i++) {
-            $datas['category_sub_'.($i)] = '';
-            $datas['category_url_sub_'.($i)] = '';
+            $datas['category_sub_' . ($i)] = '';
+            $datas['category_url_sub_' . ($i)] = '';
         }
         $i = 0;
         $ariane = array();
@@ -331,8 +331,8 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
                     $ariane[] = $c->getName();
                 } elseif ($i <= $maxLevel) {
                     $ariane[] = $c->getName();
-                    $datas['category_sub_'.$i] = $c->getName();
-                    $datas['category_url_sub_'.$i] = $c->getUrl();
+                    $datas['category_sub_' . $i] = $c->getName();
+                    $datas['category_url_sub_' . $i] = $c->getUrl();
                 }
                 $i++;
             }
@@ -352,7 +352,7 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
     /**
      * Merge images child with images' parents
      *
-     * @param array $images       images of child's product
+     * @param array $images images of child's product
      * @param array $parentImages images of parent's product
      *
      * @return array images merged
@@ -375,12 +375,12 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
         }
         // Old config value #maxImage
         for ($i = 1; $i < 11; $i++) {
-            $data['image_url_'.$i] = '';
+            $data['image_url_' . $i] = '';
         }
         $counter = 1;
         foreach ($images as $image) {
-            $url = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).'catalog/product'.$image['file'];
-            $data['image_url_'.$counter] = $url;
+            $url = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . 'catalog/product' . $image['file'];
+            $data['image_url_' . $counter] = $url;
             if ($counter === 10) {
                 break;
             }

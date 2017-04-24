@@ -36,7 +36,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Renderer_Ordersku
         $sentMarketplace = $row->getData('sent_marketplace');
         if (is_null($orderSku) && $sentMarketplace == 1) {
             return '<span class="lgw-label">'
-            .Mage::helper('lengow_connector')->__('order.table.status_shipped_by_mkp').'</span>';
+                . Mage::helper('lengow_connector')->__('order.table.status_shipped_by_mkp') . '</span>';
         } else {
             return $orderSku;
         }

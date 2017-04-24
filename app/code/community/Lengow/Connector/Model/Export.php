@@ -55,94 +55,94 @@ class Lengow_Connector_Model_Export extends Varien_Object
      * @var array new fields for v3
      */
     protected $_newFields = array(
-        'id'                             => 'id',
-        'sku'                            => 'sku',
-        'name'                           => 'name',
-        'child_name'                     => 'child_name',
-        'quantity'                       => 'quantity',
-        'status'                         => 'active',
-        'category'                       => 'category_breadcrum',
-        'url'                            => 'url',
-        'price_excl_tax'                 => 'price_excl_tax',
-        'price_incl_tax'                 => 'price_incl_tax',
+        'id' => 'id',
+        'sku' => 'sku',
+        'name' => 'name',
+        'child_name' => 'child_name',
+        'quantity' => 'quantity',
+        'status' => 'active',
+        'category' => 'category_breadcrum',
+        'url' => 'url',
+        'price_excl_tax' => 'price_excl_tax',
+        'price_incl_tax' => 'price_incl_tax',
         'price_before_discount_excl_tax' => 'price_before_discount_excl_tax',
         'price_before_discount_incl_tax' => 'price_before_discount_incl_tax',
-        'discount_amount'                => 'discount_amount',
-        'discount_percent'               => 'discount_percent',
-        'discount_start_date'            => 'discount_start_date',
-        'discount_end_date'              => 'discount_end_date',
-        'shipping_method'                => 'shipping_method',
-        'shipping_cost'                  => 'shipping_cost',
-        'currency'                       => 'currency',
-        'image_default'                  => 'image_default',
-        'image_url_1'                    => 'image_url_1',
-        'image_url_2'                    => 'image_url_2',
-        'image_url_3'                    => 'image_url_3',
-        'image_url_4'                    => 'image_url_4',
-        'image_url_5'                    => 'image_url_5',
-        'image_url_6'                    => 'image_url_6',
-        'image_url_7'                    => 'image_url_7',
-        'image_url_8'                    => 'image_url_8',
-        'image_url_9'                    => 'image_url_9',
-        'image_url_10'                   => 'image_url_10',
-        'type'                           => 'type',
-        'parent_id'                      => 'parent_id',
-        'variation'                      => 'variation',
-        'language'                       => 'language',
-        'description'                    => 'description',
-        'description_html'               => 'description_html',
-        'description_short'              => 'description_short',
-        'description_short_html'         => 'description_short_html',
+        'discount_amount' => 'discount_amount',
+        'discount_percent' => 'discount_percent',
+        'discount_start_date' => 'discount_start_date',
+        'discount_end_date' => 'discount_end_date',
+        'shipping_method' => 'shipping_method',
+        'shipping_cost' => 'shipping_cost',
+        'currency' => 'currency',
+        'image_default' => 'image_default',
+        'image_url_1' => 'image_url_1',
+        'image_url_2' => 'image_url_2',
+        'image_url_3' => 'image_url_3',
+        'image_url_4' => 'image_url_4',
+        'image_url_5' => 'image_url_5',
+        'image_url_6' => 'image_url_6',
+        'image_url_7' => 'image_url_7',
+        'image_url_8' => 'image_url_8',
+        'image_url_9' => 'image_url_9',
+        'image_url_10' => 'image_url_10',
+        'type' => 'type',
+        'parent_id' => 'parent_id',
+        'variation' => 'variation',
+        'language' => 'language',
+        'description' => 'description',
+        'description_html' => 'description_html',
+        'description_short' => 'description_short',
+        'description_short_html' => 'description_short_html',
     );
 
     /**
      * @var array legacy fields for retro-compatibility
      */
     protected $_legacyFields = array(
-        'sku'                   => 'sku',
-        'product_id'            => 'id',
-        'qty'                   => 'quantity',
-        'status'                => 'active',
-        'category-breadcrumb'   => 'category_breadcrum',
-        'category'              => 'category',
-        'category-url'          => 'category_url',
-        'category-sub-1'        => 'category_sub_1',
-        'category-url-sub-1'    => 'category_url_sub_1',
-        'category-sub-2'        => 'category_sub_2',
-        'category-url-sub-2'    => 'category_url_sub_2',
-        'category-sub-3'        => 'category_sub_3',
-        'category-url-sub-3'    => 'category_url_sub_3',
-        'category-sub-4'        => 'category_sub_4',
-        'category-url-sub-4'    => 'category_url_sub_4',
-        'category-sub-5'        => 'category_sub_5',
-        'category-url-sub-5'    => 'category_url_sub_5',
-        'price-ttc'             => 'price_incl_tax',
+        'sku' => 'sku',
+        'product_id' => 'id',
+        'qty' => 'quantity',
+        'status' => 'active',
+        'category-breadcrumb' => 'category_breadcrum',
+        'category' => 'category',
+        'category-url' => 'category_url',
+        'category-sub-1' => 'category_sub_1',
+        'category-url-sub-1' => 'category_url_sub_1',
+        'category-sub-2' => 'category_sub_2',
+        'category-url-sub-2' => 'category_url_sub_2',
+        'category-sub-3' => 'category_sub_3',
+        'category-url-sub-3' => 'category_url_sub_3',
+        'category-sub-4' => 'category_sub_4',
+        'category-url-sub-4' => 'category_url_sub_4',
+        'category-sub-5' => 'category_sub_5',
+        'category-url-sub-5' => 'category_url_sub_5',
+        'price-ttc' => 'price_incl_tax',
         'price-before-discount' => 'price_before_discount_incl_tax',
-        'discount-amount'       => 'discount_amount',
-        'discount-percent'      => 'discount_percent',
-        'start-date-discount'   => 'discount_start_date',
-        'end-date-discount'     => 'discount_end_date',
-        'shipping-name'         => 'shipping_method',
-        'shipping-price'        => 'shipping_cost',
-        'image-url-1'           => 'image_url_1',
-        'image-url-2'           => 'image_url_2',
-        'image-url-3'           => 'image_url_3',
-        'image-url-4'           => 'image_url_4',
-        'image-url-5'           => 'image_url_5',
-        'image-url-6'           => 'image_url_6',
-        'image-url-7'           => 'image_url_7',
-        'image-url-8'           => 'image_url_8',
-        'image-url-9'           => 'image_url_9',
-        'image-url-10'          => 'image_url_10',
-        'product-url'           => 'url',
-        'name'                  => 'name',
-        'description'           => 'description_html',
-        'short_description'     => 'description_short_html',
-        'parent_id'             => 'parent_id',
-        'product_type'          => 'type',
-        'product_variation'     => 'variation',
-        'image_default'         => 'image_default',
-        'child_name'            => 'child_name',
+        'discount-amount' => 'discount_amount',
+        'discount-percent' => 'discount_percent',
+        'start-date-discount' => 'discount_start_date',
+        'end-date-discount' => 'discount_end_date',
+        'shipping-name' => 'shipping_method',
+        'shipping-price' => 'shipping_cost',
+        'image-url-1' => 'image_url_1',
+        'image-url-2' => 'image_url_2',
+        'image-url-3' => 'image_url_3',
+        'image-url-4' => 'image_url_4',
+        'image-url-5' => 'image_url_5',
+        'image-url-6' => 'image_url_6',
+        'image-url-7' => 'image_url_7',
+        'image-url-8' => 'image_url_8',
+        'image-url-9' => 'image_url_9',
+        'image-url-10' => 'image_url_10',
+        'product-url' => 'url',
+        'name' => 'name',
+        'description' => 'description_html',
+        'short_description' => 'description_short_html',
+        'parent_id' => 'parent_id',
+        'product_type' => 'type',
+        'product_variation' => 'variation',
+        'image_default' => 'image_default',
+        'child_name' => 'child_name',
     );
 
     /**
@@ -256,7 +256,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
 
     /**
      * Construct the export manager
-     * @param array params optional options
+     * @param array $params optional options
      * integer store_id       ID of store
      * integer limit          The number of product to be exported
      * integer offset         From what product export
@@ -329,7 +329,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
         $this->_config['offset'] = isset($params['offset']) ? (int)$params['offset'] : '';
         $this->_config['limit'] = isset($params['limit']) ? (int)$params['limit'] : '';
         $this->_config['product_ids'] = isset($params['product_ids']) ? $params['product_ids'] : '';
-        $this->_config['directory_path'] = Mage::getBaseDir('media').DS.'lengow'.DS.$this->_store->getCode().DS;
+        $this->_config['directory_path'] = Mage::getBaseDir('media') . DS . 'lengow' . DS . $this->_store->getCode() . DS;
         $this->setCurrentCurrencyCode(
             isset($params['currency']) ? $params['currency'] : Mage::app()->getStore($storeId)->getCurrentCurrencyCode()
         );
@@ -390,22 +390,22 @@ class Lengow_Connector_Model_Export extends Varien_Object
                 'log.export.start_for_store',
                 array(
                     'store_name' => $this->_store->getName(),
-                    'store_id'   => $this->_storeId
+                    'store_id' => $this->_storeId
                 )
             ),
             $this->_logOutput
         );
         // set legacy fields option
         $this->_setLegacyFields();
-        // Gestion des attributs à exporter
+        // get attributes to export
         $attributesToExport = $this->_configHelper->getSelectedAttributes($this->_storeId);
         // set feed format
-        $feed = Mage::getModel('Lengow_Connector_Model_Export_Feed_'.ucfirst($this->_fileFormat));
+        $feed = Mage::getModel('Lengow_Connector_Model_Export_Feed_' . ucfirst($this->_fileFormat));
         $first = true;
         $last = false;
         $pi = 1;
         $productCollection->getSelect()->distinct(true)->group('entity_id');
-        // Get all product ids
+        // get all product ids
         $products = $productCollection->getData();
         $totalProduct = count($products);
         $this->_helper->log(
@@ -527,7 +527,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
                             ->getConfigurableAttributesAsArray($parentInstance);
                         if ($variations) {
                             foreach ($variations as $variation) {
-                                $variationName .= $variation['frontend_label'].',';
+                                $variationName .= $variation['frontend_label'] . ',';
                             }
                             $variationName = rtrim($variationName, ',');
                         }
@@ -554,7 +554,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
             $datas['sku'] = $product->getSku();
             $datas['id'] = $product->getId();
             $datas['quantity'] = (integer)$qty->getQty();
-            //we dont send qty ordered (old settings : without_product_ordering)
+            // we don't send qty ordered (old settings : without_product_ordering)
             $datas['quantity'] = $datas['quantity'] - (integer)$qty->getQtyOrdered();
             if ($product->getTypeId() == 'grouped') {
                 $datas['quantity'] = (integer)$qtyTemp;
@@ -566,11 +566,11 @@ class Lengow_Connector_Model_Export extends Varien_Object
                 $datas,
                 $product->getCategories($product, $parentInstance, $this->_storeId, $this->_cacheCategory)
             );
-            $datas = array_merge($datas,$product->getPrices($product, $this->_storeId));
+            $datas = array_merge($datas, $product->getPrices($product, $this->_storeId));
             $datas = array_merge($datas, $product->getShippingInfo($product, $this->_storeId));
-            // Images, gestion de la fusion parent / enfant
+            // Merge between children and parent images
             if ($this->_configHelper->get('parent_image', $this->_storeId)
-                && isset($parentInstance) 
+                && isset($parentInstance)
                 && $parentInstance !== false
             ) {
                 $datas = array_merge(
@@ -604,7 +604,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
             $datas['type'] = $productType;
             $datas['variation'] = $variationName;
             $datas['image_default'] = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA)
-                .'catalog/product'.$product->getImage();
+                . 'catalog/product' . $product->getImage();
             $datas['child_name'] = $this->_helper->cleanData($product->getName());
             $datas['language'] = Mage::app()->getLocale()->getLocaleCode();
             // get correct feed
@@ -646,7 +646,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
                 }
                 // Get content type if streamed feed
                 if ($this->_stream) {
-                    header('Content-Type: '.$feed->getContentType().'; charset=UTF-8');
+                    header('Content-Type: ' . $feed->getContentType() . '; charset=UTF-8');
                     if ($this->_fileFormat == 'csv') {
                         header('Content-Disposition: attachment; filename=feed.csv');
                     }
@@ -659,7 +659,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
                 $feed->makeData(
                     $productDatas,
                     array(
-                        'last'          => $last,
+                        'last' => $last,
                         'max_character' => $maxCharacter
                     )
                 )
@@ -674,7 +674,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
             if (!$this->_stream && $this->_logOutput) {
                 if ($pi % 50 == 0) {
                     $countMessage = $this->_helper->__('log.export.count_product', array('product_count' => $pi));
-                    echo '[Export] '.$countMessage.'<br />';
+                    echo '[Export] ' . $countMessage . '<br />';
                 }
                 flush();
             }
@@ -692,11 +692,11 @@ class Lengow_Connector_Model_Export extends Varien_Object
             $this->_helper->__(
                 'log.export.total_product_exported',
                 array(
-                    'nb_product'      => $total,
-                    'nb_simple'       => $totalSimple,
+                    'nb_product' => $total,
+                    'nb_simple' => $totalSimple,
                     'nb_configurable' => $countConfigurable,
-                    'nb_grouped'      => $countGrouped,
-                    'nb_virtual'      => $countVirtual,
+                    'nb_grouped' => $countGrouped,
+                    'nb_virtual' => $countVirtual,
                     'nb_downloadable' => $countDownloadable,
                 )
             ),
@@ -717,15 +717,15 @@ class Lengow_Connector_Model_Export extends Varien_Object
         if (!$this->_stream) {
             $this->_copyFile();
             $urlFile = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA)
-                .'lengow'.DS.$this->_store->getCode().DS.$this->_fileName.'.'.$this->_fileFormat;
+                . 'lengow' . DS . $this->_store->getCode() . DS . $this->_fileName . '.' . $this->_fileFormat;
             $this->_helper->log(
                 'Export',
                 $this->_helper->__(
                     'log.export.generate_feed_available_here',
                     array(
                         'store_name' => $this->_store->getName(),
-                        'store_id'   => $this->_storeId,
-                        'feed_url'   => $urlFile
+                        'store_id' => $this->_storeId,
+                        'feed_url' => $urlFile
                     )
                 ),
                 $this->_logOutput
@@ -771,7 +771,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
                 $this->_legacy = false;
             }
         }
-        $this->_defaultFields = $this->_legacy ? $this->_legacyFields : $this->_newFields ;
+        $this->_defaultFields = $this->_legacy ? $this->_legacyFields : $this->_newFields;
     }
 
     /**
@@ -824,10 +824,10 @@ class Lengow_Connector_Model_Export extends Varien_Object
             ->addAttributeToFilter('type_id', array('in' => $productTypes))
             ->joinField(
                 'store_id',
-                Mage::getConfig()->getTablePrefix().'catalog_category_product_index',
+                Mage::getConfig()->getTablePrefix() . 'catalog_category_product_index',
                 'store_id',
                 'product_id=entity_id',
-                '{{table}}.store_id = '.$this->_storeId,
+                '{{table}}.store_id = ' . $this->_storeId,
                 'left'
             );
         // Filter status
@@ -874,10 +874,10 @@ class Lengow_Connector_Model_Export extends Varien_Object
             ->addStoreFilter($this->_storeId)
             ->joinField(
                 'store_id',
-                Mage::getConfig()->getTablePrefix().'catalog_category_product_index',
+                Mage::getConfig()->getTablePrefix() . 'catalog_category_product_index',
                 'store_id',
                 'product_id=entity_id',
-                '{{table}}.store_id = '.$this->_storeId,
+                '{{table}}.store_id = ' . $this->_storeId,
                 'left'
             )
             ->addAttributeToFilter('type_id', array('nlike' => 'bundle'));
@@ -911,7 +911,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
         if (!$outOfStock) {
             $config = (int)Mage::getStoreConfigFlag(Mage_CatalogInventory_Model_Stock_Item::XML_PATH_MANAGE_STOCK);
             $sql = '({{table}}.`is_in_stock` = 1) '
-                .' OR IF({{table}}.`use_config_manage_stock` = 1, '.$config.', {{table}}.`manage_stock`) = 0';
+                . ' OR IF({{table}}.`use_config_manage_stock` = 1, ' . $config . ', {{table}}.`manage_stock`) = 0';
             unset($config);
             return $sql;
         }
@@ -948,7 +948,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
         $this->_fileTimeStamp = time();
         $this->_file = new Varien_Io_File;
         $this->_file->cd($this->_config['directory_path']);
-        $this->_file->streamOpen($this->_fileName.'.'.$this->_fileTimeStamp.'.'.$this->_fileFormat, 'w+');
+        $this->_file->streamOpen($this->_fileName . '.' . $this->_fileTimeStamp . '.' . $this->_fileFormat, 'w+');
     }
 
     /**
@@ -1005,7 +1005,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
                 $fileModifiedDatetime = new DateTime($fileModified);
                 $fileModifiedDatetime->add(new DateInterval('P10D'));
                 if (date('Y-m-d') > $fileModifiedDatetime->format('Y-m-d')) {
-                    unlink($directory.$file);
+                    unlink($directory . $file);
                 }
                 $fileModifiedDatetime = new DateTime($fileModified);
                 $fileModifiedDatetime->add(new DateInterval('PT20S'));
@@ -1024,10 +1024,10 @@ class Lengow_Connector_Model_Export extends Varien_Object
     {
         $filePath = $this->_config['directory_path'];
         copy(
-            $filePath.$this->_fileName.'.'.$this->_fileTimeStamp.'.'.$this->_fileFormat,
-            $filePath . $this->_fileName.'.'.$this->_fileFormat
+            $filePath . $this->_fileName . '.' . $this->_fileTimeStamp . '.' . $this->_fileFormat,
+            $filePath . $this->_fileName . '.' . $this->_fileFormat
         );
-        unlink($filePath.$this->_fileName.'.'.$this->_fileTimeStamp.'.'.$this->_fileFormat);
+        unlink($filePath . $this->_fileName . '.' . $this->_fileTimeStamp . '.' . $this->_fileFormat);
     }
 
     /**
@@ -1121,8 +1121,8 @@ class Lengow_Connector_Model_Export extends Varien_Object
             }
             $params[$param] = array(
                 'authorized_values' => $authorizedValue,
-                'type'              => $type,
-                'example'           => $example
+                'type' => $type,
+                'example' => $example
             );
         }
         return Mage::helper('core')->jsonEncode($params);

@@ -44,14 +44,14 @@ class Lengow_Connector_Model_Export_Feed_Yaml extends Lengow_Connector_Model_Exp
      */
     public function makeHeader()
     {
-        return '"catalog":'."\r\n";
+        return '"catalog":' . "\r\n";
     }
 
     /**
      * Make each data
      *
      * @param array $array All product datas
-     * @param array $args  Specific arguments for different format
+     * @param array $args Specific arguments for different format
      *
      * @return string
      */
@@ -62,10 +62,10 @@ class Lengow_Connector_Model_Export_Feed_Yaml extends Lengow_Connector_Model_Exp
         } else {
             $maxCharacter = $args['max_character'] + 2;
         }
-        $line = '  '.'"product":' . "\r\n";
+        $line = '  ' . '"product":' . "\r\n";
         foreach ($this->_fields as $name) {
-            $line .= '    '.'"'.$name.'":'.
-                $this->_addSpaces($name, $maxCharacter).(isset($array[$name]) ? $array[$name] : '')."\r\n";
+            $line .= '    ' . '"' . $name . '":' .
+                $this->_addSpaces($name, $maxCharacter) . (isset($array[$name]) ? $array[$name] : '') . "\r\n";
         }
         return $line;
     }

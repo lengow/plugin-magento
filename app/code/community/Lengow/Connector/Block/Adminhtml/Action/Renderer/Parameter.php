@@ -43,7 +43,9 @@ class Lengow_Connector_Block_Adminhtml_Action_Renderer_Parameter
             } elseif ($key == 'marketplace_order_id') {
                 $key = 'marketplace sku';
             }
-            $return.= strlen($return) == 0 ? ucfirst($key).': '.$value.' ' : '- '.ucfirst($key).': '.$value.' ' ;
+            $return .= strlen($return) == 0
+                ? ucfirst($key) . ': ' . $value . ' '
+                : '- ' . ucfirst($key) . ': ' . $value . ' ';
         }
         return $return;
     }

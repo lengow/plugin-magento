@@ -83,7 +83,7 @@ class Lengow_Connector_Helper_Security extends Mage_Core_Helper_Abstract
         $resource = Mage::getSingleton('core/resource');
         $readConnection = $resource->getConnection('core_read');
         $table = $resource->getTableName('core/resource');
-        $query = 'SELECT version FROM '.$table.' WHERE code = \''.self::PLUGIN_CODE.'\'';
+        $query = 'SELECT version FROM ' . $table . ' WHERE code = \'' . self::PLUGIN_CODE . '\'';
         $version = $readConnection->fetchOne($query);
         if ($version === $this->getPluginVersion()) {
             return true;

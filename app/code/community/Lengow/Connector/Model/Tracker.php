@@ -25,7 +25,7 @@ class Lengow_Connector_Model_Tracker extends Varien_Object
     /**
      * Return list of order's items id
      *
-     * @param Mage_Sales_Model_Order $order Magento order instance
+     * @param Mage_Sales_Model_Order|Mage_Sales_Model_Quote $quote Magento order instance
      *
      * @return string|false
      */
@@ -40,13 +40,13 @@ class Lengow_Connector_Model_Tracker extends Varien_Object
                 } else {
                     $product = Mage::getModel('catalog/product')->load($item->getProductId());
                 }
-                $quantity = (int) $item->getQtyOrdered();
+                $quantity = (int)$item->getQtyOrdered();
                 $price = round((float)$item->getRowTotalInclTax() / $quantity, 2);
-                $identifier =  Mage::helper('lengow_connector/config')->get('tracking_id');
+                $identifier = Mage::helper('lengow_connector/config')->get('tracking_id');
                 $productDatas = array(
                     'product_id' => $product->getData($identifier),
-                    'price'      => $price,
-                    'quantity'   => $quantity
+                    'price' => $price,
+                    'quantity' => $quantity
                 );
                 $productsCart[] = $productDatas;
             }

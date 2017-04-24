@@ -50,9 +50,9 @@ class Lengow_Connector_Model_Config extends Mage_Core_Model_Config
     /**
      * Override Save config to store lengow changes
      *
-     * @param string  $path    configuration path
-     * @param string  $value   configuration value
-     * @param string  $scope   Magento scope
+     * @param string $path configuration path
+     * @param string $value configuration value
+     * @param string $scope Magento scope
      * @param integer $scopeId Magento store id
      *
      * @return Lengow_Connector_Model_Config
@@ -63,7 +63,7 @@ class Lengow_Connector_Model_Config extends Mage_Core_Model_Config
         if (isset($pathExplode[0]) && in_array($pathExplode[0], $this->_lengowOptions)) {
             if ($scope == 'default' || $scope == 'stores') {
                 $oldValue = Mage::getStoreConfig($path, $scopeId);
-                if ($oldValue!= $value && !in_array($pathExplode[2], $this->_excludeOptions)) {
+                if ($oldValue != $value && !in_array($pathExplode[2], $this->_excludeOptions)) {
                     if ($pathExplode[2] == 'global_access_token' || $pathExplode[2] == 'global_secret_token') {
                         $newValue = preg_replace("/[a-zA-Z0-9]/", '*', $value);
                         $oldValue = preg_replace("/[a-zA-Z0-9]/", '*', $oldValue);
@@ -74,19 +74,19 @@ class Lengow_Connector_Model_Config extends Mage_Core_Model_Config
                         $message = Mage::helper('lengow_connector/translation')->t(
                             'log.setting.setting_change_for_store',
                             array(
-                                'key'       => $path,
+                                'key' => $path,
                                 'old_value' => $oldValue,
-                                'value'     => $newValue,
-                                'store_id'  => $scopeId
+                                'value' => $newValue,
+                                'store_id' => $scopeId
                             )
                         );
                     } else {
                         $message = Mage::helper('lengow_connector/translation')->t(
                             'log.setting.setting_change',
                             array(
-                                'key'       => $path,
+                                'key' => $path,
                                 'old_value' => $oldValue,
-                                'value'     => $newValue,
+                                'value' => $newValue,
                             )
                         );
                     }

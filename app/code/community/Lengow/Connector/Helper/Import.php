@@ -53,7 +53,7 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
     /**
      * Get Marketplace singleton
      *
-     * @param string  $name    markeplace name
+     * @param string $name marketplace name
      * @param integer $storeId Magento store Id
      *
      * @return array Lengow marketplace
@@ -64,7 +64,7 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
             self::$marketplaces[$name] = Mage::getModel(
                 'lengow/import_marketplace',
                 array(
-                    'name'     => $name,
+                    'name' => $name,
                     'store_id' => $storeId
                 )
             );
@@ -128,8 +128,8 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
     /**
      * Check if order status is valid for import
      *
-     * @param string                                    $orderStateMarketplace order state
-     * @param Lengow_Connector_Model_Import_Marketplace $marketplace           order marketplace
+     * @param string $orderStateMarketplace order state
+     * @param Lengow_Connector_Model_Import_Marketplace $marketplace order marketplace
      *
      * @return boolean
      */
@@ -171,7 +171,7 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
         $timestampManual = $this->_config->get('last_import_manual');
 
         if ($timestampCron && $timestampManual) {
-            if ((int)$timestampCron > (int) $timestampManual) {
+            if ((int)$timestampCron > (int)$timestampManual) {
                 return array('type' => 'cron', 'timestamp' => (int)$timestampCron);
             } else {
                 return array('type' => 'manual', 'timestamp' => (int)$timestampManual);
@@ -193,29 +193,29 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
     public function sendMailAlert($logOutput = false)
     {
         $helper = Mage::helper('lengow_connector');
-        $subject = '<h2>'.$helper->decodeLogMessage('lengow_log.mail_report.subject_report_mail').'</h2>';
+        $subject = '<h2>' . $helper->decodeLogMessage('lengow_log.mail_report.subject_report_mail') . '</h2>';
         $mailBody = '<p><ul>';
         $errors = Mage::getModel('lengow/import_ordererror')->getImportErrors();
         if ($errors) {
             foreach ($errors as $error) {
-                $mailBody.= '<li>'.$helper->decodeLogMessage(
-                    'lengow_log.mail_report.order',
-                    null,
-                    array(
-                        'marketplace_sku' => $error['marketplace_sku']
-                    )
-                );
+                $mailBody .= '<li>' . $helper->decodeLogMessage(
+                        'lengow_log.mail_report.order',
+                        null,
+                        array(
+                            'marketplace_sku' => $error['marketplace_sku']
+                        )
+                    );
                 if ($error['message'] != '') {
-                    $mailBody.= ' - '.$helper->decodeLogMessage($error['message']);
+                    $mailBody .= ' - ' . $helper->decodeLogMessage($error['message']);
                 } else {
-                    $mailBody.= ' - '.$helper->decodeLogMessage('lengow_log.mail_report.no_error_in_report_mail');
+                    $mailBody .= ' - ' . $helper->decodeLogMessage('lengow_log.mail_report.no_error_in_report_mail');
                 }
-                $mailBody.= '</li>';
+                $mailBody .= '</li>';
                 $orderError = Mage::getModel('lengow/import_ordererror')->load($error['id']);
                 $orderError->updateOrderError(array('mail' => 1));
                 unset($orderError);
             }
-            $mailBody .=  '</ul></p>';
+            $mailBody .= '</ul></p>';
             $emails = Mage::helper('lengow_connector/config')->getReportEmailAddress();
             foreach ($emails as $email) {
                 if (strlen($email) > 0) {

@@ -23,8 +23,8 @@
 abstract class Lengow_Connector_Model_Export_Feed_Abstract
 {
     /**
-    * @var array export fields
-    */
+     * @var array export fields
+     */
     protected $_fields;
 
     abstract public function getContentType();
@@ -36,8 +36,8 @@ abstract class Lengow_Connector_Model_Export_Feed_Abstract
     abstract public function makeFooter();
 
     /**
-    * Set export fields
-    */
+     * Set export fields
+     */
     public function setFields($array = array())
     {
         $this->_fields = $array;

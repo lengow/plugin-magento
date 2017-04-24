@@ -55,16 +55,16 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Get export Url
      *
-     * @param integer $storeId          Magento store id
-     * @param array   $additionalParams additional parameters for export url
+     * @param integer $storeId Magento store id
+     * @param array $additionalParams additional parameters for export url
      *
      * @return string
      */
     public function getExportUrl($storeId, $additionalParams = array())
     {
         $defaultParams = array(
-            'store'         => $storeId,
-            '_nosid'        => true,
+            'store' => $storeId,
+            '_nosid' => true,
             '_store_to_url' => false,
         );
         if (count($additionalParams) > 0) {
@@ -86,10 +86,10 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Write log
      *
-     * @param string  $category       log category
-     * @param string  $message        log message
-     * @param boolean $display        display on screen
-     * @param string  $marketplaceSku Lengow order id
+     * @param string $category log category
+     * @param string $message log message
+     * @param boolean $display display on screen
+     * @param string $marketplaceSku Lengow order id
      *
      * @return boolean
      */
@@ -99,11 +99,11 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
             return false;
         }
         $decodedMessage = $this->decodeLogMessage($message, 'en_GB');
-        $finalMessage = (empty($category) ? '' : '['.$category.'] ');
-        $finalMessage.= ''.(empty($marketplaceSku) ? '' : 'order '.$marketplaceSku.' : ');
-        $finalMessage.= $decodedMessage;
+        $finalMessage = (empty($category) ? '' : '[' . $category . '] ');
+        $finalMessage .= '' . (empty($marketplaceSku) ? '' : 'order ' . $marketplaceSku . ' : ');
+        $finalMessage .= $decodedMessage;
         if ($display) {
-            echo $finalMessage.'<br />';
+            echo $finalMessage . '<br />';
             flush();
         }
         $log = Mage::getModel('lengow/log');
@@ -113,8 +113,8 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Set message with params for translation
      *
-     * @param string $key    log key
-     * @param array  $params log parameters
+     * @param string $key log key
+     * @param array $params log parameters
      *
      * @return string
      */
@@ -126,9 +126,9 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
         $allParams = array();
         foreach ($params as $param => $value) {
             $value = str_replace(array('|', '=='), array('', ''), $value);
-            $allParams[] = $param.'=='.$value;
+            $allParams[] = $param . '==' . $value;
         }
-        $message = $key.'['.join('|', $allParams).']';
+        $message = $key . '[' . join('|', $allParams) . ']';
         return $message;
     }
 
@@ -137,7 +137,7 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
      *
      * @param string $message log message
      * @param string $isoCode iso code for translation
-     * @param mixed  $params  log parameters
+     * @param mixed $params log parameters
      *
      * @return string
      */
@@ -146,16 +146,16 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
         if (preg_match('/^(([a-z\_]*\.){1,3}[a-z\_]*)(\[(.*)\]|)$/', $message, $result)) {
             if (isset($result[1])) {
                 $key = $result[1];
-            }
-            if (isset($result[4]) && is_null($params)) {
-                $strParam = $result[4];
-                $allParams = explode('|', $strParam);
-                foreach ($allParams as $param) {
-                    $result = explode('==', $param);
-                    $params[$result[0]] = $result[1];
+                if (isset($result[4]) && is_null($params)) {
+                    $strParam = $result[4];
+                    $allParams = explode('|', $strParam);
+                    foreach ($allParams as $param) {
+                        $result = explode('==', $param);
+                        $params[$result[0]] = $result[1];
+                    }
                 }
+                $message = $this->__($key, $params, $isoCode);
             }
-            $message = $this->__($key, $params, $isoCode);
         }
         return $message;
     }
@@ -173,7 +173,7 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
         $resource = Mage::getSingleton('core/resource');
         $writeConnection = $resource->getConnection('core_write');
         $table = $resource->getTableName('lengow/log');
-        $query = "DELETE FROM ".$table." WHERE `date` < DATE_SUB(NOW(),INTERVAL ".$nbDays." DAY)";
+        $query = "DELETE FROM " . $table . " WHERE `date` < DATE_SUB(NOW(),INTERVAL " . $nbDays . " DAY)";
         $writeConnection->query($query);
     }
 
@@ -198,7 +198,7 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
      * Get date in local date
      *
      * @param integer $timestamp linux timestamp
-     * @param boolean $second    see seconds or not
+     * @param boolean $second see seconds or not
      *
      * @return string in gmt format
      */
@@ -216,8 +216,8 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
      * Convert specials chars to html chars
      * Clean None utf-8 characters
      *
-     * @param string  $value the content
-     * @param boolean $html  keep html or not
+     * @param string $value the content
+     * @param boolean $html keep html or not
      *
      * @return string
      */
@@ -230,17 +230,17 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
         $value = Mage::helper('core/string')->cleanString($value);
         // Reject overly long 2 byte sequences, as well as characters above U+10000 and replace with blank
         $value = preg_replace(
-            '/[\x00-\x08\x10\x0B\x0C\x0E-\x19\x7F]'.
-            '|[\x00-\x7F][\x80-\xBF]+'.
-            '|([\xC0\xC1]|[\xF0-\xFF])[\x80-\xBF]*'.
-            '|[\xC2-\xDF]((?![\x80-\xBF])|[\x80-\xBF]{2,})'.
+            '/[\x00-\x08\x10\x0B\x0C\x0E-\x19\x7F]' .
+            '|[\x00-\x7F][\x80-\xBF]+' .
+            '|([\xC0\xC1]|[\xF0-\xFF])[\x80-\xBF]*' .
+            '|[\xC2-\xDF]((?![\x80-\xBF])|[\x80-\xBF]{2,})' .
             '|[\xE0-\xEF](([\x80-\xBF](?![\x80-\xBF]))|(?![\x80-\xBF]{2})|[\x80-\xBF]{3,})/S',
             '',
             $value
         );
         // Reject overly long 3 byte sequences and UTF-16 surrogates and replace with blank
         $value = preg_replace(
-            '/\xE0[\x80-\x9F][\x80-\xBF]'.'|\xED[\xA0-\xBF][\x80-\xBF]/S',
+            '/\xE0[\x80-\x9F][\x80-\xBF]' . '|\xED[\xA0-\xBF][\x80-\xBF]/S',
             '',
             $value
         );
@@ -269,21 +269,21 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
                 "\r"
             ),
             array(
-            ' ',
-            ' ',
-            '\'',
-            '\'',
-            ' ',
-            '-',
-            ' ',
-            ' ',
-            ' ',
-            '',
-            '',
-            '',
-            '',
-            '',
-            ''
+                ' ',
+                ' ',
+                '\'',
+                '\'',
+                ' ',
+                '-',
+                ' ',
+                ' ',
+                ' ',
+                '',
+                '',
+                '',
+                '',
+                '',
+                ''
             ),
             $value
         );

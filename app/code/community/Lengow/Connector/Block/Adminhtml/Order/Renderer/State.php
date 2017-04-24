@@ -32,11 +32,11 @@ class Lengow_Connector_Block_Adminhtml_Order_Renderer_State
      */
     public function render(Varien_Object $row)
     {
-        $value =  $row->getData($this->getColumn()->getIndex());
+        $value = $row->getData($this->getColumn()->getIndex());
         if (empty($value)) {
             $value = 'not_synchronized';
         }
-        return '<span class="lgw-label lgw-label_'.$value.'">'
-            .Mage::helper('lengow_connector')->__('order.table.status_'.$value).'</span>';
+        return '<span class="lgw-label lgw-label_' . $value . '">'
+            . Mage::helper('lengow_connector')->__('order.table.status_' . $value) . '</span>';
     }
 }

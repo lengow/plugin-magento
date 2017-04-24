@@ -105,7 +105,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Tab
         $helper = Mage::helper('lengow_connector');
         $orderLengow = Mage::getModel('lengow/import_order');
         $orderLengowId = $orderLengow->getLengowOrderIdWithOrderId($order->getData('entity_id'));
-        // Get all Lengow informations
+        // Get all Lengow data
         if ($orderLengowId) {
             $orderLengow = $orderLengow->load($orderLengowId);
             $marketplaceSku = $orderLengow->getData('marketplace_sku');
@@ -133,7 +133,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Tab
             $currency = $order->getData('base_currency_code');
             $totalPaid = $order->getData('total_paid_lengow');
             $commission = $order->getData('fees_lengow');
-            $customerName = $order->getData('customer_firstname').' '.$order->getData('customer_lastname');
+            $customerName = $order->getData('customer_firstname') . ' ' . $order->getData('customer_lastname');
             $customerEmail = $order->getData('customer_email');
             $carrier = $order->getData('carrier_lengow');
             $carrierMethod = $order->getData('carrier_method_lengow');
@@ -170,7 +170,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Tab
         $fields[] = array('label' => $helper->__('order.screen.imported_at'), 'value' => $importedAt);
         $fields[] = array(
             'label' => $helper->__('order.screen.extra'),
-            'value' => '<textarea disabled="disabled">'.$extra.'</textarea>',
+            'value' => '<textarea disabled="disabled">' . $extra . '</textarea>',
         );
 
         return $fields;

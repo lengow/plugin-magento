@@ -34,10 +34,10 @@ class Lengow_Connector_Block_Adminhtml_Order_Renderer_Country
     {
         $isoCode = $row->getData($this->getColumn()->getIndex());
         if (!is_null($isoCode) && strlen($isoCode) === 2) {
-            $filename = $this->getSkinUrl('lengow/images/flag').DS.strtoupper($isoCode).'.png';
+            $filename = $this->getSkinUrl('lengow/images/flag') . DS . strtoupper($isoCode) . '.png';
             $countryName = Mage::getModel('directory/country')->loadByCode($isoCode)->getName();
-            return '<a class="lengow_tooltip" href="#"><img src="'.$filename.'" />
-                <span class="lengow_order_country">'.$countryName.'</span></a>';
+            return '<a class="lengow_tooltip" href="#"><img src="' . $filename . '" />
+                <span class="lengow_order_country">' . $countryName . '</span></a>';
         }
     }
 }

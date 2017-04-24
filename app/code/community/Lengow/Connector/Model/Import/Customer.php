@@ -46,17 +46,19 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
     /**
      * Convert array to customer model
      *
-     * @param object  $orderData       order data
-     * @param array   $shippingAddress shipping address data
-     * @param integer $storeId         Magento store id
-     * @param string  $marketplaceSku  marketplace sku
-     * @param boolean $logOutput       see log or not
+     * @param object $orderData order data
+     * @param array $shippingAddress shipping address data
+     * @param integer $storeId Magento store id
+     * @param string $marketplaceSku marketplace sku
+     * @param boolean $logOutput see log or not
+     *
+     * @return Lengow_Connector_Model_Import_Customer
      */
     public function createCustomer($orderData, $shippingAddress, $storeId, $marketplaceSku, $logOutput)
     {
         $idWebsite = Mage::getModel('core/store')->load($storeId)->getWebsiteId();
         $array = array(
-            'billing_address'  => $this->_extractAddressDataFromAPI($orderData->billing_address),
+            'billing_address' => $this->_extractAddressDataFromAPI($orderData->billing_address),
             'delivery_address' => $this->_extractAddressDataFromAPI($shippingAddress)
         );
         // generation of fictitious email
@@ -64,7 +66,7 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
             ? 'magento.shop'
             : Mage::helper('lengow_connector/data')->getHost($storeId)
         );
-        $array['billing_address']['email'] = $marketplaceSku.'-'.$orderData->marketplace.'@'.$domain;
+        $array['billing_address']['email'] = $marketplaceSku . '-' . $orderData->marketplace . '@' . $domain;
         Mage::helper('lengow_connector/data')->log(
             'Import',
             Mage::helper('lengow_connector/data')->setLogMessage(
@@ -87,8 +89,8 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
         // Billing address
         $tempBillingNames = array(
             'firstname' => $array['billing_address']['first_name'],
-            'lastname'  => $array['billing_address']['last_name'],
-            'fullname'  => $array['billing_address']['full_name']
+            'lastname' => $array['billing_address']['last_name'],
+            'fullname' => $array['billing_address']['full_name']
         );
         $billingNames = $this->_getNames($tempBillingNames);
         $array['billing_address']['first_name'] = $billingNames['firstname'];
@@ -98,8 +100,8 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
         // Shipping address
         $tempShippingNames = array(
             'firstname' => $array['delivery_address']['first_name'],
-            'lastname'  => $array['delivery_address']['last_name'],
-            'fullname'  => $array['delivery_address']['full_name']
+            'lastname' => $array['delivery_address']['last_name'],
+            'fullname' => $array['delivery_address']['full_name']
         );
         $shippingNames = $this->_getNames($tempShippingNames);
         $array['delivery_address']['first_name'] = $shippingNames['firstname'];
@@ -136,7 +138,7 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
     /**
      * Convert a array to customer address model
      *
-     * @param array  $data address data
+     * @param array $data address data
      * @param string $type address type (billing or shipping)
      *
      * @return Mage_Customer_Model_Address
@@ -151,7 +153,7 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
             $address->setIsDefaultBilling(false);
             $address->setIsDefaultShipping(true);
         }
-        Mage::helper('core')->copyFieldset('lengow_convert_address', 'to_'.$type.'_address', $data, $address);
+        Mage::helper('core')->copyFieldset('lengow_convert_address', 'to_' . $type . '_address', $data, $address);
         $firstLine = $data['first_line'];
         $secondLine = $data['second_line'];
         // Fix first line address
@@ -161,15 +163,15 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
         }
         // Fix second line address
         if (!empty($secondLine)) {
-            $firstLine = $firstLine."\n".$secondLine;
+            $firstLine = $firstLine . "\n" . $secondLine;
         }
         $thirdLine = $data['complement'];
         if (!empty($thirdLine)) {
-            $firstLine = $firstLine."\n".$thirdLine;
+            $firstLine = $firstLine . "\n" . $thirdLine;
         }
         // adding relay to address
         if (isset($data['tracking_relay'])) {
-            $firstLine .= ' - Relay : '.$data['tracking_relay'];
+            $firstLine .= ' - Relay : ' . $data['tracking_relay'];
         }
         $address->setStreet($firstLine);
         $phoneOffice = $data['phone_office'];
@@ -227,7 +229,7 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
             $array['lastname'] = '__';
         }
         if (empty($array['firstname'])) {
-            $array['firstname'] == '__';
+            $array['firstname'] = '__';
         }
         return $array;
     }

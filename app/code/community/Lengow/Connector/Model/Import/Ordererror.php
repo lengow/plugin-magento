@@ -39,10 +39,10 @@ class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
      */
     protected $_fieldList = array(
         'order_lengow_id' => array('required' => true, 'updated' => false),
-        'message'         => array('required' => true, 'updated' => false),
-        'type'            => array('required' => true, 'updated' => false),
-        'is_finished'     => array('required' => false, 'updated' => true),
-        'mail'            => array('required' => false, 'updated' => true)
+        'message' => array('required' => true, 'updated' => false),
+        'type' => array('required' => true, 'updated' => false),
+        'is_finished' => array('required' => false, 'updated' => true),
+        'mail' => array('required' => false, 'updated' => true)
     );
 
     /**
@@ -128,13 +128,10 @@ class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
         switch ($type) {
             case 'import':
                 return self::TYPE_ERROR_IMPORT;
-                break;
             case 'send':
                 return self::TYPE_ERROR_SEND;
-                break;
             default:
                 return self::TYPE_ERROR_IMPORT;
-                break;
         }
     }
 
@@ -142,15 +139,14 @@ class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
      * Get all order errors
      *
      * @param integer $orderLengowId Lengow order id
-     * @param string  $type          order error type (import or send)
-     * @param boolean $finished      log finished
+     * @param string $type order error type (import or send)
+     * @param boolean $finished log finished
      *
      * @return array|false
      *
      */
     public function getOrderErrors($orderLengowId, $type = null, $finished = null)
     {
-        $errorType = $this->getOrderErrorType($type);
         $collection = $this->getCollection()->addFieldToFilter('order_lengow_id', $orderLengowId);
         if (!is_null($type)) {
             $errorType = $this->getOrderErrorType($type);
@@ -171,7 +167,7 @@ class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
      * Removes all order error for one order lengow
      *
      * @param integer $orderLengowId Lengow order id
-     * @param string  $type          order error type (import or send)
+     * @param string $type order error type (import or send)
      *
      * @return boolean
      */
@@ -217,7 +213,7 @@ class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
                 ->addFieldToSelect('id')
                 ->getData();
         } else {
-             $results = $this->getCollection()
+            $results = $this->getCollection()
                 ->join(
                     array('lengow_order' => 'lengow/import_order'),
                     'lengow_order.id=main_table.order_lengow_id',

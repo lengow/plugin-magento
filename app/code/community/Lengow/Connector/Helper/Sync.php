@@ -37,26 +37,26 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
         $helper = Mage::helper('lengow_connector');
         $config = Mage::helper('lengow_connector/config');
         $data = array();
-        $data['domain_name']    = $_SERVER["SERVER_NAME"];
-        $data['token']          = $config->getToken();
-        $data['type']           = 'magento';
-        $data['version']        = Mage::getVersion();
+        $data['domain_name'] = $_SERVER["SERVER_NAME"];
+        $data['token'] = $config->getToken();
+        $data['type'] = 'magento';
+        $data['version'] = Mage::getVersion();
         $data['plugin_version'] = (string)Mage::getConfig()->getNode()->modules->Lengow_Connector->version;
-        $data['email']          = Mage::getStoreConfig('trans_email/ident_general/email');
-        $data['return_url']     = 'http://'.$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
+        $data['email'] = Mage::getStoreConfig('trans_email/ident_general/email');
+        $data['return_url'] = 'http://' . $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"];
         foreach (Mage::app()->getWebsites() as $website) {
             foreach ($website->getGroups() as $group) {
                 $stores = $group->getStores();
                 foreach ($stores as $store) {
                     $export = Mage::getModel('lengow/export', array("store_id" => $store->getId()));
-                    $data['shops'][$store->getId()]['token']                   = $config->getToken($store->getId());
-                    $data['shops'][$store->getId()]['name']                    = $store->getName();
-                    $data['shops'][$store->getId()]['domain']                  = $store->getBaseUrl();
-                    $data['shops'][$store->getId()]['feed_url']                = $helper->getExportUrl($store->getId());
-                    $data['shops'][$store->getId()]['cron_url']                = $helper->getCronUrl();
-                    $data['shops'][$store->getId()]['total_product_number']    = $export->getTotalProduct();
+                    $data['shops'][$store->getId()]['token'] = $config->getToken($store->getId());
+                    $data['shops'][$store->getId()]['name'] = $store->getName();
+                    $data['shops'][$store->getId()]['domain'] = $store->getBaseUrl();
+                    $data['shops'][$store->getId()]['feed_url'] = $helper->getExportUrl($store->getId());
+                    $data['shops'][$store->getId()]['cron_url'] = $helper->getCronUrl();
+                    $data['shops'][$store->getId()]['total_product_number'] = $export->getTotalProduct();
                     $data['shops'][$store->getId()]['exported_product_number'] = $export->getTotalExportedProduct();
-                    $data['shops'][$store->getId()]['configured']              = $this->checkSyncStore($store->getId());
+                    $data['shops'][$store->getId()]['configured'] = $this->checkSyncStore($store->getId());
                 }
             }
         }
@@ -74,7 +74,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
         foreach ($params as $shopToken => $values) {
             if ($store = $config->getStoreByToken($shopToken)) {
                 $listKey = array(
-                    'account_id'   => false,
+                    'account_id' => false,
                     'access_token' => false,
                     'secret_token' => false
                 );
@@ -115,7 +115,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
     public function checkSyncStore($storeId)
     {
         return Mage::helper('lengow_connector/config')->get('store_enable', $storeId)
-            && Mage::getModel('lengow/connector')->getConnectorByStore($storeId);
+        && Mage::getModel('lengow/connector')->getConnectorByStore($storeId);
     }
 
     /**
@@ -151,11 +151,11 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
         $config = Mage::helper('lengow_connector/config');
         $data = array();
         $data['cms'] = array(
-            'token'          => $config->getToken(),
-            'type'           => 'magento',
-            'version'        => Mage::getVersion(),
+            'token' => $config->getToken(),
+            'type' => 'magento',
+            'version' => Mage::getVersion(),
             'plugin_version' => (string)Mage::getConfig()->getNode()->modules->Lengow_Connector->version,
-            'options'        => $config->getAllValues()
+            'options' => $config->getAllValues()
         );
         foreach (Mage::app()->getWebsites() as $website) {
             foreach ($website->getGroups() as $group) {
@@ -163,15 +163,15 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
                 foreach ($stores as $store) {
                     $export = Mage::getModel('lengow/export', array("store_id" => $store->getId()));
                     $data['shops'][] = array(
-                        'enabled'                 => (bool)$config->get('store_enable', $store->getId()),
-                        'token'                   => $config->getToken($store->getId()),
-                        'store_name'              => $store->getName(),
-                        'domain_url'              => $store->getBaseUrl(),
-                        'feed_url'                => $helper->getExportUrl($store->getId()),
-                        'cron_url'                => $helper->getCronUrl(),
-                        'total_product_number'    => $export->getTotalProduct(),
+                        'enabled' => (bool)$config->get('store_enable', $store->getId()),
+                        'token' => $config->getToken($store->getId()),
+                        'store_name' => $store->getName(),
+                        'domain_url' => $store->getBaseUrl(),
+                        'feed_url' => $helper->getExportUrl($store->getId()),
+                        'cron_url' => $helper->getCronUrl(),
+                        'total_product_number' => $export->getTotalProduct(),
                         'exported_product_number' => $export->getTotalExportedProduct(),
-                        'options'                 => $config->getAllValues($store->getId())
+                        'options' => $config->getAllValues($store->getId())
                     );
                 }
             }
@@ -228,7 +228,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
         if (isset($result->subscription)) {
             $status = array();
             $status['type'] = $result->subscription->billing_offer->type;
-            $status['day'] = - round((strtotime(date("c")) - strtotime($result->subscription->renewal)) / 86400);
+            $status['day'] = -round((strtotime(date("c")) - strtotime($result->subscription->renewal)) / 86400);
             if ($status['day'] < 0) {
                 $status['day'] = 0;
             }
@@ -265,7 +265,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
         $return['total_order'] = 0;
         $return['nb_order'] = 0;
         $return['currency'] = '';
-	    $return['available']   = false;
+        $return['available'] = false;
         // get stats by store
         $storeCollection = Mage::getResourceModel('core/store_collection')->addFieldToFilter('is_active', 1);
         $i = 0;
@@ -282,9 +282,9 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
                 '/v3.0/stats',
                 $store->getId(),
                 array(
-                    'date_from' => date('c', strtotime(date('Y-m-d').' -10 years')),
-                    'date_to'   => date('c'),
-                    'metrics'   => 'year',
+                    'date_from' => date('c', strtotime(date('Y-m-d') . ' -10 years')),
+                    'date_to' => date('c'),
+                    'metrics' => 'year',
                 )
             );
             if (isset($result->level0)) {
@@ -293,16 +293,16 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
                 $return['nb_order'] += $stats->transactions;
                 $return['currency'] = $result->currency->iso_a3;
             } else {
-	            if ($config->get('last_statistic_update')) {
-		            return json_decode($config->get('order_statistic'), true);
-	            } else {
-		            return array(
-			            'total_order' => 0,
-			            'nb_order'    => 0,
-			            'currency'    => '',
-			            'available'   => false
-		            );
-	            }
+                if ($config->get('last_statistic_update')) {
+                    return json_decode($config->get('order_statistic'), true);
+                } else {
+                    return array(
+                        'total_order' => 0,
+                        'nb_order' => 0,
+                        'currency' => '',
+                        'available' => false
+                    );
+                }
             }
             $accountIds[] = $accountId;
             $i++;
@@ -316,9 +316,9 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
                 }
             }
         }
-	    if ($return['total_order'] > 0 || $return['nb_order'] > 0) {
-		    $return['available'] = true;
-	    }
+        if ($return['total_order'] > 0 || $return['nb_order'] > 0) {
+            $return['available'] = true;
+        }
         if ($return['currency'] && in_array($return['currency'], $allCurrencies)) {
             $return['total_order'] = Mage::app()->getLocale()
                 ->currency($return['currency'])

@@ -22,7 +22,7 @@
  */
 class Lengow_Connector_Model_Resource_Log extends Mage_Core_Model_Mysql4_Abstract
 {
-	/**
+    /**
      * Construct
      */
     protected function _construct()

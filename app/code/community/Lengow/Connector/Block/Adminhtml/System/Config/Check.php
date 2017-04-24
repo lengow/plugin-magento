@@ -47,18 +47,18 @@ class Lengow_Connector_Block_Adminhtml_System_Config_Check
 
     /**
      * Generate html for button
-     * 
+     *
      * @see Mage_Adminhtml_Block_System_Config_Form_Field::_getElementHtml()
      *
      * @param Varien_Data_Form_Element_Abstract $element Magento Varien data form element instance
      *
-     * @return string $html 
+     * @return string $html
      */
     public function render(Varien_Data_Form_Element_Abstract $element)
     {
         $html = $this->getLayout()
-                    ->createBlock('lengow/adminhtml_system_config_check_point', 'lengow_checkpoint')
-                    ->toHtml();
+            ->createBlock('lengow/adminhtml_system_config_check_point', 'lengow_checkpoint')
+            ->toHtml();
         $element->setHtmlContent($html);
         $this->_element = $element;
         return $this->toHtml();

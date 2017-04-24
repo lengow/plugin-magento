@@ -61,9 +61,9 @@ class Lengow_Connector_Model_Export_Feed_Csv extends Lengow_Connector_Model_Expo
     {
         $head = '';
         foreach ($this->_fields as $name) {
-            $head .= self::$csvProtection.
-                $this->_clean(substr(str_replace('-', '_', $name), 0, 59)).
-                self::$csvProtection.self::$csvSeparator;
+            $head .= self::$csvProtection .
+                $this->_clean(substr(str_replace('-', '_', $name), 0, 59)) .
+                self::$csvProtection . self::$csvSeparator;
         }
         return rtrim($head, self::$csvSeparator) . self::$csvEol;
     }
@@ -72,19 +72,19 @@ class Lengow_Connector_Model_Export_Feed_Csv extends Lengow_Connector_Model_Expo
      * Make each data
      *
      * @param array $array All product datas
-     * @param array $args  Specific arguments for different format
-     * 
+     * @param array $args Specific arguments for different format
+     *
      * @return string
      */
     public function makeData($array, $args = array())
     {
         $line = '';
         foreach ($this->_fields as $name) {
-            $line .= self::$csvProtection.
+            $line .= self::$csvProtection .
                 (array_key_exists($name, $array)
                     ? (str_replace(array(self::$csvProtection, '\\'), '', $array[$name]))
                     : ''
-                ).self::$csvProtection.self::$csvSeparator;
+                ) . self::$csvProtection . self::$csvSeparator;
         }
         return rtrim($line, self::$csvSeparator) . self::$csvEol;
     }

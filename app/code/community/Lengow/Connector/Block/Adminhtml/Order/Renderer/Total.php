@@ -32,12 +32,12 @@ class Lengow_Connector_Block_Adminhtml_Order_Renderer_Total
      */
     public function render(Varien_Object $row)
     {
-        $value =  $row->getData($this->getColumn()->getIndex());
+        $value = $row->getData($this->getColumn()->getIndex());
         if (!is_null($row->getData('currency')) && $value != '') {
             $currencySymbol = Mage::app()->getLocale()->currency($row->getData('currency'))->getSymbol();
         } else {
             $currencySymbol = '';
         }
-        return $value.' '.$currencySymbol;
+        return $value . ' ' . $currencySymbol;
     }
 }

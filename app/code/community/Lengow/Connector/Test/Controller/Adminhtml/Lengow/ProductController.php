@@ -135,7 +135,7 @@ class Lengow_Connector_Test_Controller_Adminhtml_Lengow_ProductController extend
             array(
                 'product' => array(1),
                 'publish' => 1,
-                'store'   => 1
+                'store' => 1
             )
         );
         $this->dispatch('adminhtml/lengow_product/massPublish/');
@@ -170,7 +170,7 @@ class Lengow_Connector_Test_Controller_Adminhtml_Lengow_ProductController extend
             array(
                 'product' => array(1),
                 'publish' => 0,
-                'store'   => 1
+                'store' => 1
             )
         );
         $this->dispatch('adminhtml/lengow_product/massPublish/');
@@ -191,7 +191,7 @@ class Lengow_Connector_Test_Controller_Adminhtml_Lengow_ProductController extend
     {
         //reset product
         $productAction = Mage::getSingleton('catalog/product_action');
-        $productAction->updateAttributes(array(1,2), array('lengow_product' => 1), 2);
+        $productAction->updateAttributes(array(1, 2), array('lengow_product' => 1), 2);
 
         $product = Mage::getModel('catalog/product')->setStoreId(2)->load(1);
         $this->assertTrue((boolean)$product->getLengowProduct());

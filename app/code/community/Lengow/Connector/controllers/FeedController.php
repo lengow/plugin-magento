@@ -40,7 +40,7 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action
          * string  product_types      Type separate with comma (simple,configurable,downloadable,grouped,virtual)
          * string  product_status     Status separate with comma (1,2)
          * boolean variation          Export product Variation (1) Export parent product only (0)
-         * boolean inactive           Export inactive product (1) or not (0) 
+         * boolean inactive           Export inactive product (1) or not (0)
          * string  code               Export a specific store with store code
          * integer store              Export a specific store with store id
          * string  currency           Convert prices with a specific currency
@@ -78,9 +78,9 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action
         //get store data
         $storeCode = $this->getRequest()->getParam('code', null);
         if ($storeCode) {
-            $storeId = (int) Mage::getModel('core/store')->load($storeCode, 'code')->getId();
+            $storeId = (int)Mage::getModel('core/store')->load($storeCode, 'code')->getId();
         } else {
-            $storeId = (integer) $this->getRequest()->getParam('store', Mage::app()->getStore()->getId());
+            $storeId = (integer)$this->getRequest()->getParam('store', Mage::app()->getStore()->getId());
         }
         if ($locale = $this->getRequest()->getParam('locale', null)) {
             // changing locale works!
@@ -100,28 +100,29 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action
                 $export = Mage::getModel(
                     'lengow/export',
                     array(
-                        'store_id'           => $storeId,
-                        'format'             => $format,
-                        'mode'               => $mode,
-                        'get_params'         => $getParams,
-                        'product_types'      => $productTypes,
-                        'product_status'     => $productStatus,
-                        'out_of_stock'       => $outOfStock,
-                        'selection'          => $selection,
-                        'stream'             => $stream,
-                        'limit'              => $limit,
-                        'offset'             => $offset,
-                        'product_ids'        => $productIds,
-                        'currency'           => $currency,
-                        'legacy_fields'      => $legacyFields,
+                        'store_id' => $storeId,
+                        'format' => $format,
+                        'mode' => $mode,
+                        'get_params' => $getParams,
+                        'product_types' => $productTypes,
+                        'product_status' => $productStatus,
+                        'out_of_stock' => $outOfStock,
+                        'selection' => $selection,
+                        'stream' => $stream,
+                        'limit' => $limit,
+                        'offset' => $offset,
+                        'product_ids' => $productIds,
+                        'currency' => $currency,
+                        'legacy_fields' => $legacyFields,
                         'update_export_date' => $updateExportDate,
-                        'log_output'         => $logOutput,
+                        'log_output' => $logOutput,
                     )
                 );
                 $export->setOriginalCurrency(Mage::app()->getStore($storeId)->getCurrentCurrencyCode());
                 $export->exec();
             } catch (Exception $e) {
-                $errorMessage = '[Magento error] "'.$e->getMessage().'" '.$e->getFile().' line '.$e->getLine();
+                $errorMessage = '[Magento error] "' . $e->getMessage()
+                    . '" ' . $e->getFile() . ' line ' . $e->getLine();
                 $helper->log('Export', $errorMessage);
                 $this->getResponse()->setHeader('HTTP/1.1', '500 Internal Server Error');
                 $this->getResponse()->setBody($errorMessage);

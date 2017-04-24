@@ -28,7 +28,7 @@ class Lengow_Connector_Model_Shipping_Carrier_Lengow
      * @var string Lengow carrier code
      */
     protected $_code = 'lengow';
-    
+
     /**
      * @var boolean is fixed
      */

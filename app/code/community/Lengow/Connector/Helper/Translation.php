@@ -54,8 +54,8 @@ class Lengow_Connector_Helper_Translation extends Mage_Core_Helper_Abstract
      * Translate message
      *
      * @param string $message localization key
-     * @param array  $args    replace word in string
-     * @param array  $isoCode iso code
+     * @param array $args replace word in string
+     * @param array $isoCode iso code
      *
      * @return string
      */
@@ -79,7 +79,7 @@ class Lengow_Connector_Helper_Translation extends Mage_Core_Helper_Abstract
             if (isset(self::$_translation[$this->fallbackIsoCode][$message])) {
                 return $this->translateFinal(self::$_translation[$this->fallbackIsoCode][$message], $args);
             } else {
-                return 'Missing Translation ['.$message.']';
+                return 'Missing Translation [' . $message . ']';
             }
         }
     }
@@ -88,7 +88,7 @@ class Lengow_Connector_Helper_Translation extends Mage_Core_Helper_Abstract
      * Translate string
      *
      * @param string $text localization key
-     * @param array  $args replace word in string
+     * @param array $args replace word in string
      *
      * @return string Final Translate string
      */
@@ -98,7 +98,7 @@ class Lengow_Connector_Helper_Translation extends Mage_Core_Helper_Abstract
             $params = array();
             $values = array();
             foreach ($args as $key => $value) {
-                $params[] = '%{'.$key.'}';
+                $params[] = '%{' . $key . '}';
                 $values[] = $value;
             }
             return str_replace($params, $values, $text);
@@ -110,7 +110,7 @@ class Lengow_Connector_Helper_Translation extends Mage_Core_Helper_Abstract
     /**
      * Load csv file
      *
-     * @param string $isoCode  translation iso code
+     * @param string $isoCode translation iso code
      * @param string $filename file location
      *
      * @return boolean
@@ -118,7 +118,7 @@ class Lengow_Connector_Helper_Translation extends Mage_Core_Helper_Abstract
     public function loadFile($isoCode, $filename = null)
     {
         if (!$filename) {
-            $filename = Mage::getModuleDir('locale', 'Lengow_Connector').DS.$isoCode.'.csv';
+            $filename = Mage::getModuleDir('locale', 'Lengow_Connector') . DS . $isoCode . '.csv';
         }
         $translation = array();
         if (file_exists($filename)) {

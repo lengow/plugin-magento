@@ -45,7 +45,7 @@ class Lengow_Connector_CronController extends Mage_Core_Controller_Front_Action
             // get all store datas for synchronisation with Lengow
             if ($this->getRequest()->getParam('get_sync') == 1) {
                 $storeDatas = Mage::helper('lengow_connector/sync')->getSyncData();
-                $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($storeDatas)); 
+                $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($storeDatas));
             } else {
                 // get sync action if exists
                 $sync = $this->getRequest()->getParam('sync');

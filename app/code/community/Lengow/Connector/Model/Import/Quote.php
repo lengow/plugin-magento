@@ -30,11 +30,11 @@ class Lengow_Connector_Model_Import_Quote extends Mage_Sales_Model_Quote
     /**
      * Add products from API to current quote
      *
-     * @param mixed                                     $products        Lengow products list
-     * @param Lengow_Connector_Model_Import_Marketplace $marketplace     Lengow marketplace instance
-     * @param string                                    $marketplaceSku  marketplace sku
-     * @param boolean                                   $logOutput       see log or not
-     * @param boolean                                   $priceIncludeTax price include tax
+     * @param mixed $products Lengow products list
+     * @param Lengow_Connector_Model_Import_Marketplace $marketplace Lengow marketplace instance
+     * @param string $marketplaceSku marketplace sku
+     * @param boolean $logOutput see log or not
+     * @param boolean $priceIncludeTax price include tax
      *
      * @return Lengow_Connector_Model_Import_Quote
      */
@@ -59,7 +59,7 @@ class Lengow_Connector_Model_Import_Quote extends Mage_Sales_Model_Quote
                             Mage::helper('lengow_connector/data')->setLogMessage(
                                 'log.import.product_state_canceled',
                                 array(
-                                    'product_id'    => $productId,
+                                    'product_id' => $productId,
                                     'state_product' => $stateProduct
                                 )
                             ),
@@ -75,11 +75,11 @@ class Lengow_Connector_Model_Import_Quote extends Mage_Sales_Model_Quote
                     $price = (float)($productLine->amount / $productLine->quantity);
                     // save total row Lengow for each product
                     $this->_lengowProducts[(string)$product->getId()] = array(
-                        'sku'           => (string)$product->getSku(),
-                        'title'         => (string)$productLine->title,
-                        'amount'        => (float)$productLine->amount,
-                        'price_unit'    => $price,
-                        'quantity'      => (int)$productLine->quantity,
+                        'sku' => (string)$product->getSku(),
+                        'title' => (string)$productLine->title,
+                        'amount' => (float)$productLine->amount,
+                        'price_unit' => $price,
+                        'quantity' => (int)$productLine->quantity,
                         'order_line_id' => $orderLineId,
                     );
                     // if price not include tax -> get shipping cost without tax
@@ -119,9 +119,9 @@ class Lengow_Connector_Model_Import_Quote extends Mage_Sales_Model_Quote
     /**
      * Find product in Magento based on API data
      *
-     * @param mixed   $productLine    product datas
-     * @param string  $marketplaceSku marketplace sku
-     * @param boolean $logOutput      see log or not
+     * @param mixed $productLine product datas
+     * @param string $marketplaceSku marketplace sku
+     * @param boolean $logOutput see log or not
      *
      * @throws Lengow_Connector_Model_Exception product not be found / product is a parent
      *
@@ -133,7 +133,7 @@ class Lengow_Connector_Model_Import_Quote extends Mage_Sales_Model_Quote
         $product = false;
         $productModel = Mage::getModel('catalog/product');
         $productIds = array(
-            'merchant_product_id'    => $productLine->merchant_product_id->id,
+            'merchant_product_id' => $productLine->merchant_product_id->id,
             'marketplace_product_id' => $productLine->marketplace_product_id
         );
         $productField = $productLine->merchant_product_id->field != null
@@ -178,8 +178,8 @@ class Lengow_Connector_Model_Import_Quote extends Mage_Sales_Model_Quote
                     Mage::helper('lengow_connector/data')->setLogMessage(
                         'log.import.product_be_found',
                         array(
-                            'product_id'      => $product->getId(),
-                            'attribute_name'  => $attributeName,
+                            'product_id' => $product->getId(),
+                            'attribute_name' => $attributeName,
                             'attribute_value' => $attributeValue
                         )
                     ),

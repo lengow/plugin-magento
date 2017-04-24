@@ -105,19 +105,19 @@ class Lengow_Connector_Model_Observer
                             $message = Mage::helper('lengow_connector/translation')->t(
                                 'log.setting.setting_change_for_store',
                                 array(
-                                    'key'       => $object['path'],
+                                    'key' => $object['path'],
                                     'old_value' => $oldValue,
-                                    'value'     => $newValue,
-                                    'store_id'  => $object['scope_id']
+                                    'value' => $newValue,
+                                    'store_id' => $object['scope_id']
                                 )
                             );
                         } else {
                             $message = Mage::helper('lengow_connector/translation')->t(
                                 'log.setting.setting_change',
                                 array(
-                                    'key'       => $object['path'],
+                                    'key' => $object['path'],
                                     'old_value' => $oldValue,
-                                    'value'     => $newValue,
+                                    'value' => $newValue,
                                 )
                             );
                         }
@@ -215,15 +215,16 @@ class Lengow_Connector_Model_Observer
                         $export = Mage::getModel(
                             'lengow/export',
                             array(
-                                'store_id'           => $storeId,
-                                'stream'             => false,
+                                'store_id' => $storeId,
+                                'stream' => false,
                                 'update_export_date' => false,
-                                'type'               => 'magento cron'
+                                'type' => 'magento cron'
                             )
                         );
                         $export->exec();
                     } catch (Exception $e) {
-                        $errorMessage = '[Magento error] "'.$e->getMessage().'" '.$e->getFile().' line '.$e->getLine();
+                        $errorMessage = '[Magento error] "' . $e->getMessage()
+                            . '" ' . $e->getFile() . ' line ' . $e->getLine();
                         Mage::helper('lengow_connector')->log('Export', $errorMessage);
                     }
                 }

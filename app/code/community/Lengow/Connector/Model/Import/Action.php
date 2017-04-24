@@ -38,13 +38,13 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
      * update   => Fields allowed when updating registration
      */
     protected $_fieldList = array(
-        'order_id'       => array('required' => true, 'updated' => false),
-        'action_id'      => array('required' => true, 'updated' => false),
+        'order_id' => array('required' => true, 'updated' => false),
+        'action_id' => array('required' => true, 'updated' => false),
         'order_line_sku' => array('required' => false, 'updated' => false),
-        'action_type'    => array('required' => true, 'updated' => false),
-        'retry'          => array('required' => false, 'updated' => true),
-        'parameters'     => array('required' => true, 'updated' => false),
-        'state'          => array('required' => false, 'updated' => true)
+        'action_type' => array('required' => true, 'updated' => false),
+        'retry' => array('required' => false, 'updated' => true),
+        'parameters' => array('required' => true, 'updated' => false),
+        'state' => array('required' => false, 'updated' => true)
     );
 
     /**
@@ -141,8 +141,8 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
     /**
      * Find active actions by order id
      *
-     * @param integer $orderId    Magento order id
-     * @param string  $actionType action type (ship or cancel)
+     * @param integer $orderId Magento order id
+     * @param string $actionType action type (ship or cancel)
      *
      * @return array|false
      */
@@ -221,8 +221,8 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
     /**
      * Removes all actions for one order Magento
      *
-     * @param integer $orderId    Magento order id
-     * @param string  $actionType action type (null, ship or cancel)
+     * @param integer $orderId Magento order id
+     * @param string $actionType action type (null, ship or cancel)
      *
      * @return boolean
      */
@@ -262,7 +262,7 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
             ->addFieldToFilter(
                 'created_at',
                 array(
-                    'to'       => strtotime('-3 days', time()),
+                    'to' => strtotime('-3 days', time()),
                     'datetime' => true
                 )
             );
@@ -290,8 +290,8 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
                         $orderError->createOrderError(
                             array(
                                 'order_lengow_id' => $orderLengowId,
-                                'message'         => $errorMessage,
-                                'type'            => 'send',
+                                'message' => $errorMessage,
+                                'type' => 'send',
                             )
                         );
                         $orderLengow->updateOrder(array('is_in_error' => 1));
@@ -338,7 +338,7 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
                         'log.order_action.start_for_store',
                         array(
                             'store_name' => $store->getName(),
-                            'store_id'   => $store->getId()
+                            'store_id' => $store->getId()
                         )
                     )
                 );
@@ -358,9 +358,9 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
                         '/v3.0/orders/actions/',
                         (int)$store->getId(),
                         array(
-                            'updated_from' => date('c', strtotime(date('Y-m-d').' -3days')),
-                            'updated_to'   => date('c'),
-                            'page'         => $page
+                            'updated_from' => date('c', strtotime(date('Y-m-d') . ' -3days')),
+                            'updated_to' => date('c'),
+                            'page' => $page
                         )
                     );
                     if (!is_object($results) || isset($results->error)) {
@@ -413,8 +413,8 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
                                         $orderError->createOrderError(
                                             array(
                                                 'order_lengow_id' => $orderLengowId,
-                                                'message'         => $apiActions[$action['action_id']]->errors,
-                                                'type'            => 'send',
+                                                'message' => $apiActions[$action['action_id']]->errors,
+                                                'type' => 'send',
                                             )
                                         );
                                         $orderLengow->updateOrder(array('is_in_error' => 1));
@@ -467,7 +467,7 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
                         'log.order_action.start_not_sent_for_store',
                         array(
                             'store_name' => $store->getName(),
-                            'store_id'   => $store->getId()
+                            'store_id' => $store->getId()
                         )
                     )
                 );

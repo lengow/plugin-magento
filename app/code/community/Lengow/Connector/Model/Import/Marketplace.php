@@ -26,7 +26,7 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
      * @var array all valid actions
      */
     public static $validActions = array(
-        'ship' ,
+        'ship',
         'cancel'
     );
 
@@ -34,12 +34,12 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
      * @var array all markeplaces allowed for an account ID
      */
     public static $marketplaces = array();
-    
+
     /**
      * @var mixed the current marketplace
      */
     public $marketplace;
-    
+
     /**
      * @var string the name of the marketplace
      */
@@ -59,22 +59,22 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
      * @var integer Store Id
      */
     public $storeId;
-    
+
     /**
      * @var boolean if the marketplace is loaded
      */
     public $isLoaded = false;
-    
+
     /**
      * @var array Lengow states => marketplace states
      */
     public $statesLengow = array();
-    
+
     /**
      * @var array marketplace states => Lengow states
      */
     public $states = array();
-    
+
     /**
      * @var array all possible actions of the marketplace
      */
@@ -84,7 +84,7 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
      * @var array all possible values for actions of the marketplace
      */
     public $argValues = array();
-   
+
     /**
      * @var array all carriers of the marketplace
      */
@@ -103,7 +103,7 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
     /**
      * Construct a new Marketplace instance with marketplace API
      *
-     * @param array params options
+     * @param array $params options
      * integer store_id Store Id for current order
      * string  name     Marketplace name
      *
@@ -160,9 +160,9 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
                         ? (bool)$argDescription->accept_free_values
                         : true;
                     $this->argValues[(string)$argKey] = array(
-                        'default_value'      => $defaultValue,
+                        'default_value' => $defaultValue,
                         'accept_free_values' => $acceptFreeValue,
-                        'valid_values'       => $validValues
+                        'valid_values' => $validValues
                     );
                 }
             }
@@ -188,22 +188,22 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
     }
 
     /**
-    * If marketplace exist in xml configuration file
-    *
-    * @return boolean
-    */
+     * If marketplace exist in xml configuration file
+     *
+     * @return boolean
+     */
     public function isLoaded()
     {
         return $this->isLoaded;
     }
 
     /**
-    * Get the real lengow's state
-    *
-    * @param string $name The marketplace state
-    *
-    * @return string The lengow state
-    */
+     * Get the real lengow's state
+     *
+     * @param string $name The marketplace state
+     *
+     * @return string The lengow state
+     */
     public function getStateLengow($name)
     {
         if (array_key_exists($name, $this->statesLengow)) {
@@ -212,12 +212,12 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
     }
 
     /**
-    * Get the default value for argument
-    *
-    * @param string $name The argument's name
-    *
-    * @return string|false
-    */
+     * Get the default value for argument
+     *
+     * @param string $name The argument's name
+     *
+     * @return string|false
+     */
     public function getDefaultValue($name)
     {
         if (array_key_exists($name, $this->argValues)) {
@@ -252,13 +252,13 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
         return false;
     }
 
-     /**
+    /**
      * Call Action with marketplace
      *
-     * @param string                          $action      order action (ship or cancel)
-     * @param Mage_Sales_Model_Order          $order       Magento order instance
-     * @param Mage_Sales_Model_Order_Shipment $shipment    Magento shipment instance
-     * @param string                          $orderLineId Lengow order line id
+     * @param string $action order action (ship or cancel)
+     * @param Mage_Sales_Model_Order $order Magento order instance
+     * @param Mage_Sales_Model_Order_Shipment $shipment Magento shipment instance
+     * @param string $orderLineId Lengow order line id
      *
      * @throws Lengow_Connector_Model_Exception action not valid / marketplace action not present
      *                                          store id is required / marketplace name is required
@@ -322,6 +322,7 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
                         break;
                     case 'carrier':
                     case 'shipping_method':
+                        $carrierCode = false;
                         if ($orderLengow) {
                             $carrierCode = strlen((string)$orderLengow->getData('carrier')) > 0
                                 ? (string)$orderLengow->getData('carrier')
@@ -348,7 +349,7 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
                         break;
                     default:
                         $defaultValue = $this->getDefaultValue((string)$arg);
-                        $paramValue = $defaultValue ? $defaultValue : $arg.' not available';
+                        $paramValue = $defaultValue ? $defaultValue : $arg . ' not available';
                         $params[$arg] = $paramValue;
                         break;
                 }
@@ -404,11 +405,11 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
                         $orderAction = Mage::getModel('lengow/import_action');
                         $orderAction->createAction(
                             array(
-                                'order_id'       => $order->getId(),
-                                'action_type'    => $action,
-                                'action_id'      => $row->id,
+                                'order_id' => $order->getId(),
+                                'action_type' => $action,
+                                'action_id' => $row->id,
                                 'order_line_sku' => isset($params['line']) ? $params['line'] : null,
-                                'parameters'     => Mage::helper('core')->jsonEncode($params)
+                                'parameters' => Mage::helper('core')->jsonEncode($params)
                             )
                         );
                     }
@@ -425,11 +426,11 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
                         $orderAction = Mage::getModel('lengow/import_action');
                         $orderAction->createAction(
                             array(
-                                'order_id'       => $order->getId(),
-                                'action_type'    => $action,
-                                'action_id'      => $result->id,
+                                'order_id' => $order->getId(),
+                                'action_type' => $action,
+                                'action_id' => $result->id,
                                 'order_line_sku' => isset($params['line']) ? $params['line'] : null,
-                                'parameters'     => Mage::helper('core')->jsonEncode($params)
+                                'parameters' => Mage::helper('core')->jsonEncode($params)
                             )
                         );
                     } else {
@@ -444,7 +445,7 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
                 // Create log for call action
                 $paramList = false;
                 foreach ($params as $param => $value) {
-                    $paramList.= !$paramList ? '"'.$param.'": '.$value : ' -- "'.$param.'": '.$value;
+                    $paramList .= !$paramList ? '"' . $param . '": ' . $value : ' -- "' . $param . '": ' . $value;
                 }
                 $helper->log(
                     'API-OrderAction',
@@ -457,7 +458,7 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
         } catch (Lengow_Connector_Model_Exception $e) {
             $errorMessage = $e->getMessage();
         } catch (Exception $e) {
-            $errorMessage = '[Magento error]: "'.$e->getMessage().'" '.$e->getFile().' line '.$e->getLine();
+            $errorMessage = '[Magento error]: "' . $e->getMessage() . '" ' . $e->getFile() . ' line ' . $e->getLine();
         }
         if (isset($errorMessage)) {
             if ($orderLengow) {
@@ -468,8 +469,8 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
                     $orderError->createOrderError(
                         array(
                             'order_lengow_id' => $orderLengowId,
-                            'message'         => $errorMessage,
-                            'type'            => 'send'
+                            'message' => $errorMessage,
+                            'type' => 'send'
                         )
                     );
                 }
@@ -491,7 +492,7 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
     /**
      * Match carrier's name with accepted values
      *
-     * @param string $code  carrier code
+     * @param string $code carrier code
      * @param string $title carrier title
      *
      * @return string
@@ -501,17 +502,17 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
         if (count($this->carriers) > 0) {
             // search by code
             foreach ($this->carriers as $key => $carrier) {
-                if (preg_match('`'.$key.'`i', trim($code))) {
+                if (preg_match('`' . $key . '`i', trim($code))) {
                     return $key;
-                } elseif (preg_match('`.*?'.$key.'.*?`i', $code)) {
+                } elseif (preg_match('`.*?' . $key . '.*?`i', $code)) {
                     return $key;
                 }
             }
             // search by title
             foreach ($this->carriers as $key => $carrier) {
-                if (preg_match('`'.$key.'`i', trim($title))) {
+                if (preg_match('`' . $key . '`i', trim($title))) {
                     return $key;
-                } elseif (preg_match('`.*?'.$key.'.*?`i', $title)) {
+                } elseif (preg_match('`.*?' . $key . '.*?`i', $title)) {
                     return $key;
                 }
             }
