@@ -12,6 +12,8 @@ en:
       execution_time: "execution time: %{seconds} seconds"
       generate_feed_available_here: "the export for the store %{store_name} (%{store_id}) generated the following file: %{feed_url}"
       unauthorised_ip: "unauthorised IP: %{ip}"
+      unauthorised_token: "unauthorised access for this token: %{token}"
+      empty_token: "unauthorised access: token parameter is empty"
       error_configurable_product_disabled: "WARNING! %{nb_product} simple product(s) associated with configurable products are disabled"
       error_folder_not_created: "unable to create folder %{folder_path}."
       error_folder_not_writable: "unable to access the folder %{folder_path}."

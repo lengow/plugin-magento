@@ -74,6 +74,10 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
             'message' => $_SERVER["SERVER_ADDR"],
         );
         $checklist[] = array(
+            'title' => $this->_helper->__('toolbox.screen.authorized_ip_enable'),
+            'state' => (bool)$this->_configHelper->get('ip_enable'),
+        );
+        $checklist[] = array(
             'title' => $this->_helper->__('toolbox.screen.authorized_ip'),
             'message' => $this->_configHelper->get('authorized_ip'),
         );
@@ -118,7 +122,7 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
         );
         $checklist[] = array(
             'title' => $this->_helper->__('toolbox.screen.url_import'),
-            'message' => Mage::getUrl('lengow/cron'),
+            'message' => $this->_helper->getCronUrl(),
         );
         $checklist[] = array(
             'title' => $this->_helper->__('toolbox.screen.import_cron_enable'),

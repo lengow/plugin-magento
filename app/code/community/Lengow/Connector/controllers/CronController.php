@@ -40,8 +40,9 @@ class Lengow_Connector_CronController extends Mage_Core_Controller_Front_Action
          * boolean log_output          See logs (1) or not (0)
          * boolean get_sync            See synchronisation parameters in json format (1) or not (0)
          */
-        $security = Mage::helper('lengow_connector/security');
-        if ($security->checkIp()) {
+        $token = $this->getRequest()->getParam('token');
+        $securityHelper = Mage::helper('lengow_connector/security');
+        if ($securityHelper->checkWebserviceAccess($token)) {
             // get all store datas for synchronisation with Lengow
             if ($this->getRequest()->getParam('get_sync') == 1) {
                 $storeDatas = Mage::helper('lengow_connector/sync')->getSyncData();
@@ -102,13 +103,19 @@ class Lengow_Connector_CronController extends Mage_Core_Controller_Front_Action
                 }
             }
         } else {
-            $this->getResponse()->setHeader('HTTP/1.1', '403 Forbidden');
-            $this->getResponse()->setBody(
-                Mage::helper('lengow_connector')->__(
+            $dataHelper = Mage::helper('lengow_connector');
+            if ((bool)Mage::helper('lengow_connector/config')->get('ip_enable')) {
+                $errorMessage = $dataHelper->__(
                     'log.export.unauthorised_ip',
-                    array('ip' => Mage::helper('core/http')->getRemoteAddr())
-                )
-            );
+                    array('ip' => $securityHelper->getRemoteIp())
+                );
+            } else {
+                $errorMessage = strlen($token) > 0
+                    ? $dataHelper->__('log.export.unauthorised_token', array('token' => $token))
+                    : $dataHelper->__('log.export.empty_token');
+            }
+            $this->getResponse()->setHeader('HTTP/1.1', '403 Forbidden');
+            $this->getResponse()->setBody($errorMessage);
         }
     }
 }

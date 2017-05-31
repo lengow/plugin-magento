@@ -64,6 +64,7 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
     {
         $defaultParams = array(
             'store' => $storeId,
+            'token' => Mage::helper('lengow_connector/config')->getToken($storeId),
             '_nosid' => true,
             '_store_to_url' => false,
         );
@@ -76,11 +77,21 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Get Cron Url
      *
+     * @param array $additionalParams additional parameters for cron url
+     *
      * @return string
      */
-    public function getCronUrl()
+    public function getCronUrl($additionalParams = array())
     {
-        return Mage::getUrl('lengow/cron');
+        $defaultParams = array(
+            'token' => Mage::helper('lengow_connector/config')->getToken(),
+            '_nosid' => true,
+            '_store_to_url' => false,
+        );
+        if (count($additionalParams) > 0) {
+            $defaultParams = array_merge($defaultParams, $additionalParams);
+        }
+        return Mage::getUrl('lengow/cron', $defaultParams);
     }
 
     /**

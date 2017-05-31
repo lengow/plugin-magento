@@ -228,7 +228,7 @@ lengow_setting.global_magento_version_title|Version von Magento
 lengow_setting.global_plugin_compatibility_title|Kompatibilität des Plugins
 lengow_setting.global_plugin_compatibility_yes| Magento-Version ist kompatibel
 lengow_setting.global_plugin_compatibility_no| Magento-Version ist nicht kompatibel
-lengow_setting.global_serveur_ip_title|IP Ihres Servers
+lengow_setting.global_server_ip_title|IP Ihres Servers
 lengow_setting.global_information_credential|Um Shop Zugangsdaten zu ändern, wählen Sie bitte einen Shop aus
 lengow_setting.global_store_credential| Shop Zugangsdaten
 lengow_setting.global_store_enable_title|Shop aktivieren

@@ -59,6 +59,7 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action
         $productTypes = $this->getRequest()->getParam('product_type', null);
         // get params data
         $mode = $this->getRequest()->getParam('mode');
+        $token = $this->getRequest()->getParam('token');
         $getParams = $this->getRequest()->getParam('get_params');
         $format = $this->getRequest()->getParam('format', null);
         $stream = $this->getRequest()->getParam('stream', null);
@@ -90,9 +91,9 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action
             // translation now works
             Mage::app()->getTranslator()->init('frontend', true);
         }
-        $helper = Mage::helper('lengow_connector');
-        $security = Mage::helper('lengow_connector/security');
-        if ($security->checkIp()) {
+        $dataHelper = Mage::helper('lengow_connector');
+        $securityHelper = Mage::helper('lengow_connector/security');
+        if ($securityHelper->checkWebserviceAccess($token, $storeId)) {
             try {
                 // config store
                 Mage::app()->getStore()->setCurrentStore($storeId);
@@ -123,18 +124,23 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action
             } catch (Exception $e) {
                 $errorMessage = '[Magento error] "' . $e->getMessage()
                     . '" ' . $e->getFile() . ' line ' . $e->getLine();
-                $helper->log('Export', $errorMessage);
+                $dataHelper->log('Export', $errorMessage);
                 $this->getResponse()->setHeader('HTTP/1.1', '500 Internal Server Error');
                 $this->getResponse()->setBody($errorMessage);
             }
         } else {
-            $this->getResponse()->setHeader('HTTP/1.1', '403 Forbidden');
-            $this->getResponse()->setBody(
-                Mage::helper('lengow_connector')->__(
+            if ((bool)Mage::helper('lengow_connector/config')->get('ip_enable')) {
+                $errorMessage = $dataHelper->__(
                     'log.export.unauthorised_ip',
-                    array('ip' => Mage::helper('core/http')->getRemoteAddr())
-                )
-            );
+                    array('ip' => $securityHelper->getRemoteIp())
+                );
+            } else {
+                $errorMessage =  strlen($token) > 0
+                    ? $dataHelper->__('log.export.unauthorised_token', array('token' => $token))
+                    : $dataHelper->__('log.export.empty_token');
+            }
+            $this->getResponse()->setHeader('HTTP/1.1', '403 Forbidden');
+            $this->getResponse()->setBody($errorMessage);
         }
     }
 }

@@ -1008,6 +1008,7 @@ $deleteSettings = array(
 );
 // Get Store collection
 $storeCollection = Mage::getResourceModel('core/store_collection')->addFieldToFilter('is_active', 1);
+$authorisedIp = Mage::getStoreConfig('lenexport/performances/valid_ip');
 // Update settings
 foreach ($newSettings as $setting) {
     $globalValue = Mage::getStoreConfig($setting['old_path']);
@@ -1047,11 +1048,19 @@ foreach ($deleteSettings as $settingPath) {
 }
 
 // *********************************************************
+//      Active ip authorization if authorized ips exist
+// *********************************************************
+
+if (!is_null($authorisedIp) && strlen($authorisedIp) > 0) {
+    Mage::helper('lengow_connector/config')->set('ip_enable', 1, 0, false);
+}
+
+// *********************************************************
 //          Order Migration (only for processing)
 // *********************************************************
 
 Mage::getModel('lengow/import_order')->migrateOldOrder();
-$seeMigrateBlock = Mage::helper('lengow_connector/config')->get('see_migrate_block');
+$seeMigrateBlock =  Mage::helper('lengow_connector/config')->get('see_migrate_block');
 if (is_null($seeMigrateBlock)) {
     Mage::helper('lengow_connector/config')->set('see_migrate_block', 1, 0, false);
 }

@@ -78,19 +78,32 @@
                     <show_in_website>0</show_in_website>
                     <show_in_store>0</show_in_store>
                     <fields>
-                        <global_authorized_ip>
-                            <label>lengow_setting.global_authorized_ip_label</label>
-                            <comment>lengow_setting.global_authorized_ip_comment</comment>
-                            <frontend_type>text</frontend_type>
+                        <global_authorized_ip_enable>
+                            <label>lengow_setting.global_authorized_ip_enable_label</label>
+                            <comment>lengow_setting.global_authorized_ip_enable_comment</comment>
+                            <frontend_type>select</frontend_type>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                        </global_authorized_ip_enable>
+                        <global_authorized_ip>
+                            <label>lengow_setting.global_authorized_ip_label</label>
+                            <comment>lengow_setting.global_authorized_ip_comment</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <global_authorized_ip_enable>1</global_authorized_ip_enable>
+                            </depends>
                         </global_authorized_ip>
                         <global_tracking_id>
                             <label>lengow_setting.global_tracking_id_label</label>
                             <frontend_type>select</frontend_type>
-                            <sort_order>20</sort_order>
+                            <sort_order>30</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>

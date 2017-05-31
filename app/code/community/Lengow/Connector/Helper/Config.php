@@ -56,6 +56,11 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
             'global' => true,
             'no_cache' => false,
         ),
+        'ip_enable' => array(
+            'path' => 'lengow_global_options/advanced/global_authorized_ip_enable',
+            'global' => true,
+            'no_cache' => false,
+        ),
         'authorized_ip' => array(
             'path' => 'lengow_global_options/advanced/global_authorized_ip',
             'global' => true,

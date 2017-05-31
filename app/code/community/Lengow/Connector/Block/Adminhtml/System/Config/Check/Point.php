@@ -72,8 +72,8 @@ class Lengow_Connector_Block_Adminhtml_System_Config_Check_Point extends Mage_Ad
      *
      * @return string
      */
-    public function getRealIP()
+    public function getServerIp()
     {
-        return $this->_helper->getRealIP();
+        return $this->_helper->getServerIp();
     }
 }

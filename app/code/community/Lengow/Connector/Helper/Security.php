@@ -30,7 +30,7 @@ class Lengow_Connector_Helper_Security extends Mage_Core_Helper_Abstract
     /**
      * @var array lengow authorized ips
      */
-    public static $ipsLengow = array(
+    protected $_ipsLengow = array(
         '127.0.0.1',
         '10.0.4.150',
         '46.19.183.204',
@@ -55,18 +55,50 @@ class Lengow_Connector_Helper_Security extends Mage_Core_Helper_Abstract
     );
 
     /**
+     * Check Webservice access (export and cron)
+     *
+     * @param string $token store token
+     * @param integer $storeId Magento store id
+     *
+     * @return boolean
+     */
+    public function checkWebserviceAccess($token, $storeId = 0)
+    {
+        if (!(bool)Mage::helper('lengow_connector/config')->get('ip_enable') && $this->checkToken($token, $storeId)) {
+            return true;
+        }
+        if ($this->checkIp()) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Check if token is correct
+     *
+     * @param string $token store token
+     * @param integer $storeId Magento store id
+     *
+     * @return boolean
+     */
+    public function checkToken($token, $storeId = 0)
+    {
+        $storeToken = Mage::helper('lengow_connector/config')->getToken($storeId);
+        if ($token === $storeToken) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Check if current IP is authorized
      *
      * @return boolean
      */
-    public function checkIP()
+    public function checkIp()
     {
-        $ips = Mage::helper('lengow_connector/config')->get('authorized_ip');
-        $ips = trim(str_replace(array("\r\n", ',', '-', '|', ' '), ';', $ips), ';');
-        $ips = explode(';', $ips);
-        $authorizedIps = array_merge($ips, self::$ipsLengow);
-        $authorizedIps[] = $this->getRealIP();
-        $hostnameIp = Mage::helper('core/http')->getRemoteAddr();
+        $authorizedIps = $this->getAuthorizedIps();
+        $hostnameIp = $this->getRemoteIp();
         if (in_array($hostnameIp, $authorizedIps)) {
             return true;
         }
@@ -74,7 +106,27 @@ class Lengow_Connector_Helper_Security extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Check if lengow_connector_setup is present in core_ressource table
+     * Get authorized IPS
+     *
+     * @return array
+     */
+    public function getAuthorizedIps()
+    {
+        $configHelper = Mage::helper('lengow_connector/config');
+        $ips = $configHelper->get('authorized_ip');
+        if (!is_null($ips) && (bool)$configHelper->get('ip_enable')) {
+            $ips = trim(str_replace(array("\r\n", ',', '-', '|', ' '), ';', $ips), ';');
+            $ips = explode(';', $ips);
+            $authorizedIps = array_merge($ips, $this->_ipsLengow);
+        } else {
+            $authorizedIps = $this->_ipsLengow;
+        }
+        $authorizedIps[] = $this->getServerIp();
+        return $authorizedIps;
+    }
+
+    /**
+     * Check if lengow_connector_setup is present in core_resource table
      *
      * @return boolean
      */
@@ -89,6 +141,26 @@ class Lengow_Connector_Helper_Security extends Mage_Core_Helper_Abstract
             return true;
         }
         return false;
+    }
+
+    /**
+     * Get server IP
+     *
+     * @return string
+     */
+    public function getServerIp()
+    {
+        return $_SERVER['SERVER_ADDR'];
+    }
+
+    /**
+     * Get remote IP
+     *
+     * @return string
+     */
+    public function getRemoteIp()
+    {
+        return Mage::helper('core/http')->getRemoteAddr();
     }
 
     /**
@@ -109,16 +181,6 @@ class Lengow_Connector_Helper_Security extends Mage_Core_Helper_Abstract
     public function getMagentoVersion()
     {
         return Mage::getVersion();
-    }
-
-    /**
-     * Get serveur IP
-     *
-     * @return string
-     */
-    public function getRealIP()
-    {
-        return $_SERVER['SERVER_ADDR'];
     }
 
     /**

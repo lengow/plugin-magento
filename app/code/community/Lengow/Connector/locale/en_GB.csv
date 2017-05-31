@@ -157,6 +157,7 @@ toolbox.screen.title|Lengow Toolbox
 toolbox.screen.gobal_information|Global information
 toolbox.screen.plugin_information|Plugin information
 toolbox.screen.server_ip|Server IP
+toolbox.screen.authorized_ip_enable|IP Authorisation enabled
 toolbox.screen.authorized_ip|Authorised IP
 toolbox.screen.legacy_enable|Legacy fields enabled
 toolbox.screen.export_on_a_file|Export in a file enabled
@@ -228,7 +229,7 @@ lengow_setting.global_magento_version_title|Magento version
 lengow_setting.global_plugin_compatibility_title|Plugin compatibility
 lengow_setting.global_plugin_compatibility_yes|Magento version is compatible
 lengow_setting.global_plugin_compatibility_no|Magento version is not compatible
-lengow_setting.global_serveur_ip_title|IP of your server
+lengow_setting.global_server_ip_title|IP of your server
 lengow_setting.global_information_credential|To change store credentials, please select a store
 lengow_setting.global_store_credential|Store credentials
 lengow_setting.global_store_enable_title|Enable store
@@ -241,6 +242,8 @@ lengow_setting.global_secret_token_title|Secret token
 lengow_setting.global_secret_token_comment|Your Lengow Secret Token
 lengow_setting.global_advanced_setting|All advanced settings
 lengow_setting.global_tracking_id_label|Tracker Product ID
+lengow_setting.global_authorized_ip_enable_label|Enable IP authorisation
+lengow_setting.global_authorized_ip_enable_comment|Activate this option if you want to secure your export by ip. By default, your export is secured by a token
 lengow_setting.global_authorized_ip_label|Authorised IPs
 lengow_setting.global_authorized_ip_comment|Authorised access by IP, separated by ;
 lengow_setting.export_setting|Export settings
@@ -328,6 +331,8 @@ log.export.memory_usage|memory usage: %{memory} Mb
 log.export.execution_time|execution time: %{seconds} seconds
 log.export.generate_feed_available_here|the export for the store %{store_name} (%{store_id}) generated the following file: %{feed_url}
 log.export.unauthorised_ip|unauthorised IP: %{ip}
+log.export.unauthorised_token|unauthorised access for this token: %{token}
+log.export.empty_token|unauthorised access: token parameter is empty
 log.export.error_configurable_product_disabled|WARNING! %{nb_product} simple product(s) associated with configurable products are disabled
 log.export.error_folder_not_created|unable to create folder %{folder_path}.
 log.export.error_folder_not_writable|unable to access the folder %{folder_path}.

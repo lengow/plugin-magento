@@ -228,7 +228,7 @@ lengow_setting.global_magento_version_title|Version Magento
 lengow_setting.global_plugin_compatibility_title|Compatibilité du plugin
 lengow_setting.global_plugin_compatibility_yes|La version Magento est compatible
 lengow_setting.global_plugin_compatibility_no|La version Magento n'est pas compatible
-lengow_setting.global_serveur_ip_title|iP de votre serveur
+lengow_setting.global_server_ip_title|iP de votre serveur
 lengow_setting.global_information_credential|Pour modifier les informations d'identification de la boutique, sélectionnez une boutique
 lengow_setting.global_store_credential|Informations d'identification de la boutique
 lengow_setting.global_store_enable_title|Activer la boutique

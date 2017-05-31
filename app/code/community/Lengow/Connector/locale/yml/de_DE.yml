@@ -255,7 +255,7 @@ de:
     global_plugin_compatibility_title: "Kompatibilität des Plugins"
     global_plugin_compatibility_yes: " Magento-Version ist kompatibel"
     global_plugin_compatibility_no: " Magento-Version ist nicht kompatibel"
-    global_serveur_ip_title: "IP Ihres Servers"
+    global_server_ip_title: "IP Ihres Servers"
     global_information_credential: "Um Shop Zugangsdaten zu ändern, wählen Sie bitte einen Shop aus"
     global_store_credential: " Shop Zugangsdaten"
     global_store_enable_title: "Shop aktivieren"
