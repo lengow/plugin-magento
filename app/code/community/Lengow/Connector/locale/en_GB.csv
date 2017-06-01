@@ -157,7 +157,7 @@ toolbox.screen.title|Lengow Toolbox
 toolbox.screen.gobal_information|Global information
 toolbox.screen.plugin_information|Plugin information
 toolbox.screen.server_ip|Server IP
-toolbox.screen.authorized_ip_enable|IP Authorisation enabled
+toolbox.screen.authorized_ip_enable|Authorisation by IP enabled
 toolbox.screen.authorized_ip|Authorised IP
 toolbox.screen.legacy_enable|Legacy fields enabled
 toolbox.screen.export_on_a_file|Export in a file enabled
@@ -242,8 +242,8 @@ lengow_setting.global_secret_token_title|Secret token
 lengow_setting.global_secret_token_comment|Your Lengow Secret Token
 lengow_setting.global_advanced_setting|All advanced settings
 lengow_setting.global_tracking_id_label|Tracker Product ID
-lengow_setting.global_authorized_ip_enable_label|Enable IP authorisation
-lengow_setting.global_authorized_ip_enable_comment|Activate this option if you want to secure your export by ip. By default, your export is secured by a token
+lengow_setting.global_authorized_ip_enable_label|Enable authorisation by IP
+lengow_setting.global_authorized_ip_enable_comment|Enable this option if you want your export to be secured by IP. By default, your export is secured by a unique key.
 lengow_setting.global_authorized_ip_label|Authorised IPs
 lengow_setting.global_authorized_ip_comment|Authorised access by IP, separated by ;
 lengow_setting.export_setting|Export settings
