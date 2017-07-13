@@ -1043,14 +1043,16 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
         $orderLineSaved = false;
         $lengowProducts = $quote->getLengowProducts();
         foreach ($lengowProducts as $product) {
-            $orderLine = Mage::getModel('lengow/import_orderline');
-            $orderLine->createOrderLine(
-                array(
-                    'order_id' => (int)$order->getId(),
-                    'order_line_id' => $product['order_line_id']
-                )
-            );
-            $orderLineSaved .= (!$orderLineSaved ? $product['order_line_id'] : ' / ' . $product['order_line_id']);
+            foreach ($product['order_line_ids'] as $idOrderLine) {
+                $orderLine = Mage::getModel('lengow/import_orderline');
+                $orderLine->createOrderLine(
+                    array(
+                        'order_id' => (int)$order->getId(),
+                        'order_line_id' => $idOrderLine
+                    )
+                );
+                $orderLineSaved .= !$orderLineSaved ? $idOrderLine : ' / ' . $idOrderLine;
+            }
         }
         return $orderLineSaved;
     }

@@ -36,7 +36,6 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
      * @var array valid states lengow to create a Lengow order
      */
     protected $_lengowStates = array(
-        'accepted',
         'waiting_shipment',
         'shipped',
         'closed'

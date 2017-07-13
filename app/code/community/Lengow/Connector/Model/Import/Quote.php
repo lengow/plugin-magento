@@ -40,78 +40,40 @@ class Lengow_Connector_Model_Import_Quote extends Mage_Sales_Model_Quote
      */
     public function addLengowProducts($products, $marketplace, $marketplaceSku, $logOutput, $priceIncludeTax = true)
     {
-        $orderLineId = '';
-        $first = true;
-        foreach ($products as $productLine) {
-            if ($first || empty($orderLineId) || $orderLineId != (string)$productLine->marketplace_order_line_id) {
-                $first = false;
-                $orderLineId = (string)$productLine->marketplace_order_line_id;
-                // check whether the product is canceled
-                if ($productLine->marketplace_status != null) {
-                    $stateProduct = $marketplace->getStateLengow((string)$productLine->marketplace_status);
-                    if ($stateProduct == 'canceled' || $stateProduct == 'refused') {
-                        $productId = (!is_null($productLine->merchant_product_id->id)
-                            ? (string)$productLine->merchant_product_id->id
-                            : (string)$productLine->marketplace_product_id
-                        );
-                        Mage::helper('lengow_connector/data')->log(
-                            'Import',
-                            Mage::helper('lengow_connector/data')->setLogMessage(
-                                'log.import.product_state_canceled',
-                                array(
-                                    'product_id' => $productId,
-                                    'state_product' => $stateProduct
-                                )
-                            ),
-                            $logOutput,
-                            $marketplaceSku
-                        );
-                        continue;
-                    }
-                }
-                $product = $this->_findProduct($productLine, $marketplaceSku, $logOutput);
-                if ($product) {
-                    // get unit price with tax
-                    $price = (float)($productLine->amount / $productLine->quantity);
-                    // save total row Lengow for each product
-                    $this->_lengowProducts[(string)$product->getId()] = array(
-                        'sku' => (string)$product->getSku(),
-                        'title' => (string)$productLine->title,
-                        'amount' => (float)$productLine->amount,
-                        'price_unit' => $price,
-                        'quantity' => (int)$productLine->quantity,
-                        'order_line_id' => $orderLineId,
+        $this->_lengowProducts = $this->_getProducts($products, $marketplace, $marketplaceSku, $logOutput);
+        foreach ($this->_lengowProducts as $lengowProduct) {
+            $magentoProduct = $lengowProduct['magento_product'];
+            if ($magentoProduct->getId()) {
+                $price = $lengowProduct['price_unit'];
+                // if price not include tax -> get shipping cost without tax
+                if (!$priceIncludeTax) {
+                    $basedOn = Mage::getStoreConfig(
+                        Mage_Tax_Model_Config::CONFIG_XML_PATH_BASED_ON,
+                        $this->getStore()
                     );
-                    // if price not include tax -> get shipping cost without tax
-                    if (!$priceIncludeTax) {
-                        $basedOn = Mage::getStoreConfig(
-                            Mage_Tax_Model_Config::CONFIG_XML_PATH_BASED_ON,
-                            $this->getStore()
-                        );
-                        $countryId = ($basedOn == 'shipping')
-                            ? $this->getShippingAddress()->getCountryId()
-                            : $this->getBillingAddress()->getCountryId();
-                        $taxCalculator = Mage::getModel('tax/calculation');
-                        $taxRequest = new Varien_Object();
-                        $taxRequest->setCountryId($countryId)
-                            ->setCustomerClassId($this->getCustomer()->getTaxClassId())
-                            ->setProductClassId($product->getTaxClassId());
-                        $taxRate = (float)$taxCalculator->getRate($taxRequest);
-                        $tax = (float)$taxCalculator->calcTaxAmount($price, $taxRate, true);
-                        $price = $price - $tax;
-                    }
-                    $product->setPrice($price);
-                    $product->setSpecialPrice($price);
-                    $product->setFinalPrice($price);
-                    // option "import with product's title from Lengow"
-                    $product->setName((string)$productLine->title);
-                    // add item to quote
-                    $quoteItem = Mage::getModel('lengow/import_quote_item')
-                        ->setProduct($product)
-                        ->setQty((int)$productLine->quantity)
-                        ->setConvertedPrice($price);
-                    $this->addItem($quoteItem);
+                    $countryId = ($basedOn == 'shipping')
+                        ? $this->getShippingAddress()->getCountryId()
+                        : $this->getBillingAddress()->getCountryId();
+                    $taxCalculator = Mage::getModel('tax/calculation');
+                    $taxRequest = new Varien_Object();
+                    $taxRequest->setCountryId($countryId)
+                        ->setCustomerClassId($this->getCustomer()->getTaxClassId())
+                        ->setProductClassId($magentoProduct->getTaxClassId());
+                    $taxRate = (float)$taxCalculator->getRate($taxRequest);
+                    $tax = (float)$taxCalculator->calcTaxAmount($price, $taxRate, true);
+                    $price = $price - $tax;
                 }
+                $magentoProduct->setPrice($price);
+                $magentoProduct->setSpecialPrice($price);
+                $magentoProduct->setFinalPrice($price);
+                // option "import with product's title from Lengow"
+                $magentoProduct->setName($lengowProduct['title']);
+                // add item to quote
+                $quoteItem = Mage::getModel('lengow/import_quote_item')
+                    ->setProduct($magentoProduct)
+                    ->setQty($lengowProduct['quantity'])
+                    ->setConvertedPrice($price);
+                $this->addItem($quoteItem);
             }
         }
     }
@@ -119,96 +81,141 @@ class Lengow_Connector_Model_Import_Quote extends Mage_Sales_Model_Quote
     /**
      * Find product in Magento based on API data
      *
-     * @param mixed $productLine product datas
+     * @param mixed $products all product datas
+     * @param Lengow_Connector_Model_Import_Marketplace $marketplace Lengow marketplace instance
      * @param string $marketplaceSku marketplace sku
      * @param boolean $logOutput see log or not
      *
      * @throws Lengow_Connector_Model_Exception product not be found / product is a parent
      *
-     * @return Mage_Catalog_Model_Product
+     * @return array
      */
-    protected function _findProduct($productLine, $marketplaceSku, $logOutput)
+    protected function _getProducts($products, $marketplace, $marketplaceSku, $logOutput)
     {
-        $found = false;
-        $product = false;
-        $productModel = Mage::getModel('catalog/product');
-        $productIds = array(
-            'merchant_product_id' => $productLine->merchant_product_id->id,
-            'marketplace_product_id' => $productLine->marketplace_product_id
-        );
-        $productField = $productLine->merchant_product_id->field != null
-            ? strtolower((string)$productLine->merchant_product_id->field)
-            : false;
-        // search product foreach value
-        foreach ($productIds as $attributeName => $attributeValue) {
-            // remove _FBA from product id
-            $attributeValue = preg_replace('/_FBA$/', '', $attributeValue);
-            if (empty($attributeValue)) {
-                continue;
+        $lengowProducts = array();
+        foreach ($products as $product) {
+            $found = false;
+            $magentoProduct = false;
+            $productModel = Mage::getModel('catalog/product');
+            $orderLineId = (string)$product->marketplace_order_line_id;
+            // check whether the product is canceled
+            if ($product->marketplace_status != null) {
+                $stateProduct = $marketplace->getStateLengow((string)$product->marketplace_status);
+                if ($stateProduct == 'canceled' || $stateProduct == 'refused') {
+                    $productId = (!is_null($product->merchant_product_id->id)
+                        ? (string)$product->merchant_product_id->id
+                        : (string)$product->marketplace_product_id
+                    );
+                    Mage::helper('lengow_connector/data')->log(
+                        'Import',
+                        Mage::helper('lengow_connector/data')->setLogMessage(
+                            'log.import.product_state_canceled',
+                            array(
+                                'product_id' => $productId,
+                                'state_product' => $stateProduct
+                            )
+                        ),
+                        $logOutput,
+                        $marketplaceSku
+                    );
+                    continue;
+                }
             }
-            // search by field if exists
-            if ($productField) {
-                $attributeModel = Mage::getSingleton('eav/config')->getAttribute('catalog_product', $productField);
-                if ($attributeModel->getAttributeId()) {
-                    $collection = Mage::getResourceModel('catalog/product_collection')
-                        ->setStoreId($this->getStore()->getStoreId())
-                        ->addAttributeToSelect($productField)
-                        ->addAttributeToFilter($productField, $attributeValue)
-                        ->setPage(1, 1)
-                        ->getData();
-                    if (is_array($collection) && count($collection) > 0) {
-                        $product = $productModel->load($collection[0]['entity_id']);
+            $productIds = array(
+                'merchant_product_id' => $product->merchant_product_id->id,
+                'marketplace_product_id' => $product->marketplace_product_id
+            );
+            $productField = $product->merchant_product_id->field != null
+                ? strtolower((string)$product->merchant_product_id->field)
+                : false;
+            // search product foreach value
+            foreach ($productIds as $attributeName => $attributeValue) {
+                // remove _FBA from product id
+                $attributeValue = preg_replace('/_FBA$/', '', $attributeValue);
+                if (empty($attributeValue)) {
+                    continue;
+                }
+                // search by field if exists
+                if ($productField) {
+                    $attributeModel = Mage::getSingleton('eav/config')->getAttribute('catalog_product', $productField);
+                    if ($attributeModel->getAttributeId()) {
+                        $collection = Mage::getResourceModel('catalog/product_collection')
+                            ->setStoreId($this->getStore()->getStoreId())
+                            ->addAttributeToSelect($productField)
+                            ->addAttributeToFilter($productField, $attributeValue)
+                            ->setPage(1, 1)
+                            ->getData();
+                        if (is_array($collection) && count($collection) > 0) {
+                            $magentoProduct = $productModel->load($collection[0]['entity_id']);
+                        }
                     }
                 }
-            }
-            // search by id or sku
-            if (!$product || !$product->getId()) {
-                if (preg_match('/^[0-9]*$/', $attributeValue)) {
-                    $product = $productModel->load((integer)$attributeValue);
+                // search by id or sku
+                if (!$magentoProduct || !$magentoProduct->getId()) {
+                    if (preg_match('/^[0-9]*$/', $attributeValue)) {
+                        $magentoProduct = $productModel->load((integer)$attributeValue);
+                    }
+                    if (!$magentoProduct || !$magentoProduct->getId()) {
+                        $attributeValue = str_replace('\_', '_', $attributeValue);
+                        $magentoProduct = $productModel->load($productModel->getIdBySku($attributeValue));
+                    }
                 }
-                if (!$product || !$product->getId()) {
-                    $attributeValue = str_replace('\_', '_', $attributeValue);
-                    $product = $productModel->load($productModel->getIdBySku($attributeValue));
+                if ($magentoProduct && $magentoProduct->getId()) {
+                    $magentoProductId = $magentoProduct->getId();
+                    // save total row Lengow for each product
+                    if (array_key_exists($magentoProductId, $lengowProducts)) {
+                        $lengowProducts[$magentoProductId]['quantity'] += (int)$product->quantity;
+                        $lengowProducts[$magentoProductId]['amount'] += (float)$product->amount;
+                        $lengowProducts[$magentoProductId]['order_line_ids'][] = $orderLineId;
+                    } else {
+                        $lengowProducts[$magentoProductId] = array(
+                            'magento_product' => $magentoProduct,
+                            'sku' => (string)$magentoProduct->getSku(),
+                            'title' => (string)$product->title,
+                            'amount' => (float)$product->amount,
+                            'price_unit' => (float)($product->amount / $product->quantity),
+                            'quantity' => (int)$product->quantity,
+                            'order_line_ids' => array($orderLineId),
+                        );
+                    }
+                    Mage::helper('lengow_connector/data')->log(
+                        'Import',
+                        Mage::helper('lengow_connector/data')->setLogMessage(
+                            'log.import.product_be_found',
+                            array(
+                                'product_id' => $magentoProduct->getId(),
+                                'attribute_name' => $attributeName,
+                                'attribute_value' => $attributeValue
+                            )
+                        ),
+                        $logOutput,
+                        $marketplaceSku
+                    );
+                    $found = true;
+                    break;
                 }
             }
-            if ($product && $product->getId()) {
-                $found = true;
-                Mage::helper('lengow_connector/data')->log(
-                    'Import',
-                    Mage::helper('lengow_connector/data')->setLogMessage(
-                        'log.import.product_be_found',
-                        array(
-                            'product_id' => $product->getId(),
-                            'attribute_name' => $attributeName,
-                            'attribute_value' => $attributeValue
-                        )
-                    ),
-                    $logOutput,
-                    $marketplaceSku
+            if (!$found) {
+                $productId = (!is_null($product->merchant_product_id->id)
+                    ? (string)$product->merchant_product_id->id
+                    : (string)$product->marketplace_product_id
                 );
-                break;
+                throw new Lengow_Connector_Model_Exception(
+                    Mage::helper('lengow_connector/data')->setLogMessage(
+                        'lengow_log.exception.product_not_be_found',
+                        array('product_id' => $productId)
+                    )
+                );
+            } elseif ($magentoProduct->getTypeId() == Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE) {
+                throw new Lengow_Connector_Model_Exception(
+                    Mage::helper('lengow_connector/data')->setLogMessage(
+                        'lengow_log.exception.product_is_a_parent',
+                        array('product_id' => $magentoProduct->getId())
+                    )
+                );
             }
         }
-        if (!$found) {
-            $productId = (!is_null($productLine->merchant_product_id->id)
-                ? (string)$productLine->merchant_product_id->id
-                : (string)$productLine->marketplace_product_id
-            );
-            throw new Lengow_Connector_Model_Exception(
-                Mage::helper('lengow_connector/data')->setLogMessage(
-                    'lengow_log.exception.product_not_be_found',
-                    array('product_id' => $productId)
-                )
-            );
-        } elseif ($product->getTypeId() == Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE) {
-            throw new Lengow_Connector_Model_Exception(
-                Mage::helper('lengow_connector/data')->setLogMessage(
-                    'lengow_log.exception.product_is_a_parent',
-                    array('product_id' => $product->getId())
-                )
-            );
-        }
-        return $product;
+        return $lengowProducts;
     }
 
     /**
