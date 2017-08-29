@@ -59,10 +59,10 @@ class Lengow_Connector_Model_Observer
     {
         if (Mage::helper('lengow_connector/security')->lengowIsInstalled()) {
             $isNewMerchant = Mage::helper('lengow_connector/sync')->isNewMerchant();
-            $isStatus = Mage::helper('lengow_connector/sync')->getStatusAccount();
+            $statusAccount = Mage::helper('lengow_connector/sync')->getStatusAccount();
             if ($isNewMerchant
-                || ($isStatus['type'] == 'free_trial' && $isStatus['day'] == 0)
-                || $isStatus['type'] == 'bad_payer'
+                || ($statusAccount['type'] == 'free_trial' && $statusAccount['expired'])
+                || $statusAccount['type'] == 'bad_payer'
             ) {
                 $updateValue = 1;
             } else {

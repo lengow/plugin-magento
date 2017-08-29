@@ -221,14 +221,12 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
                 return json_decode($config->get('account_status'), true);
             }
         }
-        $result = Mage::getModel('lengow/connector')->queryApi(
-            'get',
-            '/v3.0/subscriptions'
-        );
-        if (isset($result->subscription)) {
+        $result = Mage::getModel('lengow/connector')->queryApi('get', '/v3.0/plans');
+        if (isset($result->isFreeTrial)) {
             $status = array();
-            $status['type'] = $result->subscription->billing_offer->type;
-            $status['day'] = -round((strtotime(date("c")) - strtotime($result->subscription->renewal)) / 86400);
+            $status['type'] = $result->isFreeTrial ? 'free_trial' : '';
+            $status['day'] = (int)$result->leftDaysBeforeExpired;
+            $status['expired'] = (bool)$result->isExpired;
             if ($status['day'] < 0) {
                 $status['day'] = 0;
             }
