@@ -533,7 +533,8 @@ class Lengow_Connector_Model_Import extends Varien_Object
                     $orders[] = $order;
                 }
                 $page++;
-            } while ($results->next != null);
+                $finish = (is_null($results->next) || $this->_importOneOrder) ? true : false;
+            } while ($finish != true);
         } else {
             throw new Lengow_Connector_Model_Exception(
                 $this->_helper->setLogMessage(
