@@ -313,6 +313,7 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
                         $params[$arg] = isset($lastTrack) ? $lastTrack->getNumber() : '';
                         break;
                     case 'carrier':
+                    case 'carrier_name':
                     case 'shipping_method':
                         $carrierCode = false;
                         if ($orderLengow) {
