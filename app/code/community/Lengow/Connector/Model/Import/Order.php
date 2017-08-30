@@ -310,13 +310,11 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
 
 
     /**
-     * Get unset order by store
-     *
-     * @param integer $storeId Magento store id
+     * Get all unset orders
      *
      * @return array|false
      */
-    public function getUnsentOrderByStore($storeId)
+    public function getUnsentOrders()
     {
         $date = strtotime('-5 days', time());
         // Compatibility for version 1.5
@@ -332,7 +330,6 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
                         'state' => 'state'
                     )
                 )
-                ->addFieldToFilter('`sales/order`.store_id', $storeId)
                 ->addFieldToFilter('`sales/order`.updated_at', array('from' => $date, 'datetime' => true))
                 ->addFieldToFilter('`sales/order`.follow_by_lengow', array('eq' => 1))
                 ->addFieldToFilter('`sales/order`.state', array(array('in' => array('cancel', 'complete'))))
@@ -351,7 +348,6 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
                         'state' => 'state'
                     )
                 )
-                ->addFieldToFilter('magento_order.store_id', $storeId)
                 ->addFieldToFilter('magento_order.updated_at', array('from' => $date, 'datetime' => true))
                 ->addFieldToFilter('magento_order.follow_by_lengow', array('eq' => 1))
                 ->addFieldToFilter('magento_order.state', array(array('in' => array('cancel', 'complete'))))
@@ -691,12 +687,13 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
         if ($order->getData('from_lengow') != 1) {
             return false;
         }
-        $storeId = $order->getStore()->getId();
-        $accountId = Mage::helper('lengow_connector/config')->get('account_id', $storeId);
+        $config = Mage::helper('lengow_connector/config');
+        list($accountId, $accessToken, $secretToken) = $config->getAccessIds();
         if (is_null($connector)) {
-            $connector = Mage::getModel('lengow/connector');
-            $connectorIsValid = $connector->getConnectorByStore($storeId);
-            if (!$connectorIsValid) {
+            if ($config->isValidAuth()) {
+                $connector = Mage::getModel('lengow/connector');
+                $connector->init($accessToken, $secretToken);
+            } else {
                 return false;
             }
         }
@@ -744,12 +741,13 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
         if ($order->getData('from_lengow') != 1) {
             return false;
         }
-        $storeId = $order->getStore()->getId();
-        $accountId = Mage::helper('lengow_connector/config')->get('account_id', $storeId);
+        $config = Mage::helper('lengow_connector/config');
+        list($accountId, $accessToken, $secretToken) = $config->getAccessIds();
         if (is_null($connector)) {
-            $connector = Mage::getModel('lengow/connector');
-            $connectorIsValid = $connector->getConnectorByStore($storeId);
-            if (!$connectorIsValid) {
+            if ($config->isValidAuth()) {
+                $connector = Mage::getModel('lengow/connector');
+                $connector->init($accessToken, $secretToken);
+            } else {
                 return false;
             }
         }
@@ -825,8 +823,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
                     $this->checkAndChangeMarketplaceName($order);
                 }
                 $marketplace = Mage::helper('lengow_connector/import')->getMarketplaceSingleton(
-                    (string)$order->getData('marketplace_lengow'),
-                    $order->getStore()->getId()
+                    (string)$order->getData('marketplace_lengow')
                 );
                 if ($marketplace->containOrderLine($action)) {
                     $orderLineCollection = Mage::getModel('lengow/import_orderline')
@@ -915,12 +912,10 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
             return false;
         }
         $orderLines = array();
-        $storeId = $order->getStore()->getId();
         $connector = Mage::getModel('lengow/connector');
         $results = $connector->queryApi(
             'get',
             '/v3.0/orders',
-            $storeId,
             array(
                 'marketplace_order_id' => $order->getData('order_id_lengow'),
                 'marketplace' => $order->getData('marketplace_lengow')

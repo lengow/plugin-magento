@@ -1,5 +1,5 @@
 <?php
-$isNewMerchant = Mage::helper('lengow_connector/sync')->isNewMerchant();
+$isNewMerchant = Mage::helper('lengow_connector/config')->isNewMerchant();
 $isSync = Mage::app()->getRequest()->getParam('isSync');
 $statusAccount = Mage::helper('lengow_connector/sync')->getStatusAccount();
 $isoCode = strtolower(substr(Mage::app()->getLocale()->getLocaleCode(), 0, 2));

@@ -81,6 +81,7 @@ order.screen.last_order_importation|Dernière synchronisation : %{last_importati
 order.screen.no_order_importation|Aucune synchronisation pour le moment
 order.screen.order_with_error|Vous avez %{nb_order} commande(s) en erreurs
 order.screen.order_to_be_sent|Vous avez %{nb_order} commande(s) en attente d'expédition 
+order.screen.ajax_timeout|La synchronisation des commandes a été bloquée par un timeout. Merci de recharger la page.
 order.screen.lengow_information|Informations sur Lengow
 order.screen.feed_id|ID du flux
 order.screen.delivery_address_id|ID d'adresse de livraison
@@ -231,7 +232,7 @@ lengow_setting.global_plugin_compatibility_yes|La version Magento est compatible
 lengow_setting.global_plugin_compatibility_no|La version Magento n'est pas compatible
 lengow_setting.global_server_ip_title|L'IP de votre serveur
 lengow_setting.global_information_credential|Pour modifier les informations d'identification de la boutique, sélectionnez une boutique
-lengow_setting.global_store_credential|Informations d'identification de la boutique
+lengow_setting.global_store_credential|Paramètres d'identification
 lengow_setting.global_store_enable_title|Activer la boutique
 lengow_setting.global_store_enable_comment|Activer la boutique pour la connecter à la plateforme Lengow
 lengow_setting.global_account_id_title|ID du compte
@@ -288,6 +289,8 @@ lengow_log.error.nb_order_imported|%{nb_order} commande(s) importée(s)
 lengow_log.error.nb_order_updated|%{nb_order} commande(s) mise(s) à jour
 lengow_log.error.nb_order_with_error|%{nb_order} commande(s) avec erreurs
 lengow_log.error.no_notification|Pas de nouvelle notification sur vos commandes
+lengow_log.error.credentials_not_valid|Votre identifiant de compte, votre jeton d'accès ou votre jeton secret ne sont pas valides
+lengow_log.error.no_catalog_for_store|Aucun identifiant de catalogue valide pour la boutique %{store_name} (%{store_id})
 lengow_log.error.rest_time_to_import|L'import a déjà commencé. Attender %{rest_time}  secondes avant d'importer de nouveau vos commandes
 lengow_log.error.account_id_empty|ID du compte, access token ou secret token sont vident dans votre boutique %{store_name} (%{store_id})
 lengow_log.error.account_id_already_used|l'ID du compte %{account_id} est déjà utilisé par la boutique %{store_name} (%{store_id})
@@ -302,7 +305,6 @@ lengow_log.error.no_country_for_billing_address|Erreur Lengow : l'adresse de fac
 lengow_log.exception.product_not_be_found|le produit %{product_id} ne peut être trouvé
 lengow_log.exception.product_is_a_parent|le produit %{product_id}  est un ID parent. Les déclinaisons du produit sont nécessaires
 lengow_log.exception.no_connection_webservice|la connexion ne se fait pas avec Lengow pour la boutique %{store_name} (%{store_id})
-lengow_log.exception.crendentials_not_valid|l'ID du compte, l'acces Token ou le secret Token secret ne sont pas valides pour la boutique %{store_name} (%{store_id})
 lengow_log.exception.error_lengow_webservice|l'API Lengow : %{error_code} - %{error_message} pour la boutique %{store_name} (%{store_id})
 lengow_log.exception.timeout_api|l'API a été bloquée par un timeout
 lengow_log.exception.error_curl|Curl erreur %{error_code} - %{error_message}

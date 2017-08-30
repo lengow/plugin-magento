@@ -31,7 +31,7 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
     );
 
     /**
-     * @var array all markeplaces allowed for an account ID
+     * @var array all marketplaces allowed for an account ID
      */
     public static $marketplaces = array();
 
@@ -46,7 +46,7 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
     public $name;
 
     /**
-     * @var string the old code of the markeplace for v2 compatibility
+     * @var string the old code of the marketplace for v2 compatibility
      */
     public $legacyCode;
 
@@ -54,11 +54,6 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
      * @var string the name of the marketplace
      */
     public $labelName;
-
-    /**
-     * @var integer Store Id
-     */
-    public $storeId;
 
     /**
      * @var boolean if the marketplace is loaded
@@ -104,7 +99,6 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
      * Construct a new Marketplace instance with marketplace API
      *
      * @param array $params options
-     * integer store_id Store Id for current order
      * string  name     Marketplace name
      *
      * @throws Lengow_Connector_Model_Exception marketplace not present
@@ -113,10 +107,9 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
     {
         $this->_helper = Mage::helper('lengow_connector/data');
         $this->_config = Mage::helper('lengow_connector/config');
-        $this->storeId = $params['store_id'];
         $this->loadApiMarketplace();
         $this->name = strtolower($params['name']);
-        if (!isset(self::$marketplaces[$this->storeId]->{$this->name})) {
+        if (!isset(self::$marketplaces->{$this->name})) {
             throw new Lengow_Connector_Model_Exception(
                 $this->_helper->setLogMessage(
                     'lengow_log.exception.marketplace_not_present',
@@ -124,7 +117,7 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
                 )
             );
         }
-        $this->marketplace = self::$marketplaces[$this->storeId]->{$this->name};
+        $this->marketplace = self::$marketplaces->{$this->name};
         if (!empty($this->marketplace)) {
             $this->legacyCode = $this->marketplace->legacy_code;
             $this->labelName = $this->marketplace->name;
@@ -180,10 +173,9 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
      */
     public function loadApiMarketplace()
     {
-        if (!array_key_exists($this->storeId, self::$marketplaces)) {
+        if (count(self::$marketplaces) === 0) {
             $connector = Mage::getModel('lengow/connector');
-            $result = $connector->queryApi('get', '/v3.0/marketplaces', $this->storeId);
-            self::$marketplaces[$this->storeId] = $result;
+            self::$marketplaces = $connector->queryApi('get', '/v3.0/marketplaces');
         }
     }
 
@@ -329,7 +321,7 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
                                 : false;
                         }
                         if (!$carrierCode) {
-                            if (isset($actions['optional_args']) && in_array('carrier', $actions['optional_args'])) {
+                            if (isset($actions['optional_args']) && in_array($arg, $actions['optional_args'])) {
                                 continue;
                             }
                             $trackings = $shipment->getAllTracks();
@@ -348,6 +340,9 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
                         $params[$arg] = date('c');
                         break;
                     default:
+                        if (isset($actions['optional_args']) && in_array($arg, $actions['optional_args'])) {
+                            continue;
+                        }
                         $defaultValue = $this->getDefaultValue((string)$arg);
                         $paramValue = $defaultValue ? $defaultValue : $arg . ' not available';
                         $params[$arg] = $paramValue;
@@ -382,12 +377,10 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
             $params['marketplace_order_id'] = $order->getData('order_id_lengow');
             $params['marketplace'] = $order->getData('marketplace_lengow');
             $params['action_type'] = $action;
-
             $connector = Mage::getModel('lengow/connector');
             $result = $connector->queryApi(
                 'get',
                 '/v3.0/orders/actions/',
-                $order->getStore()->getId(),
                 array_merge($params, array("queued" => "True"))
             );
             if (isset($result->error) && isset($result->error->message)) {
@@ -416,12 +409,7 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
                 }
             } else {
                 if (!(bool)Mage::helper('lengow_connector/config')->get('preprod_mode_enable')) {
-                    $result = $connector->queryApi(
-                        'post',
-                        '/v3.0/orders/actions/',
-                        $order->getStore()->getId(),
-                        $params
-                    );
+                    $result = $connector->queryApi('post', '/v3.0/orders/actions/', $params);
                     if (isset($result->id)) {
                         $orderAction = Mage::getModel('lengow/import_action');
                         $orderAction->createAction(

@@ -274,6 +274,23 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * Get Valid Account / Access token / Secret token
+     *
+     * @return array
+     */
+    public function getAccessIds()
+    {
+        $accountId = $this->get('account_id');
+        $accessToken = $this->get('access_token');
+        $secretToken = $this->get('secret_token');
+        if (strlen($accountId) > 0 && strlen($accessToken) > 0 && strlen($secretToken) > 0) {
+            return array($accountId, $accessToken, $secretToken);
+        } else {
+            return array(null, null, null);
+        }
+    }
+
+    /**
      * Get Selected attributes
      *
      * @param integer $storeId Magento store id
@@ -359,6 +376,71 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
             $reportEmailAddress[] = Mage::getStoreConfig('trans_email/ident_general/email');
         }
         return $reportEmailAddress;
+    }
+
+    /**
+     * Get all available currency codes
+     *
+     * @return array
+     */
+    public function getAllAvailableCurrencyCodes()
+    {
+        $allCurrencies = array();
+        $storeCollection = Mage::getResourceModel('core/store_collection')->addFieldToFilter('is_active', 1);
+        foreach ($storeCollection as $store) {
+            // Get store currencies
+            $storeCurrencies = Mage::app()->getStore($store->getId())->getAvailableCurrencyCodes();
+            if (is_array($storeCurrencies)) {
+                foreach ($storeCurrencies as $currency) {
+                    if (!in_array($currency, $allCurrencies)) {
+                        $allCurrencies[] = $currency;
+                    }
+                }
+            }
+        }
+        return $allCurrencies;
+    }
+
+    /**
+     * Check if is a new merchant
+     *
+     * @return boolean
+     */
+    public function isNewMerchant()
+    {
+        list($accountId, $accessToken, $secretToken) = $this->getAccessIds();
+        if (!is_null($accountId) && !is_null($accessToken) && !is_null($secretToken)) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Check API Authentication
+     *
+     * @return boolean
+     */
+    public function isValidAuth()
+    {
+        if (!Mage::helper('lengow_connector/toolbox')->isCurlActivated()) {
+            return false;
+        }
+        list($accountId, $accessToken, $secretToken) = $this->getAccessIds();
+        if (is_null($accountId) || $accountId == 0 || !is_numeric($accountId)) {
+            return false;
+        }
+        try {
+            $connector = Mage::getModel('lengow/connector');
+            $connector->init($accessToken, $secretToken);
+            $result = $connector->connect();
+        } catch (Lengow_Connector_Model_Exception $e) {
+            return false;
+        }
+        if (isset($result['token'])) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

@@ -176,6 +176,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
         $orderUpdate = 0;
         $orderError = 0;
         $errors = array();
+        $globalError = false;
         // clean logs > 20 days
         $this->_helper->cleanLog();
         if ($this->_importHelper->importIsInProcess() && !$this->_preprodMode && !$this->_importOneOrder) {
@@ -184,19 +185,9 @@ class Lengow_Connector_Model_Import extends Varien_Object
                 array('rest_time' => $this->_importHelper->restTimeToImport())
             );
             $this->_helper->log('Import', $globalError, $this->_logOutput);
-            $errors[0] = $globalError;
-            if (!is_null($this->_orderLengowId)) {
-                $lengowOrderError = Mage::getModel('lengow/import_ordererror');
-                $lengowOrderError->finishOrderErrors($this->_orderLengowId);
-                $lengowOrderError->createOrderError(
-                    array(
-                        'order_lengow_id' => $this->_orderLengowId,
-                        'message' => $globalError,
-                        'type' => 'import'
-                    )
-                );
-                unset($lengowOrderError);
-            }
+        } elseif (!$this->_checkCredentials()) {
+            $globalError = $this->_helper->setLogMessage('lengow_log.error.credentials_not_valid');
+            $this->_helper->log('Import', $globalError, $this->_logOutput);
         } else {
             // to activate lengow shipping method
             Mage::getSingleton('core/session')->setIsFromlengow(1);
@@ -236,11 +227,17 @@ class Lengow_Connector_Model_Import extends Varien_Object
                         $this->_logOutput
                     );
                     try {
-                        // check account ID, Access Token and Secret
-                        $errorCredential = $this->_checkCredentials((int)$store->getId(), $store->getName());
-                        if ($errorCredential !== true) {
-                            $this->_helper->log('Import', $errorCredential, $this->_logOutput);
-                            $errors[(int)$store->getId()] = $errorCredential;
+                        // check store catalog ids
+                        if (!$this->_checkCatalogIds($store)) {
+                            $errorCatalogIds = $this->_helper->setLogMessage(
+                                'lengow_log.error.no_catalog_for_store',
+                                array(
+                                    'store_name' => $store->getName(),
+                                    'store_id' => (int)$store->getId(),
+                                )
+                            );
+                            $this->_helper->log('Import', $errorCatalogIds, $this->_logOutput);
+                            $errors[(int)$store->getId()] = $errorCatalogIds;
                             continue;
                         }
                         // get orders from Lengow API
@@ -370,6 +367,22 @@ class Lengow_Connector_Model_Import extends Varien_Object
         }
         // Clear session
         Mage::getSingleton('core/session')->setIsFromlengow(0);
+        // save global error
+        if ($globalError) {
+            $errors[0] = $globalError;
+            if (isset($this->_orderLengowId) && $this->_orderLengowId) {
+                $lengowOrderError = Mage::getModel('lengow/import_ordererror');
+                $lengowOrderError->finishOrderErrors($this->_orderLengowId);
+                $lengowOrderError->createOrderError(
+                    array(
+                        'order_lengow_id' => $this->_orderLengowId,
+                        'message' => $globalError,
+                        'type' => 'import'
+                    )
+                );
+                unset($lengowOrderError);
+            }
+        }
         if ($this->_importOneOrder) {
             $result['error'] = $errors;
             return $result;
@@ -384,41 +397,31 @@ class Lengow_Connector_Model_Import extends Varien_Object
     }
 
     /**
-     * Check credentials for a store
-     *
-     * @param integer $storeId Magento store Id
-     * @param string $storeName Magento store name
+     * Check credentials and get Lengow connector
      *
      * @return boolean
      */
-    protected function _checkCredentials($storeId, $storeName)
+    protected function _checkCredentials()
     {
-        $this->_accountId = (int)$this->_config->get('account_id', $storeId);
-        $this->_accessToken = $this->_config->get('access_token', $storeId);
-        $this->_secretToken = $this->_config->get('secret_token', $storeId);
-        if (!$this->_accountId || !$this->_accessToken || !$this->_secretToken) {
-            $message = $this->_helper->setLogMessage(
-                'lengow_log.error.account_id_empty',
-                array(
-                    'store_name' => $storeName,
-                    'store_id' => $storeId
-                )
-            );
-            return $message;
+        if ($this->_config->isValidAuth()) {
+            list($this->_accountId, $this->_accessToken, $this->_secretToken) = $this->_config->getAccessIds();
+            $this->_connector = Mage::getModel('lengow/connector');
+            $this->_connector->init($this->_accessToken, $this->_secretToken);
+            return true;
         }
-        if (array_key_exists($this->_accountId, $this->_accountIds)) {
-            $message = $this->_helper->setLogMessage(
-                'lengow_log.error.account_id_already_used',
-                array(
-                    'account_id' => $this->_accountId,
-                    'store_name' => $this->_accountIds[$this->_accountId]['store_name'],
-                    'store_id' => $this->_accountIds[$this->_accountId]['store_id'],
-                )
-            );
-            return $message;
-        }
-        $this->_accountIds[$this->_accountId] = array('store_id' => $storeId, 'store_name' => $storeName);
-        return true;
+        return false;
+    }
+
+    /**
+     * Check catalog ids for a store
+     *
+     * @param Mage_Core_Model_Store $store Magento store instance
+     *
+     * @return boolean
+     */
+    protected function _checkCatalogIds($store)
+    {
+       return true;
     }
 
     /**
@@ -426,7 +429,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
      *
      * @param Mage_Core_Model_Store $store Magento store instance
      *
-     * @throws Lengow_Connector_Model_Exception no connection with webservices / credentials not valid
+     * @throws Lengow_Connector_Model_Exception no connection with webservices / error with lengow webservices
      *
      * @return array
      */
@@ -434,118 +437,103 @@ class Lengow_Connector_Model_Import extends Varien_Object
     {
         $page = 1;
         $orders = array();
-        // get connector
-        $this->_connector = Mage::getModel('lengow/connector');
-        $connectorIsValid = $this->_connector->getConnectorByStore($store->getId());
         // get import period
         $days = (!is_null($this->_days) ? $this->_days : $this->_config->get('days', $store->getId()));
         $dateFrom = date('c', strtotime(date('Y-m-d') . ' -' . $days . 'days'));
         $dateTo = date('c');
-        if ($connectorIsValid) {
-            if ($this->_importOneOrder) {
-                $this->_helper->log(
-                    'Import',
-                    $this->_helper->setLogMessage(
-                        'log.import.connector_get_order',
-                        array(
-                            'marketplace_sku' => $this->_marketplaceSku,
-                            'marketplace_name' => $this->_marketplaceName
-                        )
-                    ),
-                    $this->_logOutput
-                );
-            } else {
-                $this->_helper->log(
-                    'Import',
-                    $this->_helper->setLogMessage(
-                        'log.import.connector_get_all_order',
-                        array(
-                            'date_from' => date('Y-m-d', strtotime((string)$dateFrom)),
-                            'date_to' => date('Y-m-d', strtotime((string)$dateTo)),
-                            'account_id' => $this->_accountId
-                        )
-                    ),
-                    $this->_logOutput
-                );
-            }
-            do {
-                if ($this->_importOneOrder) {
-                    $results = $this->_connector->get(
-                        '/v3.0/orders',
-                        array(
-                            'marketplace_order_id' => $this->_marketplaceSku,
-                            'marketplace' => $this->_marketplaceName,
-                            'account_id' => $this->_accountId,
-                            'page' => $page
-                        ),
-                        'stream'
-                    );
-                } else {
-                    $results = $this->_connector->get(
-                        '/v3.0/orders',
-                        array(
-                            'updated_from' => $dateFrom,
-                            'updated_to' => $dateTo,
-                            'account_id' => $this->_accountId,
-                            'page' => $page
-                        ),
-                        'stream'
-                    );
-                }
-                if (is_null($results)) {
-                    throw new Lengow_Connector_Model_Exception(
-                        $this->_helper->setLogMessage(
-                            'lengow_log.exception.no_connection_webservice',
-                            array(
-                                'store_name' => $store->getName(),
-                                'store_id' => $store->getId()
-                            )
-                        )
-                    );
-                }
-                $results = json_decode($results);
-                if (!is_object($results)) {
-                    throw new Lengow_Connector_Model_Exception(
-                        $this->_helper->setLogMessage(
-                            'lengow_log.exception.no_connection_webservice',
-                            array(
-                                'store_name' => $store->getName(),
-                                'store_id' => $store->getId()
-                            )
-                        )
-                    );
-                }
-                if (isset($results->error)) {
-                    throw new Lengow_Connector_Model_Exception(
-                        $this->_helper->setLogMessage(
-                            'lengow_log.exception.error_lengow_webservice',
-                            array(
-                                'error_code' => $results->error->code,
-                                'error_message' => $results->error->message,
-                                'store_name' => $store->getName(),
-                                'store_id' => $store->getId()
-                            )
-                        )
-                    );
-                }
-                // Construct array orders
-                foreach ($results->results as $order) {
-                    $orders[] = $order;
-                }
-                $page++;
-                $finish = (is_null($results->next) || $this->_importOneOrder) ? true : false;
-            } while ($finish != true);
-        } else {
-            throw new Lengow_Connector_Model_Exception(
+        if ($this->_importOneOrder) {
+            $this->_helper->log(
+                'Import',
                 $this->_helper->setLogMessage(
-                    'lengow_log.exception.crendentials_not_valid',
+                    'log.import.connector_get_order',
                     array(
-                        'store_name' => $store->getName(),
-                        'store_id' => $store->getId()
+                        'marketplace_sku' => $this->_marketplaceSku,
+                        'marketplace_name' => $this->_marketplaceName
                     )
-                )
+                ),
+                $this->_logOutput
+            );
+        } else {
+            $this->_helper->log(
+                'Import',
+                $this->_helper->setLogMessage(
+                    'log.import.connector_get_all_order',
+                    array(
+                        'date_from' => date('Y-m-d', strtotime((string)$dateFrom)),
+                        'date_to' => date('Y-m-d', strtotime((string)$dateTo)),
+                        'account_id' => $this->_accountId
+                    )
+                ),
+                $this->_logOutput
             );
         }
+        do {
+            if ($this->_importOneOrder) {
+                $results = $this->_connector->get(
+                    '/v3.0/orders',
+                    array(
+                        'marketplace_order_id' => $this->_marketplaceSku,
+                        'marketplace' => $this->_marketplaceName,
+                        'account_id' => $this->_accountId,
+                        'page' => $page
+                    ),
+                    'stream'
+                );
+            } else {
+                $results = $this->_connector->get(
+                    '/v3.0/orders',
+                    array(
+                        'updated_from' => $dateFrom,
+                        'updated_to' => $dateTo,
+                        'account_id' => $this->_accountId,
+                        'page' => $page
+                    ),
+                    'stream'
+                );
+            }
+            if (is_null($results)) {
+                throw new Lengow_Connector_Model_Exception(
+                    $this->_helper->setLogMessage(
+                        'lengow_log.exception.no_connection_webservice',
+                        array(
+                            'store_name' => $store->getName(),
+                            'store_id' => $store->getId()
+                        )
+                    )
+                );
+            }
+            $results = json_decode($results);
+            if (!is_object($results)) {
+                throw new Lengow_Connector_Model_Exception(
+                    $this->_helper->setLogMessage(
+                        'lengow_log.exception.no_connection_webservice',
+                        array(
+                            'store_name' => $store->getName(),
+                            'store_id' => $store->getId()
+                        )
+                    )
+                );
+            }
+            if (isset($results->error)) {
+                throw new Lengow_Connector_Model_Exception(
+                    $this->_helper->setLogMessage(
+                        'lengow_log.exception.error_lengow_webservice',
+                        array(
+                            'error_code' => $results->error->code,
+                            'error_message' => $results->error->message,
+                            'store_name' => $store->getName(),
+                            'store_id' => $store->getId()
+                        )
+                    )
+                );
+            }
+            // Construct array orders
+            foreach ($results->results as $order) {
+                $orders[] = $order;
+            }
+            $page++;
+            $finish = (is_null($results->next) || $this->_importOneOrder) ? true : false;
+        } while ($finish != true);
         return $orders;
     }
 

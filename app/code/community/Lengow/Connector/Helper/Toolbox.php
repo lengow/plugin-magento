@@ -54,6 +54,16 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * Check if PHP Curl is activated
+     *
+     * @return boolean
+     */
+    public function isCurlActivated()
+    {
+        return function_exists('curl_version');
+    }
+
+    /**
      * Get array of plugin informations
      *
      * @return string

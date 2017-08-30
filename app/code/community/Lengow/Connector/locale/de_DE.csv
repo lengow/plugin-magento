@@ -81,6 +81,7 @@ order.screen.last_order_importation|Letzte Synchronisierung: %{last_importation}
 order.screen.no_order_importation|Derzeit keine Synchronisierung
 order.screen.order_with_error|Sie haben %{nb_order} Bestellung(en) mit Fehlern
 order.screen.order_to_be_sent|Sie haben %{nb_order} Bestellung(en) die zum Versand bereit sind
+order.screen.ajax_timeout|Während der Synchronisierung der Bestellungen kam es zu einem Time-Out-Fehler. Bitte aktualisieren Sie die Seite.
 order.screen.lengow_information|Informationen zu Lengow
 order.screen.feed_id|Feed-ID
 order.screen.delivery_address_id| Lieferaddresse-ID
@@ -231,7 +232,7 @@ lengow_setting.global_plugin_compatibility_yes| Magento-Version ist kompatibel
 lengow_setting.global_plugin_compatibility_no| Magento-Version ist nicht kompatibel
 lengow_setting.global_server_ip_title|IP Ihres Servers
 lengow_setting.global_information_credential|Um Shop Zugangsdaten zu ändern, wählen Sie bitte einen Shop aus
-lengow_setting.global_store_credential| Shop Zugangsdaten
+lengow_setting.global_store_credential| Benutzer-Credentials
 lengow_setting.global_store_enable_title|Shop aktivieren
 lengow_setting.global_store_enable_comment|Verbindung zwischen Lengow und Shop aktivieren
 lengow_setting.global_account_id_title|Account ID
@@ -288,6 +289,8 @@ lengow_log.error.nb_order_imported| %{nb_order} Bestellung(en) importiert
 lengow_log.error.nb_order_updated|%{nb_order} Bestellung(en) aktualisiert
 lengow_log.error.nb_order_with_error|%{nb_order} Bestellung(en) mit Fehlern
 lengow_log.error.no_notification|Keine neue Benachrichtigung zur Bestellung
+lengow_log.error.credentials_not_valid|Konto-Nr., Access-Token oder Access-Token-Secret ungültig
+lengow_log.error.no_catalog_for_store|Keine gültige Katalog-Nr. für den Shop %{store_name} (%{store_id})
 lengow_log.error.rest_time_to_import|Bitte warten Sie %{rest_time} Sekunden, bevor Sie Bestellungen erneut importieren
 lengow_log.error.account_id_empty| Account ID, Zugangs- oder Geheimtoken ist leer im Shop %{store_name} (%{store_id})
 lengow_log.error.account_id_already_used|Account ID %{account_id} bereits im Shop %{store_name} (%{store_id}) verwendet
@@ -302,7 +305,6 @@ lengow_log.error.no_country_for_billing_address|Fehler Lengow: Rechnungsadresse 
 lengow_log.exception.product_not_be_found|produkt %{product_id} konnte nicht gefunden werden
 lengow_log.exception.product_is_a_parent|produkt %{product_id} hat eine Vorgänger-ID. Produktvariation wird benötigt
 lengow_log.exception.no_connection_webservice|verbindung mit dem Lengow Webservice im Laden %{store_name} (%{store_id}) funktionierte nicht.
-lengow_log.exception.crendentials_not_valid|Konto-ID, Wertmarkenzugang oder Geheimwertmarke gelten im Laden nicht %{store_name} (%{store_id})
 lengow_log.exception.error_lengow_webservice|Lengow Webservice : %{error_code} - %{error_message} auf Lager %{store_name} (%{store_id})
 lengow_log.exception.timeout_api|API Anruf wegen Zeitüberschreitung blockiert
 lengow_log.exception.error_curl|fehler Curl %{error_code} - %{error_message}

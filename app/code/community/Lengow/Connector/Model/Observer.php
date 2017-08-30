@@ -58,7 +58,7 @@ class Lengow_Connector_Model_Observer
     public function updateAdminMenu()
     {
         if (Mage::helper('lengow_connector/security')->lengowIsInstalled()) {
-            $isNewMerchant = Mage::helper('lengow_connector/sync')->isNewMerchant();
+            $isNewMerchant = Mage::helper('lengow_connector/config')->isNewMerchant();
             $statusAccount = Mage::helper('lengow_connector/sync')->getStatusAccount();
             if ($isNewMerchant
                 || ($statusAccount['type'] == 'free_trial' && $statusAccount['expired'])
