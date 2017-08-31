@@ -31,11 +31,6 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
             'store' => true,
             'no_cache' => true,
         ),
-        'store_enable' => array(
-            'path' => 'lengow_global_options/store_credential/global_store_enable',
-            'store' => true,
-            'no_cache' => false,
-        ),
         'account_id' => array(
             'path' => 'lengow_global_options/store_credential/global_account_id',
             'store' => true,
@@ -48,6 +43,16 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
         ),
         'secret_token' => array(
             'path' => 'lengow_global_options/store_credential/global_secret_token',
+            'store' => true,
+            'no_cache' => false,
+        ),
+        'store_enable' => array(
+            'path' => 'lengow_global_options/store_credential/global_store_enable',
+            'store' => true,
+            'no_cache' => false,
+        ),
+        'catalog_id' => array(
+            'path' => 'lengow_global_options/store_credential/global_catalog_id',
             'store' => true,
             'no_cache' => false,
         ),
@@ -288,6 +293,30 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
         } else {
             return array(null, null, null);
         }
+    }
+
+
+    /**
+     * Get catalog ids for a specific store
+     *
+     * @param integer $storeId Magento store id
+     *
+     * @return array
+     */
+    public function getCatalogIds($storeId)
+    {
+        $catalogIds = array();
+        $storeCatalogIds = $this->get('catalog_id', $storeId);
+        if (strlen($storeCatalogIds) > 0 && $storeCatalogIds != 0) {
+            $ids = trim(str_replace(array("\r\n", ',', '-', '|', ' ', '/'), ';', $storeCatalogIds), ';');
+            $ids = array_filter(explode(';', $ids));
+            foreach ($ids as $id) {
+                if (is_numeric($id) && $id > 0) {
+                    $catalogIds[] = (int)$id;
+                }
+            }
+        }
+        return $catalogIds;
     }
 
     /**

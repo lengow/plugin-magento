@@ -207,6 +207,10 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
             'state' => (bool)$this->_configHelper->get('store_enable', $store->getId()),
         );
         $checklist[] = array(
+            'title' => $this->_helper->__('toolbox.screen.store_catalog_id'),
+            'message' =>  $this->_configHelper->get('catalog_id', $store->getId()),
+        );
+        $checklist[] = array(
             'title' => $this->_helper->__('toolbox.screen.store_product_total'),
             'message' => $export->getTotalProduct(),
         );

@@ -183,6 +183,7 @@ toolbox.screen.last_import_manual|Manuel
 toolbox.screen.store_information|Informations sur les boutiques
 toolbox.screen.export_information|Informations sur l'export
 toolbox.screen.store_active|Boutique synchronisée avec Lengow
+toolbox.screen.store_catalog_id|Catalogue ids Lengow synchronisés
 toolbox.screen.store_export_token|Token d'export
 toolbox.screen.store_last_export|Dernier export 
 toolbox.screen.store_product_total|Produits disponibles dans votre boutique
@@ -233,14 +234,16 @@ lengow_setting.global_plugin_compatibility_no|La version Magento n'est pas compa
 lengow_setting.global_server_ip_title|L'IP de votre serveur
 lengow_setting.global_information_credential|Pour modifier les informations d'identification de la boutique, sélectionnez une boutique
 lengow_setting.global_store_credential|Paramètres d'identification
-lengow_setting.global_store_enable_title|Activer la boutique
-lengow_setting.global_store_enable_comment|Activer la boutique pour la connecter à la plateforme Lengow
 lengow_setting.global_account_id_title|ID du compte
 lengow_setting.global_account_id_comment|ID de votre compte Lengow
 lengow_setting.global_access_token_title|Access Token
 lengow_setting.global_access_token_comment|Votre access Token Lengow
 lengow_setting.global_secret_token_title|Secret Token
 lengow_setting.global_secret_token_comment|Votre secret Token Lengow
+lengow_setting.global_store_enable_title|Activer la boutique
+lengow_setting.global_store_enable_comment|Activer la boutique pour la connecter à la plateforme Lengow
+lengow_setting.global_catalog_id_title|Catalogues ID
+lengow_setting.global_catalog_id_comment|Vos ID catalogues pour importer les commandes.<br />Séparez-les par des ' ; '
 lengow_setting.global_advanced_setting|Paramètres principaux avancés
 lengow_setting.global_tracking_id_label|Tracker ID produit
 lengow_setting.global_authorized_ip_enable_label|Activer l'autorisation par IP
