@@ -183,6 +183,7 @@ toolbox.screen.last_import_manual|manual
 toolbox.screen.store_information|Store information
 toolbox.screen.export_information|Export information
 toolbox.screen.store_active|Store followed by Lengow
+toolbox.screen.store_catalog_id|Lengow catalogs id synchronized
 toolbox.screen.store_export_token|Export token
 toolbox.screen.store_last_export|Last export
 toolbox.screen.store_product_total|Products available in the store
@@ -233,14 +234,16 @@ lengow_setting.global_plugin_compatibility_no|Magento version is not compatible
 lengow_setting.global_server_ip_title|IP of your server
 lengow_setting.global_information_credential|To change store credentials, please select a store
 lengow_setting.global_store_credential|Identification settings
-lengow_setting.global_store_enable_title|Enable store
-lengow_setting.global_store_enable_comment|Enable store to work with Lengow
 lengow_setting.global_account_id_title|Account ID
 lengow_setting.global_account_id_comment|Your Lengow Account ID
 lengow_setting.global_access_token_title|Access token
 lengow_setting.global_access_token_comment|Your Lengow Access Token
 lengow_setting.global_secret_token_title|Secret token
 lengow_setting.global_secret_token_comment|Your Lengow Secret Token
+lengow_setting.global_store_enable_title|Enable store
+lengow_setting.global_store_enable_comment|Enable store to work with Lengow
+lengow_setting.global_catalog_id_title|Catalogues ID
+lengow_setting.global_catalog_id_comment|Your catalogues ID to import orders.<br />Separate them by ' ; '
 lengow_setting.global_advanced_setting|All advanced settings
 lengow_setting.global_tracking_id_label|Tracker Product ID
 lengow_setting.global_authorized_ip_enable_label|Enable authorisation by IP
@@ -344,7 +347,8 @@ log.import.start|## start %{type} import ##
 log.import.end|## end %{type} import ##
 log.import.start_for_store|start import in store %{store_name} (%{store_id})
 log.import.connector_get_order|get order with order ID: %{marketplace_sku} and marketplace: %{marketplace_name}
-log.import.connector_get_all_order|get orders between %{date_from} and %{date_to} with account ID: %{account_id}
+log.import.connector_get_all_order|get orders between %{date_from} and %{date_to} for catalogs ID: %{catalog_id}
+log.import.catalog_id_already_used|catalog ID %{catalog_id} is already used by shop %{store_name} (%{store_id})
 log.import.find_one_order|%{nb_order} order found for order ID: %{marketplace_sku} and markeplace: %{marketplace_name} with account ID: %{account_id}
 log.import.find_all_orders|%{nb_order} order(s) found with account ID: %{account_id}
 log.import.external_id_exist|already imported in Magento with the order ID %{order_id}

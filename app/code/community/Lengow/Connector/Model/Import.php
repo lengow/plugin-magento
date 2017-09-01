@@ -103,9 +103,14 @@ class Lengow_Connector_Model_Import extends Varien_Object
     protected $_secretToken;
 
     /**
-     * @var array account ids already imported
+     * @var array store catalog ids for import
      */
-    protected $_accountIds = array();
+    protected $_storeCatalogIds = array();
+
+    /**
+     * @var array catalog ids already imported
+     */
+    protected $_catalogIds = array();
 
     /**
      * @var Lengow_Connector_Model_Connector Lengow connector
@@ -421,7 +426,35 @@ class Lengow_Connector_Model_Import extends Varien_Object
      */
     protected function _checkCatalogIds($store)
     {
-       return true;
+        if ($this->_importOneOrder) {
+            return true;
+        }
+        $storeCatalogIds = array();
+        $catalogIds = $this->_config->getCatalogIds((int)$store->getId());
+        foreach ($catalogIds as $catalogId) {
+            if (array_key_exists($catalogId, $this->_catalogIds)) {
+                $this->_helper->log(
+                    'Import',
+                    $this->_helper->setLogMessage(
+                        'log.import.catalog_id_already_used',
+                        array(
+                            'catalog_id' => $catalogId,
+                            'store_name' => $this->_catalogIds[$catalogId]['name'],
+                            'store_id' => $this->_catalogIds[$catalogId]['store_id'],
+                        )
+                    ),
+                    $this->_logOutput
+                );
+            } else {
+                $this->_catalogIds[$catalogId] = array('store_id' => (int)$store->getId(), 'name' => $store->getName());
+                $storeCatalogIds[] = $catalogId;
+            }
+        }
+        if (count($storeCatalogIds) > 0) {
+            $this->_storeCatalogIds = $storeCatalogIds;
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -461,7 +494,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
                     array(
                         'date_from' => date('Y-m-d', strtotime((string)$dateFrom)),
                         'date_to' => date('Y-m-d', strtotime((string)$dateTo)),
-                        'account_id' => $this->_accountId
+                        'catalog_id' => implode(', ', $this->_storeCatalogIds)
                     )
                 ),
                 $this->_logOutput
@@ -485,6 +518,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
                     array(
                         'updated_from' => $dateFrom,
                         'updated_to' => $dateTo,
+                        'catalog_ids' => implode(',', $this->_storeCatalogIds),
                         'account_id' => $this->_accountId,
                         'page' => $page
                     ),
