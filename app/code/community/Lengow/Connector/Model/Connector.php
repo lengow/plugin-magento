@@ -80,7 +80,7 @@ class Lengow_Connector_Model_Connector
         '/v3.0/marketplaces' => 10,
         '/v3.0/plans' => 3,
         '/v3.0/stats' => 3,
-        '/v3.0/cms' => 3,
+        '/v3.1/cms' => 3,
     );
 
     /**
