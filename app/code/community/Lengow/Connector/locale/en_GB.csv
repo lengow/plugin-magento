@@ -81,6 +81,7 @@ order.screen.last_order_importation|Last synchronisation : %{last_importation}
 order.screen.no_order_importation|No synchronisation for now
 order.screen.order_with_error|You have %{nb_order} order(s) with errors
 order.screen.order_to_be_sent|You have %{nb_order} order(s) waiting to be sent
+order.screen.ajax_timeout|The synchronisation of the orders was blocked by a timeout. Please reload the page.
 order.screen.lengow_information|Lengow informations
 order.screen.feed_id|Feed ID
 order.screen.delivery_address_id|Delivery Address ID
@@ -231,7 +232,7 @@ lengow_setting.global_plugin_compatibility_yes|Magento version is compatible
 lengow_setting.global_plugin_compatibility_no|Magento version is not compatible
 lengow_setting.global_server_ip_title|IP of your server
 lengow_setting.global_information_credential|To change store credentials, please select a store
-lengow_setting.global_store_credential|Store credentials
+lengow_setting.global_store_credential|Identification settings
 lengow_setting.global_store_enable_title|Enable store
 lengow_setting.global_store_enable_comment|Enable store to work with Lengow
 lengow_setting.global_account_id_title|Account ID
@@ -288,6 +289,8 @@ lengow_log.error.nb_order_imported|%{nb_order} order(s) imported
 lengow_log.error.nb_order_updated|%{nb_order} order(s) updated
 lengow_log.error.nb_order_with_error|%{nb_order} order(s) with errors
 lengow_log.error.no_notification|No new notification on order
+lengow_log.error.credentials_not_valid|Account ID, token access or secret token are not valid
+lengow_log.error.no_catalog_for_store|No catalog ID valid for the store %{store_name} (%{store_id})
 lengow_log.error.rest_time_to_import|Import has already started. Please wait %{rest_time} seconds before re-importing orders
 lengow_log.error.account_id_empty|ID account, access token or secret is empty in store %{store_name} (%{store_id})
 lengow_log.error.account_id_already_used|account ID %{account_id} is already used by store %{store_name} (%{store_id})
@@ -302,7 +305,6 @@ lengow_log.error.no_country_for_billing_address|Lengow error: billing address do
 lengow_log.exception.product_not_be_found|product %{product_id} could not be found
 lengow_log.exception.product_is_a_parent|product %{product_id} is a parent ID. Product variation is needed
 lengow_log.exception.no_connection_webservice|connection didn't work with Lengow's webservice in store %{store_name} (%{store_id})
-lengow_log.exception.crendentials_not_valid|account ID, token access or secret token are not valid in store %{store_name} (%{store_id})
 lengow_log.exception.error_lengow_webservice|Lengow webservice : %{error_code} - %{error_message} in store %{store_name} (%{store_id})
 lengow_log.exception.timeout_api|API call blocked due to a timeout
 lengow_log.exception.error_curl|Curl error %{error_code} - %{error_message}
@@ -375,8 +377,8 @@ log.import.quantity_back_reimported_order|adding quantity back to stock count (o
 log.import.quantity_back_shipped_by_marketplace|adding quantity back to stock count (order shipped by marketplace)
 log.mail_report.send_mail_to|report email sent to %{email}
 log.mail_report.unable_send_mail_to|unable to send report email to %{email}
-log.order_action.start_for_store|check completed actions in store %{store_name} (%{store_id})
-log.order_action.start_not_sent_for_store|check actions not sent in store %{store_name} (%{store_id})
+log.order_action.check_completed_action|check completed actions
+log.order_action.check_action_not_sent|check actions not sent
 log.order_action.try_to_send_action|try to send %{action} action (ORDER ID %{order_id})
 log.order_action.action_send|action %{action} successfully sent (ORDER ID %{order_id})
 log.order_action.action_not_send|WARNING! action %{action} could not be sent (ORDER ID %{order_id})

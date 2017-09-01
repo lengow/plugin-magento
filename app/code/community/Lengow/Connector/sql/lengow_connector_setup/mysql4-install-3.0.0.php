@@ -869,23 +869,23 @@ $installer->endSetup();
 // All settings update
 $newSettings = array(
     array(
-        'old_path' => 'lensync/orders/active_store',
-        'new_path' => 'lengow_global_options/store_credential/global_store_enable',
-        'store' => true
-    ),
-    array(
         'old_path' => 'lentracker/general/account_id',
         'new_path' => 'lengow_global_options/store_credential/global_account_id',
-        'store' => true
+        'store' => false
     ),
     array(
         'old_path' => 'lentracker/general/access_token',
         'new_path' => 'lengow_global_options/store_credential/global_access_token',
-        'store' => true
+        'store' => false
     ),
     array(
         'old_path' => 'lentracker/general/secret',
         'new_path' => 'lengow_global_options/store_credential/global_secret_token',
+        'store' => false
+    ),
+    array(
+        'old_path' => 'lensync/orders/active_store',
+        'new_path' => 'lengow_global_options/store_credential/global_store_enable',
         'store' => true
     ),
     array(

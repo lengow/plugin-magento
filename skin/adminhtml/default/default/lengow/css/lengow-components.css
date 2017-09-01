@@ -68,6 +68,16 @@ body.lengow-connector .blue_frame,
   color: #2e6592;
 }
 
+body.lengow-connector .red_frame,
+.red-frame {
+    border-radius: 3px;
+    margin-bottom: 15px;
+    padding: 30px;
+    background: #f2dede;
+    border: 1px solid #d4929d;
+    color: #a94442;
+}
+
 body.lengow-connector .grey_frame {
   background: #f7f7f7;
   padding: 30px;

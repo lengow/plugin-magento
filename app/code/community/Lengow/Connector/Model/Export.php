@@ -760,7 +760,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
     protected function _setLegacyFields()
     {
         if (is_null($this->_legacy)) {
-            $result = Mage::getModel('lengow/connector')->queryApi('get', '/v3.0/plans', $this->_storeId);
+            $result = Mage::getModel('lengow/connector')->queryApi('get', '/v3.0/plans');
             if (isset($result->accountVersion)) {
                 $this->_legacy = $result->accountVersion === 'v2' ? true : false;
             } else {

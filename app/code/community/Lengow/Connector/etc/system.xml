@@ -28,52 +28,52 @@
                 <store_credential translate="label comment">
                     <label>lengow_setting.global_store_credential</label>
                     <sort_order>20</sort_order>
-                    <show_in_default>0</show_in_default>
+                    <show_in_default>1</show_in_default>
                     <show_in_website>0</show_in_website>
                     <show_in_store>1</show_in_store>
                     <fields>
-                        <global_store_enable>
-                            <label>lengow_setting.global_store_enable_title</label>
-                            <comment>lengow_setting.global_store_enable_comment</comment>
-                            <frontend_type>select</frontend_type>
-                            <sort_order>10</sort_order>
-                            <show_in_default>0</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                        </global_store_enable>
                         <global_account_id>
                             <label>lengow_setting.global_account_id_title</label>
                             <comment>lengow_setting.global_account_id_comment</comment>
                             <frontend_type>text</frontend_type>
-                            <sort_order>20</sort_order>
-                            <show_in_default>0</show_in_default>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
-                            <show_in_store>1</show_in_store>
+                            <show_in_store>0</show_in_store>
                         </global_account_id>
                         <global_access_token>
                             <label>lengow_setting.global_access_token_title</label>
                             <comment>lengow_setting.global_access_token_comment</comment>
                             <frontend_type>text</frontend_type>
-                            <sort_order>30</sort_order>
-                            <show_in_default>0</show_in_default>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
-                            <show_in_store>1</show_in_store>
+                            <show_in_store>0</show_in_store>
                         </global_access_token>
                         <global_secret_token>
                             <label>lengow_setting.global_secret_token_title</label>
-                            <comment>lengow_setting.global_secret_token_comment</comment>             
+                            <comment>lengow_setting.global_secret_token_comment</comment>
                             <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </global_secret_token>
+                        <global_store_enable>
+                            <label>lengow_setting.global_store_enable_title</label>
+                            <comment>lengow_setting.global_store_enable_comment</comment>
+                            <frontend_type>select</frontend_type>
                             <sort_order>40</sort_order>
                             <show_in_default>0</show_in_default>
                             <show_in_website>0</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </global_secret_token>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                        </global_store_enable>
                     </fields>
                 </store_credential>
                 <advanced translate="label comment">
                     <label>lengow_setting.global_advanced_setting</label>
-                    <sort_order>20</sort_order>
+                    <sort_order>30</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>0</show_in_website>
                     <show_in_store>0</show_in_store>

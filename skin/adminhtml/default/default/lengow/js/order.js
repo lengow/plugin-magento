@@ -1,7 +1,8 @@
 document.observe("dom:loaded", function() {
 
     $('lengow_import_orders').observe('click', function() {
-        var url = $(this).readAttribute('data-href');
+        var url = $(this).readAttribute('data-href'),
+            lengowWrapperMessage = $('lengow_wrapper_messages');
         new Ajax.Request(url,{
             method: 'post',
             parameters: {action: 'import_all', form_key: FORM_KEY},
@@ -13,9 +14,12 @@ document.observe("dom:loaded", function() {
                 responseJson.messages.each(function(message) {
                     all_messages += message+'<br/>';
                 });
-                $('lengow_wrapper_messages').update(all_messages);
-                $('lengow_wrapper_messages').appear({ duration: 0.250 });
+                lengowWrapperMessage.update(all_messages);
+                lengowWrapperMessage.appear({ duration: 0.250 });
 
+            },
+            onFailure: function(){
+                $('lengow_wrapper_timeout').appear({ duration: 0.250 });
             }
         });
     });

@@ -188,10 +188,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
         $this->_config = Mage::helper('lengow_connector/config');
         $this->_modelOrder = Mage::getModel('lengow/import_order');
         // get marketplace and Lengow order state
-        $this->_marketplace = $this->_importHelper->getMarketplaceSingleton(
-            (string)$this->_orderData->marketplace,
-            $this->_storeId
-        );
+        $this->_marketplace = $this->_importHelper->getMarketplaceSingleton((string)$this->_orderData->marketplace);
         $this->_marketplaceLabel = $this->_marketplace->labelName;
         $this->_orderStateMarketplace = (string)$this->_orderData->marketplace_status;
         $this->_orderStateLengow = $this->_marketplace->getStateLengow($this->_orderStateMarketplace);

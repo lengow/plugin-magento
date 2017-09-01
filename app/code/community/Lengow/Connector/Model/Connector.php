@@ -388,116 +388,23 @@ class Lengow_Connector_Model_Connector
     }
 
     /**
-     * Check API Authentification
-     *
-     * @param integer $accountId Lengow account id
-     *
-     * @return boolean
-     */
-    public function isValidAuth($accountId)
-    {
-        if (!$this->isCurlActivated()) {
-            return false;
-        }
-        if (is_null($accountId) || $accountId == 0 || !is_numeric($accountId)) {
-            return false;
-        }
-        try {
-            $result = $this->connect();
-        } catch (Lengow_Connector_Model_Exception $e) {
-            return false;
-        }
-        if (isset($result['token'])) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Check if PHP Curl is activated
-     *
-     * @return boolean
-     */
-    public function isCurlActivated()
-    {
-        return function_exists('curl_version');
-    }
-
-    /**
-     * Get Valid Account / Access / Secret
-     *
-     * @param integer $storeId Magento store Id
-     *
-     * @return array
-     */
-    public function getAccessId($storeId = null)
-    {
-        $accountId = '';
-        $accessToken = '';
-        $secretToken = '';
-        $config = Mage::helper('lengow_connector/config');
-        if ($storeId) {
-            $accountId = (int)$config->get('account_id', $storeId);
-            $accessToken = $config->get('access_token', $storeId);
-            $secretToken = $config->get('secret_token', $storeId);
-        } else {
-            $storeCollection = Mage::getResourceModel('core/store_collection')->addFieldToFilter('is_active', 1);
-            foreach ($storeCollection as $store) {
-                $accountId = $config->get('account_id', $store->getId());
-                $accessToken = $config->get('access_token', $store->getId());
-                $secretToken = $config->get('secret_token', $store->getId());
-                if (strlen($accountId) > 0 && strlen($accessToken) > 0 && strlen($secretToken) > 0) {
-                    break;
-                }
-            }
-        }
-        if (strlen($accountId) > 0 && strlen($accessToken) > 0 && strlen($secretToken) > 0) {
-            return array($accountId, $accessToken, $secretToken);
-        } else {
-            return array(null, null, null);
-        }
-    }
-
-    /**
-     * Get Connector by store
-     *
-     * @param integer $storeId Store Id
-     *
-     * @return boolean
-     */
-    public function getConnectorByStore($storeId = null)
-    {
-        list($accountId, $accessToken, $secretToken) = $this->getAccessId($storeId);
-        $this->init($accessToken, $secretToken);
-        if (!$this->isValidAuth($accountId)) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
      * Get result for a query Api
      *
      * @param string $type request type (GET / POST / PUT / PATCH)
      * @param string $url request url
-     * @param integer $storeId Magento store id
      * @param array $params request params
      * @param string $body body datas for request
      *
      * @return mixed
      */
-    public function queryApi($type, $url, $storeId = null, $params = array(), $body = '')
+    public function queryApi($type, $url, $params = array(), $body = '')
     {
         if (!in_array($type, array('get', 'post', 'put', 'patch'))) {
             return false;
         }
         try {
-            list($accountId, $accessToken, $secretToken) = $this->getAccessId($storeId);
+            list($accountId, $accessToken, $secretToken) = Mage::helper('lengow_connector/config')->getAccessIds();
             $this->init($accessToken, $secretToken);
-            if (!$this->isValidAuth($accountId)) {
-                return false;
-            }
             $results = $this->$type(
                 $url,
                 array_merge(array('account_id' => $accountId), $params),
