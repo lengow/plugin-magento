@@ -200,14 +200,14 @@ class Lengow_Connector_Model_Observer
      */
     public function exportCron()
     {
-        $config = Mage::helper('lengow_connector/config');
-        if ((bool)$config->get('export_cron_enable')) {
+        $configHelper = Mage::helper('lengow_connector/config');
+        if ((bool)$configHelper->get('export_cron_enable')) {
             set_time_limit(0);
             ini_set('memory_limit', '1G');
             $storeCollection = Mage::getResourceModel('core/store_collection')->addFieldToFilter('is_active', 1);
             foreach ($storeCollection as $store) {
                 $storeId = (int)$store->getId();
-                if ($config->get('store_enable', $storeId)) {
+                if ($configHelper->get('store_enable', $storeId)) {
                     try {
                         // config store
                         Mage::app()->getStore()->setCurrentStore($storeId);
@@ -240,8 +240,10 @@ class Lengow_Connector_Model_Observer
      */
     public function importCron()
     {
-        $config = Mage::helper('lengow_connector/config');
-        if ((bool)$config->get('import_cron_enable')) {
+        if ((bool)Mage::helper('lengow_connector/config')->get('import_cron_enable')) {
+            $syncHelper = Mage::helper('lengow_connector/sync');
+            // sync catalogs id between Lengow and Magento
+            $syncHelper->syncCatalog();
             // sync orders between Lengow and Magento
             $import = Mage::getModel('lengow/import', array('type' => 'magento cron'));
             $import->exec();
@@ -250,7 +252,7 @@ class Lengow_Connector_Model_Observer
             $action->checkFinishAction();
             $action->checkActionNotSent();
             // sync options between Lengow and Magento
-            Mage::helper('lengow_connector/sync')->setCmsOption();
+            $syncHelper->setCmsOption();
         }
         return $this;
     }

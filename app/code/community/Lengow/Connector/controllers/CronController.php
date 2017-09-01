@@ -42,19 +42,25 @@ class Lengow_Connector_CronController extends Mage_Core_Controller_Front_Action
          */
         $token = $this->getRequest()->getParam('token');
         $securityHelper = Mage::helper('lengow_connector/security');
+        $dataHelper = Mage::helper('lengow_connector');
         if ($securityHelper->checkWebserviceAccess($token)) {
+            $syncHelper = Mage::helper('lengow_connector/sync');
             // get all store datas for synchronisation with Lengow
             if ($this->getRequest()->getParam('get_sync') == 1) {
-                $storeDatas = Mage::helper('lengow_connector/sync')->getSyncData();
+                $storeDatas = $syncHelper->getSyncData();
                 $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($storeDatas));
             } else {
                 // get sync action if exists
                 $sync = $this->getRequest()->getParam('sync');
+                // sync catalogs id between Lengow and Magento
+                if (!$sync || $sync === 'catalog') {
+                    $syncHelper->syncCatalog();
+                }
                 // sync orders between Lengow and Magento
                 if (is_null($sync) || $sync === 'order') {
                     // array of params for import order
                     $params = array();
-                    // check if the GET parameters are availables
+                    // check if the GET parameters are available
                     if (!is_null($this->getRequest()->getParam('preprod_mode'))) {
                         $params['preprod_mode'] = (bool)$this->getRequest()->getParam('preprod_mode');
                     }
@@ -92,18 +98,17 @@ class Lengow_Connector_CronController extends Mage_Core_Controller_Front_Action
                 }
                 // sync options between Lengow and Magento
                 if (is_null($sync) || $sync === 'option') {
-                    Mage::helper('lengow_connector/sync')->setCmsOption();
+                    $syncHelper->setCmsOption();
                 }
                 // sync option is not valid
-                if ($sync && ($sync !== 'order' && $sync !== 'action' && $sync !== 'option')) {
+                if ($sync && !$syncHelper->isSyncAction($sync)) {
                     $this->getResponse()->setHeader('HTTP/1.1', '400 Bad Request');
                     $this->getResponse()->setBody(
-                        Mage::helper('lengow_connector')->__('log.import.not_valid_action', array('action' => $sync))
+                        $dataHelper->__('log.import.not_valid_action', array('action' => $sync))
                     );
                 }
             }
         } else {
-            $dataHelper = Mage::helper('lengow_connector');
             if ((bool)Mage::helper('lengow_connector/config')->get('ip_enable')) {
                 $errorMessage = $dataHelper->__(
                     'log.export.unauthorised_ip',

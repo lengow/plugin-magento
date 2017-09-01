@@ -32,7 +32,7 @@ class  Lengow_Connector_Model_Import_Quote_Item extends Mage_Sales_Model_Quote_I
     public function setPrice($value)
     {
         $this->setBaseCalculationPrice(null);
-        // dont set converted price to 0
+        // don't set converted price to 0
         //$this->setConvertedPrice(null);
         return $this->setData('price', $value);
     }

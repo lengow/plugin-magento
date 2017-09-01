@@ -47,12 +47,7 @@ product.screen.nb_exported|Produkte exportiert
 product.screen.nb_available|Produkte verfügbar
 product.screen.include_specific_product|Spezifische Produkte einbeziehen
 product.screen.include_specific_product_support|Verwenden Sie diese Option, um Ihre Produkte einzeln auszuwählen
-product.screen.lengow_store_sync|Laden wurde synchronisiert
-product.screen.lengow_store_no_sync|Laden ist nicht synchronisiert
-product.screen.sync_your_store|Meinen Shop mit Lengow synchronisieren
 product.screen.button_download|Download
-product.screen.store_last_indexation|Letzte Indexierung
-product.screen.store_not_index|Noch nicht indexiert
 product.table.id|ID
 product.table.name|Name
 product.table.custom_name|Name im %{store_name}

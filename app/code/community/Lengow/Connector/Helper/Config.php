@@ -49,12 +49,12 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
         'store_enable' => array(
             'path' => 'lengow_global_options/store_credential/global_store_enable',
             'store' => true,
-            'no_cache' => false,
+            'no_cache' => true,
         ),
         'catalog_id' => array(
             'path' => 'lengow_global_options/store_credential/global_catalog_id',
             'store' => true,
-            'no_cache' => false,
+            'no_cache' => true,
         ),
         'tracking_id' => array(
             'path' => 'lengow_global_options/advanced/global_tracking_id',
@@ -295,6 +295,24 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
         }
     }
 
+    /**
+     * Set Valid Account id / Access token / Secret token
+     *
+     * @param array $accessIds Account id / Access token / Secret token
+     * @param boolean $cleanCache clean config cache to valid configuration
+     */
+    public function setAccessIds($accessIds, $cleanCache = true)
+    {
+        $listKey = array('account_id', 'access_token', 'secret_token');
+        foreach ($accessIds as $key => $value) {
+            if (!in_array($key, array_keys($listKey))) {
+                continue;
+            }
+            if (strlen($value) > 0) {
+                $this->set($key, $value, 0, $cleanCache);
+            }
+        }
+    }
 
     /**
      * Get catalog ids for a specific store
@@ -317,6 +335,52 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
             }
         }
         return $catalogIds;
+    }
+
+    /**
+     * Set catalog ids for a specific shop
+     *
+     * @param array $catalogIds Lengow catalog ids
+     * @param integer $storeId Magento store id
+     * @param boolean $cleanCache clean config cache to valid configuration
+     */
+    public function setCatalogIds($catalogIds, $storeId, $cleanCache = true)
+    {
+        $storeCatalogIds = self::getCatalogIds($storeId);
+        foreach ($catalogIds as $catalogId) {
+            if (!in_array($catalogId, $storeCatalogIds) && is_numeric($catalogId) && $catalogId > 0) {
+                $storeCatalogIds[] = (int)$catalogId;
+            }
+        }
+        $this->set('catalog_id', implode(';', $storeCatalogIds), $storeId, $cleanCache);
+    }
+
+    /**
+     * Recovers if a store is active or not
+     *
+     * @param integer $storeId Magento store id
+     *
+     * @return boolean
+     */
+    public function storeIsActive($storeId)
+    {
+        return (bool)$this->get('store_enable', $storeId);
+    }
+
+    /**
+     * Set active store or not
+     *
+     * @param integer $storeId Magento store id
+     * @param boolean $cleanCache clean config cache to valid configuration
+     */
+    public function setActiveStore($storeId, $cleanCache = true)
+    {
+        $active = true;
+        $storeCatalogIds = $this->getCatalogIds($storeId);
+        if (count($storeCatalogIds) === 0) {
+            $active = false;
+        }
+        $this->set('store_enable', $active, $storeId, $cleanCache);
     }
 
     /**

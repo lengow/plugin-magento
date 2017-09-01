@@ -188,7 +188,7 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
         }
         $datas = array();
         $datas['currency'] = $toCurrency->getCode();
-        // get prices with or without convertion
+        // get prices with or without conversion
         if ($this->getOriginalCurrency() == $toCurrency->getCode()) {
             $discountAmount = $priceIncludingTax - $finalPriceIncludingTax;
             $datas['price_excl_tax'] = round($finalPriceExcludingTax, 2);
@@ -340,7 +340,7 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
                 $c->clearInstance();
             }
         }
-        $datas['category_breadcrum'] = implode(' > ', $ariane);
+        $datas['category_breadcrumb'] = implode(' > ', $ariane);
         $maxDimension = count($categories) - 1;
         if ($maxDimension >= 0) {
             $categoryCache[$categories[count($categories) - 1]] = $datas;

@@ -61,15 +61,6 @@ body:not(.adminhtml-lengow-home-index) #lgw-counter {
 /*                     HOME                     */
 /*************************************************/
 
-/*Iframe*/
-
-#lengow-iframe {
-  width: 100%;
-  min-height: 1047px;
-  border: 0px;
-  overflow-y: hidden;
-}
-
 /*Dashboard*/
 
 .adminhtml-lengow-home-index .lengow-nav {

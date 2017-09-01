@@ -35,7 +35,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
     /**
      * @var Lengow_Connector_Helper_Config Lengow config helper instance
      */
-    protected $_config = null;
+    protected $_configHelper = null;
 
     /**
      * @var Lengow_Connector_Model_Import_Order Lengow import order instance
@@ -185,7 +185,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
         $this->_importHelper = $params['import_helper'];
         // get helpers
         $this->_helper = Mage::helper('lengow_connector/data');
-        $this->_config = Mage::helper('lengow_connector/config');
+        $this->_configHelper = Mage::helper('lengow_connector/config');
         $this->_modelOrder = Mage::getModel('lengow/import_order');
         // get marketplace and Lengow order state
         $this->_marketplace = $this->_importHelper->getMarketplaceSingleton((string)$this->_orderData->marketplace);
@@ -342,7 +342,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
                     $this->_logOutput,
                     $this->_marketplaceSku
                 );
-                if (!$this->_config->get('import_ship_mp_enabled', $this->_storeId)) {
+                if (!$this->_configHelper->get('import_ship_mp_enabled', $this->_storeId)) {
                     $orderLengow->updateOrder(
                         array(
                             'order_process_state' => 2,
@@ -429,7 +429,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
             }
             // add quantity back for re-import order and order shipped by marketplace
             if ($this->_isReimported
-                || ($this->_shippedByMp && !$this->_config->get('import_stock_ship_mp', $this->_storeId))
+                || ($this->_shippedByMp && !$this->_configHelper->get('import_stock_ship_mp', $this->_storeId))
             ) {
                 if ($this->_isReimported) {
                     $logMessage = $this->_helper->setLogMessage('log.import.quantity_back_reimported_order');
@@ -846,7 +846,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
     protected function _updateRates($rates, $shippingCost, $shippingMethod = null, $first = true)
     {
         if (!$shippingMethod) {
-            $shippingMethod = $this->_config->get('import_shipping_method', $this->_storeId);
+            $shippingMethod = $this->_configHelper->get('import_shipping_method', $this->_storeId);
         }
         if (empty($shippingMethod)) {
             $shippingMethod = 'lengow_lengow';
