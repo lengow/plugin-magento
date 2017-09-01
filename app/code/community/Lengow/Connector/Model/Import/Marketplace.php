@@ -86,16 +86,6 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
     public $carriers = array();
 
     /**
-     * @var Lengow_Connector_Helper_Data Lengow helper instance
-     */
-    protected $_helper = null;
-
-    /**
-     * @var Lengow_Connector_Helper_Config Lengow config helper instance
-     */
-    protected $_config = null;
-
-    /**
      * Construct a new Marketplace instance with marketplace API
      *
      * @param array $params options
@@ -105,13 +95,11 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
      */
     public function __construct($params = array())
     {
-        $this->_helper = Mage::helper('lengow_connector/data');
-        $this->_config = Mage::helper('lengow_connector/config');
         $this->loadApiMarketplace();
         $this->name = strtolower($params['name']);
         if (!isset(self::$marketplaces->{$this->name})) {
             throw new Lengow_Connector_Model_Exception(
-                $this->_helper->setLogMessage(
+                Mage::helper('lengow_connector/data')->setLogMessage(
                     'lengow_log.exception.marketplace_not_present',
                     array('marketplace_name' => $this->name)
                 )

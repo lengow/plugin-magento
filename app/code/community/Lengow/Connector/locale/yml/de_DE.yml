@@ -59,12 +59,7 @@ de:
       nb_available: "Produkte verfügbar"
       include_specific_product: "Spezifische Produkte einbeziehen"
       include_specific_product_support: "Verwenden Sie diese Option, um Ihre Produkte einzeln auszuwählen"
-      lengow_store_sync: "Laden wurde synchronisiert"
-      lengow_store_no_sync: "Laden ist nicht synchronisiert"
-      sync_your_store: "Meinen Shop mit Lengow synchronisieren"
       button_download: "Download"
-      store_last_indexation: "Letzte Indexierung"
-      store_not_index: "Noch nicht indexiert"
     table:
       id: "ID"
       name: "Name"

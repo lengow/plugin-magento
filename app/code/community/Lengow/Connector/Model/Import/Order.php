@@ -687,10 +687,10 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
         if ($order->getData('from_lengow') != 1) {
             return false;
         }
-        $config = Mage::helper('lengow_connector/config');
-        list($accountId, $accessToken, $secretToken) = $config->getAccessIds();
+        $configHelper = Mage::helper('lengow_connector/config');
+        list($accountId, $accessToken, $secretToken) = $configHelper->getAccessIds();
         if (is_null($connector)) {
-            if ($config->isValidAuth()) {
+            if ($configHelper->isValidAuth()) {
                 $connector = Mage::getModel('lengow/connector');
                 $connector->init($accessToken, $secretToken);
             } else {
@@ -741,10 +741,10 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
         if ($order->getData('from_lengow') != 1) {
             return false;
         }
-        $config = Mage::helper('lengow_connector/config');
-        list($accountId, $accessToken, $secretToken) = $config->getAccessIds();
+        $configHelper = Mage::helper('lengow_connector/config');
+        list($accountId, $accessToken, $secretToken) = $configHelper->getAccessIds();
         if (is_null($connector)) {
-            if ($config->isValidAuth()) {
+            if ($configHelper->isValidAuth()) {
                 $connector = Mage::getModel('lengow/connector');
                 $connector->init($accessToken, $secretToken);
             } else {

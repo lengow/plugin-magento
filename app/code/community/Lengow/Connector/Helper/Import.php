@@ -25,7 +25,7 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
     /**
      * @var Lengow_Connector_Helper_Config Lengow config helper instance
      */
-    protected $_config = null;
+    protected $_configHelper = null;
 
     /**
      * @var array marketplaces collection
@@ -46,7 +46,7 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
      */
     public function __construct()
     {
-        $this->_config = Mage::helper('lengow_connector/config');
+        $this->_configHelper = Mage::helper('lengow_connector/config');
     }
 
     /**
@@ -71,7 +71,7 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
      */
     public function importIsInProcess()
     {
-        $timestamp = $this->_config->get('import_in_progress');
+        $timestamp = $this->_configHelper->get('import_in_progress');
         if ($timestamp > 0) {
             // security check : if last import is more than 60 seconds old => authorize new import to be launched
             if (($timestamp + (60 * 1)) < time()) {
@@ -90,7 +90,7 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
      */
     public function restTimeToImport()
     {
-        $timestamp = $this->_config->get('import_in_progress');
+        $timestamp = $this->_configHelper->get('import_in_progress');
         if ($timestamp > 0) {
             return $timestamp + (60 * 1) - time();
         }
@@ -104,7 +104,7 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
      */
     public function setImportInProcess()
     {
-        return $this->_config->set('import_in_progress', time());
+        return $this->_configHelper->set('import_in_progress', time());
     }
 
     /**
@@ -114,7 +114,7 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
      */
     public function setImportEnd()
     {
-        return $this->_config->set('import_in_progress', -1);
+        return $this->_configHelper->set('import_in_progress', -1);
     }
 
     /**
@@ -146,9 +146,9 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
     public function updateDateImport($type)
     {
         if ($type === 'cron') {
-            $this->_config->set('last_import_cron', Mage::getModel('core/date')->gmtTimestamp());
+            $this->_configHelper->set('last_import_cron', Mage::getModel('core/date')->gmtTimestamp());
         } else {
-            $this->_config->set('last_import_manual', Mage::getModel('core/date')->gmtTimestamp());
+            $this->_configHelper->set('last_import_manual', Mage::getModel('core/date')->gmtTimestamp());
         }
     }
 
@@ -159,8 +159,8 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
      */
     public function getLastImport()
     {
-        $timestampCron = $this->_config->get('last_import_cron');
-        $timestampManual = $this->_config->get('last_import_manual');
+        $timestampCron = $this->_configHelper->get('last_import_cron');
+        $timestampManual = $this->_configHelper->get('last_import_manual');
 
         if ($timestampCron && $timestampManual) {
             if ((int)$timestampCron > (int)$timestampManual) {

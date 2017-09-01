@@ -62,6 +62,19 @@ class Lengow_Connector_Helper_Security extends Mage_Core_Helper_Abstract
     );
 
     /**
+     * @var Lengow_Connector_Helper_Config Lengow config helper instance
+     */
+    protected $_configHelper;
+
+    /**
+     * Construct
+     */
+    public function __construct()
+    {
+        $this->_configHelper = Mage::helper('lengow_connector/config');
+    }
+
+    /**
      * Check Webservice access (export and cron)
      *
      * @param string $token store token
@@ -71,7 +84,7 @@ class Lengow_Connector_Helper_Security extends Mage_Core_Helper_Abstract
      */
     public function checkWebserviceAccess($token, $storeId = 0)
     {
-        if (!(bool)Mage::helper('lengow_connector/config')->get('ip_enable') && $this->checkToken($token, $storeId)) {
+        if (!(bool)$this->_configHelper->get('ip_enable') && $this->checkToken($token, $storeId)) {
             return true;
         }
         if ($this->checkIp()) {
@@ -90,7 +103,7 @@ class Lengow_Connector_Helper_Security extends Mage_Core_Helper_Abstract
      */
     public function checkToken($token, $storeId = 0)
     {
-        $storeToken = Mage::helper('lengow_connector/config')->getToken($storeId);
+        $storeToken = $this->_configHelper->getToken($storeId);
         if ($token === $storeToken) {
             return true;
         }
@@ -119,9 +132,8 @@ class Lengow_Connector_Helper_Security extends Mage_Core_Helper_Abstract
      */
     public function getAuthorizedIps()
     {
-        $configHelper = Mage::helper('lengow_connector/config');
-        $ips = $configHelper->get('authorized_ip');
-        if (!is_null($ips) && (bool)$configHelper->get('ip_enable')) {
+        $ips = $this->_configHelper->get('authorized_ip');
+        if (!is_null($ips) && (bool)$this->_configHelper->get('ip_enable')) {
             $ips = trim(str_replace(array("\r\n", ',', '-', '|', ' '), ';', $ips), ';');
             $ips = explode(';', $ips);
             $authorizedIps = array_merge($ips, $this->_ipsLengow);
@@ -197,6 +209,6 @@ class Lengow_Connector_Helper_Security extends Mage_Core_Helper_Abstract
      */
     public function checkValidMagentoVersion()
     {
-        return ($this->getMagentoVersion() < '1.5.0.0') ? false : true;
+        return $this->getMagentoVersion() < '1.5.0.0' ? false : true;
     }
 }

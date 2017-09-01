@@ -35,7 +35,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
     /**
      * @var Lengow_Connector_Helper_Config Lengow config helper instance
      */
-    protected $_config = null;
+    protected $_configHelper = null;
 
     /**
      * @var integer Magento store id
@@ -136,7 +136,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
     {
         $this->_helper = Mage::helper('lengow_connector/data');
         $this->_importHelper = Mage::helper('lengow_connector/import');
-        $this->_config = Mage::helper('lengow_connector/config');
+        $this->_configHelper = Mage::helper('lengow_connector/config');
         // params for re-import order
         if (array_key_exists('marketplace_sku', $params)
             && array_key_exists('marketplace_name', $params)
@@ -161,7 +161,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
         $this->_preprodMode = (
         isset($params['preprod_mode'])
             ? (bool)$params['preprod_mode']
-            : (bool)$this->_config->get('preprod_mode_enable')
+            : (bool)$this->_configHelper->get('preprod_mode_enable')
         );
         $this->_typeImport = (isset($params['type']) ? $params['type'] : 'manual');
         $this->_logOutput = (isset($params['log_output']) ? (bool)$params['log_output'] : false);
@@ -196,6 +196,10 @@ class Lengow_Connector_Model_Import extends Varien_Object
         } else {
             // to activate lengow shipping method
             Mage::getSingleton('core/session')->setIsFromlengow(1);
+            // check Lengow catalogs for order synchronisation
+            if (!$this->_preprodMode && !$this->_importOneOrder && $this->_typeImport === 'manual') {
+                Mage::helper('lengow_connector/sync')->syncCatalog();
+            }
             $this->_helper->log(
                 'Import',
                 $this->_helper->setLogMessage('log.import.start', array('type' => $this->_typeImport)),
@@ -219,7 +223,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
                 if (!is_null($this->_storeId) && (int)$store->getId() != $this->_storeId) {
                     continue;
                 }
-                if ($this->_config->get('store_enable', (int)$store->getId())) {
+                if ($this->_configHelper->storeIsActive((int)$store->getId())) {
                     $this->_helper->log(
                         'Import',
                         $this->_helper->setLogMessage(
@@ -360,7 +364,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
                 $this->_logOutput
             );
             // sending email in error for orders
-            if ($this->_config->get('report_mail_enable') && !$this->_preprodMode && !$this->_importOneOrder) {
+            if ($this->_configHelper->get('report_mail_enable') && !$this->_preprodMode && !$this->_importOneOrder) {
                 $this->_importHelper->sendMailAlert($this->_logOutput);
             }
             if (!$this->_preprodMode && !$this->_importOneOrder && $this->_typeImport == 'manual') {
@@ -408,8 +412,8 @@ class Lengow_Connector_Model_Import extends Varien_Object
      */
     protected function _checkCredentials()
     {
-        if ($this->_config->isValidAuth()) {
-            list($this->_accountId, $this->_accessToken, $this->_secretToken) = $this->_config->getAccessIds();
+        if ($this->_configHelper->isValidAuth()) {
+            list($this->_accountId, $this->_accessToken, $this->_secretToken) = $this->_configHelper->getAccessIds();
             $this->_connector = Mage::getModel('lengow/connector');
             $this->_connector->init($this->_accessToken, $this->_secretToken);
             return true;
@@ -430,7 +434,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
             return true;
         }
         $storeCatalogIds = array();
-        $catalogIds = $this->_config->getCatalogIds((int)$store->getId());
+        $catalogIds = $this->_configHelper->getCatalogIds((int)$store->getId());
         foreach ($catalogIds as $catalogId) {
             if (array_key_exists($catalogId, $this->_catalogIds)) {
                 $this->_helper->log(
@@ -471,7 +475,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
         $page = 1;
         $orders = array();
         // get import period
-        $days = (!is_null($this->_days) ? $this->_days : $this->_config->get('days', $store->getId()));
+        $days = (!is_null($this->_days) ? $this->_days : $this->_configHelper->get('days', $store->getId()));
         $dateFrom = date('c', strtotime(date('Y-m-d') . ' -' . $days . 'days'));
         $dateTo = date('c');
         if ($this->_importOneOrder) {

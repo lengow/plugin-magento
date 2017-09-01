@@ -12,12 +12,6 @@ $exportUrl = $helper->getExportUrl($storeId, array('stream' => 1, 'update_export
 <div class="lgw-box">
     
     <div><?php echo $this->getChildHtml('store_switcher'); ?></div>
-    <div id="lengow_check_store">
-        <a class="lengow_check_store lengow_tooltip"
-           data-id_store="<?php echo $storeId; ?>"
-           data-href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_product/'); ?>?isAjax=true">
-        </a>
-    </div>
     <div class="lengow_export_feed">
     <a href="<?php echo $exportUrl; ?>"
        target="_blank">

@@ -61,7 +61,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
         'child_name' => 'child_name',
         'quantity' => 'quantity',
         'status' => 'active',
-        'category' => 'category_breadcrum',
+        'category' => 'category_breadcrumb',
         'url' => 'url',
         'price_excl_tax' => 'price_excl_tax',
         'price_incl_tax' => 'price_incl_tax',
@@ -103,7 +103,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
         'product_id' => 'id',
         'qty' => 'quantity',
         'status' => 'active',
-        'category-breadcrumb' => 'category_breadcrum',
+        'category-breadcrumb' => 'category_breadcrumb',
         'category' => 'category',
         'category-url' => 'category_url',
         'category-sub-1' => 'category_sub_1',
@@ -879,7 +879,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
             ->addAttributeToFilter('type_id', array('nlike' => 'bundle'));
         $productCollection = clone $productCollection;
         $productCollection->getSelect()->columns('COUNT(DISTINCT e.entity_id) As total');
-        return $productCollection->getFirstItem()->getTotal();
+        return (int)$productCollection->getFirstItem()->getTotal();
     }
 
     /**
@@ -891,7 +891,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
     {
         $productCollection = $this->_getQuery();
         $productCollection->getSelect()->columns('COUNT(DISTINCT e.entity_id) As total');
-        return $productCollection->getFirstItem()->getTotal();
+        return (int)$productCollection->getFirstItem()->getTotal();
     }
 
     /**
