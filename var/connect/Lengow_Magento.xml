@@ -1,5 +1,5 @@
 <_>
-   <form_key>PnPh4qxStOM3XFjp</form_key>
+   <form_key>TYAKzn9BjgXAHSmS</form_key>
    <name>Lengow_Export</name>
    <channel>community</channel>
    <version_ids>
@@ -25,7 +25,7 @@ Export your catalog, import your orders from all Marketplaces.</description>
       </email>
    </authors>
    <depends_php_min>5.2.0</depends_php_min>
-   <depends_php_max>6.0.0</depends_php_max>
+   <depends_php_max>7.2.0</depends_php_max>
    <depends>
       <package>
          <name>
@@ -41,7 +41,7 @@ Export your catalog, import your orders from all Marketplaces.</description>
             <max/>
          </max>
          <files>
-            <files>                                                                                                  </files>
+            <files>                                                                                                       </files>
          </files>
       </package>
       <extension>
@@ -108,8 +108,4 @@ Export your catalog, import your orders from all Marketplaces.</description>
          <ignore/>
       </ignore>
    </contents>
-   <page>1</page>
-   <limit>200</limit>
-   <folder/>
-   <package/>
 </_>
