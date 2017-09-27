@@ -32,7 +32,7 @@
 /app/code/community/Lengow/Connector/Helper/Translation.php|be31400436f85cda88b9570bd829626d
 /app/code/community/Lengow/Connector/Helper/Security.php|66337a2db46e0888038b0f1dac3d3114
 /app/code/community/Lengow/Connector/Model/Log.php|30a06729ed4addb484e42ea9a7b05ea4
-/app/code/community/Lengow/Connector/Model/Export/Catalog/Product.php|da4f610012d69b6cc22285cb72441f2a
+/app/code/community/Lengow/Connector/Model/Export/Catalog/Product.php|fc30a6071298d490bbda629b1e6065a4
 /app/code/community/Lengow/Connector/Model/Export/Feed/Json.php|df7646391da87a65098b67521f6ffcb7
 /app/code/community/Lengow/Connector/Model/Export/Feed/Csv.php|e6c544b4b0c3122990d09e1cba8fe384
 /app/code/community/Lengow/Connector/Model/Export/Feed/Yaml.php|17282a7fd40c6a97a9a40b0c906ac2d0
@@ -48,7 +48,7 @@
 /app/code/community/Lengow/Connector/Model/Import/Order.php|0f69c011e1eb66e5f50834d80c3bffce
 /app/code/community/Lengow/Connector/Model/Import/Action.php|b7c71de55d0a69567fa88cc1342f00c7
 /app/code/community/Lengow/Connector/Model/Import/Importorder.php|dbe9c6304b196b4830cc2558844bca78
-/app/code/community/Lengow/Connector/Model/Import/Marketplace.php|f433151dcc12cef0761271a193209a6f
+/app/code/community/Lengow/Connector/Model/Import/Marketplace.php|7992d3ddc53791588ced7833167a4d87
 /app/code/community/Lengow/Connector/Model/Import/Orderline.php|022ada9d10d4429011b3d1d0aeecdcc4
 /app/code/community/Lengow/Connector/Model/Import/Quote.php|4b2fb453009f037b2c0e040a2ae862cd
 /app/code/community/Lengow/Connector/Model/Tracker.php|a911a314ac026e9d0d30765395b4b2a4
@@ -90,7 +90,7 @@
 /app/code/community/Lengow/Connector/locale/yml/fr_FR.yml|74e15d12441875a6acc7f9dc141866f9
 /app/code/community/Lengow/Connector/locale/de_DE.csv|c1e2a3ee0999bf94f336efa52956022f
 /app/code/community/Lengow/Connector/locale/fr_FR.csv|b032eb4c09574fdb7b9606bbf29d2dde
-/app/code/community/Lengow/Connector/sql/lengow_connector_setup/mysql4-install-3.0.0.php|d80e1ed4efa21462ab514be2abc3fb43
+/app/code/community/Lengow/Connector/sql/lengow_connector_setup/mysql4-install-3.0.0.php|1ee7cf0356706ebfe528b29790dc6908
 /app/design/adminhtml/default/default/template/lengow/check/point.phtml|080e06c3817d7f20293f8f37a87ad37d
 /app/design/adminhtml/default/default/template/lengow/product/index.phtml|930818267767952b70e1806e56add2e8
 /app/design/adminhtml/default/default/template/lengow/toolbox/index.phtml|cf10d92f8d2f08df16362a8325c5f194

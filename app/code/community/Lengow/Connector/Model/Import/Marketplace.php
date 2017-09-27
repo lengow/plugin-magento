@@ -312,9 +312,6 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
                                 : false;
                         }
                         if (!$carrierCode) {
-                            if (isset($actions['optional_args']) && in_array($arg, $actions['optional_args'])) {
-                                continue;
-                            }
                             $trackings = $shipment->getAllTracks();
                             if (!empty($trackings)) {
                                 $lastTrack = end($trackings);

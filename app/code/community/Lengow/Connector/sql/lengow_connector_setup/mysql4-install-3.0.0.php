@@ -869,21 +869,6 @@ $installer->endSetup();
 // All settings update
 $newSettings = array(
     array(
-        'old_path' => 'lentracker/general/account_id',
-        'new_path' => 'lengow_global_options/store_credential/global_account_id',
-        'store' => false
-    ),
-    array(
-        'old_path' => 'lentracker/general/access_token',
-        'new_path' => 'lengow_global_options/store_credential/global_access_token',
-        'store' => false
-    ),
-    array(
-        'old_path' => 'lentracker/general/secret',
-        'new_path' => 'lengow_global_options/store_credential/global_secret_token',
-        'store' => false
-    ),
-    array(
         'old_path' => 'lensync/orders/active_store',
         'new_path' => 'lengow_global_options/store_credential/global_store_enable',
         'store' => true
@@ -981,6 +966,10 @@ $newSettings = array(
 );
 // All the settings to delete
 $deleteSettings = array(
+    'lentracker/general/account_id',
+    'lentracker/general/access_token',
+    'lentracker/general/secret',
+    'lentracker/general/version2',
     'lentracker/general/version3',
     'lentracker/general/login',
     'lentracker/general/group',

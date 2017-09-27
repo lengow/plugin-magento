@@ -287,11 +287,6 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
                 ->addPathsFilter('1/' . $idRootCategory . '/')
                 ->exportToArray();
         }
-        if (is_array($categories) && count($categories) > 0) {
-            if (isset($categoryCache[key($categories)])) {
-                return $categoryCache[key($categories)];
-            }
-        }
         // Old config value #levelcategory
         $maxLevel = 5;
         $currentLevel = 0;
@@ -303,6 +298,12 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
             }
             if ($currentLevel > $maxLevel) {
                 break;
+            }
+        }
+        // use category cache if category already exists
+        if (isset($category) && $category['entity_id'] != '') {
+            if (isset($categoryCache[$category['entity_id']])) {
+                return $categoryCache[$category['entity_id']];
             }
         }
         if (isset($category) && $category['path'] != '') {
