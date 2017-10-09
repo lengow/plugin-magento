@@ -104,7 +104,6 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action
                         'store_id' => $storeId,
                         'format' => $format,
                         'mode' => $mode,
-                        'get_params' => $getParams,
                         'product_types' => $productTypes,
                         'product_status' => $productStatus,
                         'out_of_stock' => $outOfStock,
@@ -120,7 +119,15 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action
                     )
                 );
                 $export->setOriginalCurrency(Mage::app()->getStore($storeId)->getCurrentCurrencyCode());
-                $export->exec();
+                if ($getParams) {
+                    $this->getResponse()->setBody($export->getExportParams());
+                } elseif ($mode === 'size') {
+                    $this->getResponse()->setBody($export->getTotalExportedProduct());
+                } elseif ($mode === 'total') {
+                    $this->getResponse()->setBody($export->getTotalProduct());
+                } else {
+                    $export->exec();
+                }
             } catch (Exception $e) {
                 $errorMessage = '[Magento error] "' . $e->getMessage()
                     . '" ' . $e->getFile() . ' line ' . $e->getLine();
