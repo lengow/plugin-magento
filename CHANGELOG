@@ -16,14 +16,20 @@ Version 3.0.0
 	- Feature: Add new actions: re-import, resend and resync orders
 
 =============================================================
+Version 2.2.6
+=============================================================
+
+	- Feature: Add modifications for the Magento marketplace validator
+
+=============================================================
 Version 2.2.5
 =============================================================
 
-- Bugfix: [import] Add new external transaction id for order
-- Bugfix: [action] Get additional argument if argument list is empty
-- Bugfix: [action] Recovery and display of the return of the api
-- Bugfix: [action] Don't send default value for additional argument
-- Bugfix: [action] Notice for default value in description argument
+	- Bugfix: [import] Add new external transaction id for order
+	- Bugfix: [action] Get additional argument if argument list is empty
+	- Bugfix: [action] Recovery and display of the return of the api
+	- Bugfix: [action] Don't send default value for additional argument
+	- Bugfix: [action] Notice for default value in description argument
 
 =============================================================
 Version 2.2.4
