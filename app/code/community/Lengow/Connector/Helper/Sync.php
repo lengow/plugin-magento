@@ -133,7 +133,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
      */
     public function syncCatalog()
     {
-        if ($this->_configHelper->isNewMerchant() || (bool)$this->_configHelper->get('preprod_mode_enable')) {
+        if ($this->_configHelper->isNewMerchant()) {
             return false;
         }
         $connector = Mage::getModel('lengow/connector');

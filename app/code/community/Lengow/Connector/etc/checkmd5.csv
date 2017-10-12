@@ -24,7 +24,7 @@
 /app/code/community/Lengow/Connector/Block/Tag/Simple.php|73b54a379aff4cf35315c91d057382ff
 /app/code/community/Lengow/Connector/Block/Tracker.php|a761b55210129bfebc71c083a9942579
 /app/code/community/Lengow/Connector/Block/Payment/Info/Purchaseorder.php|ab166ba499ff7bd11e696a6384ef73a7
-/app/code/community/Lengow/Connector/Helper/Sync.php|28d1f248f993d06caab1d5a1e1ef4687
+/app/code/community/Lengow/Connector/Helper/Sync.php|fa61407e7f7acd527878bae1745bb407
 /app/code/community/Lengow/Connector/Helper/Toolbox.php|ab1b4b43d5d968fbb9d7e01ce80e39f5
 /app/code/community/Lengow/Connector/Helper/Import.php|e748d06a3030d65dd7a60494ce5e884d
 /app/code/community/Lengow/Connector/Helper/Config.php|808cd83a11d68608e9175fe5bea1de55
