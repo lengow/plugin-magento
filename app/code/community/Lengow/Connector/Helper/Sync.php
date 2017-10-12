@@ -121,7 +121,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
             $store = $this->_configHelper->getStoreByToken($storeToken);
             if ($store) {
                 $this->_configHelper->setCatalogIds($storeCatalogIds['catalog_ids'], (int)$store->getId(), false);
-                $this->_configHelper->setActiveShop((int)$store->getId(), false);
+                $this->_configHelper->setActiveStore((int)$store->getId(), false);
             }
         }
         // Clean config cache to valid configuration
