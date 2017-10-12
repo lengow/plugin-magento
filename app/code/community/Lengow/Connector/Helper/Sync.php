@@ -30,7 +30,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
     /**
      * @var array valid sync actions
      */
-    protected $syncActions = array(
+    protected $_syncActions = array(
         'order',
         'action',
         'catalog',
@@ -59,7 +59,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
      */
     public function isSyncAction($action)
     {
-        return in_array($action, $this->syncActions);
+        return in_array($action, $this->_syncActions);
     }
 
     /**
