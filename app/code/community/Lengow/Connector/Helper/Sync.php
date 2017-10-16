@@ -117,11 +117,13 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
             ),
             false
         );
-        foreach ($params['shops'] as $storeToken => $storeCatalogIds) {
-            $store = $this->_configHelper->getStoreByToken($storeToken);
-            if ($store) {
-                $this->_configHelper->setCatalogIds($storeCatalogIds['catalog_ids'], (int)$store->getId(), false);
-                $this->_configHelper->setActiveStore((int)$store->getId(), false);
+        if (isset($params['shops'])) {
+            foreach ($params['shops'] as $storeToken => $storeCatalogIds) {
+                $store = $this->_configHelper->getStoreByToken($storeToken);
+                if ($store) {
+                    $this->_configHelper->setCatalogIds($storeCatalogIds['catalog_ids'], (int)$store->getId(), false);
+                    $this->_configHelper->setActiveStore((int)$store->getId(), false);
+                }
             }
         }
         // Clean config cache to valid configuration
