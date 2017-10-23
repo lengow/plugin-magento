@@ -872,7 +872,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
             $this->_logOutput,
             $this->_marketplaceSku
         );
-        return $this->updateRates($rates, $shippingCost, 'lengow_lengow', false);
+        return $this->_updateRates($rates, $shippingCost, 'lengow_lengow', false);
     }
 
     /**
