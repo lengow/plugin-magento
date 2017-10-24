@@ -16,17 +16,16 @@
         </label>
     </div>
     <div id="global-information">
-        <div class="lengow-block">
+        <div class="lengow-block-full">
             <h3><i class="fa fa-cog"></i> <?php echo $helper->__('toolbox.screen.plugin_information'); ?></h3>
             <?php echo $toolbox->getPluginInformations(); ?>
         </div>
-        <div class="lengow-block">
+        <div class="lengow-block-full">
             <h3><i class="fa fa-download"></i> <?php echo $helper->__('toolbox.screen.import_information'); ?></h3>
             <?php echo $toolbox->getImportInformations(); ?>
         </div>
         <div class="clear"></div>
     </div>
-
     <div class="lengow-content-header"></div>
     <div class="lgw-switch" id="lengow_see_store">
         <label>
@@ -38,7 +37,7 @@
         </label>
     </div>
     <div id="store-information">  
-        <div class="lengow-block">        
+        <div class="lengow-block-full">        
             <h3><i class="fa fa-upload"></i> <?php echo $helper->__('toolbox.screen.export_information'); ?></h3>
             <?php
             foreach (Mage::app()->getWebsites() as $website) {
@@ -51,7 +50,7 @@
             }
             ?>
         </div>
-        <div class="lengow-block">
+        <div class="lengow-block-full">
             <h3><i class="fa fa-list"></i> <?php echo $helper->__('toolbox.screen.content_folder_media'); ?></h3>
             <?php
             foreach (Mage::app()->getWebsites() as $website) {
@@ -77,11 +76,11 @@
         </label>
     </div>
     <div id="cron-information">
-        <div class="lengow-block">
+        <div class="lengow-block-full">
             <h3><i class="fa fa-clock-o"></i> <?php echo $helper->__('toolbox.screen.export_cron'); ?></h3>
             <?php echo $toolbox->getCronInformation('export'); ?>
         </div>
-        <div class="lengow-block">
+        <div class="lengow-block-full">
             <h3><i class="fa fa-clock-o"></i> <?php echo $helper->__('toolbox.screen.import_cron'); ?></h3>
             <?php echo $toolbox->getCronInformation('import'); ?>
         </div>
