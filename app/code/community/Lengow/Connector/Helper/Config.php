@@ -33,17 +33,17 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
         ),
         'account_id' => array(
             'path' => 'lengow_global_options/store_credential/global_account_id',
-            'store' => true,
+            'global' => true,
             'no_cache' => false,
         ),
         'access_token' => array(
             'path' => 'lengow_global_options/store_credential/global_access_token',
-            'store' => true,
+            'global' => true,
             'no_cache' => false,
         ),
         'secret_token' => array(
             'path' => 'lengow_global_options/store_credential/global_secret_token',
-            'store' => true,
+            'global' => true,
             'no_cache' => false,
         ),
         'store_enable' => array(
