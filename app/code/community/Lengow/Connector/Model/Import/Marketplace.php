@@ -218,15 +218,17 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
      */
     public function containOrderLine($action)
     {
-        $actions = $this->actions[$action];
-        if (isset($actions['args']) && is_array($actions['args'])) {
-            if (in_array('line', $actions['args'])) {
-                return true;
+        if (isset($this->actions[$action])) {
+            $actions = $this->actions[$action];
+            if (isset($actions['args']) && is_array($actions['args'])) {
+                if (in_array('line', $actions['args'])) {
+                    return true;
+                }
             }
-        }
-        if (isset($actions['optional_args']) && is_array($actions['optional_args'])) {
-            if (in_array('line', $actions['optional_args'])) {
-                return true;
+            if (isset($actions['optional_args']) && is_array($actions['optional_args'])) {
+                if (in_array('line', $actions['optional_args'])) {
+                    return true;
+                }
             }
         }
         return false;
@@ -316,10 +318,11 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
                             if (!empty($trackings)) {
                                 $lastTrack = end($trackings);
                             }
-                            $params[$arg] = isset($lastTrack)
+                            $carrierCode = isset($lastTrack)
                                 ? $this->_matchCarrier($lastTrack->getCarrierCode(), $lastTrack->getTitle())
                                 : '';
                         }
+                        $params[$arg] = $carrierCode;
                         break;
                     case 'shipping_price':
                         $params[$arg] = $order->getShippingInclTax();
@@ -369,7 +372,7 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
             $result = $connector->queryApi(
                 'get',
                 '/v3.0/orders/actions/',
-                array_merge($params, array("queued" => "True"))
+                array_merge($params, array('queued' => 'True'))
             );
             if (isset($result->error) && isset($result->error->message)) {
                 throw new Lengow_Connector_Model_Exception($result->error->message);
