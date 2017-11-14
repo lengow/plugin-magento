@@ -423,11 +423,8 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
         $unsentOrders = Mage::getModel('lengow/import_order')->getUnsentOrders();
         if ($unsentOrders) {
             foreach ($unsentOrders as $unsentOrder) {
-                $shipment = null;
                 $order = Mage::getModel('sales/order')->load($unsentOrder['order_id']);
-                if ($unsentOrder['action'] == 'ship') {
-                    $shipment = $order->getShipmentsCollection()->getFirstItem();
-                }
+                $shipment = $unsentOrder['action'] === 'ship' ? $order->getShipmentsCollection()->getFirstItem() : null;
                 Mage::getModel('lengow/import_order')->callAction($unsentOrder['action'], $order, $shipment);
             }
         }

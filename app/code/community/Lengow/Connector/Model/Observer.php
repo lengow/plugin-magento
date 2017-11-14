@@ -200,33 +200,33 @@ class Lengow_Connector_Model_Observer
      */
     public function exportCron()
     {
+        set_time_limit(0);
+        ini_set('memory_limit', '1G');
         $configHelper = Mage::helper('lengow_connector/config');
-        if ((bool)$configHelper->get('export_cron_enable')) {
-            set_time_limit(0);
-            ini_set('memory_limit', '1G');
-            $storeCollection = Mage::getResourceModel('core/store_collection')->addFieldToFilter('is_active', 1);
-            foreach ($storeCollection as $store) {
-                $storeId = (int)$store->getId();
-                if ($configHelper->get('store_enable', $storeId)) {
-                    try {
-                        // config store
-                        Mage::app()->getStore()->setCurrentStore($storeId);
-                        // launch export process
-                        $export = Mage::getModel(
-                            'lengow/export',
-                            array(
-                                'store_id' => $storeId,
-                                'stream' => false,
-                                'update_export_date' => false,
-                                'type' => 'magento cron'
-                            )
-                        );
-                        $export->exec();
-                    } catch (Exception $e) {
-                        $errorMessage = '[Magento error] "' . $e->getMessage()
-                            . '" ' . $e->getFile() . ' line ' . $e->getLine();
-                        Mage::helper('lengow_connector')->log('Export', $errorMessage);
-                    }
+        $storeCollection = Mage::getResourceModel('core/store_collection')->addFieldToFilter('is_active', 1);
+        foreach ($storeCollection as $store) {
+            $storeId = (int)$store->getId();
+            if ($configHelper->get('export_cron_enable', $storeId)) {
+                try {
+                    // config store
+                    Mage::app()->getStore()->setCurrentStore($storeId);
+                    // launch export process
+                    $export = Mage::getModel(
+                        'lengow/export',
+                        array(
+                            'store_id' => $storeId,
+                            'stream' => false,
+                            'update_export_date' => false,
+                            'log_output' => false,
+                            'type' => 'magento cron'
+                        )
+                    );
+                    $export->setOriginalCurrency(Mage::app()->getStore($storeId)->getCurrentCurrencyCode());
+                    $export->exec();
+                } catch (Exception $e) {
+                    $errorMessage = '[Magento error] "' . $e->getMessage()
+                        . '" ' . $e->getFile() . ' line ' . $e->getLine();
+                    Mage::helper('lengow_connector')->log('Export', $errorMessage);
                 }
             }
         }

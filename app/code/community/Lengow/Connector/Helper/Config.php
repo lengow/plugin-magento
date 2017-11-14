@@ -148,7 +148,7 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
         ),
         'export_cron_enable' => array(
             'path' => 'lengow_export_options/advanced/export_cron_enable',
-            'global' => true,
+            'store' => true,
             'no_cache' => false,
         ),
         'last_export' => array(

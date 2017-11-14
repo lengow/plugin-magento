@@ -141,11 +141,9 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
     public function reSendAction()
     {
         $orderId = $this->getRequest()->getParam('order_id');
-        $action = $this->getRequest()->getParam('action') == 'complete'
-            ? 'ship'
-            : $this->getRequest()->getParam('action');
+        $action = $this->getRequest()->getParam('action') === 'canceled' ? 'cancel' : 'ship';
         $order = Mage::getModel('sales/order')->load($orderId);
-        $shipment = $order->getShipmentsCollection()->getFirstItem();
+        $shipment = $action === 'ship' ? $order->getShipmentsCollection()->getFirstItem() : null;
         Mage::getModel('lengow/import_order')->callAction($action, $order, $shipment);
         $url = Mage::helper('adminhtml')->getUrl("adminhtml/sales_order/view", array('order_id' => $orderId));
         Mage::app()->getResponse()->setRedirect($url);

@@ -936,7 +936,7 @@ $newSettings = array(
     array(
         'old_path' => 'lenexport/performances/active_cron',
         'new_path' => 'lengow_export_options/advanced/export_cron_enable',
-        'store' => false
+        'store' => true
     ),
     array(
         'old_path' => 'lensync/orders/period',
