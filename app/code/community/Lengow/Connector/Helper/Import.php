@@ -184,28 +184,23 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
      */
     public function sendMailAlert($logOutput = false)
     {
-        $helper = Mage::helper('lengow_connector');
-        $subject = '<h2>' . $helper->decodeLogMessage('lengow_log.mail_report.subject_report_mail') . '</h2>';
-        $mailBody = '<p><ul>';
         $errors = Mage::getModel('lengow/import_ordererror')->getImportErrors();
         if ($errors) {
+            $helper = Mage::helper('lengow_connector');
+            $subject = $helper->decodeLogMessage('lengow_log.mail_report.subject_report_mail');
+            $support = $helper->decodeLogMessage('lengow_log.mail_report.no_error_in_report_mail');
+            $mailBody = '<h2>' . $subject . '</h2><p><ul>';
             foreach ($errors as $error) {
-                $mailBody .= '<li>' . $helper->decodeLogMessage(
-                        'lengow_log.mail_report.order',
-                        null,
-                        array(
-                            'marketplace_sku' => $error['marketplace_sku']
-                        )
-                    );
-                if ($error['message'] != '') {
-                    $mailBody .= ' - ' . $helper->decodeLogMessage($error['message']);
-                } else {
-                    $mailBody .= ' - ' . $helper->decodeLogMessage('lengow_log.mail_report.no_error_in_report_mail');
-                }
-                $mailBody .= '</li>';
+                $order = $helper->decodeLogMessage(
+                    'lengow_log.mail_report.order',
+                    null,
+                    array('marketplace_sku' => $error['marketplace_sku'])
+                );
+                $message = $error['message'] != '' ? $helper->decodeLogMessage($error['message']): $support;
+                $mailBody .= '<li>' . $order . ' - ' . $message . '</li>';
                 $orderError = Mage::getModel('lengow/import_ordererror')->load($error['id']);
                 $orderError->updateOrderError(array('mail' => 1));
-                unset($orderError);
+                unset($orderError, $order, $message);
             }
             $mailBody .= '</ul></p>';
             $emails = Mage::helper('lengow_connector/config')->getReportEmailAddress();
@@ -232,7 +227,7 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
                             $logOutput
                         );
                     }
-                    unset($mail);
+                    unset($mail, $email);
                 }
             }
         }
