@@ -345,6 +345,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
                 if (!$this->_configHelper->get('import_ship_mp_enabled', $this->_storeId)) {
                     $orderLengow->updateOrder(
                         array(
+                            'is_in_error' => 0,
                             'order_process_state' => 2,
                             'extra' => Mage::helper('core')->jsonEncode($this->_orderData)
                         )
