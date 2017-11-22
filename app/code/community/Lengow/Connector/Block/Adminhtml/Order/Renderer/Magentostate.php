@@ -18,13 +18,13 @@
  */
 
 /**
- * Block adminhtml order renderer ordersku
+ * Block adminhtml order renderer magentostate
  */
-class Lengow_Connector_Block_Adminhtml_Order_Renderer_Ordersku
+class Lengow_Connector_Block_Adminhtml_Order_Renderer_Magentostate
     extends Mage_Adminhtml_Block_Widget_Grid_Column_Renderer_Abstract
 {
     /**
-     * Decorate order sku values
+     * Decorate magento state values
      *
      * @param Varien_Object $row Magento varian object instance
      *
@@ -32,13 +32,13 @@ class Lengow_Connector_Block_Adminhtml_Order_Renderer_Ordersku
      */
     public function render(Varien_Object $row)
     {
-        $orderSku = $row->getData($this->getColumn()->getIndex());
+        $magentoState = $row->getData('status');
         $sentMarketplace = $row->getData('sent_marketplace');
-        if (is_null($orderSku) && $sentMarketplace == 1) {
+        if ($sentMarketplace == 1) {
             return '<span class="lgw-label">'
                 . Mage::helper('lengow_connector')->__('order.table.status_shipped_by_mkp') . '</span>';
         } else {
-            return $orderSku;
+            return $magentoState;
         }
     }
 }

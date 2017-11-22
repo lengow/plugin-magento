@@ -2,12 +2,12 @@
 /app/design/frontend/base/default/layout/lengow.xml|3d4469660888812d4f5d18c57e256a9d
 /app/etc/modules/Lengow_Connector.xml|25c38a521ca21e42fab671340f2e4cee
 /app/code/community/Lengow/Connector/Block/Adminhtml/Log.php|33a00453473dd17d601ccefa7cfe9769
-/app/code/community/Lengow/Connector/Block/Adminhtml/Order/Grid.php|f46549aebbb1efe9984813c1138d7ab8
-/app/code/community/Lengow/Connector/Block/Adminhtml/Order/Renderer/Ordersku.php|768cb3cb78353b3c61ec4e40b9df225e
+/app/code/community/Lengow/Connector/Block/Adminhtml/Order/Grid.php|efa229d1d9c99919e90fea6521bd3af3
 /app/code/community/Lengow/Connector/Block/Adminhtml/Order/Renderer/State.php|397b90c1636249d21a782a3b1324be92
 /app/code/community/Lengow/Connector/Block/Adminhtml/Order/Renderer/Country.php|1fea7f2bcad68eb7444a974ee8a23901
 /app/code/community/Lengow/Connector/Block/Adminhtml/Order/Renderer/Action.php|32a47f65ce47d016f33273e83a0751cd
 /app/code/community/Lengow/Connector/Block/Adminhtml/Order/Renderer/Total.php|745cb1d906b433723940610b8fa4f077
+/app/code/community/Lengow/Connector/Block/Adminhtml/Order/Renderer/Magentostate.php|9bd44bc19964ba05719a5c270c280728
 /app/code/community/Lengow/Connector/Block/Adminhtml/Order/Tab.php|0969c3a77395ae578a65cef7f3308f7c
 /app/code/community/Lengow/Connector/Block/Adminhtml/Product.php|75fa3ef68d340209af79ee9f9fa7f1ee
 /app/code/community/Lengow/Connector/Block/Adminhtml/Log/Grid.php|4bc03e9f2b12530ec68805b2c7ad06b2
@@ -45,7 +45,7 @@
 /app/code/community/Lengow/Connector/Model/Import/Ordererror.php|f3d1f6aba2a578a30100ffbb52cf69f5
 /app/code/community/Lengow/Connector/Model/Import/Customer.php|98a7d46020a0e1224ddad5056824284c
 /app/code/community/Lengow/Connector/Model/Import/Quote/Item.php|1f06706d466ce2e0172d3cf412f2ebf3
-/app/code/community/Lengow/Connector/Model/Import/Order.php|0f69c011e1eb66e5f50834d80c3bffce
+/app/code/community/Lengow/Connector/Model/Import/Order.php|5c76439e1019782746022375fb895ab8
 /app/code/community/Lengow/Connector/Model/Import/Action.php|dd56a708ad1cfca27d6abfef1529ec8b
 /app/code/community/Lengow/Connector/Model/Import/Importorder.php|d9a1f94aa68cbb03b446b5f4b2b410fa
 /app/code/community/Lengow/Connector/Model/Import/Marketplace.php|f02b5c7bd08d15e4eb862a24ab8e1cc5

@@ -119,7 +119,6 @@ class Lengow_Connector_Block_Adminhtml_Order_Grid extends Mage_Adminhtml_Block_W
             array(
                 'header' => Mage::helper('lengow_connector')->__('order.table.magento_sku'),
                 'index' => 'order_sku',
-                'renderer' => 'Lengow_Connector_Block_Adminhtml_Order_Renderer_Ordersku',
                 'column_css_class' => 'lengow_table_center',
             )
         );
@@ -128,6 +127,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Grid extends Mage_Adminhtml_Block_W
             array(
                 'header' => Mage::helper('lengow_connector')->__('order.table.magento_status'),
                 'index' => 'status',
+                'renderer' => 'Lengow_Connector_Block_Adminhtml_Order_Renderer_Magentostate',
                 'type' => 'options',
                 'width' => '150px',
                 'options' => Mage::getSingleton('sales/order_config')->getStatuses(),

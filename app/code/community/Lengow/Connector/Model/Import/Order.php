@@ -414,7 +414,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
                 $order = Mage::getModel('sales/order')->load($orderId);
                 $action = Mage::getModel('lengow/import_action')->getLastOrderActionType($orderId);
                 if (!$action) {
-                    if ($order->getData('status') == 'cancel') {
+                    if ($order->getData('status') === 'canceled') {
                         $action = 'cancel';
                     } else {
                         $action = 'ship';
