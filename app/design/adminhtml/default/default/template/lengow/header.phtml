@@ -1,15 +1,14 @@
-<!--<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha256-7s5uDGW3AHqw6xtJmNNtr+OBRJUlgkNJEo78P4b0yRw= sha512-nNo+yCHEyn0smMxSswnf/OnX6/KwJuZTlNZBjauKhTK0c+zT+q5JOCx0UFhXQ6rJR9jg6Es8gPuD2uZcYDLqSw==" crossorigin="anonymous">
-
-<link rel="stylesheet" type="text/css"
-      href="/skin/adminhtml/default/default/lengow/css/lengow.css"
-      media="all">-->
-
-<ul class="nav nav-tabs">
-    <li role="presentation" class="<?php echo $this->getRequest()->getControllerName() == 'lengow_log' ? 'active' : ''; ?> ">
-        <a href="<?php echo Mage::helper("adminhtml")->getUrl('adminhtml/lengow_log'); ?>"><?php echo $this->__('Logs') ?> </a>
-    </li>
-    <li role="presentation" class="<?php echo $this->getRequest()->getControllerName() == 'lengow_product' ? 'active' : ''; ?> ">
-        <a href="<?php echo Mage::helper("adminhtml")->getUrl('adminhtml/lengow_product'); ?>"><?php echo $this->__('Products') ?> </a>
-    </li>
-    <li role="presentation"><a href="#">Messages</a></li>
-</ul>
+<?php
+$statusAccount = Mage::helper('lengow_connector/sync')->getStatusAccount();
+if ((bool)Mage::helper('lengow_connector/config')->get('preprod_mode_enable')) { ?>
+        <span id="lgw-preprod">
+            <?php echo Mage::helper('lengow_connector')->__('header.preprod_active'); ?>
+        </span>
+<?php }
+if ($statusAccount['type'] == 'free_trial' && !$statusAccount['expired']) :?>
+	    <p id="lgw-counter" class="pull-right">
+	            <?php echo Mage::helper('lengow_connector')->__('header.counter', array('counter' => $statusAccount['day'])); ?>
+	        <a href="http://my.lengow.io/" target="_blank"><?php echo Mage::helper('lengow_connector')->__('header.upgrade_account'); ?></a>
+	    </p>
+    <div class="clear"></div>
+<?php endif; ?>

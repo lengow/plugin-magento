@@ -28,6 +28,11 @@
         <Lengow_Connector>
             <active>true</active>
             <codePool>community</codePool>
+            <depends>
+                <Mage_Catalog />
+                <Mage_CatalogInventory />
+                <Mage_Sales />
+            </depends>
         </Lengow_Connector>
     </modules>
 </config>

@@ -1,21 +1,34 @@
 <?php
-
 /**
+ * Copyright 2017 Lengow SAS
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
  *
  * @category    Lengow
  * @package     Lengow_Connector
+ * @subpackage  Block
  * @author      Team module <team-module@lengow.com>
- * @copyright   2016 Lengow SAS
+ * @copyright   2017 Lengow SAS
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
+/**
+ * Block adminhtml product grid
+ */
 class Lengow_Connector_Block_Adminhtml_Product_Grid extends Mage_Adminhtml_Block_Widget_Grid
 {
-
+    /**
+     * Construct
+     */
     public function __construct()
     {
         parent::__construct();
-        $this->setId('productGrid');
+        $this->setId('LengowProductGrid');
         $this->setDefaultSort('entity_id');
         $this->setDefaultDir('desc');
         $this->setSaveParametersInSession(true);
@@ -23,12 +36,22 @@ class Lengow_Connector_Block_Adminhtml_Product_Grid extends Mage_Adminhtml_Block
         $this->setVarNameFilter('product_filter');
     }
 
+    /**
+     * Get store
+     */
     protected function _getStore()
     {
         $storeId = (int)$this->getRequest()->getParam('store', 0);
+        // set default store if storeId is global
+        if ($storeId == 0) {
+            $storeId = Mage::app()->getWebsite(true)->getDefaultGroup()->getDefaultStoreId();
+        }
         return Mage::app()->getStore($storeId);
     }
 
+    /**
+     * Prepare collection
+     */
     protected function _prepareCollection()
     {
         $store = $this->_getStore();
@@ -38,21 +61,35 @@ class Lengow_Connector_Block_Adminhtml_Product_Grid extends Mage_Adminhtml_Block
             ->addAttributeToSelect('lengow_product')
             ->addAttributeToSelect('attribute_set_id')
             ->addAttributeToSelect('type_id')
-            ->joinField('qty',
+            ->joinField(
+                'qty',
                 'cataloginventory/stock_item',
                 'qty',
                 'product_id=entity_id',
                 '{{table}}.stock_id=1',
-                'left');
-
+                'left'
+            )
+            ->addAttributeToFilter('type_id', array('nlike' => 'bundle'));
         if ($store->getId()) {
             $collection->setStoreId($store->getId());
             $collection->addStoreFilter($store);
-            $collection->joinAttribute('custom_name', 'catalog_product/name', 'entity_id', null, 'inner',
-                $store->getId());
+            $collection->joinAttribute(
+                'custom_name',
+                'catalog_product/name',
+                'entity_id',
+                null,
+                'inner',
+                $store->getId()
+            );
             $collection->joinAttribute('status', 'catalog_product/status', 'entity_id', null, 'inner', $store->getId());
-            $collection->joinAttribute('visibility', 'catalog_product/visibility', 'entity_id', null, 'inner',
-                $store->getId());
+            $collection->joinAttribute(
+                'visibility',
+                'catalog_product/visibility',
+                'entity_id',
+                null,
+                'inner',
+                $store->getId()
+            );
             $collection->joinAttribute('price', 'catalog_product/price', 'entity_id', null, 'left', $store->getId());
         } else {
             $collection->addAttributeToSelect('price');
@@ -65,157 +102,223 @@ class Lengow_Connector_Block_Adminhtml_Product_Grid extends Mage_Adminhtml_Block
         return $this;
     }
 
+    /**
+     * Add filter to collection
+     */
     protected function _addColumnFilterToCollection($column)
     {
         if ($this->getCollection()) {
             if ($column->getId() == 'websites') {
-                $this->getCollection()->joinField('websites',
+                $this->getCollection()->joinField(
+                    'websites',
                     'catalog/product_website',
                     'website_id',
                     'product_id=entity_id',
                     null,
-                    'left');
+                    'left'
+                );
             }
         }
         return parent::_addColumnFilterToCollection($column);
     }
 
+    /**
+     * Prepare columns
+     */
     protected function _prepareColumns()
     {
-        $this->addColumn('entity_id',
+        // create type filter without bundle type product
+        $types = Mage::getModel('lengow/system_config_source_types')->toOptionArray();
+        foreach ($types as $value) {
+            $type[$value['value']] = $value['label'];
+        }
+        $this->addColumn(
+            'entity_id',
             array(
-                'header' => Mage::helper('catalog')->__('ID'),
+                'header' => Mage::helper('lengow_connector')->__('product.table.id'),
+                'index' => 'entity_id',
                 'width' => '50px',
                 'type' => 'number',
-                'index' => 'entity_id',
-            ));
-        $this->addColumn('name',
+            )
+        );
+        $this->addColumn(
+            'name',
             array(
-                'header' => Mage::helper('catalog')->__('Name'),
+                'header' => Mage::helper('lengow_connector')->__('product.table.name'),
                 'index' => 'name',
-            ));
+            )
+        );
         $store = $this->_getStore();
         if ($store->getId()) {
-            $this->addColumn('custom_name',
+            $this->addColumn(
+                'custom_name',
                 array(
-                    'header' => Mage::helper('catalog')->__('Name In %s', $store->getName()),
+                    'header' => Mage::helper('lengow_connector')->__(
+                        'product.table.custom_name',
+                        array('store_name' => $store->getName())
+                    ),
                     'index' => 'custom_name',
-                ));
+                )
+            );
         }
-        $this->addColumn('type',
+        $this->addColumn(
+            'type',
             array(
-                'header' => Mage::helper('catalog')->__('Type'),
-                'width' => '60px',
+                'header' => Mage::helper('lengow_connector')->__('product.table.type'),
                 'index' => 'type_id',
+                'width' => '60px',
                 'type' => 'options',
-                'options' => Mage::getSingleton('catalog/product_type')->getOptionArray(),
-            ));
+                'options' => $type,
+            )
+        );
         $sets = Mage::getResourceModel('eav/entity_attribute_set_collection')
             ->setEntityTypeFilter(Mage::getModel('catalog/product')->getResource()->getTypeId())
             ->load()
             ->toOptionHash();
-        $this->addColumn('set_name',
+        $this->addColumn(
+            'set_name',
             array(
-                'header' => Mage::helper('catalog')->__('Attrib. Set Name'),
-                'width' => '100px',
+                'header' => Mage::helper('lengow_connector')->__('product.table.attribut_set_name'),
                 'index' => 'attribute_set_id',
+                'width' => '100px',
                 'type' => 'options',
                 'options' => $sets,
-            ));
-        $this->addColumn('sku',
+            )
+        );
+        $this->addColumn(
+            'sku',
             array(
-                'header' => Mage::helper('catalog')->__('SKU'),
-                'width' => '80px',
+                'header' => Mage::helper('lengow_connector')->__('product.table.sku'),
                 'index' => 'sku',
-            ));
+                'width' => '80px',
+            )
+        );
         $store = $this->_getStore();
-        $this->addColumn('price',
+        $this->addColumn(
+            'price',
             array(
-                'header' => Mage::helper('catalog')->__('Price'),
+                'header' => Mage::helper('lengow_connector')->__('product.table.price'),
+                'index' => 'price',
                 'type' => 'price',
                 'currency_code' => $store->getBaseCurrency()->getCode(),
-                'index' => 'price',
-            ));
-        $this->addColumn('qty',
+            )
+        );
+        $this->addColumn(
+            'qty',
             array(
-                'header' => Mage::helper('catalog')->__('Qty'),
+                'header' => Mage::helper('lengow_connector')->__('product.table.quantity'),
+                'index' => 'qty',
                 'width' => '100px',
                 'type' => 'number',
-                'index' => 'qty',
-            ));
-        $this->addColumn('visibility',
+            )
+        );
+        $this->addColumn(
+            'visibility',
             array(
-                'header' => Mage::helper('catalog')->__('Visibility'),
+                'header' => Mage::helper('lengow_connector')->__('product.table.visibility'),
                 'width' => '70px',
                 'index' => 'visibility',
                 'type' => 'options',
                 'options' => Mage::getModel('catalog/product_visibility')->getOptionArray(),
-            ));
-        $this->addColumn('status',
+            )
+        );
+        $this->addColumn(
+            'status',
             array(
-                'header' => Mage::helper('catalog')->__('Status'),
+                'header' => Mage::helper('lengow_connector')->__('product.table.status'),
                 'width' => '70px',
                 'index' => 'status',
                 'type' => 'options',
                 'options' => Mage::getSingleton('catalog/product_status')->getOptionArray(),
-            ));
-        $options = array(
-            0 => Mage::helper('catalog')->__('No'),
-            1 => Mage::helper('catalog')->__('Yes')
+            )
         );
-        $this->addColumn('lengow_product',
-            array(
-                'header' => $this->__('Publish on Lengow'),
-                'width' => '70px',
-                'index' => 'lengow_product',
-                'type' => 'options',
-                'options' => $options,
-            ));
         if (!Mage::app()->isSingleStoreMode()) {
-            $this->addColumn('websites',
+            $this->addColumn(
+                'websites',
                 array(
-                    'header' => Mage::helper('catalog')->__('Websites'),
+                    'header' => Mage::helper('lengow_connector')->__('product.table.websites'),
+                    'index' => 'websites',
                     'width' => '100px',
                     'sortable' => false,
-                    'index' => 'websites',
                     'type' => 'options',
                     'options' => Mage::getModel('core/website')->getCollection()->toOptionHash(),
-                ));
+                )
+            );
         }
+        $this->addColumn(
+            'lengow_product',
+            array(
+                'header' => Mage::helper('lengow_connector')->__('product.table.publish_on_lengow'),
+                'index' => 'lengow_product',
+                'width' => '70px',
+                'type' => 'options',
+                'renderer' => 'Lengow_Connector_Block_Adminhtml_Product_Renderer_Lengow',
+                'options' => array(
+                    0 => Mage::helper('lengow_connector')->__('global.just_no'),
+                    1 => Mage::helper('lengow_connector')->__('global.just_yes')
+                ),
+            )
+        );
         return parent::_prepareColumns();
     }
 
+    /**
+     * Prepare mass action buttons
+     */
     protected function _prepareMassaction()
     {
         $this->setMassactionIdField('entity_id');
         $this->getMassactionBlock()->setFormFieldName('product');
-        $options = array(
-            0 => Mage::helper('catalog')->__('No'),
-            1 => Mage::helper('catalog')->__('Yes')
-        );
-        $this->getMassactionBlock()->addItem('publish', array(
-            'label' => $this->__('Change Lengow\'s publication'),
-            'url' => $this->getUrl('*/*/massPublish', array('_current' => true)),
-            'additional' => array(
-                'visibility' => array(
-                    'name' => 'publish',
-                    'type' => 'select',
-                    'class' => 'required-entry',
-                    'label' => Mage::helper('catalog')->__('Publication'),
-                    'values' => $options
+        $this->getMassactionBlock()->setUseAjax(true);
+        $this->getMassactionBlock()->addItem(
+            'publish',
+            array(
+                'label' => Mage::helper('lengow_connector')->__('product.table.change_publication'),
+                'url' => $this->getUrl('*/*/massPublish', array('_current' => true)),
+                'complete' => 'reloadGrid',
+                'additional' => array(
+                    'visibility' => array(
+                        'name' => 'publish',
+                        'type' => 'select',
+                        'class' => 'required-entry',
+                        'label' => Mage::helper('lengow_connector')->__('product.table.publication'),
+                        'values' => array(
+                            0 => Mage::helper('lengow_connector')->__('global.just_no'),
+                            1 => Mage::helper('lengow_connector')->__('global.just_yes')
+                        )
+                    )
                 )
             )
-        ));
+        );
         return $this;
     }
 
+    /**
+     * Get grid url
+     */
     public function getGridUrl()
     {
         return $this->getUrl('*/*/grid', array('_current' => true));
     }
 
+    /**
+     * Get row url
+     *
+     * @param Varien_Object $row Magento varian object instance
+     *
+     * @return string|false
+     */
     public function getRowUrl($row)
     {
-        return '';
+        if (Mage::getSingleton('admin/session')->isAllowed('catalog_product/actions/edit')) {
+            return $this->getUrl(
+                '*/catalog_product/edit',
+                array(
+                    'store' => $this->getRequest()->getParam('store'),
+                    'id' => $row->getId()
+                )
+            );
+        }
+        return false;
     }
 }

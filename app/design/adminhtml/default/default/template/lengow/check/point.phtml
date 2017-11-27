@@ -1,0 +1,61 @@
+<table cellspacing="0" class="form-list">
+    <colgroup class="label"></colgroup>
+    <colgroup class="value"></colgroup>
+    <colgroup class="scope-label"></colgroup>
+    <colgroup class=""></colgroup>
+    <tbody>
+        <tr id="row_update_module">
+            <td class="label">
+                <label for="update_module">
+                    <?php echo Mage::helper('lengow_connector')->__('lengow_setting.global_plugin_version_title'); ?>
+                </label>
+            </td>
+            <td class="value">
+                <?php echo $this->getPluginVersion(); ?>
+            </td>
+        </tr>
+        <tr id="row_magento_version">
+            <td class="label">
+                <label for="magento_version">
+                    <?php echo Mage::helper('lengow_connector')->__('lengow_setting.global_magento_version_title'); ?>
+                </label>
+            </td>
+            <td class="value">
+                <?php echo $this->getMagentoVersion(); ?>
+            </td>
+        </tr>
+        <tr id="row_module_compatibility">
+            <td class="label">
+                <label for="magento_version">
+                    <?php
+                    echo Mage::helper('lengow_connector')->__('lengow_setting.global_plugin_compatibility_title');
+                    ?>
+                </label>
+            </td>
+            <td class="value">
+                <?php
+                if ($this->checkValidMagentoVersion()) {
+                    echo Mage::helper('lengow_connector')->__('lengow_setting.global_plugin_compatibility_yes');
+                } else {
+                    echo Mage::helper('lengow_connector')->__('lengow_setting.global_plugin_compatibility_no');
+                }
+                ?>
+            </td>
+        </tr>
+        <tr id="row_ip_service">
+            <td class="label">
+                <label for="ip_service">
+                    <?php echo Mage::helper('lengow_connector')->__('lengow_setting.global_server_ip_title'); ?>
+                </label>
+            </td>
+            <td class="value">
+                <?php echo $this->getServerIp(); ?>
+            </td>
+        </tr>
+        <tr>
+            <td class="label" colspan="2">
+            <b><?php echo Mage::helper('lengow_connector')->__('lengow_setting.global_information_credential'); ?></b>
+            </td>
+        </tr>
+    </tbody>
+</table>

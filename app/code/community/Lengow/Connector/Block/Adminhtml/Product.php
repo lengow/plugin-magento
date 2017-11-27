@@ -1,72 +1,36 @@
 <?php
-
 /**
+ * Copyright 2017 Lengow SAS
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
  *
  * @category    Lengow
  * @package     Lengow_Connector
+ * @subpackage  Block
  * @author      Team module <team-module@lengow.com>
- * @copyright   2016 Lengow SAS
+ * @copyright   2017 Lengow SAS
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
+/**
+ * Block adminhtml product
+ */
 class Lengow_Connector_Block_Adminhtml_Product extends Mage_Adminhtml_Block_Widget_Grid_Container
 {
-
     /**
      * Set template
      */
     public function __construct()
     {
         parent::__construct();
-
-
         $this->_controller = 'adminhtml_product';
         $this->_blockGroup = 'lengow';
-        $this->_headerText = $this->__('Export product');
-
+        $this->_headerText = $this->helper('lengow_connector')->__('product.screen.title');
         $this->_removeButton('add');
-
-//        $this->_addButton('export', array(
-//            'label'   => Mage::helper('lengow_connector')->__('See the export feed'),
-//            'onclick' => 'popWin(\''.$this->getUrl('lengow/feed', array('_current'=>true)).'\', \'_blank\')',
-//            'class'   => 'add'
-//        ));
-
     }
-
-//    /**
-//     * Prepare button and grid
-//     *
-//     * @return Mage_Adminhtml_Block_Catalog_Product
-//     */
-//    protected function _prepareLayout() {
-//        $this->_addButton('export', array(
-//            'label'   => Mage::helper('lengow_connector')->__('See the export feed'),
-//            'onclick' => 'popWin(\''.$this->getUrl('lengow/feed', array('_current'=>true)).'\', \'_blank\')',
-//            'class'   => 'add'
-//        ));
-//        $this->setChild('grid', $this->getLayout()->createBlock('lengow/adminhtml_product_grid', 'product.grid'));
-//        return parent::_prepareLayout();
-//    }
-//
-//    /**
-//     * Render grid
-//     *
-//     * @return string
-//     */
-//    public function getGridHtml() {
-//        return $this->getChildHtml('grid');
-//    }
-//
-//    /**
-//     * Check whether it is single store mode
-//     *
-//     * @return bool
-//     */
-//    public function isSingleStoreMode() {
-//        if (!Mage::app()->isSingleStoreMode()) {
-//               return false;
-//        }
-//        return true;
-//    }
 }

@@ -1,0 +1,322 @@
+menu.products|Produkte
+menu.settings|Einstellungen
+menu.logs|Logs
+menu.orders|Bestellungen
+menu.help|Hilfe
+module.name|Lengow
+global.just_yes|Ja
+global.just_no|Nein
+header.preprod_active|Vorproduktionsmodus
+header.counter|Testzeitraum: %{counter} Tag(e) verbleiben.
+header.upgrade_account|Jetzt anmelden!
+footer.toolbox|Toolbox
+footer.legals|Rechtshinweise
+footer.plugin_lengow|Lengow Magento Plugin
+footer.lengow_link_url|http://www.lengow.com/de
+dashboard.screen.welcome_back| Hallo und herzlich willkommen!
+dashboard.screen.go_to_lengow| Zu Lengow wechseln
+dashboard.screen.products_title|Produkte
+dashboard.screen.products_text| Alle verfügbaren Produkte im Überblick, um Ihren Katalog vorzubereiten  
+dashboard.screen.orders_title|Bestellungen
+dashboard.screen.orders_text|Verwalten Sie Ihre Bestellungen direkt in Ihrem Magento-Dashboard
+dashboard.screen.settings_title|Einstellungen
+dashboard.screen.settings_text|Konfigurieren Sie Ihr Magento-Plugin 
+dashboard.screen.partner_business|Lengow, Ihr Geschäftspartner
+dashboard.screen.stat_turnover|Umsatz
+dashboard.screen.stat_nb_orders|Bestellungen
+dashboard.screen.stat_more_stats|Wünschen Sie mehr Statistiken?
+dashboard.screen.some_help_title|Benötigen Sie Hilfe?
+dashboard.screen.get_in_touch|Kontaktieren Sie Lengow
+dashboard.screen.visit_help_center|Schauen Sie im Help Center
+dashboard.screen.configure_plugin|um detaillierte Informationen zu der korrekten Einrichtung des Magento-Plugins zu finden
+status.screen.title_end_free_trial|Alle guten Dinge haben ein Ende
+status.screen.subtitle_end_free_trial|Ihr Testzeitraum ist nun abgelaufen
+status.screen.first_description_end_free_trial|Ihr 15-tägiger Testzeitraum ist nun abgelaufen. Wir wissen, dass es traurige Neuigkeiten sind, aber das Beste kommt erst noch. Wir hoffen aufrichtig, dass Lengow zu Ihrem Unternehmenserfolg beitragen konnte.
+status.screen.second_description_end_free_trial|Ihr Account wird gesperrt, bis Sie eine neue Lizenz erwerben. Dies gilt auch für bereits erstellte Verteilungen und Imports!
+status.screen.third_description_end_free_trial|Ihr Trial-Account wird 30 Tage nach dem Ende Ihres Test-Zeitraums automatisch gelöscht. Gehen Sie auf Nummer sicher und melden Sie sich an - nur so sichern Sie Ihre bereits geleistete Arbeit an Ihren Kanälen.
+status.screen.subtitle_bad_payer|Ihr Konto wurde vorläufig geschlossen
+status.screen.first_description_bad_payer|Wir informieren Sie, dass wir Ihren Zugang zu Ihrem Konto blockieren mussten, da die automatische Überweisung leider nicht bei uns eingegangen ist.
+status.screen.second_description_bad_payer|Die Publizierung Ihres Produktdatenfeeds wurde vorübergehend eingestellt. Wir empfehlen Ihnen dringend, mit uns in Kontakt zu treten über
+status.screen.phone_bad_payer|oder telefonisch unter: +49 (0)3222-17 41 093
+status.screen.third_description_bad_payer|Wir hoffen auf eine zeitnahe neue Zusammenarbeit.
+status.screen.facturation_button|Siehe meine Rechnungsinformation
+status.screen.upgrade_account_button|Ich bin bereit mich anzumelden!
+status.screen.refresh_action| Meinen Account aktualisieren
+product.screen.title|Produkt exportieren
+product.screen.nb_exported|Produkte exportiert
+product.screen.nb_available|Produkte verfügbar
+product.screen.include_specific_product|Spezifische Produkte einbeziehen
+product.screen.include_specific_product_support|Verwenden Sie diese Option, um Ihre Produkte einzeln auszuwählen
+product.screen.button_download|Download
+product.table.id|ID
+product.table.name|Name
+product.table.custom_name|Name im %{store_name}
+product.table.type|Typ
+product.table.attribut_set_name|Kategorie
+product.table.sku|SKU
+product.table.price|Preis
+product.table.quantity|Anzahl
+product.table.visibility|Visibilität
+product.table.status|Status
+product.table.websites|Website
+product.table.publish_on_lengow|Im Export inkludieren?
+product.table.change_publication|Lengows Eintrag ändern
+product.table.publication|Eintrag
+order.screen.title|Bestellungen
+order.screen.button_import|Bestellungen synchronisieren
+order.screen.button_migrate|Diese Nachricht nicht mehr anzeigen
+order.screen.preprod_warning_message|Sie sind im Pre-Production-Modus. Sie können Bestellungen importieren, die Interaktion mit Lengow ist aber nicht möglich. <a  href=%{url}>Ändern Sie dies</a> 
+order.screen.nb_old_order_imported|Mit Lengow haben Sie bereits %{nb_order} Bestellungen importiert und abgewickelt
+order.screen.order_visible_in_page|%{nb_order} Bestellungen warten auf Ihren Versand und sind hier ersichtlich
+order.screen.where_see_old_order|Sie können die abgewickelten Bestellungen in der Magento-Bestellübersicht einsehen
+order.screen.all_order_will_be_sent_to| Alle Bestellfehler-Reports werden per Email gesendet
+order.screen.no_order_will_be_sent|Bestellfehler-Reports werden per Email nicht gesendet
+order.screen.change_this|Dies ändern?
+order.screen.last_order_importation|Letzte Synchronisierung: %{last_importation}
+order.screen.no_order_importation|Derzeit keine Synchronisierung
+order.screen.order_with_error|Sie haben %{nb_order} Bestellung(en) mit Fehlern
+order.screen.order_to_be_sent|Sie haben %{nb_order} Bestellung(en) die zum Versand bereit sind
+order.screen.ajax_timeout|Während der Synchronisierung der Bestellungen kam es zu einem Time-Out-Fehler. Bitte aktualisieren Sie die Seite.
+order.screen.lengow_information|Informationen zu Lengow
+order.screen.feed_id|Feed-ID
+order.screen.delivery_address_id| Lieferaddresse-ID
+order.screen.currency|Währung
+order.screen.commission|Kommission
+order.screen.customer_email|Kunden-EMail
+order.screen.carrier| Spediteur des Marktplatzes
+order.screen.carrier_method|Versandart des Marktplatzes
+order.screen.carrier_tracking|Sendungsverfolgungsnummer
+order.screen.carrier_id_relay|ID Abholstation
+order.screen.sent_marketplace|Versandt durch Marktplatz
+order.screen.imported_at|Importiert am
+order.screen.message|Nachricht
+order.screen.extra|JSON Format 
+order.screen.not_lengow_order|Diese Bestellung ist nicht von Lengow
+order.screen.not_follow_by_lengow| Aufgrund eines erneuten Imports, wird diese Bestellung durch Lengow nicht verfolgt
+order.screen.cancel_and_reimport|Bestellungen erneut importieren
+order.screen.check_cancel_and_reimport|Wollen Sie wirklich die Bestellung erneut importieren?
+order.screen.synchronize_id|ID synchronisieren
+order.screen.resend_action| Aktion erneut senden
+order.screen.check_resend_action|Wollen Sie wirklich die Bestellung %{action}?
+order.table.lengow_action|Aktionen
+order.table.lengow_state|Lengow Status
+order.table.marketplace_name|Marktplatz
+order.table.store|Shop
+order.table.marketplace_sku|Marktplatz-SKU
+order.table.magento_sku|Magento SKU 
+order.table.magento_status|Status Magento
+order.table.order_date|Bestelldatum
+order.table.customer_name|Kundenname
+order.table.country|Land
+order.table.items|Item
+order.table.total_paid| Insgesamt bezahlt
+order.table.action_success|Erfolg
+order.table.action_error|Fehler
+order.table.order_not_imported| Bestellung konnte in Magento nicht importiert werden
+order.table.action_sent|Aktivität %{action_type} gesendet
+order.table.not_imported|nicht importiert
+order.table.not_sent|nicht gesendet
+order.table.action_waiting_return| Aktivität gesendet, warten auf Antwort
+order.table.action_sent_not_work|An Marktplatz gesendete Aktivität funktioniert nicht
+order.table.status_not_synchronized|nicht synchronisiert
+order.table.status_accepted|Akzeptiert
+order.table.status_waiting_shipment|Warten auf Versand
+order.table.status_shipped|Versandt
+order.table.status_closed| Abgeschlossen
+order.table.status_refunded|Erstattet
+order.table.status_shipped_by_mkp|Durch Marktplatz versandt
+order.table.status_canceled|Abgebrochen
+order.table.button_reimport_order|Bestellungen erneut importieren
+order.table.button_resend_order|Bestellungen erneut versenden
+log.screen.title|Lengow Logs
+log.table.id|ID
+log.table.date|Datum
+log.table.message|Nachricht
+help.screen.title|Lassen Sie sich etwas von Ihrem Support-Team unterstützen
+help.screen.contain_text_support|Kontaktieren Sie uns bei Fragen und teilen Sie uns Ihr Feedback mit über den
+help.screen.title_lengow_support|Lengow Support.
+help.screen.link_lengow_support|https://supportlengow.zendesk.com/hc/en-us/requests/new
+help.screen.need_some_help|Brauchen Sie Hilfe?
+help.screen.contain_text_support_hour|Wir werden alles tun, um Sie während der normalen Geschäftszeiten (Montag - Freitag von 09:00 - 18:00 (MEZ+1)) zurückzurufen.
+help.screen.find_answer|Sie können Antworten auch in unserem... finden
+help.screen.link_magento_guide|Magentos Begleithandbuch
+help.screen.knowledge_link_url|https://en.lengow.help/help/magento
+legals.screen.simplified_company|Gesellschaft mit einfacher Haftungsbeschränkung
+legals.screen.social_capital|Soziales Kapital:
+legals.screen.cnil_declaration|CNIL Erklärung:
+legals.screen.company_registration_number|Firmenregistrierungsnummer (Nantes):
+legals.screen.vat_identification_number|MwSt.-Identifikationsnummer:
+legals.screen.address|Adresse
+legals.screen.contact|Vertrag
+legals.screen.hosting|Hosting
+toolbox.screen.title|Lengow Toolbox
+toolbox.screen.gobal_information|Globale Information
+toolbox.screen.plugin_information|Information zum Plugin
+toolbox.screen.server_ip|Server IP
+toolbox.screen.authorized_ip_enable|Autorisierung über IP aktiviert
+toolbox.screen.authorized_ip|Autorisierte IP
+toolbox.screen.legacy_enable| Rechtliche Felder aktiviert
+toolbox.screen.export_on_a_file|Export auf Datei aktiviert
+toolbox.screen.export_cron_enable| Magento-cronjob für Export aktiviert
+toolbox.screen.pre_production_enable|Vorproduktionsmodus ist deaktiviert
+toolbox.screen.write_permission|Genehmigung vom Mediumordner schreiben
+toolbox.screen.import_information|Import information
+toolbox.screen.global_token|Import Token
+toolbox.screen.url_import|Import URL
+toolbox.screen.import_cron_enable|Magento Cron-Job für Export aktiviert
+toolbox.screen.nb_order_imported|Bestellungen importiert durch Lengow
+toolbox.screen.nb_order_to_be_sent|Bestellungen die auf den Versand warten.
+toolbox.screen.nb_order_with_error|Fehlerhaste Bestellungen
+toolbox.screen.import_in_progress|Import in Bearbeitung
+toolbox.screen.no_import|Kein Import in Bearbeitung
+toolbox.screen.rest_time_to_import|Gedulden Sie sich %{rest_time} Sekunden bis zum nächsten Import
+toolbox.screen.store_last_import|Letzter Import
+toolbox.screen.store_type_import|Letzter Import Type
+toolbox.screen.last_import_none|Kein
+toolbox.screen.last_import_cron|Cron
+toolbox.screen.last_import_manual|manuell
+toolbox.screen.store_information|Shopinformationen
+toolbox.screen.export_information|Exportinformationen
+toolbox.screen.store_active|Shop von Lengow gefolgt
+toolbox.screen.store_catalog_id|Lengow Kataloge id synchronisiert
+toolbox.screen.store_export_token|Export Token
+toolbox.screen.store_last_export|Letzter Export
+toolbox.screen.store_product_total|Produkt im Shop verfügbar
+toolbox.screen.store_product_exported|Produkte in den Shop exportiert
+toolbox.screen.url_export|Export URL für diesen Shop
+toolbox.screen.content_folder_media|Contentordner Medien
+toolbox.screen.folder_path|Ordnerpfad
+toolbox.screen.file_list|Dateiliste
+toolbox.screen.no_file_exported|Es wurde keine Datei exportiert
+toolbox.screen.cron_information|Magento cron Planung
+toolbox.screen.export_cron|Lengow-Export cronjobs
+toolbox.screen.import_cron|Lengow Import Cronjobs
+toolbox.screen.cron_status|Status
+toolbox.screen.cron_message|Nachricht
+toolbox.screen.cron_scheduled_at|Geplant am
+toolbox.screen.cron_executed_at|Durchgeführt am
+toolbox.screen.cron_finished_at|Beendet am
+toolbox.screen.no_cron_job_yet|Keine cronjobs für jetzt geplant
+toolbox.screen.cron_see_message|Siehe nachricht
+toolbox.screen.checksum_information|Integrität der Dateiprüfsumme
+toolbox.screen.file_not_exists|checkmd5.csv Datei ist nicht verfügbar. Die Prüfung ist nicht möglich !
+toolbox.screen.summary|Zusammenfassung
+toolbox.screen.file_checked|%{nb_file} Dateien überprüft
+toolbox.screen.file_modified|%{nb_file} Dateien geändert
+toolbox.screen.file_deleted|%{nb_file} Dateien gelöscht
+toolbox.screen.list_modified_file|Liste der geänderten Dateien
+toolbox.screen.list_deleted_file|Liste der gelöschten Dateien
+toolbox.screen.action_information|Aktionen durch Lengow
+toolbox.table.title|Aktionen durch Lengow
+toolbox.table.id|ID
+toolbox.table.order_id|ID Bestellung
+toolbox.table.action_id|Action ID
+toolbox.table.order_line_sku|ID Bestellzeilen
+toolbox.table.action_type| Aktionstyp
+toolbox.table.retry| Wiederholen
+toolbox.table.parameters|Einstellungen
+toolbox.table.state|Status
+toolbox.table.state_processing| wird durchgeführt
+toolbox.table.state_complete|fertig
+toolbox.table.created_at|Erstellt am
+toolbox.table.updated_at|Aktualisiert am
+lengow_setting.global_setting|Globale Einstellungen
+lengow_setting.global_plugin_version_title|Version des Plugins
+lengow_setting.global_magento_version_title|Version von Magento
+lengow_setting.global_plugin_compatibility_title|Kompatibilität des Plugins
+lengow_setting.global_plugin_compatibility_yes| Magento-Version ist kompatibel
+lengow_setting.global_plugin_compatibility_no| Magento-Version ist nicht kompatibel
+lengow_setting.global_server_ip_title|IP Ihres Servers
+lengow_setting.global_information_credential|Um Shop Zugangsdaten zu ändern, wählen Sie bitte einen Shop aus
+lengow_setting.global_store_credential| Benutzer-Credentials
+lengow_setting.global_account_id_title|Account ID
+lengow_setting.global_account_id_comment|Ihr Lengow Account ID
+lengow_setting.global_access_token_title| Zugangstoken
+lengow_setting.global_access_token_comment| Ihr Lengow-Zugangstoken
+lengow_setting.global_secret_token_title|Geheimtoken
+lengow_setting.global_secret_token_comment|Ihr Geheimtoken
+lengow_setting.global_store_enable_title|Shop aktivieren
+lengow_setting.global_store_enable_comment|Verbindung zwischen Lengow und Shop aktivieren
+lengow_setting.global_catalog_id_title|Katalog-ID
+lengow_setting.global_catalog_id_comment|Ihre Katalog-ID für den Import von Bestellungen.<br />Getrennt durch ' ; '
+lengow_setting.global_advanced_setting|Alle erweiterten Einstellungen
+lengow_setting.global_tracking_id_label|Tracker Product ID
+lengow_setting.global_authorized_ip_enable_label|Aktivieren Sie die Autorisierung über IP
+lengow_setting.global_authorized_ip_enable_comment|Aktivieren Sie diese Option, wenn Sie Ihren Export über IP sichern wollen. Standartmäßig ist ihr Export über einen Sicherheitsschlüssel gespeichert.
+lengow_setting.global_authorized_ip_label|IP authorisiert
+lengow_setting.global_authorized_ip_comment|Authorisierter Zugang durch IP, getrennt durch ;
+lengow_setting.export_setting|Exporteinstellungen
+lengow_setting.export_simple_setting|Einfache Exporteinstellungen
+lengow_setting.export_selection_enable_label|Nur ausgewählte Produkte exportieren
+lengow_setting.export_out_stock_label|Nicht lieferbare Produkte exportieren
+lengow_setting.export_product_type_label|Produkttyp für den Export
+lengow_setting.export_product_status_label|Status des Produktes für den Export
+lengow_setting.export_advanced_setting|Erweiterte Exporteinstellungen
+lengow_setting.export_attribute_label|Attribute für den Export auswählen
+lengow_setting.export_parent_image_label|Images mit Parentprodukten zusammenführen
+lengow_setting.export_default_shipping_country_label|Länderversand
+lengow_setting.export_default_shipping_country_comment|Land per default für Versandkosten
+lengow_setting.export_default_shipping_method_label|Versandart
+lengow_setting.export_default_shipping_method_comment|Versandart per default für die Berechnung der Versandkosten
+lengow_setting.export_default_shipping_price_label|Versandkosten
+lengow_setting.export_default_shipping_price_comment|Versandkosten per default wenn Übereinstimmung gefunden
+lengow_setting.export_file_enable_label|Feed auf Datei sichern
+lengow_setting.export_file_enable_comment|Feed auf Datei sichern
+lengow_setting.export_cron_enable_lable|Magentocron aktivieren
+lengow_setting.export_cron_enable_comment|Geplante tasks aktivieren, um Ihren Feed alle 4 Stunden zu exportieren
+lengow_setting.import_setting|Importeinstellungen
+lengow_setting.import_simple_setting|Einfache Importeinstellungen
+lengow_setting.import_advanced_setting|Erweiterte Importeinstellungen
+lengow_setting.import_days_title|Bestellungen von x Tagen importieren
+lengow_setting.import_days_comment|Anzahl der Tage auswählen
+lengow_setting.import_customer_group_title|Kundengruppe
+lengow_setting.import_customer_group_comment|Kundengruppe für Lengowkunden auswählen
+lengow_setting.import_default_shipping_method_title|Versandart
+lengow_setting.import_default_shipping_method_comment| Versandart für importierte Bestellungen auswählen
+lengow_setting.import_report_mail_enable_title|Bei Problemen während des Importes der Bestellungen möchte ich benachrichtigt werden
+lengow_setting.import_report_mail_address_title| Emailaddresse für den Email-Report
+lengow_setting.import_report_mail_address_comment|Email getrennt durch ;
+lengow_setting.import_ship_mp_enabled_title|Durch einen Marktplatz versandte Bestellungen importieren
+lengow_setting.import_stock_ship_mp_title|Ich möchte meinen Lagerbestand verringern
+lengow_setting.import_stock_ship_mp_comment| Verwenden Sie diese Option, damit Bestellungen auf Marktplätzen in Ihrem Magento-Backoffice einbezogen werden
+lengow_setting.import_preprod_mode_enable_title|Preprod-Modus
+lengow_setting.import_preprod_mode_enable_comment|Nur für Preprod-Modus: keine Synchronisierung mit Lengow, Bestellungen immer importiert
+lengow_setting.import_cron_enable_title|Magentocron aktivieren
+lengow_setting.import_cron_enable_comment|Geplante Tasks aktivieren, um Ihre Bestellungen alle 30 Minuten zu importieren
+lengow_log.error.nb_order_imported| %{nb_order} Bestellung(en) importiert
+lengow_log.error.nb_order_updated|%{nb_order} Bestellung(en) aktualisiert
+lengow_log.error.nb_order_with_error|%{nb_order} Bestellung(en) mit Fehlern
+lengow_log.error.no_notification|Keine neue Benachrichtigung zur Bestellung
+lengow_log.error.credentials_not_valid|Konto-Nr., Access-Token oder Access-Token-Secret ungültig
+lengow_log.error.no_catalog_for_store|Keine gültige Katalog-Nr. für den Shop %{store_name} (%{store_id})
+lengow_log.error.rest_time_to_import|Bitte warten Sie %{rest_time} Sekunden, bevor Sie Bestellungen erneut importieren
+lengow_log.error.account_id_empty| Account ID, Zugangs- oder Geheimtoken ist leer im Shop %{store_name} (%{store_id})
+lengow_log.error.account_id_already_used|Account ID %{account_id} bereits im Shop %{store_name} (%{store_id}) verwendet
+lengow_log.error.order_not_found|Fehler Lengow: Bestellung kann in Lengow nicht gefunden werden
+lengow_log.error.no_product| Fehler Lengow: keine Produkte in der Bestellung
+lengow_log.error.no_change_rate|Fehler Lengow: kein Wechselkurs für Bestellwert verfügbar
+lengow_log.error.no_currency|Fehler Lengow: keine Währung in der Bestellung
+lengow_log.error.currency_not_available|währung %{currency_iso} in Ihrem Shop nicht verfügbar
+lengow_log.error.no_country_for_delivery_address|Fehler Lengow: Lieferaddresse enthält kein Land
+lengow_log.error.no_billing_address|Fehler Lengow: keine Rechnungsaddresse in der Bestellung
+lengow_log.error.no_country_for_billing_address|Fehler Lengow: Rechnungsadresse enthält das Land
+lengow_log.exception.product_not_be_found|produkt %{product_id} konnte nicht gefunden werden
+lengow_log.exception.product_is_a_parent|produkt %{product_id} hat eine Vorgänger-ID. Produktvariation wird benötigt
+lengow_log.exception.no_connection_webservice|verbindung mit dem Lengow Webservice im Laden %{store_name} (%{store_id}) funktionierte nicht.
+lengow_log.exception.error_lengow_webservice|Lengow Webservice : %{error_code} - %{error_message} auf Lager %{store_name} (%{store_id})
+lengow_log.exception.timeout_api|API Anruf wegen Zeitüberschreitung blockiert
+lengow_log.exception.error_curl|fehler Curl %{error_code} - %{error_message}
+lengow_log.exception.marketplace_not_present|Lengow Fehler: %{marketplace_name} erscheint nicht in der Marketplace-Liste
+lengow_log.exception.order_failed_with_quote|auf dem Angebot basierende Bestellung konnte nicht erstellt werden
+lengow_log.exception.order_is_empty|bestellung konnte nicht gespeichert werden
+lengow_log.exception.order_line_required|erforderliche Bestellzeile kann in der Bestellung nicht gefunden werden
+lengow_log.exception.action_not_valid|aktion %{action} ist ungültig
+lengow_log.exception.marketplace_action_not_present|die Marktplatzaktion %{action} ist nicht vorhanden
+lengow_log.exception.store_id_require|laden-ID ist erforderlich
+lengow_log.exception.marketplace_name_require|marktplatzname ist erforderlich
+lengow_log.exception.arg_is_required|Aktion nicht ausführbar: %{arg_name} ist erforderlich
+lengow_log.exception.action_not_created|Aktion kann nicht erstellt werden: %{error_message}
+lengow_log.exception.action_is_too_old|bestellungsaktion ist zu alt. Bitte erneut versuchen
+lengow_log.mail_report.subject_report_mail|Lengow Importfehler
+lengow_log.mail_report.order|Bestellung %{marketplace_sku}
+lengow_log.mail_report.no_error_in_report_mail|Keine Fehlermeldung, kontaktieren Sie den Support auf https://supportlengow.zendesk.com/agent/

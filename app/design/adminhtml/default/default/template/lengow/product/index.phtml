@@ -1,0 +1,76 @@
+<?php
+$helper = Mage::helper('lengow_connector');
+$config = Mage::helper('lengow_connector/config');
+$defaultStore = Mage::app()->getWebsite(true)->getDefaultGroup()->getDefaultStoreId();
+$currentStore = (int)$this->getRequest()->getParam('store', Mage::app()->getStore()->getId());
+$storeId = $currentStore == 0 ? $defaultStore : $currentStore;
+$store = Mage::app()->getStore($storeId);
+$export = Mage::getModel('lengow/export', array("store_id" => $storeId));
+$exportUrl = $helper->getExportUrl($storeId, array('stream' => 1, 'update_export_date' => 0));
+?> 
+
+<div class="lgw-box">
+    
+    <div><?php echo $this->getChildHtml('store_switcher'); ?></div>
+    <div class="lengow_export_feed">
+    <a href="<?php echo $exportUrl; ?>"
+       target="_blank">
+        <i class="fa fa-download lengow_tooltip">
+            <span ><?php echo $helper->__('product.screen.button_download'); ?></span>
+        </i>
+    </a>
+    </div>
+    <br>
+    <div class="text-center">
+        <h3 id="lengow_product_store_name" class="lengow_product_store_name lengow_tooltip">
+            <?php echo $store->getName(); ?>
+            <span>
+                <?php echo $store->getName(); ?> (<?php echo $storeId; ?>)
+                <?php echo $store->getBaseUrl(); ?>
+            </span>
+        </h3>
+        <br>        
+        <br>
+        <div class="products-exported">
+            <div id="parent_exported_products">
+                <span id="exported_products" class="lengow_exported stats-big-value">
+                    <?php echo $export->getTotalExportedProduct(); ?>
+                </span>
+                <span> <?php echo $helper->__('product.screen.nb_exported'); ?></span>
+            </div>
+            
+        </div>
+        <br>
+        <div id="parent_total_products">
+            <span id="total_products"  class="lengow_total stats-big-value">
+                <?php echo $export->getTotalProduct(); ?>
+            </span>
+            <span> <?php echo $helper->__('product.screen.nb_available'); ?></span>
+        </div>
+        <br>
+        <br>
+        <hr>
+        <div class="lgw-switch <?php if ($config->get('selection_enable', $storeId) == '1'): ?> checked <?php endif; ?>">
+            <label>
+                <div><span></span>
+                    <input
+                        type="checkbox"
+                        name="lengow_export_selection" class="lengow_switch_option"
+                        id="change_option_selected"
+                        data-href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_product/'); ?>?isAjax=true"
+                        data-action="change_option_selected"
+                        data-id_store="<?php echo $storeId; ?>"
+                        value="1" <?php if ($config->get('selection_enable', $storeId) == '1'): ?> 
+                        checked="checked" <?php endif; ?>>
+                </div> <?php echo $helper->__('product.screen.include_specific_product'); ?>
+            </label>
+        </div>
+        <i class="fa fa-info-circle lengow_tooltip">
+            <span class ="lengow_specific_product_support">
+                <?php echo $helper->__('product.screen.include_specific_product_support'); ?>
+            </span>
+        </i>
+        <br/>
+        <br/>
+    </div>
+</div> 

@@ -15,6 +15,13 @@
                 </args>
             </lengow>
         </routers>
+        <layout>
+            <updates>
+                <lengow_connector>
+                    <file>lengow.xml</file>
+                </lengow_connector>
+            </updates>
+        </layout>
     </frontend>
     <admin>
         <routers>
@@ -27,24 +34,6 @@
             </adminhtml>
         </routers>
     </admin>
-    <!--<admin>
-      <routers>
-        <lengow>
-          <use>admin</use>
-          <args>
-            <module>Lengow_Connector</module>
-            <frontName>lengow</frontName>
-          </args>
-        </lengow>
-        <adminhtml>
-          <args>
-            <modules>
-              <Lengow_Connector before="Mage_Adminhtml">Lengow_Connector_Adminhtml</Lengow_Connector>
-            </modules>
-          </args>
-        </adminhtml>
-      </routers>
-    </admin>-->
     <global>
         <models>
             <lengow>
@@ -54,30 +43,148 @@
             <lengow_resource>
                 <class>Lengow_Connector_Model_Resource</class>
                 <entities>
+                    <import_order>
+                        <table>lengow_order</table>
+                    </import_order>
+                    <import_orderline>
+                        <table>lengow_order_line</table>
+                    </import_orderline>
+                    <import_ordererror>
+                        <table>lengow_order_error</table>
+                    </import_ordererror>
+                    <import_action>
+                        <table>lengow_action</table>
+                    </import_action>
                     <log>
                         <table>lengow_log</table>
                     </log>
                 </entities>
             </lengow_resource>
+            <core>
+                <rewrite>
+                    <config>Lengow_Connector_Model_Config</config>
+                </rewrite>
+            </core>
         </models>
         <resources>
-            <lengow_setup>
+            <lengow_connector_setup>
                 <setup>
                     <module>Lengow_Connector</module>
-                    <class>Mage_Catalog_Model_Resource_Setup</class>
+                    <class>Mage_Sales_Model_Mysql4_Setup</class>
                 </setup>
-            </lengow_setup>
+            </lengow_connector_setup>
         </resources>
+        <sales>
+            <order>
+                <statuses>
+                    <lengow_technical_error translate="label">
+                        <label>Lengow Technical Error</label>
+                    </lengow_technical_error>
+                </statuses>
+                <states>
+                    <lengow_technical_error translate="label">
+                        <label>Lengow Technical Error</label>
+                        <statuses>
+                            <lengow_technical_error default="1"/>
+                        </statuses>
+                    </lengow_technical_error>
+                </states>
+            </order>
+        </sales>
+        <events>
+            <model_save_after>
+                <observers>
+                    <events_after_save>
+                        <type>singleton</type>
+                        <class>Lengow_Connector_Model_Observer</class>
+                        <method>onAfterSave</method>
+                    </events_after_save>
+                </observers>
+            </model_save_after>
+            <sales_order_shipment_save_after>
+                <observers>
+                    <lengow_shipment_save_after>
+                        <class>Lengow_Connector_Model_Observer</class>
+                        <method>salesOrderShipmentSaveAfter</method>
+                    </lengow_shipment_save_after>
+                </observers>
+            </sales_order_shipment_save_after>
+            <sales_order_shipment_track_save_after>
+                <observers>
+                    <lengow_shipment_track_save_after>
+                        <class>Lengow_Connector_Model_Observer</class>
+                        <method>salesOrderShipmentTrackSaveAfter</method>
+                    </lengow_shipment_track_save_after>
+                </observers>
+            </sales_order_shipment_track_save_after>
+            <sales_order_payment_cancel>
+                <observers>
+                    <lengow_payment_cancel>
+                        <class>Lengow_Connector_Model_Observer</class>
+                        <method>salesOrderPaymentCancel</method>
+                    </lengow_payment_cancel>
+                </observers>
+            </sales_order_payment_cancel>
+        </events>
         <blocks>
             <lengow>
                 <class>Lengow_Connector_Block</class>
             </lengow>
+            <adminhtml>
+                <rewrite>
+                    <system_config_edit>Lengow_Connector_Block_Adminhtml_System_Config_Edit</system_config_edit>
+                </rewrite>
+            </adminhtml>
         </blocks>
         <helpers>
             <lengow_connector>
                 <class>Lengow_Connector_Helper</class>
             </lengow_connector>
         </helpers>
+        <fieldsets>
+            <lengow_convert_address>
+                <company>
+                    <to_customer>company</to_customer>
+                    <to_billing_address>company</to_billing_address>
+                    <to_shipping_address>company</to_shipping_address>
+                </company>
+                <last_name>
+                    <to_customer>lastname</to_customer>
+                    <to_billing_address>lastname</to_billing_address>
+                    <to_shipping_address>lastname</to_shipping_address>
+                </last_name>
+                <first_name>
+                    <to_customer>firstname</to_customer>
+                    <to_billing_address>firstname</to_billing_address>
+                    <to_shipping_address>firstname</to_shipping_address>
+                </first_name>
+                <email>
+                    <to_customer>email</to_customer>
+                    <to_billing_address>email</to_billing_address>
+                    <to_shipping_address>email</to_shipping_address>
+                </email>
+                <phone_home>
+                    <to_billing_address>telephone</to_billing_address>
+                    <to_shipping_address>telephone</to_shipping_address>
+                </phone_home>
+                <address>
+                    <to_billing_address>street_full</to_billing_address>
+                    <to_shipping_address>street_full</to_shipping_address>
+                </address>
+                <zipcode>
+                    <to_billing_address>postcode</to_billing_address>
+                    <to_shipping_address>postcode</to_shipping_address>
+                </zipcode>
+                <city>
+                    <to_billing_address>city</to_billing_address>
+                    <to_shipping_address>city</to_shipping_address>
+                </city>
+                <common_country_iso_a2>
+                    <to_billing_address>country_id</to_billing_address>
+                    <to_shipping_address>country_id</to_shipping_address>
+                </common_country_iso_a2>
+            </lengow_convert_address>
+        </fieldsets>
     </global>
     <adminhtml>
         <acl>
@@ -88,9 +195,15 @@
                             <children>
                                 <config>
                                     <children>
+                                        <lengow_global_options>
+                                            <title>Lengow Global settings</title>
+                                        </lengow_global_options>
                                         <lengow_export_options>
-                                            <title>Lengow Export Feed Configuration</title>
+                                            <title>Lengow Export settings</title>
                                         </lengow_export_options>
+                                        <lengow_import_options>
+                                            <title>Lengow Import settings</title>
+                                        </lengow_import_options>
                                     </children>
                                 </config>
                             </children>
@@ -117,6 +230,26 @@
             </controller_action_layout_render_before>
         </events>
     </adminhtml>
+    <crontab>
+        <jobs>
+            <export_cron_lengow>
+                <schedule>
+                    <cron_expr>0 */4 * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>lengow/observer::exportCron</model>
+                </run>
+            </export_cron_lengow>
+            <import_cron_lengow>
+                <schedule>
+                    <cron_expr>*/30 * * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>lengow/observer::importCron</model>
+                </run>
+            </import_cron_lengow>
+        </jobs>
+    </crontab>
     <phpunit>
         <suite>
             <modules>
@@ -128,37 +261,69 @@
         </suite>
     </phpunit>
     <default>
-        <lengow_export>
-            <global>
-                <active_store>0</active_store>
-                <export_only_selected>0</export_only_selected>
-                <autoexport_newproduct>0</autoexport_newproduct>
-                <export_soldout>0</export_soldout>
-                <producttype>simple,configurable</producttype>
-                <productstatus></productstatus>
-            </global>
-            <data>
-                <format>csv</format>
-                <count_images>5</count_images>
-                <parentsimages>0</parentsimages>
-                <levelcategory>5</levelcategory>
-                <without_product_ordering>0</without_product_ordering>
-                <formatdata>0</formatdata>
-                <html_attribute>0</html_attribute>
-                <shipping_price_based_on>FR</shipping_price_based_on>
-                <default_shipping_price></default_shipping_price>
-                <default_shipping_method>flatrate_flatrate</default_shipping_method>
-                <default_shipping_delay>2</default_shipping_delay>
-            </data>
-            <attributelist>
-                <attributes>0</attributes>
-            </attributelist>
-            <performances>
-                <valid_ip></valid_ip>
-                <optimizeexport>1</optimizeexport>
-                <usesavefile>0</usesavefile>
-                <active_cron>0</active_cron>
-            </performances>
-        </lengow_export>
+        <lengow_global_options>
+            <store_credential>
+                <global_store_enable>0</global_store_enable>
+            </store_credential>
+            <advanced>
+                <global_authorized_ip_enable>0</global_authorized_ip_enable>
+                <global_tracking_id>sku</global_tracking_id>
+            </advanced>
+        </lengow_global_options>
+        <lengow_export_options>
+            <simple>
+                <export_selection_enable>0</export_selection_enable>
+                <export_out_stock>1</export_out_stock>
+                <export_product_type>configurable,simple,downloadable,grouped,virtual</export_product_type>
+            </simple>
+            <advanced>
+                <export_default_shipping_country>FR</export_default_shipping_country>
+                <export_default_shipping_method>flatrate_flatrate</export_default_shipping_method>
+                <export_parent_image>0</export_parent_image>
+                <export_file_enable>0</export_file_enable>
+                <export_cron_enable>0</export_cron_enable>
+            </advanced>
+        </lengow_export_options>
+        <lengow_import_options>
+            <simple>
+                <import_days>5</import_days>
+                <import_customer_group>0</import_customer_group>
+                <import_default_shipping_method>lengow_lengow</import_default_shipping_method>
+            </simple>
+            <advanced>
+                <import_report_mail_enable>1</import_report_mail_enable>
+                <import_ship_mp_enabled>0</import_ship_mp_enabled>
+                <import_stock_ship_mp>0</import_stock_ship_mp>
+                <import_preprod_mode_enable>0</import_preprod_mode_enable>
+                <import_cron_enable>0</import_cron_enable>
+            </advanced>
+        </lengow_import_options>
+        <payment>
+            <lengow>
+                <active>1</active>
+                <model>lengow/payment_method_lengow</model>
+                <order_status>pending</order_status>
+                <title>Lengow Payment</title>
+                <allowspecific>0</allowspecific>
+                <group>offline</group>
+            </lengow>
+            <lengow_purchaseorder>
+                <active>1</active>
+                <model>lengow/payment_method_lengow</model>
+                <order_status>new</order_status>
+                <title>Lengow Payment (version 1.x)</title>
+                <allowspecific>0</allowspecific>
+                <group>offline</group>
+            </lengow_purchaseorder>
+        </payment>
+        <carriers>
+            <lengow>
+                <active>1</active>
+                <sallowspecific>0</sallowspecific>
+                <model>lengow/shipping_carrier_lengow</model>
+                <name>Shipping from marketplace</name>
+                <title>Lengow</title>
+            </lengow>
+        </carriers>
     </default>
 </config>
