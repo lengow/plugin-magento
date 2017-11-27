@@ -34,7 +34,6 @@
             if ($('#lengow_see_global').hasClass('checked')) {
                 $('#global-information').show();
             } else {
-                console.log('hide');
                 $('#global-information').hide();
             }
         }
@@ -43,7 +42,6 @@
             if ($('#lengow_see_store').hasClass('checked')) {
                 $('#store-information').show();
             } else {
-                console.log('hide');
                 $('#store-information').hide();
             }
         }
@@ -52,7 +50,6 @@
             if ($('#lengow_see_action').hasClass('checked')) {
                 $('#lengow_action_grid').show();
             } else {
-                console.log('hide');
                 $('#lengow_action_grid').hide();
             }
         }
@@ -61,7 +58,6 @@
             if ($('#lengow_see_cron').hasClass('checked')) {
                 $('#cron-information').show();
             } else {
-                console.log('hide');
                 $('#cron-information').hide();
             }
         }
@@ -70,7 +66,6 @@
             if ($('#lengow_see_checksum').hasClass('checked')) {
                 $('#checksum-information').show();
             } else {
-                console.log('hide');
                 $('#checksum-information').hide();
             }
         }
