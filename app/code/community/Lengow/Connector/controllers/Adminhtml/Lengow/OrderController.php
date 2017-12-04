@@ -239,11 +239,7 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
                 if ((int)$storeId > 0) {
                     $store = Mage::getModel('core/store')->load($storeId);
                     $storeName = $store->getName() . ' (' . $store->getId() . ') : ';
-                    if (is_array($values)) {
-                        $messages[] = $storeName . join(', ', $helper->decodeLogMessage($values));
-                    } else {
-                        $messages[] = $storeName . $helper->decodeLogMessage($values);
-                    }
+                    $messages[] = $storeName . $helper->decodeLogMessage($values);
                 }
             }
         }
