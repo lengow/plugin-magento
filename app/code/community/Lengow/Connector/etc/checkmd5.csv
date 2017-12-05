@@ -96,7 +96,7 @@
 /app/design/adminhtml/default/default/template/lengow/product/index.phtml|930818267767952b70e1806e56add2e8
 /app/design/adminhtml/default/default/template/lengow/toolbox/index.phtml|c4ab5442b95f441018ce9a0ba3260600
 /app/design/adminhtml/default/default/template/lengow/home/status.phtml|26b62ccef7a8ea7e5ac22fce03dfcaaf
-/app/design/adminhtml/default/default/template/lengow/home/new.phtml|e19991a3c8cb021db9607a00086da393
+/app/design/adminhtml/default/default/template/lengow/home/new.phtml|9b8049fa338196e27641be26ba739e03
 /app/design/adminhtml/default/default/template/lengow/home/dashboard.phtml|8958aae7cf63d4b191353b2a1c2080b3
 /app/design/adminhtml/default/default/template/lengow/footer.phtml|f69646338a68d789c4ac5371de72bc59
 /app/design/adminhtml/default/default/template/lengow/legal/index.phtml|c89d59bcc7da40ccdb45d715c1bddd7d
@@ -366,7 +366,7 @@
 /skin/adminhtml/default/default/lengow/fonts/Lato-Italic.ttf|56c4cb26fd6a48b9c0ebcc07b376ee38
 /skin/adminhtml/default/default/lengow/fonts/Lato-Regular.ttf|7f690e503a254e0b8349aec0177e07aa
 /skin/adminhtml/default/default/lengow/js/jquery-2.2.2.js|1d35678c5edbb639ab7aa5cce0856f57
-/skin/adminhtml/default/default/lengow/js/home.js|b8a72a295642aa98652ebb8273c0950f
+/skin/adminhtml/default/default/lengow/js/home.js|79c5799e8725a80daabf366fe73e02eb
 /skin/adminhtml/default/default/lengow/js/order.js|111ef436109bc49c7eac5e24fceef83b
 /skin/adminhtml/default/default/lengow/js/toolbox.js|387e9a3f7a2395b5787fb8ed3b8552b5
 /skin/adminhtml/default/default/lengow/js/noconflict.js|0471665ee04a2c68f993899eb8affe25
