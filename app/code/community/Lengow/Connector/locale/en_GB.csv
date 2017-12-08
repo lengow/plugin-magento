@@ -377,6 +377,7 @@ log.import.quantity_back_shipped_by_marketplace|adding quantity back to stock co
 log.mail_report.send_mail_to|report email sent to %{email}
 log.mail_report.unable_send_mail_to|unable to send report email to %{email}
 log.order_action.check_completed_action|check completed actions
+log.order_action.check_old_action|check and finish old actions
 log.order_action.check_action_not_sent|check actions not sent
 log.order_action.try_to_send_action|try to send %{action} action (ORDER ID %{order_id})
 log.order_action.action_send|action %{action} successfully sent (ORDER ID %{order_id})

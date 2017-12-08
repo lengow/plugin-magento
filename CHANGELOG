@@ -1,4 +1,11 @@
 =============================================================
+Version 3.0.1
+=============================================================
+
+	- Bugfix: Adding the isAjax parameter for displaying the Lengow synchronization screen
+	- Bugfix: Improved function to finish actions longer than three days
+
+=============================================================
 Version 3.0.0
 =============================================================
 

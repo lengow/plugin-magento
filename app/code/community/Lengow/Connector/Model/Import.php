@@ -370,6 +370,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
             if (!$this->_preprodMode && !$this->_importOneOrder && $this->_typeImport == 'manual') {
                 $action = Mage::getModel('lengow/import_action');
                 $action->checkFinishAction();
+                $action->checkOldAction();
                 $action->checkActionNotSent();
                 unset($action);
             }

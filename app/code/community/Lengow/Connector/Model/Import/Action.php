@@ -227,75 +227,6 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
     }
 
     /**
-     * Remove old actions > 3 days
-     *
-     * @param string $actionType action type (null, ship or cancel)
-     *
-     * @return boolean
-     */
-    public function finishAllOldActions($actionType = null)
-    {
-        // get all old order action (+ 3 days)
-        $collection = $this->getCollection()
-            ->addFieldToFilter('state', self::STATE_NEW)
-            ->addFieldToFilter(
-                'created_at',
-                array(
-                    'to' => strtotime('-3 days', time()),
-                    'datetime' => true
-                )
-            );
-        if (!is_null($actionType)) {
-            $collection->addFieldToFilter('action_type', $actionType);
-        }
-        $results = $collection->getData();
-
-        if (count($results) > 0) {
-            foreach ($results as $result) {
-                $action = Mage::getModel('lengow/import_action')->load($result['id']);
-                $action->updateAction(array('state' => self::STATE_FINISH));
-                $orderLengowId = Mage::getModel('lengow/import_order')
-                    ->getLengowOrderIdWithOrderId($result['order_id']);
-                if ($orderLengowId) {
-                    $helper = Mage::helper('lengow_connector/data');
-                    $orderLengow = Mage::getModel('lengow/import_order')->load($orderLengowId);
-                    $processStateFinish = $orderLengow->getOrderProcessState('closed');
-                    if ((int)$orderLengow->getData('order_process_state') != $processStateFinish
-                        && $orderLengow->getData('is_in_error') == 0
-                    ) {
-                        // If action is denied -> create order error
-                        $errorMessage = $helper->setLogMessage('lengow_log.exception.action_is_too_old');
-                        $orderError = Mage::getModel('lengow/import_ordererror');
-                        $orderError->createOrderError(
-                            array(
-                                'order_lengow_id' => $orderLengowId,
-                                'message' => $errorMessage,
-                                'type' => 'send',
-                            )
-                        );
-                        $orderLengow->updateOrder(array('is_in_error' => 1));
-                        $decodedMessage = $helper->decodeLogMessage($errorMessage, 'en_GB');
-                        $helper->log(
-                            'API-OrderAction',
-                            $helper->setLogMessage(
-                                'log.order_action.call_action_failed',
-                                array('decoded_message' => $decodedMessage)
-                            ),
-                            false,
-                            $orderLengow->getData('marketplace_sku')
-                        );
-                        unset($orderError);
-                    }
-                    unset($orderLengow);
-                }
-                unset($action);
-            }
-            return true;
-        }
-        return false;
-    }
-
-    /**
      * Check if active actions are finished
      *
      * @return boolean
@@ -401,9 +332,77 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
                 }
             }
         }
-        // Clean actions after 3 days
-        $this->finishAllOldActions();
         return true;
+    }
+
+    /**
+     * Remove old actions > 3 days
+     *
+     * @param string $actionType action type (null, ship or cancel)
+     *
+     * @return boolean
+     */
+    public function checkOldAction($actionType = null)
+    {
+        $helper = Mage::helper('lengow_connector/data');
+        $helper->log('API-OrderAction', $helper->setLogMessage('log.order_action.check_old_action'));
+        // get all old order action (+ 3 days)
+        $collection = $this->getCollection()
+            ->addFieldToFilter('state', self::STATE_NEW)
+            ->addFieldToFilter(
+                'created_at',
+                array(
+                    'to' => strtotime('-3 days', time()),
+                    'datetime' => true
+                )
+            );
+        if (!is_null($actionType)) {
+            $collection->addFieldToFilter('action_type', $actionType);
+        }
+        $results = $collection->getData();
+
+        if (count($results) > 0) {
+            foreach ($results as $result) {
+                $action = Mage::getModel('lengow/import_action')->load($result['id']);
+                $action->updateAction(array('state' => self::STATE_FINISH));
+                $orderLengowId = Mage::getModel('lengow/import_order')
+                    ->getLengowOrderIdWithOrderId($result['order_id']);
+                if ($orderLengowId) {
+                    $orderLengow = Mage::getModel('lengow/import_order')->load($orderLengowId);
+                    $processStateFinish = $orderLengow->getOrderProcessState('closed');
+                    if ((int)$orderLengow->getData('order_process_state') != $processStateFinish
+                        && $orderLengow->getData('is_in_error') == 0
+                    ) {
+                        // If action is denied -> create order error
+                        $errorMessage = $helper->setLogMessage('lengow_log.exception.action_is_too_old');
+                        $orderError = Mage::getModel('lengow/import_ordererror');
+                        $orderError->createOrderError(
+                            array(
+                                'order_lengow_id' => $orderLengowId,
+                                'message' => $errorMessage,
+                                'type' => 'send',
+                            )
+                        );
+                        $orderLengow->updateOrder(array('is_in_error' => 1));
+                        $decodedMessage = $helper->decodeLogMessage($errorMessage, 'en_GB');
+                        $helper->log(
+                            'API-OrderAction',
+                            $helper->setLogMessage(
+                                'log.order_action.call_action_failed',
+                                array('decoded_message' => $decodedMessage)
+                            ),
+                            false,
+                            $orderLengow->getData('marketplace_sku')
+                        );
+                        unset($orderError);
+                    }
+                    unset($orderLengow);
+                }
+                unset($action);
+            }
+            return true;
+        }
+        return false;
     }
 
     /**
