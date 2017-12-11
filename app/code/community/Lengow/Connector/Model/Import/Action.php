@@ -345,6 +345,10 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
     public function checkOldAction($actionType = null)
     {
         $helper = Mage::helper('lengow_connector/data');
+        $config = Mage::helper('lengow_connector/config');
+        if ((bool)$config->get('preprod_mode_enable')) {
+            return false;
+        }
         $helper->log('API-OrderAction', $helper->setLogMessage('log.order_action.check_old_action'));
         // get all old order action (+ 3 days)
         $collection = $this->getCollection()
