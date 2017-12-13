@@ -368,6 +368,8 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
             $params['marketplace_order_id'] = $order->getData('order_id_lengow');
             $params['marketplace'] = $order->getData('marketplace_lengow');
             $params['action_type'] = $action;
+            $sendAction = true;
+            // check if action is already created
             $connector = Mage::getModel('lengow/connector');
             $result = $connector->queryApi(
                 'get',
@@ -379,11 +381,14 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
             }
             if (isset($result->count) && $result->count > 0) {
                 foreach ($result->results as $row) {
-                    $orderActionId = Mage::getModel('lengow/import_action')->getActiveActionByActionId($row->id);
+                    $orderActionId = Mage::getModel('lengow/import_action')->getActionByActionId($row->id);
                     if ($orderActionId) {
                         $orderAction = Mage::getModel('lengow/import_action')->load($orderActionId);
-                        $retry = (int)$orderAction->getData('retry') + 1;
-                        $orderAction->updateAction(array('retry' => $retry));
+                        if ($orderAction->getData('state') == 0) {
+                            $retry = (int)$orderAction->getData('retry') + 1;
+                            $orderAction->updateAction(array('retry' => $retry));
+                            $sendAction = false;
+                        }
                     } else {
                         // if update doesn't work, create new action
                         $orderAction = Mage::getModel('lengow/import_action');
@@ -396,9 +401,12 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
                                 'parameters' => Mage::helper('core')->jsonEncode($params)
                             )
                         );
+                        $sendAction = false;
                     }
+                    unset($orderAction);
                 }
-            } else {
+            }
+            if ($sendAction) {
                 if (!(bool)Mage::helper('lengow_connector/config')->get('preprod_mode_enable')) {
                     $result = $connector->queryApi('post', '/v3.0/orders/actions/', $params);
                     if (isset($result->id)) {

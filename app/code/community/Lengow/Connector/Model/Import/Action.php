@@ -126,11 +126,10 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
      *
      * @return integer|false
      */
-    public function getActiveActionByActionId($actionId)
+    public function getActionByActionId($actionId)
     {
         $results = $this->getCollection()
             ->addFieldToFilter('action_id', $actionId)
-            ->addFieldToFilter('state', self::STATE_NEW)
             ->getData();
         if (count($results) > 0) {
             return (int)$results[0]['id'];
