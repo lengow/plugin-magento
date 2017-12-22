@@ -97,7 +97,7 @@
 /app/design/adminhtml/default/default/template/lengow/toolbox/index.phtml|c4ab5442b95f441018ce9a0ba3260600
 /app/design/adminhtml/default/default/template/lengow/home/status.phtml|26b62ccef7a8ea7e5ac22fce03dfcaaf
 /app/design/adminhtml/default/default/template/lengow/home/new.phtml|9b8049fa338196e27641be26ba739e03
-/app/design/adminhtml/default/default/template/lengow/home/dashboard.phtml|8958aae7cf63d4b191353b2a1c2080b3
+/app/design/adminhtml/default/default/template/lengow/home/dashboard.phtml|dbf20e606127f411d91ac99d73df436b
 /app/design/adminhtml/default/default/template/lengow/footer.phtml|f69646338a68d789c4ac5371de72bc59
 /app/design/adminhtml/default/default/template/lengow/legal/index.phtml|c89d59bcc7da40ccdb45d715c1bddd7d
 /app/design/adminhtml/default/default/template/lengow/order/index.phtml|6d2d3547efe654e09623aa6b9956a6e0
@@ -348,10 +348,10 @@
 /skin/adminhtml/default/default/lengow/images/flag/CU.png|4ba302408d9eddb58f79ef741668bf3b
 /skin/adminhtml/default/default/lengow/images/lengow-white-big.png|6e6178f2db21104a157aebb27f9a5ca2
 /skin/adminhtml/default/default/lengow/images/home-settings.png|4f7751e943137d3c10b71da358f7b1d7
-/skin/adminhtml/default/default/lengow/css/lengow-components.css|5d3df28e59b4369b73402ee5ae68a4b5
+/skin/adminhtml/default/default/lengow/css/lengow-components.css|8e2b762d723ba11e19b16f2453b3d8c9
 /skin/adminhtml/default/default/lengow/css/font-awesome.css|bf4b58c946c9234e4a6b9f7a70d38006
 /skin/adminhtml/default/default/lengow/css/lengow-layout.css|f395f55a6b14f80add59079c0f9836ef
-/skin/adminhtml/default/default/lengow/css/lengow-pages.css|b0348d07d92b9eca52b30af29df2c549
+/skin/adminhtml/default/default/lengow/css/lengow-pages.css|32ed5f495ec4095c6800d9054e6cdb64
 /skin/adminhtml/default/default/lengow/fonts/fontawesome-webfont.ttf|a3de2170e4e9df77161ea5d3f31b2668
 /skin/adminhtml/default/default/lengow/fonts/Lato-LightItalic.ttf|3d747d8bf464744eecb91556d86de11b
 /skin/adminhtml/default/default/lengow/fonts/fontawesome-webfont.woff|a35720c2fed2c7f043bc7e4ffb45e073
