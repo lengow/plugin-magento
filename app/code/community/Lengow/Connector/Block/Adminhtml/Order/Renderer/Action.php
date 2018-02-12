@@ -33,7 +33,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Renderer_Action
     public function render(Varien_Object $row)
     {
         $helper = $this->helper('lengow_connector');
-        if ($row->getData('is_in_error') == 1) {
+        if ($row->getData('is_in_error') == 1 && $row->getData('order_process_state') != 2) {
             $orderLengowId = $row->getData('id');
             $errorType = $row->getData('order_process_state') == 0 ? 'import' : 'send';
             $url = Mage::helper('adminhtml')->getUrl('adminhtml/lengow_order/') . '?isAjax=true';

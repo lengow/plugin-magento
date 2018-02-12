@@ -446,25 +446,29 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
             'delivery_address_id' => $order->getData('delivery_address_id_lengow'),
             'store_id' => $order->getData('store_id')
         );
-        $import = Mage::getModel('lengow/import', $params);
-        $result = $import->exec();
-        if ((isset($result['order_id']) && $result['order_id'] != $order->getData('order_id'))
-            && (isset($result['order_new']) && $result['order_new'])
-        ) {
-            $order->addData(
-                array(
-                    'is_reimported_lengow' => 0,
-                    'follow_by_lengow' => 0
-                )
-            );
-            // if state != STATE_COMPLETE or != STATE_CLOSED
-            $order->setState('lengow_technical_error', 'lengow_technical_error');
-            $order->setData('status', 'lengow_technical_error');
+        try {
+            $import = Mage::getModel('lengow/import', $params);
+            $result = $import->exec();
+            if ((isset($result['order_id']) && $result['order_id'] != $order->getData('order_id'))
+                && (isset($result['order_new']) && $result['order_new'])
+            ) {
+                $order->addData(
+                    array(
+                        'is_reimported_lengow' => 0,
+                        'follow_by_lengow' => 0
+                    )
+                );
+                // if state != STATE_COMPLETE or != STATE_CLOSED
+                $order->setState('lengow_technical_error', 'lengow_technical_error');
+                $order->setData('status', 'lengow_technical_error');
+                $order->save();
+                return (int)$result['order_id'];
+            }
+            $order->addData(array('is_reimported_lengow' => 0));
             $order->save();
-            return (int)$result['order_id'];
+        } catch (\Exception $e) {
+            return false;
         }
-        $order->addData(array('is_reimported_lengow' => 0));
-        $order->save();
         return false;
     }
 
@@ -477,8 +481,12 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
      */
     public function isReimported($order)
     {
-        $order->addData(array('is_reimported_lengow' => 1));
-        $order->save();
+        try {
+            $order->addData(array('is_reimported_lengow' => 1));
+            $order->save();
+        } catch (\Exception $e) {
+            return false;
+        }
         //check success update in BDD
         if ($order->getData('is_reimported_lengow') == 1) {
             return true;
@@ -528,6 +536,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
             case 'closed':
             case 'refused':
             case 'canceled':
+            case 'refunded':
                 return self::PROCESS_STATE_FINISH;
             default:
                 return false;
@@ -609,11 +618,14 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
      */
     public function updateState($order, $orderStateLengow, $orderData, $packageData, $orderLengowId)
     {
-        // Finish actions if lengow order is shipped, closed or cancel
+        // Finish actions if lengow order is shipped, closed, cancel or refunded
         $orderProcessState = $this->getOrderProcessState($orderStateLengow);
         $trackings = $packageData->delivery->trackings;
         if ($orderProcessState == self::PROCESS_STATE_FINISH) {
             Mage::getModel('lengow/import_action')->finishAllActions($order->getId());
+            if ($orderLengowId) {
+                Mage::getModel('lengow/import_ordererror')->finishOrderErrors($orderLengowId, 'send');
+            }
         }
         // Update Lengow order if necessary
         if ($orderLengowId) {
@@ -782,8 +794,6 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
      * @param string $action Lengow Actions (ship or cancel)
      * @param Mage_Sales_Model_Order $order Magento order instance
      * @param Mage_Sales_Model_Order_Shipment $shipment Magento Shipment instance
-     *
-     * @throws Lengow_Connector_Model_Exception order line is required
      *
      * @return boolean
      */

@@ -242,10 +242,6 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
      * @param Mage_Sales_Model_Order_Shipment $shipment Magento shipment instance
      * @param string $orderLineId Lengow order line id
      *
-     * @throws Lengow_Connector_Model_Exception action not valid / marketplace action not present
-     *                                          store id is required / marketplace name is required
-     *                                          argument is required / action not created
-     *
      * @return boolean
      */
     public function callAction($action, $order, $shipment = null, $orderLineId = null)
