@@ -75,7 +75,11 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
         }
         $this->setData('state', self::STATE_NEW);
         $this->setData('created_at', Mage::getModel('core/date')->gmtDate('Y-m-d H:i:s'));
-        return $this->save();
+        try {
+            return $this->save();
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 
     /**
@@ -100,7 +104,11 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
             }
         }
         $this->setData('updated_at', Mage::getModel('core/date')->gmtDate('Y-m-d H:i:s'));
-        return $this->save();
+        try {
+            return $this->save();
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 
     /**

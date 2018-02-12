@@ -272,6 +272,8 @@ class Lengow_Connector_Model_Export extends Varien_Object
      * boolean stream         Display file when call script (1) | Save File (0)
      * boolean legacy_fields  Export with legacy fields (1) | Export with new fields (0)
      * boolean log_output     See logs (only when stream = 0) (1) | no logs (0)
+     *
+     * @throws Exception
      */
     public function __construct($params)
     {
@@ -335,6 +337,8 @@ class Lengow_Connector_Model_Export extends Varien_Object
 
     /**
      * Execute export
+     *
+     * @throws Exception
      */
     public function exec()
     {
@@ -938,11 +942,15 @@ class Lengow_Connector_Model_Export extends Varien_Object
         if (!$this->_createDirectory()) {
             return false;
         }
-        $this->_fileTimeStamp = time();
-        $this->_file = new Varien_Io_File;
-        $this->_file->cd($this->_config['directory_path']);
-        $this->_file->streamOpen($this->_fileName . '.' . $this->_fileTimeStamp . '.' . $this->_fileFormat, 'w+');
-        return true;
+        try {
+            $this->_fileTimeStamp = time();
+            $this->_file = new Varien_Io_File;
+            $this->_file->cd($this->_config['directory_path']);
+            $this->_file->streamOpen($this->_fileName . '.' . $this->_fileTimeStamp . '.' . $this->_fileFormat, 'w+');
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 
     /**

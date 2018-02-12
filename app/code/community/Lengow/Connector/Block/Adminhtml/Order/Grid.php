@@ -54,6 +54,8 @@ class Lengow_Connector_Block_Adminhtml_Order_Grid extends Mage_Adminhtml_Block_W
 
     /**
      * Prepare columns
+     *
+     * @throws Exception
      */
     protected function _prepareColumns()
     {

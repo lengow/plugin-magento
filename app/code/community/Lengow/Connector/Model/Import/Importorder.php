@@ -197,8 +197,6 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
     /**
      * Create or update order
      *
-     * @throws Lengow_Connector_Model_Exception order is empty
-     *
      * @return array|false
      */
     public function importOrder()
@@ -366,7 +364,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
             $quote = $this->_createQuote($customer);
             // Create Magento order
             $order = $this->_makeOrder($quote);
-            // If order is succesfully imported
+            // If order is successfully imported
             if ($order) {
                 // Save order line id in lengow_order_line table
                 $orderLineSaved = $this->_saveLengowOrderLine($order, $quote);
@@ -621,7 +619,6 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
      */
     protected function _checkExternalIds($externalIds)
     {
-        $lineId = false;
         $orderMagentoId = false;
         if (!is_null($externalIds) && count($externalIds) > 0) {
             foreach ($externalIds as $externalId) {
@@ -723,6 +720,8 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
      *
      * @param Lengow_Connector_Model_Import_Customer $customer Lengow customer instance
      *
+     * @throws Exception
+     *
      * @return Lengow_Connector_Model_Import_Quote
      */
     protected function _createQuote(Lengow_Connector_Model_Import_Customer $customer)
@@ -730,7 +729,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
         $quote = Mage::getModel('lengow/import_quote')
             ->setIsMultiShipping(false)
             ->setStore(Mage::app()->getStore($this->_storeId))
-            ->setIsSuperMode(true); // set quote to supermode
+            ->setIsSuperMode(true); // set quote to superMode
         // import customer addresses into quote
         // Set billing Address
         $customerBillingAddress = Mage::getModel('customer/address')->load($customer->getDefaultBilling());
@@ -793,7 +792,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
             ->setShippingMethod($shippingMethod);
         // collect totals
         $quote->collectTotals();
-        // Re-ajuste cents for item quote
+        // Re-adjust cents for item quote
         // Conversion Tax Include > Tax Exclude > Tax Include maybe make 0.01 amount error
         if (!$priceIncludeTax) {
             if ($quote->getGrandTotal() != $this->_orderAmount) {
@@ -938,7 +937,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
         $order->setCreatedAt(Mage::getModel('core/date')->date('Y-m-d H:i:s', strtotime($orderDate)));
         $order->setUpdatedAt(Mage::getModel('core/date')->date('Y-m-d H:i:s', strtotime($orderDate)));
         $order->save();
-        // Re-ajuste cents for total and shipping cost
+        // Re-adjust cents for total and shipping cost
         // Conversion Tax Include > Tax Exclude > Tax Include maybe make 0.01 amount error
         $priceIncludeTax = Mage::helper('tax')->priceIncludesTax($quote->getStore());
         $shippingIncludeTax = Mage::helper('tax')->shippingPriceIncludesTax($quote->getStore());

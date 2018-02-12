@@ -36,7 +36,7 @@ class Lengow_Connector_Model_Import_Quote extends Mage_Sales_Model_Quote
      * @param boolean $logOutput see log or not
      * @param boolean $priceIncludeTax price include tax
      *
-     * @return Lengow_Connector_Model_Import_Quote
+     * @throws Lengow_Connector_Model_Exception product not be found / product is a parent
      */
     public function addLengowProducts($products, $marketplace, $marketplaceSku, $logOutput, $priceIncludeTax = true)
     {

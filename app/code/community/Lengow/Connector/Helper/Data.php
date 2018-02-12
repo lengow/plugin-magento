@@ -195,16 +195,20 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
      *
      * @param integer $storeId Magento store id
      *
-     * @return string Hostname
+     * @return string|false
      */
     public function getHost($storeId)
     {
-        $domain = Mage::app()->getStore($storeId)->getBaseUrl();
-        preg_match('`([a-zàâäéèêëôöùûüîïç0-9-]+\.[a-z]+)`', $domain, $out);
-        if ($out[1]) {
-            return $out[1];
+        try {
+            $domain = Mage::app()->getStore($storeId)->getBaseUrl();
+            preg_match('`([a-zàâäéèêëôöùûüîïç0-9-]+\.[a-z]+)`', $domain, $out);
+            if ($out[1]) {
+                return $out[1];
+            }
+            return $domain;
+        } catch (\Exception $e) {
+            return false;
         }
-        return $domain;
     }
 
     /**
@@ -213,7 +217,7 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
      * @param integer $timestamp linux timestamp
      * @param boolean $second see seconds or not
      *
-     * @return string in gmt format
+     * @return string
      */
     public function getDateInCorrectFormat($timestamp, $second = false)
     {

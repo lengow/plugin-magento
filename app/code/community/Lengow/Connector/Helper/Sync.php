@@ -307,9 +307,13 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
             $return['available'] = true;
         }
         if ($return['currency'] && in_array($return['currency'], $allCurrencyCodes)) {
-            $return['total_order'] = Mage::app()->getLocale()
-                ->currency($return['currency'])
-                ->toCurrency($return['total_order']);
+            try {
+                $return['total_order'] = Mage::app()->getLocale()
+                    ->currency($return['currency'])
+                    ->toCurrency($return['total_order']);
+            } catch (\Exception $e) {
+                $return['total_order'] = number_format($return['total_order'], 2, ',', ' ');
+            }
         } else {
             $return['total_order'] = number_format($return['total_order'], 2, ',', ' ');
         }

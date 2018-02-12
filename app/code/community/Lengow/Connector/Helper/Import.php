@@ -140,8 +140,6 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
      * Record the date of the last import
      *
      * @param string $type last import type (cron or manual)
-     *
-     * @return boolean
      */
     public function updateDateImport($type)
     {

@@ -44,6 +44,8 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
      * @param Mage_Catalog_Model_Product $productInstance Magento product instance
      * @param integer $storeId Magento store id
      *
+     * @throws Exception
+     *
      * @return array
      */
     public function getShippingInfo($productInstance, $storeId)
@@ -72,6 +74,8 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
      * @param Mage_Catalog_Model_Product $productInstance Magento product instance
      * @param string $carrierValue Magento carrier value
      * @param string $countryCode country iso code
+     *
+     * @throws Exception
      *
      * @return float|false
      */
@@ -104,6 +108,8 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
      *
      * @param Mage_Catalog_Model_Product $productInstance Magento product instance
      * @param string $countryCode country iso code
+     *
+     * @throws Exception
      *
      * @return Mage_Shipping_Model_Rate_Request
      */
@@ -144,6 +150,8 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
      *
      * @param Mage_Catalog_Model_Product $productInstance Magento product instance
      * @param integer $storeId Magento store id
+     *
+     * @throws Exception
      *
      * @return array
      */
@@ -270,6 +278,8 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
      * @param Mage_Catalog_Model_Product $parentInstance Magento product instance for parent
      * @param integer $storeId Magento store id
      * @param array $categoryCache category cache
+     *
+     * @throws Exception
      *
      * @return array
      */

@@ -416,6 +416,7 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
                                 'parameters' => Mage::helper('core')->jsonEncode($params)
                             )
                         );
+                        unset($orderAction);
                     } else {
                         throw new Lengow_Connector_Model_Exception(
                             $helper->setLogMessage(

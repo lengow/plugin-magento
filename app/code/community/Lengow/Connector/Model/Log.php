@@ -58,6 +58,10 @@ class Lengow_Connector_Model_Log extends Mage_Core_Model_Abstract
             $this->setData($key, $value);
         }
         $this->setData('date', Mage::getModel('core/date')->gmtDate('Y-m-d H:i:s'));
-        return $this->save();
+        try {
+            return $this->save();
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 }

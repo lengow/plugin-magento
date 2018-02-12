@@ -85,20 +85,13 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
      *
      * @param array $params order parameters
      *
-     * @throws Lengow_Connector_Model_Exception value required
-     *
-     * @return Lengow_Connector_Model_Import_Order
+     * @return Lengow_Connector_Model_Import_Order|false
      */
     public function createOrder($params = array())
     {
         foreach ($this->_fieldList as $key => $value) {
             if (!array_key_exists($key, $params) && $value['required']) {
-                throw new Lengow_Connector_Model_Exception(
-                    Mage::helper('lengow_connector')->setLogMessage(
-                        'log.import.error_value_required',
-                        array('key' => $key)
-                    )
-                );
+                return false;
             }
         }
         foreach ($params as $key => $value) {
@@ -110,7 +103,17 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
         if (!$this->getCreatedAt()) {
             $this->setData('created_at', Mage::getModel('core/date')->gmtDate('Y-m-d H:i:s'));
         }
-        return $this->save();
+        try {
+            return $this->save();
+        } catch (\Exception $e) {
+            $helper = Mage::helper('lengow_connector/data');
+            $errorMessage = 'Orm error: "' . $e->getMessage() . '" ' . $e->getFile() . ' line ' . $e->getLine();
+            $helper->log(
+                'Orm',
+                $helper->setLogMessage('log.orm.record_insert_failed', array('error_message' => $errorMessage))
+            );
+            return false;
+        }
     }
 
     /**
@@ -132,7 +135,17 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
             }
         }
         $this->setData('updated_at', Mage::getModel('core/date')->gmtDate('Y-m-d H:i:s'));
-        return $this->save();
+        try {
+            return $this->save();
+        } catch (\Exception $e) {
+            $helper = Mage::helper('lengow_connector/data');
+            $errorMessage = 'Orm error: "' . $e->getMessage() . '" ' . $e->getFile() . ' line ' . $e->getLine();
+            $helper->log(
+                'Orm',
+                $helper->setLogMessage('log.orm.record_insert_failed', array('error_message' => $errorMessage))
+            );
+            return false;
+        }
     }
 
     /**

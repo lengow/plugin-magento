@@ -180,7 +180,7 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
     /**
      * Get session
      *
-     * @return Mage_Adminhtml_Model_Session
+     * @return Mage_Adminhtml_Model_Session|Mage_Core_Model_Abstract
      */
     protected function _getSession()
     {

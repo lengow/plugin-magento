@@ -96,7 +96,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Tab
     /**
      * Get fields array
      *
-     * @return Array
+     * @return array
      */
     public function getFields()
     {

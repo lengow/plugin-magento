@@ -25,9 +25,9 @@ class Lengow_Connector_Model_Connector
     /**
      * @var string url of the API Lengow
      */
-    // const LENGOW_API_URL = 'http://api.lengow.io:80';
+    const LENGOW_API_URL = 'http://api.lengow.io:80';
     // const LENGOW_API_URL = 'http://api.lengow.net:80';
-    const LENGOW_API_URL = 'http://api.lengow.rec:80';
+    // const LENGOW_API_URL = 'http://api.lengow.rec:80';
     // const LENGOW_API_URL = 'http://10.100.1.82:8081';
 
     /**
@@ -100,6 +100,8 @@ class Lengow_Connector_Model_Connector
      *
      * @param string $userToken the user token if is connected
      *
+     * @throws Lengow_Connector_Model_Exception get Curl error
+     *
      * @return array|false
      */
     public function connect($userToken = '')
@@ -132,7 +134,7 @@ class Lengow_Connector_Model_Connector
      * @param string $format return format of API
      * @param string $body body datas for request
      *
-     * @return array
+     * @return mixed
      */
     public function call($method, $array = array(), $type = 'GET', $format = 'json', $body = '')
     {
@@ -247,6 +249,8 @@ class Lengow_Connector_Model_Connector
      * @param string $format return format of API
      * @param string $body body datas for request
      *
+     * @throws Lengow_Connector_Model_Exception get Curl error
+     *
      * @return array
      */
     private function _callAction($api, $args, $type, $format = 'json', $body = '')
@@ -354,7 +358,7 @@ class Lengow_Connector_Model_Connector
                 $opts[CURLOPT_POSTFIELDS] = http_build_query($args);
                 break;
         }
-        // Exectute url request
+        // Execute url request
         curl_setopt_array($ch, $opts);
         $result = curl_exec($ch);
         $errorNumber = curl_errno($ch);

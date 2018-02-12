@@ -365,7 +365,6 @@ log.import.order_ready_to_reimport|order ready to be re-imported (ORDER ID %{ord
 log.import.order_state_updated|order's status has been updated to %{state_name}
 log.import.order_successfully_imported|order successfully imported (ORDER ID %{order_id})
 log.import.order_import_failed|import order failed - %{decoded_message}
-log.import.error_value_required|%{key} is required to create Lengow order
 log.import.error_already_created|%{decoded_message} (created on the %{date_message})
 log.import.error_no_package|import order failed - Lengow error: no package in the order
 log.import.error_wrong_package_number|import order failed - wrong package number
@@ -388,3 +387,4 @@ log.connector.call_api|call %{curl_url}
 log.connector.error_api|API call failed - %{error_code}
 log.setting.setting_change|%{key} - old value %{old_value} replaced with %{value}
 log.setting.setting_change_for_store|%{key} - old value %{old_value} replaced with %{value} for store %{store_id}
+log.orm.record_insert_failed|Error while inserting record in database - %{error_message}

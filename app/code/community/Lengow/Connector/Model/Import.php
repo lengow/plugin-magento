@@ -171,8 +171,6 @@ class Lengow_Connector_Model_Import extends Varien_Object
     /**
      * Execute import: fetch orders and import them
      *
-     * @throws Lengow_Connector_Model_Exception order not found
-     *
      * @return array
      */
     public function exec()

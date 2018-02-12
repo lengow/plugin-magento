@@ -47,6 +47,8 @@ class Lengow_Connector_Block_Adminhtml_Log_Grid extends Mage_Adminhtml_Block_Wid
 
     /**
      * Prepare columns
+     *
+     * @throws Exception
      */
     protected function _prepareColumns()
     {
