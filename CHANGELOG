@@ -6,13 +6,14 @@ Version 3.0.1
 	- Bugfix: [action] Improved function to finish actions longer than three days
 	- Bugfix: Change css style for Lengow order status label
 	- Bugfix: [action] Removing of action errors when orders are completed
+	- Bugfix: [import] Add secondary phone number to addresses when the primary phone is empty
 
 =============================================================
 Version 3.0.0
 =============================================================
 
 	- Feature: Full rewrite for the new platform Lengow
-	- Feature: Add new lengow Dashbord
+	- Feature: Add new lengow Dashboard
 	- Feature: Add new product selection by store
 	- Feature: Add new lengow order with new page
 	- Feature: Add new help page

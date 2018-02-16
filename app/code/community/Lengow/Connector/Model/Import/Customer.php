@@ -180,6 +180,7 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
         $phoneOffice = empty($phoneOffice) ? $phoneMobile : $phoneOffice;
         $phoneOffice = empty($phoneOffice) ? $phoneHome : $phoneOffice;
         if (!empty($phoneOffice)) {
+            $address->setTelephone($phoneOffice);
             $this->setTelephone($phoneOffice);
         }
         if (!empty($phoneOffice)) {
