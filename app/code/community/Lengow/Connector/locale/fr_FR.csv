@@ -74,7 +74,7 @@ order.screen.no_order_will_be_sent|Les rapport d'erreurs de vos commandes ne ser
 order.screen.change_this|Vous voulez modifier cela ?
 order.screen.last_order_importation|Dernière synchronisation : %{last_importation}
 order.screen.no_order_importation|Aucune synchronisation pour le moment
-order.screen.order_with_error|Vous avez %{nb_order} commande(s) en erreurs
+order.screen.order_with_error|Vous avez %{nb_order} commande(s) en erreur
 order.screen.order_to_be_sent|Vous avez %{nb_order} commande(s) en attente d'expédition 
 order.screen.ajax_timeout|La synchronisation des commandes a été bloquée par un timeout. Merci de recharger la page.
 order.screen.lengow_information|Informations sur Lengow
@@ -118,6 +118,7 @@ order.table.not_imported|pas importée
 order.table.not_sent|pas envoyée
 order.table.action_waiting_return|Action envoyée, en attente d'une réponse.
 order.table.action_sent_not_work|L'action envoyée à la place de marché ne fonctionne pas 
+order.table.no_error_message|Erreur non identifiée, merci de contacter le support Lengow pour plus d'informations
 order.table.status_not_synchronized|Non synchronisé
 order.table.status_accepted|Accepté
 order.table.status_waiting_shipment|En attente d'expédition
@@ -251,7 +252,7 @@ lengow_setting.export_selection_enable_label|Exportez seulement les produits sé
 lengow_setting.export_out_stock_label|Exportez les produits hors stock
 lengow_setting.export_product_type_label|Type de produits à exporter
 lengow_setting.export_product_status_label|Statut des produit à exporter
-lengow_setting.export_advanced_setting|Paramètre avancés d'export
+lengow_setting.export_advanced_setting|Paramètres avancés d'export
 lengow_setting.export_attribute_label|Sélectionnez les attributs à exporter
 lengow_setting.export_parent_image_label|Fusionnez les images avec les produits parents
 lengow_setting.export_default_shipping_country_label|Pays d'expédition

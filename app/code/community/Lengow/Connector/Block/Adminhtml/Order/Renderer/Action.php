@@ -42,7 +42,11 @@ class Lengow_Connector_Block_Adminhtml_Order_Renderer_Action
             $errorMessages = array();
             if ($errorOrders) {
                 foreach ($errorOrders as $errorOrder) {
-                    $errorMessages[] = $helper->decodeLogMessage($errorOrder['message']);
+                    if ($errorOrder['message'] != '') {
+                        $errorMessages[] = $helper->cleanData($helper->decodeLogMessage($errorOrder['message']), false);
+                    } else {
+                        $errorMessages[] = $helper->decodeLogMessage('order.table.no_error_message');
+                    }
                 }
             }
             if ($errorType == 'import') {

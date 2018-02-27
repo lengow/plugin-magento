@@ -2,12 +2,14 @@
 Version 3.0.1
 =============================================================
 
+    - Feature: Adding refunded status to order filters
 	- Bugfix: Adding the isAjax parameter for displaying the Lengow synchronization screen
 	- Bugfix: [action] Improved function to finish actions longer than three days
 	- Bugfix: Change css style for Lengow order status label
 	- Bugfix: [action] Removing of action errors when orders are completed
 	- Bugfix: [import] Add secondary phone number to addresses when the primary phone is empty
 	- Bugfix: [action] Deleting the shipping_date parameter in the action check request
+	- Bugfix: Optimizing the display of errors in the order screen
 
 =============================================================
 Version 3.0.0

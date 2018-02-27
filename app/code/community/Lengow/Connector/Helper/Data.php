@@ -262,10 +262,10 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
             $value
         );
         if (!$html) {
-            $pattern = '@<[\/\!]*?[^<>]*?>@si'; //nettoyage du code HTML
+            $pattern = '@<[\/\!]*?[^<>]*?>@si';
             $value = preg_replace($pattern, ' ', $value);
         }
-        $value = preg_replace('/[\s]+/', ' ', $value); //nettoyage des espaces multiples
+        $value = preg_replace('/[\s]+/', ' ', $value);
         $value = trim($value);
         $value = str_replace(
             array(

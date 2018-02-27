@@ -127,7 +127,8 @@ body.lengow-connector .grey_frame input[type="text"] {
   white-space: nowrap;
 }
 
-.lgw-label.red {
+.lgw-label.red,
+.lgw-label-refunded {
   color: white;
   background: #e55a4d;
 }
