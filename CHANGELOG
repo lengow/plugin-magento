@@ -11,6 +11,7 @@ Version 3.0.1
 	- Bugfix: [action] Deleting the shipping_date parameter in the action check request
 	- Bugfix: Optimizing the display of errors in the order screen
 	- Bugfix: Deleting the indefinite index user_id in the connector
+	- Bugfix: Migration of the id_order and id_order_line fields from the lengow_order_line table
 
 =============================================================
 Version 3.0.0

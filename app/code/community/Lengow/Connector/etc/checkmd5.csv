@@ -90,7 +90,7 @@
 /app/code/community/Lengow/Connector/locale/yml/fr_FR.yml|aa5b1f3903ae704eaaed21c8cc6d41f9
 /app/code/community/Lengow/Connector/locale/de_DE.csv|68eaac85771c72e758c4d3c9fc53b55f
 /app/code/community/Lengow/Connector/locale/fr_FR.csv|1392e6f4737f83025730d848c945b1c4
-/app/code/community/Lengow/Connector/sql/lengow_connector_setup/mysql4-install-3.0.0.php|7fef3c3396a9736d1ab565993ebcec14
+/app/code/community/Lengow/Connector/sql/lengow_connector_setup/mysql4-install-3.0.0.php|728d39d335c5d70c883e98826543e05c
 /app/code/community/Lengow/Connector/sql/lengow_connector_setup/mysql4-upgrade-3.0.0-3.0.1.php|53a014297527705d4d5b28abaf95f70a
 /app/design/adminhtml/default/default/template/lengow/check/point.phtml|080e06c3817d7f20293f8f37a87ad37d
 /app/design/adminhtml/default/default/template/lengow/product/index.phtml|930818267767952b70e1806e56add2e8
