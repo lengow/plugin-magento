@@ -604,6 +604,8 @@ class Lengow_Connector_Model_Export extends Varien_Object
             unset($datas);
             // Selected attributes to export with Frond End value of current store
             if (!empty($attributesToExport)) {
+            	// load category_ids attribute
+            	$product->getCategoryIds();
                 foreach ($attributesToExport as $field => $attr) {
                     if (!in_array($field, $this->_excludes) && !isset($productDatas[$field]) && $field != '') {
                         if ($product->getData($field) === null) {
