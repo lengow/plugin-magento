@@ -63,8 +63,8 @@
 /app/code/community/Lengow/Connector/Model/Resource/Import/Orderline/Collection.php|2a481cc827e980d11b9d570535d44a77
 /app/code/community/Lengow/Connector/Model/Resource/Import/Action/Collection.php|d0e35af1a6106cbd8964999b2f3d158d
 /app/code/community/Lengow/Connector/Model/Shipping/Carrier/Lengow.php|783efede54dfcca798c6e8137cc8380a
-/app/code/community/Lengow/Connector/Model/Connector.php|7b9ed7ba4faf6c2359c07883e7886c2a
-/app/code/community/Lengow/Connector/Model/Export.php|b5d5a1ba58a9a5c24e180d5bcb07f529
+/app/code/community/Lengow/Connector/Model/Connector.php|2ea5489dcb6201898d2cdc9706cf932c
+/app/code/community/Lengow/Connector/Model/Export.php|59590a16e08642e4c99092f62d0a1ab1
 /app/code/community/Lengow/Connector/Model/Payment/Method/Lengow.php|c76b504c981f92afcc1903cf43ee1828
 /app/code/community/Lengow/Connector/Model/System/Config/Source/Attribute.php|f9731577408625b7e0d279f868f647fc
 /app/code/community/Lengow/Connector/Model/System/Config/Source/Types.php|84f415f9114cffe7f55abf5190388063
