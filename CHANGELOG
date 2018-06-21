@@ -4,6 +4,7 @@ Version 3.0.1
 
     - Feature: Adding refunded status to order filters
     - Feature: Protocol change to https for API calls
+    - Feature: Managing delivery_date and custom_carrier parameters for sending action
 	- Bugfix: Adding the isAjax parameter for displaying the Lengow synchronization screen
 	- Bugfix: [action] Improved function to finish actions longer than three days
 	- Bugfix: Change css style for Lengow order status label
