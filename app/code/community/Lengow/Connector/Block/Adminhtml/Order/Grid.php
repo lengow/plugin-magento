@@ -54,6 +54,8 @@ class Lengow_Connector_Block_Adminhtml_Order_Grid extends Mage_Adminhtml_Block_W
 
     /**
      * Prepare columns
+     *
+     * @throws Exception
      */
     protected function _prepareColumns()
     {
@@ -81,6 +83,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Grid extends Mage_Adminhtml_Block_W
                     'accepted' => Mage::helper('lengow_connector')->__('order.table.status_accepted'),
                     'waiting_shipment' => Mage::helper('lengow_connector')->__('order.table.status_waiting_shipment'),
                     'shipped' => Mage::helper('lengow_connector')->__('order.table.status_shipped'),
+                    'refunded' => Mage::helper('lengow_connector')->__('order.table.status_refunded'),
                     'closed' => Mage::helper('lengow_connector')->__('order.table.status_closed'),
                     'canceled' => Mage::helper('lengow_connector')->__('order.table.status_canceled'),
                 )

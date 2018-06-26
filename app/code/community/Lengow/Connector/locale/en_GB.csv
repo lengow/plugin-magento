@@ -118,6 +118,7 @@ order.table.not_imported|not imported
 order.table.not_sent|not sent
 order.table.action_waiting_return|Action sent, waiting for response
 order.table.action_sent_not_work|Action sent to the marketplace didn't work
+order.table.no_error_message|Unidentified error, please contact Lengow's support team for more information
 order.table.status_not_synchronized|Not synchronized
 order.table.status_accepted|Accepted
 order.table.status_waiting_shipment|Awaiting shipment
@@ -365,7 +366,6 @@ log.import.order_ready_to_reimport|order ready to be re-imported (ORDER ID %{ord
 log.import.order_state_updated|order's status has been updated to %{state_name}
 log.import.order_successfully_imported|order successfully imported (ORDER ID %{order_id})
 log.import.order_import_failed|import order failed - %{decoded_message}
-log.import.error_value_required|%{key} is required to create Lengow order
 log.import.error_already_created|%{decoded_message} (created on the %{date_message})
 log.import.error_no_package|import order failed - Lengow error: no package in the order
 log.import.error_wrong_package_number|import order failed - wrong package number
@@ -377,6 +377,7 @@ log.import.quantity_back_shipped_by_marketplace|adding quantity back to stock co
 log.mail_report.send_mail_to|report email sent to %{email}
 log.mail_report.unable_send_mail_to|unable to send report email to %{email}
 log.order_action.check_completed_action|check completed actions
+log.order_action.check_old_action|check and finish old actions
 log.order_action.check_action_not_sent|check actions not sent
 log.order_action.try_to_send_action|try to send %{action} action (ORDER ID %{order_id})
 log.order_action.action_send|action %{action} successfully sent (ORDER ID %{order_id})
@@ -387,3 +388,4 @@ log.connector.call_api|call %{curl_url}
 log.connector.error_api|API call failed - %{error_code}
 log.setting.setting_change|%{key} - old value %{old_value} replaced with %{value}
 log.setting.setting_change_for_store|%{key} - old value %{old_value} replaced with %{value} for store %{store_id}
+log.orm.record_insert_failed|Error while inserting record in database - %{error_message}

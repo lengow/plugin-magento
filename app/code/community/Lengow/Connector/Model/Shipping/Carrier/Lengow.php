@@ -39,7 +39,7 @@ class Lengow_Connector_Model_Shipping_Carrier_Lengow
      *
      * @param Mage_Shipping_Model_Rate_Request $request Magento shipping model rate request instance
      *
-     * @return Mage_Shipping_Model_Rate_Result
+     * @return Mage_Shipping_Model_Rate_Result|false
      */
     public function collectRates(Mage_Shipping_Model_Rate_Request $request)
     {
@@ -76,7 +76,7 @@ class Lengow_Connector_Model_Shipping_Carrier_Lengow
     /**
      * Get session
      *
-     * @return Mage_Checkout_Model_Session
+     * @return Mage_Checkout_Model_Session|Mage_Core_Model_Abstract
      */
     public function getSession()
     {

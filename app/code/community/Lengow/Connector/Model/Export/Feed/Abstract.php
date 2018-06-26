@@ -37,6 +37,8 @@ abstract class Lengow_Connector_Model_Export_Feed_Abstract
 
     /**
      * Set export fields
+     *
+     * @param array $array export fields list
      */
     public function setFields($array = array())
     {

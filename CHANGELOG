@@ -1,9 +1,26 @@
 =============================================================
+Version 3.0.1
+=============================================================
+
+    - Feature: Adding refunded status to order filters
+    - Feature: Protocol change to https for API calls
+    - Feature: Managing delivery_date and custom_carrier parameters for sending action
+	- Bugfix: Adding the isAjax parameter for displaying the Lengow synchronization screen
+	- Bugfix: [action] Improved function to finish actions longer than three days
+	- Bugfix: Change css style for Lengow order status label
+	- Bugfix: [action] Removing of action errors when orders are completed
+	- Bugfix: [import] Add secondary phone number to addresses when the primary phone is empty
+	- Bugfix: [action] Deleting the shipping_date parameter in the action check request
+	- Bugfix: Optimizing the display of errors in the order screen
+	- Bugfix: Deleting the indefinite index user_id in the connector
+	- Bugfix: Migration of the id_order and id_order_line fields from the lengow_order_line table
+
+=============================================================
 Version 3.0.0
 =============================================================
 
 	- Feature: Full rewrite for the new platform Lengow
-	- Feature: Add new lengow Dashbord
+	- Feature: Add new lengow Dashboard
 	- Feature: Add new product selection by store
 	- Feature: Add new lengow order with new page
 	- Feature: Add new help page
@@ -14,6 +31,12 @@ Version 3.0.0
 	- Feature: Creating new accounts directly from the module
 	- Feature: Management actions and error return
 	- Feature: Add new actions: re-import, resend and resync orders
+
+=============================================================
+Version 2.2.7
+=============================================================
+
+    - Bugfix: [export] Load category ids when product data is empty
 
 =============================================================
 Version 2.2.6

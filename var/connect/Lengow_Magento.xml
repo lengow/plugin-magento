@@ -1,5 +1,5 @@
 <_>
-   <form_key>qngitQlzKdkSK5fa</form_key>
+   <form_key>Fosu5oeZXcED2GPx</form_key>
    <name>Lengow_Export</name>
    <channel>community</channel>
    <version_ids>
@@ -7,10 +7,10 @@
    </version_ids>
    <summary>New module of Lengow</summary>
    <description>New module of Lengow.
-Export your catalog, import your orders from all Marketplaces.</description>
+      Export your catalog, import your orders from all Marketplaces.</description>
    <license>GPL</license>
    <license_uri/>
-   <version>3.0.0</version>
+   <version>3.0.1</version>
    <stability>stable</stability>
    <notes>New version of Lengow&apos;s Connector</notes>
    <authors>
@@ -41,7 +41,7 @@ Export your catalog, import your orders from all Marketplaces.</description>
             <max/>
          </max>
          <files>
-            <files>                                                                                                               </files>
+            <files>                                                                                                                  </files>
          </files>
       </package>
       <extension>
@@ -108,4 +108,8 @@ Export your catalog, import your orders from all Marketplaces.</description>
          <ignore/>
       </ignore>
    </contents>
+   <page>1</page>
+   <limit>200</limit>
+   <folder/>
+   <package/>
 </_>

@@ -25,15 +25,15 @@ class Lengow_Connector_Model_Connector
     /**
      * @var string url of the API Lengow
      */
-    // const LENGOW_API_URL = 'http://api.lengow.io:80';
-    // const LENGOW_API_URL = 'http://api.lengow.net:80';
-    const LENGOW_API_URL = 'http://api.lengow.rec:80';
+    // const LENGOW_API_URL = 'https://api.lengow.io';
+    // const LENGOW_API_URL = 'https://api.lengow.net';
+    const LENGOW_API_URL = 'http://api.lengow.rec';
     // const LENGOW_API_URL = 'http://10.100.1.82:8081';
 
     /**
      * @var string url of the SANDBOX Lengow
      */
-    const LENGOW_API_SANDBOX_URL = 'http://api.lengow.net:80';
+    const LENGOW_API_SANDBOX_URL = 'https://api.lengow.net';
 
     /**
      * @var array Default options for curl
@@ -66,11 +66,6 @@ class Lengow_Connector_Model_Connector
     protected $_accountId;
 
     /**
-     * @var integer the user Id
-     */
-    protected $_userId;
-
-    /**
      * @var array lengow url for curl timeout
      */
     protected $_lengowUrls = array(
@@ -98,25 +93,23 @@ class Lengow_Connector_Model_Connector
     /**
      * Connection to the API
      *
-     * @param string $userToken the user token if is connected
+     * @throws Lengow_Connector_Model_Exception get Curl error
      *
      * @return array|false
      */
-    public function connect($userToken = '')
+    public function connect()
     {
         $data = $this->_callAction(
             '/access/get_token',
             array(
                 'access_token' => $this->_accessToken,
-                'secret' => $this->_secret,
-                'user_token' => $userToken
+                'secret' => $this->_secret
             ),
             'POST'
         );
         if (isset($data['token'])) {
             $this->_token = $data['token'];
             $this->_accountId = $data['account_id'];
-            $this->_userId = $data['user_id'];
             return $data;
         } else {
             return false;
@@ -132,7 +125,7 @@ class Lengow_Connector_Model_Connector
      * @param string $format return format of API
      * @param string $body body datas for request
      *
-     * @return array
+     * @return mixed
      */
     public function call($method, $array = array(), $type = 'GET', $format = 'json', $body = '')
     {
@@ -247,6 +240,8 @@ class Lengow_Connector_Model_Connector
      * @param string $format return format of API
      * @param string $body body datas for request
      *
+     * @throws Lengow_Connector_Model_Exception get Curl error
+     *
      * @return array
      */
     private function _callAction($api, $args, $type, $format = 'json', $body = '')
@@ -306,7 +301,9 @@ class Lengow_Connector_Model_Connector
         $url = self::LENGOW_API_URL . $url;
         $opts[CURLOPT_CUSTOMREQUEST] = strtoupper($type);
         $url = parse_url($url);
-        $opts[CURLOPT_PORT] = $url['port'];
+        if (isset($url['port'])) {
+            $opts[CURLOPT_PORT] = $url['port'];
+        }
         $opts[CURLOPT_HEADER] = false;
         $opts[CURLOPT_RETURNTRANSFER] = true;
         $opts[CURLOPT_VERBOSE] = false;
@@ -354,7 +351,7 @@ class Lengow_Connector_Model_Connector
                 $opts[CURLOPT_POSTFIELDS] = http_build_query($args);
                 break;
         }
-        // Exectute url request
+        // Execute url request
         curl_setopt_array($ch, $opts);
         $result = curl_exec($ch);
         $errorNumber = curl_errno($ch);

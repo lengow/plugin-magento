@@ -52,6 +52,8 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
      * @param string $marketplaceSku marketplace sku
      * @param boolean $logOutput see log or not
      *
+     * @throws \Exception
+     *
      * @return Lengow_Connector_Model_Import_Customer
      */
     public function createCustomer($orderData, $shippingAddress, $storeId, $marketplaceSku, $logOutput)
@@ -62,10 +64,8 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
             'delivery_address' => $this->_extractAddressDataFromAPI($shippingAddress)
         );
         // generation of fictitious email
-        $domain = (!Mage::helper('lengow_connector/data')->getHost($storeId)
-            ? 'magento.shop'
-            : Mage::helper('lengow_connector/data')->getHost($storeId)
-        );
+        $host = Mage::helper('lengow_connector/data')->getHost($storeId);
+        $domain = !$host ? 'magento.shop' : $host;
         $array['billing_address']['email'] = $marketplaceSku . '-' . $orderData->marketplace . '@' . $domain;
         Mage::helper('lengow_connector/data')->log(
             'Import',
@@ -180,6 +180,7 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
         $phoneOffice = empty($phoneOffice) ? $phoneMobile : $phoneOffice;
         $phoneOffice = empty($phoneOffice) ? $phoneHome : $phoneOffice;
         if (!empty($phoneOffice)) {
+            $address->setTelephone($phoneOffice);
             $this->setTelephone($phoneOffice);
         }
         if (!empty($phoneOffice)) {

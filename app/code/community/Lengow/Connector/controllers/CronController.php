@@ -94,6 +94,7 @@ class Lengow_Connector_CronController extends Mage_Core_Controller_Front_Action
                 if (is_null($sync) || $sync === 'action') {
                     $action = Mage::getModel('lengow/import_action');
                     $action->checkFinishAction();
+                    $action->checkOldAction();
                     $action->checkActionNotSent();
                 }
                 // sync options between Lengow and Magento

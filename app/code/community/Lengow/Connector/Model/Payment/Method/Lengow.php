@@ -37,7 +37,7 @@ class Lengow_Connector_Model_Payment_Method_Lengow extends Mage_Payment_Model_Me
      *
      * @param mixed $data payment datas
      *
-     * @return Profileolabs_Lengow_Model_Manageorders_Payment_Method_Purchaseorder
+     * @return Lengow_Connector_Model_Payment_Method_Lengow
      */
     public function assignData($data)
     {

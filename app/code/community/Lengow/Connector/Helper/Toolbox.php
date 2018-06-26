@@ -199,9 +199,11 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
     {
         $export = Mage::getModel('lengow/export', array("store_id" => $store->getId()));
         $checklist = array();
-        $checklist[] = array(
-            'header' => $store->getName() . ' (' . $store->getId() . ') ' . $store->getBaseUrl(),
-        );
+        try {
+            $checklist[] = array('header' => $store->getName() . ' (' . $store->getId() . ') ' . $store->getBaseUrl());
+        } catch (\Exception $e) {
+            $checklist[] = array('header' => $store->getName() . ' (' . $store->getId() . ')');
+        }
         $checklist[] = array(
             'title' => $this->_helper->__('toolbox.screen.store_active'),
             'state' => (bool)$this->_configHelper->get('store_enable', $store->getId()),
@@ -247,9 +249,11 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
         $folderUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . 'lengow' . DS . $store->getCode() . DS;
         $files = @array_diff(scandir($folderPath), array('..', '.'));
         $checklist = array();
-        $checklist[] = array(
-            'header' => $store->getName() . ' (' . $store->getId() . ') ' . $store->getBaseUrl(),
-        );
+        try {
+            $checklist[] = array('header' => $store->getName() . ' (' . $store->getId() . ') ' . $store->getBaseUrl());
+        } catch (\Exception $e) {
+            $checklist[] = array('header' => $store->getName() . ' (' . $store->getId() . ')');
+        }
         $checklist[] = array(
             'title' => $this->_helper->__('toolbox.screen.folder_path'),
             'message' => $folderPath,

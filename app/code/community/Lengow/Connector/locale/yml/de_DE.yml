@@ -134,6 +134,7 @@ de:
       not_sent: "nicht gesendet"
       action_waiting_return: " Aktivität gesendet, warten auf Antwort"
       action_sent_not_work: "An Marktplatz gesendete Aktivität funktioniert nicht"
+      no_error_message: "Ein nicht identifizierbarer Fehler ist aufgetreten. Bitte kontaktieren Sie unseren Support!"
       status_not_synchronized: "nicht synchronisiert"
       status_accepted: "Akzeptiert"
       status_waiting_shipment: "Warten auf Versand"

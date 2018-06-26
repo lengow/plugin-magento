@@ -568,6 +568,18 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
     if (Mage::getVersion() < '1.6.0.0') {
         $installer->getConnection()->modifyColumn($tableName, 'id', 'int(11) NOT NULL auto_increment');
     }
+} else {
+    if ($installer->getConnection()->tableColumnExists($tableName, 'id_order')) {
+        $installer->getConnection()->changeColumn($tableName, 'id_order', 'order_id', 'int(11) UNSIGNED NOT NULL');
+    }
+    if ($installer->getConnection()->tableColumnExists($tableName, 'id_order_line')) {
+        $installer->getConnection()->changeColumn(
+            $tableName,
+            'id_order_line',
+            'order_line_id',
+            'VARCHAR(100) NOT NULL'
+        );
+    }
 }
 
 // create table lengow_order_error

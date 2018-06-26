@@ -58,7 +58,17 @@ class Lengow_Connector_Model_Import_Orderline extends Mage_Core_Model_Abstract
         foreach ($params as $key => $value) {
             $this->setData($key, $value);
         }
-        return $this->save();
+        try {
+            return $this->save();
+        } catch (\Exception $e) {
+            $helper = Mage::helper('lengow_connector/data');
+            $errorMessage = 'Orm error: "' . $e->getMessage() . '" ' . $e->getFile() . ' line ' . $e->getLine();
+            $helper->log(
+                'Orm',
+                $helper->setLogMessage('log.orm.record_insert_failed', array('error_message' => $errorMessage))
+            );
+            return false;
+        }
     }
 
     /**

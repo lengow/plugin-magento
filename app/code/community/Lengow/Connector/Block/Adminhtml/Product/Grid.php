@@ -124,6 +124,8 @@ class Lengow_Connector_Block_Adminhtml_Product_Grid extends Mage_Adminhtml_Block
 
     /**
      * Prepare columns
+     *
+     * @throws Exception
      */
     protected function _prepareColumns()
     {

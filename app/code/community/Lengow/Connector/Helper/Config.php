@@ -461,8 +461,12 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
         $emails = trim(str_replace(array("\r\n", ',', ' '), ';', $emails), ';');
         $emails = explode(';', $emails);
         foreach ($emails as $email) {
-            if (strlen($email) > 0 && Zend_Validate::is($email, 'EmailAddress')) {
-                $reportEmailAddress[] = $email;
+            try {
+                if (strlen($email) > 0 && Zend_Validate::is($email, 'EmailAddress')) {
+                    $reportEmailAddress[] = $email;
+                }
+            } catch (\Exception $e) {
+                continue;
             }
         }
         if (count($reportEmailAddress) == 0) {
@@ -482,13 +486,17 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
         $storeCollection = Mage::getResourceModel('core/store_collection')->addFieldToFilter('is_active', 1);
         foreach ($storeCollection as $store) {
             // Get store currencies
-            $storeCurrencies = Mage::app()->getStore($store->getId())->getAvailableCurrencyCodes();
-            if (is_array($storeCurrencies)) {
-                foreach ($storeCurrencies as $currency) {
-                    if (!in_array($currency, $allCurrencies)) {
-                        $allCurrencies[] = $currency;
+            try {
+                $storeCurrencies = Mage::app()->getStore($store->getId())->getAvailableCurrencyCodes();
+                if (is_array($storeCurrencies)) {
+                    foreach ($storeCurrencies as $currency) {
+                        if (!in_array($currency, $allCurrencies)) {
+                            $allCurrencies[] = $currency;
+                        }
                     }
                 }
+            } catch (\Exception $e) {
+                continue;
             }
         }
         return $allCurrencies;

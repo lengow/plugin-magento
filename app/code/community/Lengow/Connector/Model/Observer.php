@@ -250,6 +250,7 @@ class Lengow_Connector_Model_Observer
             // sync action between Lengow and Magento
             $action = Mage::getModel('lengow/import_action');
             $action->checkFinishAction();
+            $action->checkOldAction();
             $action->checkActionNotSent();
             // sync options between Lengow and Magento
             $syncHelper->setCmsOption();

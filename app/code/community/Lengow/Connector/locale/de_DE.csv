@@ -118,6 +118,7 @@ order.table.not_imported|nicht importiert
 order.table.not_sent|nicht gesendet
 order.table.action_waiting_return| Aktivität gesendet, warten auf Antwort
 order.table.action_sent_not_work|An Marktplatz gesendete Aktivität funktioniert nicht
+order.table.no_error_message|Ein nicht identifizierbarer Fehler ist aufgetreten. Bitte kontaktieren Sie unseren Support!
 order.table.status_not_synchronized|nicht synchronisiert
 order.table.status_accepted|Akzeptiert
 order.table.status_waiting_shipment|Warten auf Versand

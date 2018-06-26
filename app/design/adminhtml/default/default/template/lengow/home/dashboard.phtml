@@ -31,7 +31,7 @@ $orderToBeSent = Mage::getModel('lengow/import_order')->countOrderToBeSent();
                     <h2>
                         <?php echo $helper->__('dashboard.screen.orders_title'); ?>
                         <?php if( $orderToBeSent > 0 ) { ?>
-                            <span class="lgw-label lgw-label-red"><?php echo $orderToBeSent; ?></span>
+                            <span class="lgw-label lgw-label red"><?php echo $orderToBeSent; ?></span>
                         <?php } ?>
                     </h2>
                     <p><?php echo $helper->__('dashboard.screen.orders_text'); ?></p>

@@ -31,6 +31,14 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
     );
 
     /**
+     * @var array Parameters to delete for Get call
+     */
+    public static $getParamsToDelete = array(
+        'shipping_date',
+        'delivery_date',
+    );
+
+    /**
      * @var array all marketplaces allowed for an account ID
      */
     public static $marketplaces = array();
@@ -242,10 +250,6 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
      * @param Mage_Sales_Model_Order_Shipment $shipment Magento shipment instance
      * @param string $orderLineId Lengow order line id
      *
-     * @throws Lengow_Connector_Model_Exception action not valid / marketplace action not present
-     *                                          store id is required / marketplace name is required
-     *                                          argument is required / action not created
-     *
      * @return boolean
      */
     public function callAction($action, $order, $shipment = null, $orderLineId = null)
@@ -307,6 +311,7 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
                     case 'carrier':
                     case 'carrier_name':
                     case 'shipping_method':
+                    case 'custom_carrier':
                         $carrierCode = false;
                         if ($orderLengow) {
                             $carrierCode = strlen((string)$orderLengow->getData('carrier')) > 0
@@ -328,6 +333,7 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
                         $params[$arg] = $order->getShippingInclTax();
                         break;
                     case 'shipping_date':
+                    case 'delivery_date':
                         $params[$arg] = date('c');
                         break;
                     default:
@@ -368,22 +374,30 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
             $params['marketplace_order_id'] = $order->getData('order_id_lengow');
             $params['marketplace'] = $order->getData('marketplace_lengow');
             $params['action_type'] = $action;
+            $sendAction = true;
+            // check if action is already created
+            $getParams = array_merge($params, array('queued' => 'True'));
+            // array key deletion for GET verification
+            foreach (self::$getParamsToDelete as $param) {
+                if (isset($getParams[$param])) {
+                    unset($getParams[$param]);
+                }
+            }
             $connector = Mage::getModel('lengow/connector');
-            $result = $connector->queryApi(
-                'get',
-                '/v3.0/orders/actions/',
-                array_merge($params, array('queued' => 'True'))
-            );
+            $result = $connector->queryApi('get', '/v3.0/orders/actions/', $getParams);
             if (isset($result->error) && isset($result->error->message)) {
                 throw new Lengow_Connector_Model_Exception($result->error->message);
             }
             if (isset($result->count) && $result->count > 0) {
                 foreach ($result->results as $row) {
-                    $orderActionId = Mage::getModel('lengow/import_action')->getActiveActionByActionId($row->id);
+                    $orderActionId = Mage::getModel('lengow/import_action')->getActionByActionId($row->id);
                     if ($orderActionId) {
                         $orderAction = Mage::getModel('lengow/import_action')->load($orderActionId);
-                        $retry = (int)$orderAction->getData('retry') + 1;
-                        $orderAction->updateAction(array('retry' => $retry));
+                        if ($orderAction->getData('state') == 0) {
+                            $retry = (int)$orderAction->getData('retry') + 1;
+                            $orderAction->updateAction(array('retry' => $retry));
+                            $sendAction = false;
+                        }
                     } else {
                         // if update doesn't work, create new action
                         $orderAction = Mage::getModel('lengow/import_action');
@@ -396,9 +410,12 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
                                 'parameters' => Mage::helper('core')->jsonEncode($params)
                             )
                         );
+                        $sendAction = false;
                     }
+                    unset($orderAction);
                 }
-            } else {
+            }
+            if ($sendAction) {
                 if (!(bool)Mage::helper('lengow_connector/config')->get('preprod_mode_enable')) {
                     $result = $connector->queryApi('post', '/v3.0/orders/actions/', $params);
                     if (isset($result->id)) {
@@ -412,6 +429,7 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
                                 'parameters' => Mage::helper('core')->jsonEncode($params)
                             )
                         );
+                        unset($orderAction);
                     } else {
                         throw new Lengow_Connector_Model_Exception(
                             $helper->setLogMessage(

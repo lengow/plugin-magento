@@ -113,7 +113,7 @@ class Lengow_Connector_Adminhtml_Lengow_ProductController extends Mage_Adminhtml
     /**
      * Get session
      *
-     * @return Mage_Adminhtml_Model_Session
+     * @return Mage_Adminhtml_Model_Session|Mage_Core_Model_Abstract
      */
     protected function _getSession()
     {

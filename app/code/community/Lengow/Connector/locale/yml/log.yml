@@ -47,7 +47,6 @@ en:
       order_state_updated: "order's status has been updated to %{state_name}"
       order_successfully_imported: "order successfully imported (ORDER ID %{order_id})"
       order_import_failed: "import order failed - %{decoded_message}"
-      error_value_required: "%{key} is required to create Lengow order"
       error_already_created: "%{decoded_message} (created on the %{date_message})"
       error_no_package: "import order failed - Lengow error: no package in the order"
       error_wrong_package_number: "import order failed - wrong package number"
@@ -61,6 +60,7 @@ en:
       unable_send_mail_to: "unable to send report email to %{email}"
     order_action:
       check_completed_action: "check completed actions"
+      check_old_action: "check and finish old actions"
       check_action_not_sent: "check actions not sent"
       try_to_send_action: "try to send %{action} action (ORDER ID %{order_id})"
       action_send: "action %{action} successfully sent (ORDER ID %{order_id})"
@@ -73,3 +73,5 @@ en:
     setting:
       setting_change: "%{key} - old value %{old_value} replaced with %{value}"
       setting_change_for_store: "%{key} - old value %{old_value} replaced with %{value} for store %{store_id}"
+    orm:
+      record_insert_failed: "Error while inserting record in database - %{error_message}"
