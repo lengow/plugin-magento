@@ -81,7 +81,7 @@
 /app/code/community/Lengow/Connector/controllers/Adminhtml/Lengow/LegalController.php|dee86a0b632ac0474ed0e1481e738473
 /app/code/community/Lengow/Connector/controllers/FeedController.php|723a9b153f82c8896a035d3f6f38a48b
 /app/code/community/Lengow/Connector/etc/adminhtml.xml|e46753a2009cda1be0e8886291d995a7
-/app/code/community/Lengow/Connector/etc/config.xml|a88a8fe46111964fb0a5f7876db6bd22
+/app/code/community/Lengow/Connector/etc/config.xml|850a74ba41eac41fbba18043958770ff
 /app/code/community/Lengow/Connector/etc/system.xml|892c4ca367e78beb51b1cd153e57dc0b
 /app/code/community/Lengow/Connector/locale/en_GB.csv|a4cfe94808ab8cf2050f86b487ebdb7b
 /app/code/community/Lengow/Connector/locale/yml/en_GB.yml|7bfa8f8725b4a4c12ffe65e80b2e2094
@@ -90,6 +90,7 @@
 /app/code/community/Lengow/Connector/locale/yml/fr_FR.yml|7e8f9e0b44e34265ad5476b6f8bf8144
 /app/code/community/Lengow/Connector/locale/de_DE.csv|68eaac85771c72e758c4d3c9fc53b55f
 /app/code/community/Lengow/Connector/locale/fr_FR.csv|f6f665f94bee7d5cf10f17c142696933
+/app/code/community/Lengow/Connector/sql/lengow_connector_setup/mysql4-upgrade-3.0.1-3.0.2.php|5c5e22be7790e904b8b7bfa9c5b27821
 /app/code/community/Lengow/Connector/sql/lengow_connector_setup/mysql4-install-3.0.0.php|728d39d335c5d70c883e98826543e05c
 /app/code/community/Lengow/Connector/sql/lengow_connector_setup/mysql4-upgrade-3.0.0-3.0.1.php|53a014297527705d4d5b28abaf95f70a
 /app/design/adminhtml/default/default/template/lengow/check/point.phtml|080e06c3817d7f20293f8f37a87ad37d
@@ -366,7 +367,7 @@
 /skin/adminhtml/default/default/lengow/fonts/Lato-Italic.ttf|56c4cb26fd6a48b9c0ebcc07b376ee38
 /skin/adminhtml/default/default/lengow/fonts/Lato-Regular.ttf|7f690e503a254e0b8349aec0177e07aa
 /skin/adminhtml/default/default/lengow/js/jquery-2.2.2.js|1d35678c5edbb639ab7aa5cce0856f57
-/skin/adminhtml/default/default/lengow/js/home.js|79c5799e8725a80daabf366fe73e02eb
+/skin/adminhtml/default/default/lengow/js/home.js|e3b0818794e28afcae3a2de344f1034b
 /skin/adminhtml/default/default/lengow/js/order.js|111ef436109bc49c7eac5e24fceef83b
 /skin/adminhtml/default/default/lengow/js/toolbox.js|387e9a3f7a2395b5787fb8ed3b8552b5
 /skin/adminhtml/default/default/lengow/js/noconflict.js|0471665ee04a2c68f993899eb8affe25
