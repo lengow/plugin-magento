@@ -2,7 +2,7 @@
 Version 3.0.2
 =============================================================
 
-
+    - Feature: Check and complete an order not imported if it is canceled or refunded
 
 =============================================================
 Version 3.0.1

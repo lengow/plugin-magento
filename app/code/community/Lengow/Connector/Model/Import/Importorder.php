@@ -254,8 +254,29 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
             );
             return false;
         }
+        // get a record in the lengow order table
+        $this->_orderLengowId = $this->_modelOrder->getLengowOrderId(
+            $this->_marketplaceSku,
+            $this->_deliveryAddressId
+        );
         // if order is cancelled or new -> skip
         if (!$this->_importHelper->checkState($this->_orderStateMarketplace, $this->_marketplace)) {
+            $orderProcessState = $this->_modelOrder->getOrderProcessState($this->_orderStateLengow);
+            // check and complete an order not imported if it is canceled or refunded
+            if ($this->_orderLengowId
+                && $orderProcessState === Lengow_Connector_Model_Import_Order::PROCESS_STATE_FINISH
+            ) {
+                Mage::getModel('lengow/import_ordererror')->finishOrderErrors($this->_orderLengowId);
+                // load lengow order
+                $orderLengow = $this->_modelOrder->load((int)$this->_orderLengowId);
+                $orderLengow->updateOrder(
+                    array(
+                        'is_in_error' => 0,
+                        'order_lengow_state' => $this->_orderStateLengow,
+                        'order_process_state' => $orderProcessState
+                    )
+                );
+            }
             $this->_helper->log(
                 'Import',
                 $this->_helper->setLogMessage(
@@ -270,11 +291,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
             );
             return false;
         }
-        // get a record in the lengow order table
-        $this->_orderLengowId = $this->_modelOrder->getLengowOrderId(
-            $this->_marketplaceSku,
-            $this->_deliveryAddressId
-        );
+        // create a new record in lengow order table if not exist
         if (!$this->_orderLengowId) {
             // created a record in the lengow order table
             if (!$this->_createLengowOrder()) {
