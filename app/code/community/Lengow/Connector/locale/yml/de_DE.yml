@@ -162,7 +162,7 @@ de:
       contain_text_support_hour: "Wir werden alles tun, um Sie während der normalen Geschäftszeiten (Montag - Freitag von 09:00 - 18:00 (MEZ+1)) zurückzurufen."
       find_answer: "Sie können Antworten auch in unserem... finden"
       link_magento_guide: "Magentos Begleithandbuch"
-      knowledge_link_url: "https://en.lengow.help/help/magento"
+      knowledge_link_url: "https://supportlengow.zendesk.com/hc/en-us/articles/360011978332"
   legals:
     screen:
       simplified_company: "Gesellschaft mit einfacher Haftungsbeschränkung"
