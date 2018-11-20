@@ -415,7 +415,6 @@ class Lengow_Connector_Model_Export extends Varien_Object
         // Generate data
         foreach ($products as $p) {
             $datas = array();
-            $parent = false;
             $pi++;
             if ($totalProduct < $pi) {
                 $last = true;
@@ -493,16 +492,11 @@ class Lengow_Connector_Model_Export extends Varien_Object
                     // Exclude if parent is disabled
                     if ($parentInstance
                         && $parentInstance->getStatus() == Mage_Catalog_Model_Product_Status::STATUS_DISABLED
+                        && $this->_config['product_status'] == (string)Mage_Catalog_Model_Product_Status::STATUS_ENABLED
                     ) {
                         $countSimpleDisabled++;
                         if (method_exists($product, 'clearInstance')) {
                             $product->clearInstance();
-                            if ($parent != null) {
-                                $parent->clearInstance();
-                            }
-                            if ($parentInstance != null) {
-                                $parentInstance->clearInstance();
-                            }
                         }
                         unset($datas);
                         continue;
