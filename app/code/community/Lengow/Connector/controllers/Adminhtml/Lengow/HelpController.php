@@ -48,6 +48,6 @@ class Lengow_Connector_Adminhtml_Lengow_HelpController extends Mage_Adminhtml_Co
      */
     protected function _isAllowed()
     {
-        return Mage::getSingleton('admin/session')->isAllowed('lengow_connector/help');
+        return Mage::getSingleton('admin/session')->isAllowed('lengowtab/help');
     }
 }

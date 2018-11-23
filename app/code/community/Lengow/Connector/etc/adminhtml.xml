@@ -43,7 +43,7 @@
         <resources>
             <admin>
                 <children>
-                    <custom>
+                    <lengowtab>
                         <title>Lengow</title>
                         <children>
                             <product>
@@ -66,8 +66,16 @@
                                 <title>Settings</title>
                                 <sort_order>5</sort_order>
                             </setting>
+                            <toolbox>
+                                <title>Toolbox</title>
+                                <sort_order>6</sort_order>
+                            </toolbox>
+                            <legal>
+                                <title>Legal</title>
+                                <sort_order>7</sort_order>
+                            </legal>
                         </children>
-                    </custom>
+                    </lengowtab>
                 </children>
             </admin>
         </resources>

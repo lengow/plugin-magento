@@ -71,7 +71,7 @@ class Lengow_Connector_Adminhtml_Lengow_HomeController extends Mage_Adminhtml_Co
      */
     protected function _isAllowed()
     {
-        return Mage::getSingleton('admin/session')->isAllowed('lengow_connector/home');
+        return Mage::getSingleton('admin/session')->isAllowed('lengowtab/home');
     }
 
     /**

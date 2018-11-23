@@ -194,7 +194,7 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
      */
     protected function _isAllowed()
     {
-        return Mage::getSingleton('admin/session')->isAllowed('lengow_connector/order');
+        return Mage::getSingleton('admin/session')->isAllowed('lengowtab/order');
     }
 
     /**

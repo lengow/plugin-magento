@@ -59,6 +59,6 @@ class Lengow_Connector_Adminhtml_Lengow_LogController extends Mage_Adminhtml_Con
      */
     protected function _isAllowed()
     {
-        return Mage::getSingleton('admin/session')->isAllowed('lengow_connector/log');
+        return Mage::getSingleton('admin/session')->isAllowed('lengowtab/log');
     }
 }

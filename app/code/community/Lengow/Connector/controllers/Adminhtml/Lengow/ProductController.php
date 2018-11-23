@@ -127,6 +127,6 @@ class Lengow_Connector_Adminhtml_Lengow_ProductController extends Mage_Adminhtml
      */
     protected function _isAllowed()
     {
-        return Mage::getSingleton('admin/session')->isAllowed('lengow_connector/product');
+        return Mage::getSingleton('admin/session')->isAllowed('lengowtab/product');
     }
 }
