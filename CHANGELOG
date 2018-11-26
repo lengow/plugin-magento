@@ -7,6 +7,7 @@ Version 3.0.2
     - Bugfix: [import] Creating a new track only if the tracking number is present
     - Bugfix: [export] Child products not present with the export of inactive products
     - Bugfix: Acl correction on the Lengow interface
+    - Bugfix: [import] Changing the cron url with the default store
 
 =============================================================
 Version 3.0.1
