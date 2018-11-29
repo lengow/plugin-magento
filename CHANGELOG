@@ -8,6 +8,7 @@ Version 3.0.2
     - Bugfix: [export] Child products not present with the export of inactive products
     - Bugfix: Acl correction on the Lengow interface
     - Bugfix: [import] Changing the cron url with the default store
+    - Bugfix: Dependency change for js and css scripts
 
 =============================================================
 Version 3.0.1
