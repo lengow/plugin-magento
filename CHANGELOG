@@ -9,6 +9,7 @@ Version 3.0.2
     - Bugfix: Acl correction on the Lengow interface
     - Bugfix: [import] Changing the cron url with the default store
     - Bugfix: Dependency change for js and css scripts
+    - Bugfix: [import] Saving tracking data in the lengow_order table
 
 =============================================================
 Version 3.0.1
