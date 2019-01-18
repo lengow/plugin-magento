@@ -192,6 +192,11 @@ class Lengow_Connector_Model_Import extends Varien_Object
             $globalError = $this->_helper->setLogMessage('lengow_log.error.credentials_not_valid');
             $this->_helper->log('Import', $globalError, $this->_logOutput);
         } else {
+            if (!$this->_importOneOrder) {
+                $this->_importHelper->setImportInProcess();
+                // update last import date
+                $this->_importHelper->updateDateImport($this->_typeImport);
+            }
             // to activate lengow shipping method
             Mage::getSingleton('core/session')->setIsFromlengow(1);
             // check Lengow catalogs for order synchronisation
@@ -209,11 +214,6 @@ class Lengow_Connector_Model_Import extends Varien_Object
                     $this->_helper->setLogMessage('log.import.preprod_mode_active'),
                     $this->_logOutput
                 );
-            }
-            if (!$this->_importOneOrder) {
-                $this->_importHelper->setImportInProcess();
-                // update last import date
-                $this->_importHelper->updateDateImport($this->_typeImport);
             }
             // get all store for import
             $storeCollection = Mage::getResourceModel('core/store_collection')->addFieldToFilter('is_active', 1);
