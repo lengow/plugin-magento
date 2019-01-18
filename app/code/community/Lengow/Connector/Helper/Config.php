@@ -171,6 +171,11 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
             'store' => true,
             'no_cache' => false,
         ),
+        'currency_conversion_enabled' => array(
+            'path' => 'lengow_import_options/simple/import_currency_conversion_enable',
+            'store' => true,
+            'no_cache' => false,
+        ),
         'report_mail_enable' => array(
             'path' => 'lengow_import_options/advanced/import_report_mail_enable',
             'global' => true,

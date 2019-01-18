@@ -274,6 +274,8 @@ lengow_setting.import_customer_group_title|Kundengruppe
 lengow_setting.import_customer_group_comment|Kundengruppe für Lengowkunden auswählen
 lengow_setting.import_default_shipping_method_title|Versandart
 lengow_setting.import_default_shipping_method_comment| Versandart für importierte Bestellungen auswählen
+lengow_setting.import_currency_conversion_enable_title|Umrechnung der Währung Ihrer Bestellung
+lengow_setting.import_currency_conversion_enable_comment|Alle in Magento importierten Bestellungen werden in Lengow automatisch in die ausgewählte Währung umgerechnet
 lengow_setting.import_report_mail_enable_title|Bei Problemen während des Importes der Bestellungen möchte ich benachrichtigt werden
 lengow_setting.import_report_mail_address_title| Emailaddresse für den Email-Report
 lengow_setting.import_report_mail_address_comment|Email getrennt durch ;

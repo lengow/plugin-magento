@@ -477,6 +477,8 @@ class Lengow_Connector_Model_Import extends Varien_Object
         $days = (!is_null($this->_days) ? $this->_days : $this->_configHelper->get('days', $store->getId()));
         $dateFrom = date('c', strtotime(date('Y-m-d') . ' -' . $days . 'days'));
         $dateTo = date('c');
+        // Convert order amount or not
+        $noCurrencyConversion = !(bool)$this->_configHelper->get('currency_conversion_enabled', $store->getId());
         if ($this->_importOneOrder) {
             $this->_helper->log(
                 'Import',
@@ -510,6 +512,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
                     array(
                         'marketplace_order_id' => $this->_marketplaceSku,
                         'marketplace' => $this->_marketplaceName,
+                        'no_currency_conversion' => $noCurrencyConversion,
                         'account_id' => $this->_accountId,
                         'page' => $page
                     ),
@@ -522,6 +525,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
                         'updated_from' => $dateFrom,
                         'updated_to' => $dateTo,
                         'catalog_ids' => implode(',', $this->_storeCatalogIds),
+                        'no_currency_conversion' => $noCurrencyConversion,
                         'account_id' => $this->_accountId,
                         'page' => $page
                     ),
