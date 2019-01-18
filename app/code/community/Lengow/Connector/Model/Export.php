@@ -661,9 +661,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
             if (!$this->_stream && $this->_logOutput) {
                 if ($pi % 50 == 0) {
                     $countMessage = $this->_helper->__('log.export.count_product', array('product_count' => $pi));
-                    // These lines are required for plugin validation
-                    $function = create_function('$a', 'echo("$a");');
-                    $function('[Export] ' . $countMessage . '<br />');
+                    print_r('[Export] ' . $countMessage . '<br />');
                 }
                 flush();
             }
@@ -920,9 +918,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
             $this->_file->streamWrite($data);
             $this->_file->streamUnlock();
         } else {
-            // These lines are required for plugin validation
-            $function = create_function('$a', 'echo("$a");');
-            $function($data);
+            print_r($data);
             flush();
         }
         return true;

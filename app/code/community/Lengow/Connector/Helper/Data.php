@@ -115,9 +115,7 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
         $finalMessage .= '' . (empty($marketplaceSku) ? '' : 'order ' . $marketplaceSku . ' : ');
         $finalMessage .= $decodedMessage;
         if ($display) {
-            // These lines are required for plugin validation
-            $function = create_function('$a', 'echo("$a");');
-            $function($finalMessage . '<br />');
+            print_r($finalMessage . '<br />');
             flush();
         }
         $log = Mage::getModel('lengow/log');
