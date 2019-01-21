@@ -38,7 +38,11 @@ class Lengow_Connector_Adminhtml_Lengow_HelpController extends Mage_Adminhtml_Co
      */
     public function indexAction()
     {
-        $this->_initAction()->renderLayout();
+        if (Mage::helper('lengow_connector/sync')->pluginIsBlocked()) {
+            $this->_redirect('adminhtml/lengow_home/index');
+        } else {
+            $this->_initAction()->renderLayout();
+        }
     }
 
     /**

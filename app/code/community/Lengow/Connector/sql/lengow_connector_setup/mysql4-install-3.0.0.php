@@ -1053,7 +1053,7 @@ foreach ($deleteSettings as $settingPath) {
 // *********************************************************
 
 if (!is_null($authorisedIp) && strlen($authorisedIp) > 0) {
-    Mage::helper('lengow_connector/config')->set('ip_enable', 1, 0, false);
+    Mage::helper('lengow_connector/config')->set('ip_enable', 1);
 }
 
 // *********************************************************
@@ -1063,7 +1063,7 @@ if (!is_null($authorisedIp) && strlen($authorisedIp) > 0) {
 Mage::getModel('lengow/import_order')->migrateOldOrder();
 $seeMigrateBlock =  Mage::helper('lengow_connector/config')->get('see_migrate_block');
 if (is_null($seeMigrateBlock)) {
-    Mage::helper('lengow_connector/config')->set('see_migrate_block', 1, 0, false);
+    Mage::helper('lengow_connector/config')->set('see_migrate_block', 1);
 }
 
 // *********************************************************

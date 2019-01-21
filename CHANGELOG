@@ -12,6 +12,7 @@ Version 3.0.2
     - Bugfix: Dependency change for js and css scripts
     - Bugfix: [import] Saving tracking data in the lengow_order table
     - Bugfix: [import] Improved security to avoid duplicate synchronization
+    - Bugfix: Optimizing settings backup without cleaning the configuration cache
 
 =============================================================
 Version 3.0.1

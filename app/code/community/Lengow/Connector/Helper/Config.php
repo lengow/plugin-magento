@@ -34,17 +34,17 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
         'account_id' => array(
             'path' => 'lengow_global_options/store_credential/global_account_id',
             'global' => true,
-            'no_cache' => false,
+            'no_cache' => true,
         ),
         'access_token' => array(
             'path' => 'lengow_global_options/store_credential/global_access_token',
             'global' => true,
-            'no_cache' => false,
+            'no_cache' => true,
         ),
         'secret_token' => array(
             'path' => 'lengow_global_options/store_credential/global_secret_token',
             'global' => true,
-            'no_cache' => false,
+            'no_cache' => true,
         ),
         'store_enable' => array(
             'path' => 'lengow_global_options/store_credential/global_store_enable',
@@ -74,27 +74,27 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
         'last_statistic_update' => array(
             'path' => 'lengow_global_options/advanced/last_statistic_update',
             'export' => false,
-            'no_cache' => false,
+            'no_cache' => true,
         ),
         'order_statistic' => array(
             'path' => 'lengow_global_options/advanced/order_statistic',
             'export' => false,
-            'no_cache' => false,
+            'no_cache' => true,
         ),
         'last_status_update' => array(
             'path' => 'lengow_global_options/advanced/last_status_update',
             'export' => false,
-            'no_cache' => false,
+            'no_cache' => true,
         ),
         'account_status' => array(
             'path' => 'lengow_global_options/advanced/account_status',
             'export' => false,
-            'no_cache' => false,
+            'no_cache' => true,
         ),
         'last_option_cms_update' => array(
             'path' => 'lengow_global_options/advanced/last_option_cms_update',
             'export' => false,
-            'no_cache' => false,
+            'no_cache' => true,
         ),
         'selection_enable' => array(
             'path' => 'lengow_export_options/simple/export_selection_enable',
@@ -154,7 +154,7 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
         'last_export' => array(
             'path' => 'lengow_export_options/advanced/export_last_export',
             'store' => true,
-            'no_cache' => false,
+            'no_cache' => true,
         ),
         'days' => array(
             'path' => 'lengow_import_options/simple/import_days',
@@ -209,22 +209,22 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
         'import_in_progress' => array(
             'path' => 'lengow_import_options/advanced/import_in_progress',
             'global' => true,
-            'no_cache' => false,
+            'no_cache' => true,
         ),
         'last_import_manual' => array(
             'path' => 'lengow_import_options/advanced/last_import_manual',
             'global' => true,
-            'no_cache' => false,
+            'no_cache' => true,
         ),
         'last_import_cron' => array(
             'path' => 'lengow_import_options/advanced/last_import_cron',
             'global' => true,
-            'no_cache' => false,
+            'no_cache' => true,
         ),
         'see_migrate_block' => array(
             'path' => 'lengow_import_options/advanced/see_migrate_block',
             'export' => false,
-            'no_cache' => false,
+            'no_cache' => true,
         ),
     );
 
@@ -259,9 +259,8 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
      * @param string $key Lengow setting key
      * @param mixed $value Lengow setting value
      * @param integer $storeId Magento store id
-     * @param boolean $cleanCache clean config cache to valid configuration
      */
-    public function set($key, $value, $storeId = 0, $cleanCache = true)
+    public function set($key, $value, $storeId = 0)
     {
         if ($storeId == 0) {
             Mage::getModel('core/config')->saveConfig(
@@ -277,9 +276,6 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
                 'stores',
                 $storeId
             );
-        }
-        if ($cleanCache) {
-            Mage::app()->getCacheInstance()->cleanType('config');
         }
     }
 
@@ -304,9 +300,8 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
      * Set Valid Account id / Access token / Secret token
      *
      * @param array $accessIds Account id / Access token / Secret token
-     * @param boolean $cleanCache clean config cache to valid configuration
      */
-    public function setAccessIds($accessIds, $cleanCache = true)
+    public function setAccessIds($accessIds)
     {
         $listKey = array('account_id', 'access_token', 'secret_token');
         foreach ($accessIds as $key => $value) {
@@ -314,7 +309,7 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
                 continue;
             }
             if (strlen($value) > 0) {
-                $this->set($key, $value, 0, $cleanCache);
+                $this->set($key, $value);
             }
         }
     }
@@ -347,17 +342,21 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
      *
      * @param array $catalogIds Lengow catalog ids
      * @param integer $storeId Magento store id
-     * @param boolean $cleanCache clean config cache to valid configuration
+     *
+     * @return boolean
      */
-    public function setCatalogIds($catalogIds, $storeId, $cleanCache = true)
+    public function setCatalogIds($catalogIds, $storeId)
     {
+        $valueChange = false;
         $storeCatalogIds = self::getCatalogIds($storeId);
         foreach ($catalogIds as $catalogId) {
             if (!in_array($catalogId, $storeCatalogIds) && is_numeric($catalogId) && $catalogId > 0) {
                 $storeCatalogIds[] = (int)$catalogId;
+                $valueChange = true;
             }
         }
-        $this->set('catalog_id', implode(';', $storeCatalogIds), $storeId, $cleanCache);
+        $this->set('catalog_id', implode(';', $storeCatalogIds), $storeId);
+        return $valueChange;
     }
 
     /**
@@ -376,16 +375,15 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
      * Set active store or not
      *
      * @param integer $storeId Magento store id
-     * @param boolean $cleanCache clean config cache to valid configuration
+     *
+     * @return boolean
      */
-    public function setActiveStore($storeId, $cleanCache = true)
+    public function setActiveStore($storeId)
     {
-        $active = true;
-        $storeCatalogIds = $this->getCatalogIds($storeId);
-        if (count($storeCatalogIds) === 0) {
-            $active = false;
-        }
-        $this->set('store_enable', $active, $storeId, $cleanCache);
+        $storeIsActive = $this->storeIsActive($storeId);
+        $storeHasCatalog = count(self::getCatalogIds($storeId)) > 0;
+        $this->set('store_enable', $storeHasCatalog, $storeId);
+        return $storeIsActive !== $storeHasCatalog ? true : false;
     }
 
     /**

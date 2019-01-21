@@ -23,11 +23,6 @@
 class Lengow_Connector_Helper_Security extends Mage_Core_Helper_Abstract
 {
     /**
-     * @var string plugin code
-     */
-    const PLUGIN_CODE = 'lengow_connector_setup';
-
-    /**
      * @var array lengow authorized ips
      */
     protected $_ipsLengow = array(
@@ -142,24 +137,6 @@ class Lengow_Connector_Helper_Security extends Mage_Core_Helper_Abstract
         }
         $authorizedIps[] = $this->getServerIp();
         return $authorizedIps;
-    }
-
-    /**
-     * Check if lengow_connector_setup is present in core_resource table
-     *
-     * @return boolean
-     */
-    public function lengowIsInstalled()
-    {
-        $resource = Mage::getSingleton('core/resource');
-        $readConnection = $resource->getConnection('core_read');
-        $table = $resource->getTableName('core/resource');
-        $query = 'SELECT version FROM ' . $table . ' WHERE code = \'' . self::PLUGIN_CODE . '\'';
-        $version = $readConnection->fetchOne($query);
-        if ($version === $this->getPluginVersion()) {
-            return true;
-        }
-        return false;
     }
 
     /**

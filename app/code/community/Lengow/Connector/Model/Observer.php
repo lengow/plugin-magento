@@ -53,34 +53,6 @@ class Lengow_Connector_Model_Observer
     protected $_alreadyShipped = array();
 
     /**
-     * Display Lengow Menu on demand
-     */
-    public function updateAdminMenu()
-    {
-        if (Mage::helper('lengow_connector/security')->lengowIsInstalled()) {
-            $isNewMerchant = Mage::helper('lengow_connector/config')->isNewMerchant();
-            $statusAccount = Mage::helper('lengow_connector/sync')->getStatusAccount();
-            if ($isNewMerchant
-                || ($statusAccount['type'] == 'free_trial' && $statusAccount['expired'])
-                || $statusAccount['type'] == 'bad_payer'
-            ) {
-                $updateValue = 1;
-            } else {
-                $updateValue = 0;
-            }
-            $menu = Mage::getSingleton('admin/config')->getAdminhtmlConfig()->getNode('menu/lengowtab/children');
-            foreach ($menu->children() as $child) {
-                $child->setNode('disabled', $updateValue);
-            }
-            // Clean config cache to valid configuration
-            Mage::app()->getCache()->clean(
-                Zend_Cache::CLEANING_MODE_MATCHING_TAG,
-                array(Mage_Adminhtml_Block_Page_Menu::CACHE_TAGS)
-            );
-        }
-    }
-
-    /**
      * Save Change on lengow data
      *
      * @param Varien_Event_Observer $observer Magento varien event observer instance

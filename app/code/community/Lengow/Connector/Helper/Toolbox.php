@@ -229,9 +229,12 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
             'message' => $this->_helper->getExportUrl($store->getId()),
         );
         $lastExportDate = $this->_configHelper->get('last_export', $store->getId());
+        $lastExportMessage = $lastExportDate === ''
+            ? $this->_helper->__('toolbox.screen.last_import_none')
+            : $this->_helper->getDateInCorrectFormat($lastExportDate, true);
         $checklist[] = array(
             'title' => $this->_helper->__('toolbox.screen.store_last_export'),
-            'message' => $this->_helper->getDateInCorrectFormat($lastExportDate, true),
+            'message' => $lastExportMessage,
         );
         return $this->_getContent($checklist);
     }

@@ -35,13 +35,14 @@ class Lengow_Connector_Adminhtml_Lengow_LogController extends Mage_Adminhtml_Con
 
     /**
      * Index Action
-     *
-     * @return Lengow_Connector_Adminhtml_Lengow_LogController
      */
     public function indexAction()
     {
-        $this->_initAction()->renderLayout();
-        return $this;
+        if (Mage::helper('lengow_connector/sync')->pluginIsBlocked()) {
+            $this->_redirect('adminhtml/lengow_home/index');
+        } else {
+            $this->_initAction()->renderLayout();
+        }
     }
 
     /**

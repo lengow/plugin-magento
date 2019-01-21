@@ -219,16 +219,6 @@
                 </lengow_connector>
             </updates>
         </layout>
-        <events>
-            <controller_action_layout_render_before>
-                <observers>
-                    <module_update_admin_menu>
-                        <class>Lengow_Connector_Model_Observer</class>
-                        <method>updateAdminMenu</method>
-                    </module_update_admin_menu>
-                </observers>
-            </controller_action_layout_render_before>
-        </events>
     </adminhtml>
     <crontab>
         <jobs>
