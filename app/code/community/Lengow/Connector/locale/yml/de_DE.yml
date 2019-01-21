@@ -349,6 +349,7 @@ de:
       marketplace_name_require: "marktplatzname ist erforderlich"
       arg_is_required: "Aktion nicht ausführbar: %{arg_name} ist erforderlich"
       action_not_created: "Aktion kann nicht erstellt werden: %{error_message}"
+      action_not_created_api: "Aktion kann nicht erstellt werden, da die Lengow-API nicht verfügbar ist. Bitte erneut versuchen"
       action_is_too_old: "bestellungsaktion ist zu alt. Bitte erneut versuchen"
     mail_report:
       subject_report_mail: "Lengow Importfehler"
