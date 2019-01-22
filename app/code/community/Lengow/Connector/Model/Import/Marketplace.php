@@ -431,12 +431,16 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
                         );
                         unset($orderAction);
                     } else {
-                        throw new Lengow_Connector_Model_Exception(
-                            $helper->setLogMessage(
+                        if ($result !== null) {
+                            $message = $helper->setLogMessage(
                                 'lengow_log.exception.action_not_created',
                                 array('error_message' => Mage::helper('core')->jsonEncode($result))
-                            )
-                        );
+                            );
+                        } else {
+                            // Generating a generic error message when the Lengow API is unavailable
+                            $message = $helper->setLogMessage('lengow_log.exception.action_not_created_api');
+                        }
+                        throw new Lengow_Connector_Model_Exception($message);
                     }
                 }
                 // Create log for call action

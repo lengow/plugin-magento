@@ -35,30 +35,31 @@ class Lengow_Connector_Adminhtml_Lengow_ProductController extends Mage_Adminhtml
 
     /**
      * Index Action
-     *
-     * @return mixed
      */
     public function indexAction()
     {
-        if ($this->getRequest()->getParam('isAjax')) {
-            $action = Mage::app()->getRequest()->getParam('action');
-            if ($action) {
-                switch ($action) {
-                    case 'change_option_selected':
-                        $state = Mage::app()->getRequest()->getParam('state');
-                        $storeId = Mage::app()->getRequest()->getParam('store_id');
-                        if ($state !== null) {
-                            Mage::helper('lengow_connector/config')->set('selection_enable', $state, $storeId);
-                            $this->getResponse()->setBody($state);
-                        }
-                        break;
-                }
-            }
+        if (Mage::helper('lengow_connector/sync')->pluginIsBlocked()) {
+            $this->_redirect('adminhtml/lengow_home/index');
         } else {
-            $this->_initAction()->renderLayout();
-            return $this;
+            if ($this->getRequest()->getParam('isAjax')) {
+                $action = Mage::app()->getRequest()->getParam('action');
+                if ($action) {
+                    switch ($action) {
+                        case 'change_option_selected':
+                            $state   = Mage::app()->getRequest()->getParam('state');
+                            $storeId = Mage::app()->getRequest()->getParam('store_id');
+                            if ($state !== null) {
+                                Mage::helper('lengow_connector/config')->set('selection_enable', $state, $storeId);
+                                Mage::app()->getCacheInstance()->cleanType('config');
+                                $this->getResponse()->setBody($state);
+                            }
+                            break;
+                    }
+                }
+            } else {
+                $this->_initAction()->renderLayout();
+            }
         }
-
     }
 
     /**
@@ -127,6 +128,6 @@ class Lengow_Connector_Adminhtml_Lengow_ProductController extends Mage_Adminhtml
      */
     protected function _isAllowed()
     {
-        return Mage::getSingleton('admin/session')->isAllowed('lengow_connector/product');
+        return Mage::getSingleton('admin/session')->isAllowed('lengowtab/product');
     }
 }

@@ -192,6 +192,11 @@ class Lengow_Connector_Model_Import extends Varien_Object
             $globalError = $this->_helper->setLogMessage('lengow_log.error.credentials_not_valid');
             $this->_helper->log('Import', $globalError, $this->_logOutput);
         } else {
+            if (!$this->_importOneOrder) {
+                $this->_importHelper->setImportInProcess();
+                // update last import date
+                $this->_importHelper->updateDateImport($this->_typeImport);
+            }
             // to activate lengow shipping method
             Mage::getSingleton('core/session')->setIsFromlengow(1);
             // check Lengow catalogs for order synchronisation
@@ -209,11 +214,6 @@ class Lengow_Connector_Model_Import extends Varien_Object
                     $this->_helper->setLogMessage('log.import.preprod_mode_active'),
                     $this->_logOutput
                 );
-            }
-            if (!$this->_importOneOrder) {
-                $this->_importHelper->setImportInProcess();
-                // update last import date
-                $this->_importHelper->updateDateImport($this->_typeImport);
             }
             // get all store for import
             $storeCollection = Mage::getResourceModel('core/store_collection')->addFieldToFilter('is_active', 1);
@@ -477,6 +477,8 @@ class Lengow_Connector_Model_Import extends Varien_Object
         $days = (!is_null($this->_days) ? $this->_days : $this->_configHelper->get('days', $store->getId()));
         $dateFrom = date('c', strtotime(date('Y-m-d') . ' -' . $days . 'days'));
         $dateTo = date('c');
+        // Convert order amount or not
+        $noCurrencyConversion = !(bool)$this->_configHelper->get('currency_conversion_enabled', $store->getId());
         if ($this->_importOneOrder) {
             $this->_helper->log(
                 'Import',
@@ -510,6 +512,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
                     array(
                         'marketplace_order_id' => $this->_marketplaceSku,
                         'marketplace' => $this->_marketplaceName,
+                        'no_currency_conversion' => $noCurrencyConversion,
                         'account_id' => $this->_accountId,
                         'page' => $page
                     ),
@@ -522,6 +525,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
                         'updated_from' => $dateFrom,
                         'updated_to' => $dateTo,
                         'catalog_ids' => implode(',', $this->_storeCatalogIds),
+                        'no_currency_conversion' => $noCurrencyConversion,
                         'account_id' => $this->_accountId,
                         'page' => $page
                     ),

@@ -415,7 +415,6 @@ class Lengow_Connector_Model_Export extends Varien_Object
         // Generate data
         foreach ($products as $p) {
             $datas = array();
-            $parent = false;
             $pi++;
             if ($totalProduct < $pi) {
                 $last = true;
@@ -493,16 +492,11 @@ class Lengow_Connector_Model_Export extends Varien_Object
                     // Exclude if parent is disabled
                     if ($parentInstance
                         && $parentInstance->getStatus() == Mage_Catalog_Model_Product_Status::STATUS_DISABLED
+                        && $this->_config['product_status'] == (string)Mage_Catalog_Model_Product_Status::STATUS_ENABLED
                     ) {
                         $countSimpleDisabled++;
                         if (method_exists($product, 'clearInstance')) {
                             $product->clearInstance();
-                            if ($parent != null) {
-                                $parent->clearInstance();
-                            }
-                            if ($parentInstance != null) {
-                                $parentInstance->clearInstance();
-                            }
                         }
                         unset($datas);
                         continue;
@@ -667,9 +661,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
             if (!$this->_stream && $this->_logOutput) {
                 if ($pi % 50 == 0) {
                     $countMessage = $this->_helper->__('log.export.count_product', array('product_count' => $pi));
-                    // These lines are required for plugin validation
-                    $function = create_function('$a', 'echo("$a");');
-                    $function('[Export] ' . $countMessage . '<br />');
+                    print_r('[Export] ' . $countMessage . '<br />');
                 }
                 flush();
             }
@@ -926,9 +918,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
             $this->_file->streamWrite($data);
             $this->_file->streamUnlock();
         } else {
-            // These lines are required for plugin validation
-            $function = create_function('$a', 'echo("$a");');
-            $function($data);
+            print_r($data);
             flush();
         }
         return true;

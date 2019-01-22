@@ -10,31 +10,26 @@
                     <title>menu.products</title>
                     <action>adminhtml/lengow_product</action>
                     <sort_order>1</sort_order>
-                    <disabled>1</disabled>
                 </product>
                 <order module="lengow_connector" translate="title">
                     <title>menu.orders</title>
                     <action>adminhtml/lengow_order</action>
                     <sort_order>2</sort_order>
-                    <disabled>1</disabled>
                 </order>
                 <help module="lengow_connector" translate="title">
                     <title>menu.help</title>
                     <action>adminhtml/lengow_help</action>
                     <sort_order>3</sort_order>
-                    <disabled>1</disabled>
                 </help>
                 <log module="lengow_connector" translate="title">
                     <title>menu.logs</title>
                     <action>adminhtml/lengow_log</action>
                     <sort_order>4</sort_order>
-                    <disabled>1</disabled>
                 </log>
                 <setting module="lengow_connector" translate="title">
                     <title>menu.settings</title>
                     <action>adminhtml/system_config/edit/section/lengow_global_options</action>
                     <sort_order>5</sort_order>
-                    <disabled>1</disabled>
                 </setting>
             </children>
         </lengowtab>
@@ -43,31 +38,43 @@
         <resources>
             <admin>
                 <children>
-                    <custom>
+                    <lengowtab>
                         <title>Lengow</title>
                         <children>
+                            <home>
+                                <title>Dashboard</title>
+                                <sort_order>1</sort_order>
+                            </home>
                             <product>
                                 <title>Products</title>
-                                <sort_order>1</sort_order>
+                                <sort_order>2</sort_order>
                             </product>
                             <order>
                                 <title>Orders</title>
-                                <sort_order>2</sort_order>
+                                <sort_order>3</sort_order>
                             </order>
                             <help>
                                 <title>Help</title>
-                                <sort_order>3</sort_order>
+                                <sort_order>4</sort_order>
                             </help>
                             <log>
                                 <title>Logs</title>
-                                <sort_order>4</sort_order>
+                                <sort_order>5</sort_order>
                             </log>
                             <setting>
                                 <title>Settings</title>
-                                <sort_order>5</sort_order>
+                                <sort_order>6</sort_order>
                             </setting>
+                            <toolbox>
+                                <title>Toolbox</title>
+                                <sort_order>7</sort_order>
+                            </toolbox>
+                            <legal>
+                                <title>Legal</title>
+                                <sort_order>8</sort_order>
+                            </legal>
                         </children>
-                    </custom>
+                    </lengowtab>
                 </children>
             </admin>
         </resources>

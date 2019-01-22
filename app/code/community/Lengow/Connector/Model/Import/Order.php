@@ -590,7 +590,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
                 $shipment->register();
                 $shipment->getOrder()->setIsInProcess(true);
                 // Add tracking information
-                if (!is_null($trackingNumber)) {
+                if (!is_null($trackingNumber) && $trackingNumber !== '') {
                     $track = Mage::getModel('sales/order_shipment_track')
                         ->setNumber($trackingNumber)
                         ->setCarrierCode($carrierName)
@@ -678,11 +678,16 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
                 if ($order->getState() == $this->getOrderState('new')) {
                     $this->toInvoice();
                 }
+                if (count($trackings) > 0) {
+                    $carrierName = !is_null($trackings[0]->carrier) ? (string)$trackings[0]->carrier : null;
+                    $carrierMethod = !is_null($trackings[0]->method) ? (string)$trackings[0]->method : null;
+                    $trackingNumber = !is_null($trackings[0]->number) ? (string)$trackings[0]->number : null;
+                }
                 $this->toShip(
                     $order,
-                    (count($trackings) > 0 ? (string)$trackings[0]->carrier : null),
-                    (count($trackings) > 0 ? (string)$trackings[0]->method : null),
-                    (count($trackings) > 0 ? (string)$trackings[0]->number : null)
+                    isset($carrierName) ? $carrierName : null,
+                    isset($carrierMethod) ? $carrierMethod : null,
+                    isset($trackingNumber) ? $trackingNumber : null
                 );
                 return 'Complete';
             } else {

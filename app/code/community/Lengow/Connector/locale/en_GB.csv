@@ -141,7 +141,7 @@ help.screen.need_some_help|Need some help?
 help.screen.contain_text_support_hour|We’ll do our best to get back to you during regular business hours (Monday to Friday – 9am to 6pm GMT+1).
 help.screen.find_answer|You can also find answers in our
 help.screen.link_magento_guide|Magento dedicated guide
-help.screen.knowledge_link_url|https://en.lengow.help/help/magento
+help.screen.knowledge_link_url|https://supportlengow.zendesk.com/hc/en-us/articles/360011978332
 legals.screen.simplified_company|Simplified limited liability company
 legals.screen.social_capital|Social capital:
 legals.screen.cnil_declaration|CNIL declaration:
@@ -274,6 +274,8 @@ lengow_setting.import_customer_group_title|Customer group
 lengow_setting.import_customer_group_comment|Choose a customer group for Lengow customer
 lengow_setting.import_default_shipping_method_title|Shipping method
 lengow_setting.import_default_shipping_method_comment|Choose a shipping method for imported orders
+lengow_setting.import_currency_conversion_enable_title|Convert the currency of your order
+lengow_setting.import_currency_conversion_enable_comment|All orders imported into Magento will be automatically converted into the currency you've selected in Lengow
 lengow_setting.import_report_mail_enable_title|I would like to be notified when there are issues regarding order importation
 lengow_setting.import_report_mail_address_title|Mail for the report email
 lengow_setting.import_report_mail_address_comment|Email separated by ;
@@ -317,6 +319,7 @@ lengow_log.exception.store_id_require|store ID is required
 lengow_log.exception.marketplace_name_require|marketplace name is required
 lengow_log.exception.arg_is_required|can't send action: %{arg_name} is required
 lengow_log.exception.action_not_created|can't create action: %{error_message}
+lengow_log.exception.action_not_created_api|can't create action because Lengow API is unavailable. Please retry
 lengow_log.exception.action_is_too_old|order action is too old. Please retry
 lengow_log.mail_report.subject_report_mail|Lengow imports errors
 lengow_log.mail_report.order|Order %{marketplace_sku}

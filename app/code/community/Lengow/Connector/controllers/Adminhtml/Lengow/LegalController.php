@@ -51,6 +51,6 @@ class Lengow_Connector_Adminhtml_Lengow_LegalController extends Mage_Adminhtml_C
      */
     protected function _isAllowed()
     {
-        return Mage::getSingleton('admin/session')->isAllowed('lengow_connector/legal');
+        return Mage::getSingleton('admin/session')->isAllowed('lengowtab/legal');
     }
 }

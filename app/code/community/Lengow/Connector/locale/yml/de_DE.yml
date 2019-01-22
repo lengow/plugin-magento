@@ -162,7 +162,7 @@ de:
       contain_text_support_hour: "Wir werden alles tun, um Sie während der normalen Geschäftszeiten (Montag - Freitag von 09:00 - 18:00 (MEZ+1)) zurückzurufen."
       find_answer: "Sie können Antworten auch in unserem... finden"
       link_magento_guide: "Magentos Begleithandbuch"
-      knowledge_link_url: "https://en.lengow.help/help/magento"
+      knowledge_link_url: "https://supportlengow.zendesk.com/hc/en-us/articles/360011978332"
   legals:
     screen:
       simplified_company: "Gesellschaft mit einfacher Haftungsbeschränkung"
@@ -301,6 +301,8 @@ de:
     import_customer_group_comment: "Kundengruppe für Lengowkunden auswählen"
     import_default_shipping_method_title: "Versandart"
     import_default_shipping_method_comment: " Versandart für importierte Bestellungen auswählen"
+    import_currency_conversion_enable_title: "Umrechnung der Währung Ihrer Bestellung"
+    import_currency_conversion_enable_comment: "Alle in Magento importierten Bestellungen werden in Lengow automatisch in die ausgewählte Währung umgerechnet"
     import_report_mail_enable_title: "Bei Problemen während des Importes der Bestellungen möchte ich benachrichtigt werden"
     import_report_mail_address_title: " Emailaddresse für den Email-Report"
     import_report_mail_address_comment: "Email getrennt durch ;"
@@ -347,6 +349,7 @@ de:
       marketplace_name_require: "marktplatzname ist erforderlich"
       arg_is_required: "Aktion nicht ausführbar: %{arg_name} ist erforderlich"
       action_not_created: "Aktion kann nicht erstellt werden: %{error_message}"
+      action_not_created_api: "Aktion kann nicht erstellt werden, da die Lengow-API nicht verfügbar ist. Bitte erneut versuchen"
       action_is_too_old: "bestellungsaktion ist zu alt. Bitte erneut versuchen"
     mail_report:
       subject_report_mail: "Lengow Importfehler"

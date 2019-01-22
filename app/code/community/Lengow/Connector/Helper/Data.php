@@ -83,6 +83,7 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getCronUrl($additionalParams = array())
     {
+        $defaultStoreId = Mage::app()->getWebsite(true)->getDefaultGroup()->getDefaultStoreId();
         $defaultParams = array(
             'token' => Mage::helper('lengow_connector/config')->getToken(),
             '_nosid' => true,
@@ -91,7 +92,7 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
         if (count($additionalParams) > 0) {
             $defaultParams = array_merge($defaultParams, $additionalParams);
         }
-        return Mage::getUrl('lengow/cron', $defaultParams);
+        return Mage::getModel('core/url')->setStore($defaultStoreId)->getUrl('lengow/cron', $defaultParams);
     }
 
     /**
@@ -114,9 +115,7 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
         $finalMessage .= '' . (empty($marketplaceSku) ? '' : 'order ' . $marketplaceSku . ' : ');
         $finalMessage .= $decodedMessage;
         if ($display) {
-            // These lines are required for plugin validation
-            $function = create_function('$a', 'echo("$a");');
-            $function($finalMessage . '<br />');
+            print_r($finalMessage . '<br />');
             flush();
         }
         $log = Mage::getModel('lengow/log');
