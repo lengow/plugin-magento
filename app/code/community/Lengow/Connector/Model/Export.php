@@ -799,6 +799,10 @@ class Lengow_Connector_Model_Export extends Varien_Object
         $productStatus = $this->_config['product_status'];
         $outOfStock = $this->_config['out_of_stock'];
         $selection = $this->_config['selection'];
+        // Disable flat catalog on the fly
+        $flatProcess = Mage::helper('catalog/product_flat')->getProcess();
+        $flatProcessStatus = $flatProcess->getStatus();
+        $flatProcess->setStatus(Mage_Index_Model_Process::STATUS_RUNNING);
         // Search product to export
         $productCollection = Mage::getModel('catalog/product')
             ->getCollection()
@@ -840,6 +844,8 @@ class Lengow_Connector_Model_Export extends Varien_Object
         );
         // Filter to hide products
         Mage::getSingleton('catalog/product_status')->addVisibleFilterToCollection($productCollection);
+        // Enable flat catalog on the fly
+        $flatProcess->setStatus($flatProcessStatus);
         return $productCollection;
     }
 
@@ -850,6 +856,10 @@ class Lengow_Connector_Model_Export extends Varien_Object
      **/
     public function getTotalProduct()
     {
+        // Disable flat catalog on the fly
+        $flatProcess = Mage::helper('catalog/product_flat')->getProcess();
+        $flatProcessStatus = $flatProcess->getStatus();
+        $flatProcess->setStatus(Mage_Index_Model_Process::STATUS_RUNNING);
         // Search product to export
         $productCollection = Mage::getModel('catalog/product')
             ->getCollection()
@@ -866,6 +876,8 @@ class Lengow_Connector_Model_Export extends Varien_Object
             ->addAttributeToFilter('type_id', array('nlike' => 'bundle'));
         $productCollection = clone $productCollection;
         $productCollection->getSelect()->columns('COUNT(DISTINCT e.entity_id) As total');
+        // Enable flat catalog on the fly
+        $flatProcess->setStatus($flatProcessStatus);
         return (int)$productCollection->getFirstItem()->getTotal();
     }
 
