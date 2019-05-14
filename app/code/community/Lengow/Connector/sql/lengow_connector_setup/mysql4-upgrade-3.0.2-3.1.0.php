@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2018 Lengow SAS
+ * Copyright 2019 Lengow SAS
  *
  * NOTICE OF LICENSE
  *
