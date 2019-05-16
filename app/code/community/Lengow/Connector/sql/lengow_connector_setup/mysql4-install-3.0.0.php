@@ -1010,6 +1010,7 @@ $deleteSettings = array(
 // Get Store collection
 $storeCollection = Mage::getResourceModel('core/store_collection')->addFieldToFilter('is_active', 1);
 $authorisedIp = Mage::getStoreConfig('lenexport/performances/valid_ip');
+$trackerType = Mage::getStoreConfig('lentracker/tag/type');
 // Update settings
 foreach ($newSettings as $setting) {
     $globalValue = Mage::getStoreConfig($setting['old_path']);
@@ -1057,6 +1058,14 @@ if (!is_null($authorisedIp) && strlen($authorisedIp) > 0) {
 }
 
 // *********************************************************
+//      Active Lengow tracker if the old tracker was used
+// *********************************************************
+
+if (!is_null($trackerType) && in_array($trackerType, array('simpletag', 'tagcapsule'))) {
+    Mage::helper('lengow_connector/config')->set('tracking_enable', 1);
+}
+
+// *********************************************************
 //          Order Migration (only for processing)
 // *********************************************************
 
@@ -1064,6 +1073,14 @@ Mage::getModel('lengow/import_order')->migrateOldOrder();
 $seeMigrateBlock =  Mage::helper('lengow_connector/config')->get('see_migrate_block');
 if (is_null($seeMigrateBlock)) {
     Mage::helper('lengow_connector/config')->set('see_migrate_block', 1);
+}
+
+$version = '3.0.0';
+$config = Mage::helper('lengow_connector/config');
+$installedVersion = $config->get('installed_version');
+
+if (version_compare($installedVersion, $version, '<')) {
+    $config->set('installed_version', $version);
 }
 
 // *********************************************************

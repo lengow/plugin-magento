@@ -109,14 +109,28 @@
                                 <global_authorized_ip_enable>1</global_authorized_ip_enable>
                             </depends>
                         </global_authorized_ip>
-                        <global_tracking_id>
-                            <label>lengow_setting.global_tracking_id_label</label>
+                        <global_tracking_enable>
+                            <label>lengow_setting.global_tracking_enable_label</label>
+                            <comment>lengow_setting.global_tracking_enable_comment</comment>
                             <frontend_type>select</frontend_type>
                             <sort_order>30</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                        </global_tracking_enable>
+                        <global_tracking_id>
+                            <label>lengow_setting.global_tracking_id_label</label>
+                            <comment>lengow_setting.global_tracking_id_comment</comment>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
                             <source_model>Lengow_Connector_Model_System_Config_Source_Tracking</source_model>
+                            <depends>
+                                <global_tracking_enable>1</global_tracking_enable>
+                            </depends>
                         </global_tracking_id>
                     </fields>
                 </advanced>

@@ -2,6 +2,7 @@
 Version 3.1.0
 =============================================================
 
+    - Feature: Disabling the Lengow tracker and changing the product ID
     - Bugfix: Recovery of products to be exported only with the EAV data model
 
 =============================================================

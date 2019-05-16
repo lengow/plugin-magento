@@ -56,6 +56,11 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
             'store' => true,
             'no_cache' => true,
         ),
+        'tracking_enable' => array(
+            'path' => 'lengow_global_options/advanced/global_tracking_enable',
+            'global' => true,
+            'no_cache' => false,
+        ),
         'tracking_id' => array(
             'path' => 'lengow_global_options/advanced/global_tracking_id',
             'global' => true,
@@ -93,6 +98,11 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
         ),
         'last_option_cms_update' => array(
             'path' => 'lengow_global_options/advanced/last_option_cms_update',
+            'export' => false,
+            'no_cache' => true,
+        ),
+        'installed_version' => array(
+            'path' => 'lengow_global_options/advanced/installed_version',
             'export' => false,
             'no_cache' => true,
         ),
