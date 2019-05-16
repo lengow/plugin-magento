@@ -268,18 +268,15 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
         }
         $result = Mage::getModel('lengow/connector')->queryApi('get', '/v3.0/plans');
         if (isset($result->isFreeTrial)) {
-            $status = array();
-            $status['type'] = $result->isFreeTrial ? 'free_trial' : '';
-            $status['day'] = (int)$result->leftDaysBeforeExpired;
-            $status['expired'] = (bool)$result->isExpired;
-            if ($status['day'] < 0) {
-                $status['day'] = 0;
-            }
-            if ($status) {
-                $this->_configHelper->set('account_status', Mage::helper('core')->jsonEncode($status));
-                $this->_configHelper->set('last_status_update', date('Y-m-d H:i:s'));
-                return $status;
-            }
+            $status = array(
+                'type' => $result->isFreeTrial ? 'free_trial' : '',
+                'day' => (int)$result->leftDaysBeforeExpired < 0 ? 0 : (int)$result->leftDaysBeforeExpired,
+                'expired' => (bool)$result->isExpired,
+                'legacy' => $result->accountVersion === 'v2' ? true : false
+            );
+            $this->_configHelper->set('account_status', Mage::helper('core')->jsonEncode($status));
+            $this->_configHelper->set('last_status_update', date('Y-m-d H:i:s'));
+            return $status;
         } else {
             if ($this->_configHelper->get('last_status_update')) {
                 return json_decode($this->_configHelper->get('account_status'), true);
