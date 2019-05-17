@@ -988,6 +988,7 @@ $deleteSettings = array(
     'lentracker/general/api_key',
     'lentracker/tag/type',
     'lentracker/hidden/last_synchro',
+    'lentracker/hidden/last_synchro_v3',
     'lenexport/global/active_store',
     'lenexport/global/autoexport_newproduct',
     'lenexport/data/format',

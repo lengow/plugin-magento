@@ -43,6 +43,11 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
     protected $_configHelper;
 
     /**
+     * @var string marketplace file name
+     */
+    protected $_marketplaceJson = 'marketplaces.json';
+
+    /**
      * Construct
      */
     public function __construct()
@@ -348,5 +353,54 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
         $this->_configHelper->set('order_statistic', Mage::helper('core')->jsonEncode($return));
         $this->_configHelper->set('last_statistic_update', date('Y-m-d H:i:s'));
         return $return;
+    }
+
+    /**
+     * Get marketplace data
+     *
+     * @param boolean $force force cache update
+     *
+     * @return array|false
+     */
+    public function getMarketplaces($force = false)
+    {
+        $folderPath = Mage::getModuleDir('etc', 'Lengow_Connector');
+        $filePath = $folderPath . DS . $this->_marketplaceJson;
+        if (!$force) {
+            $updatedAt = $this->_configHelper->get('last_marketplace_update');
+            if (!is_null($updatedAt)
+                && (time() - strtotime($updatedAt)) < $this->_cacheTime
+                && file_exists($filePath)
+            ) {
+                // Recovering data with the marketplaces.json file
+                $marketplacesData = file_get_contents($filePath);
+                if ($marketplacesData) {
+                    return json_decode($marketplacesData);
+                }
+            }
+        }
+        // Recovering data with the API
+        $result = Mage::getModel('lengow/connector')->queryApi('get', '/v3.0/marketplaces');
+        if ($result && is_object($result) && !isset($result->error)) {
+            // Updated marketplaces.json file
+            $file = new Varien_Io_File();
+            $file->cd($folderPath);
+            $file->streamOpen($this->_marketplaceJson, 'w+');
+            $file->streamlock();
+            $file->streamWrite(json_encode($result));
+            $file->streamUnlock();
+            $file->streamClose();
+            $this->_configHelper->set('last_marketplace_update', date('Y-m-d H:i:s'));
+            return $result;
+        } else {
+            // If the API does not respond, use marketplaces.json if it exists
+            if (file_exists($filePath)) {
+                $marketplacesData = file_get_contents($filePath);
+                if ($marketplacesData) {
+                    return json_decode($marketplacesData);
+                }
+            }
+        }
+        return false;
     }
 }
