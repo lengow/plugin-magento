@@ -23,18 +23,26 @@
 class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
 {
     /**
-     * @var integer cache time for statistic, account status and cms options
+     * @var array cache time for statistic, account status, cms options and marketplace synchronisation
      */
-    protected $_cacheTime = 18000;
+    protected $_cacheTimes = array(
+        'cms_option' => 86400,
+        'status_account' => 86400,
+        'statistic' => 43200,
+        'marketplace' => 21600,
+    );
 
     /**
      * @var array valid sync actions
      */
     protected $_syncActions = array(
         'order',
+        'cms_option',
+        'status_account',
+        'statistic',
+        'marketplace',
         'action',
         'catalog',
-        'option'
     );
 
     /**
@@ -242,7 +250,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
         }
         if (!$force) {
             $updatedAt = $this->_configHelper->get('last_option_cms_update');
-            if (!is_null($updatedAt) && (time() - strtotime($updatedAt)) < $this->_cacheTime) {
+            if (!is_null($updatedAt) && (time() - strtotime($updatedAt)) < $this->_cacheTimes['cms_option']) {
                 return false;
             }
         }
@@ -267,7 +275,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
         }
         if (!$force) {
             $updatedAt = $this->_configHelper->get('last_status_update');
-            if (!is_null($updatedAt) && (time() - strtotime($updatedAt)) < $this->_cacheTime) {
+            if (!is_null($updatedAt) && (time() - strtotime($updatedAt)) < $this->_cacheTimes['status_account']) {
                 return json_decode($this->_configHelper->get('account_status'), true);
             }
         }
@@ -301,7 +309,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
     {
         if (!$force) {
             $updatedAt = $this->_configHelper->get('last_statistic_update');
-            if (!is_null($updatedAt) && (time() - strtotime($updatedAt)) < $this->_cacheTime) {
+            if (!is_null($updatedAt) && (time() - strtotime($updatedAt)) < $this->_cacheTimes['statistic']) {
                 return json_decode($this->_configHelper->get('order_statistic'), true);
             }
         }
@@ -369,7 +377,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
         if (!$force) {
             $updatedAt = $this->_configHelper->get('last_marketplace_update');
             if (!is_null($updatedAt)
-                && (time() - strtotime($updatedAt)) < $this->_cacheTime
+                && (time() - strtotime($updatedAt)) < $this->_cacheTimes['marketplace']
                 && file_exists($filePath)
             ) {
                 // Recovering data with the marketplaces.json file
