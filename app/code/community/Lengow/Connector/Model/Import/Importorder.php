@@ -342,7 +342,8 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
                 'carrier_id_relay' => $this->_relayId,
                 'sent_marketplace' => $this->_shippedByMp,
                 'delivery_country_iso' => $this->_packageData->delivery->common_country_iso_a2,
-                'order_lengow_state' => $this->_orderStateLengow
+                'order_lengow_state' => $this->_orderStateLengow,
+                'extra' => Mage::helper('core')->jsonEncode($this->_orderData),
             )
         );
         // try to import order
@@ -363,7 +364,6 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
                         array(
                             'is_in_error' => 0,
                             'order_process_state' => 2,
-                            'extra' => Mage::helper('core')->jsonEncode($this->_orderData)
                         )
                     );
                     return false;
@@ -381,7 +381,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
             // Create Magento Quote
             $quote = $this->_createQuote($customer);
             // Create Magento order
-            $order = $this->_makeOrder($quote);
+            $order = $this->_makeOrder($quote, $orderLengow);
             // If order is successfully imported
             if ($order) {
                 // Save order line id in lengow_order_line table
@@ -422,23 +422,6 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
                         $this->_marketplaceSku
                     );
                 }
-                // Update Lengow order record
-                $orderLengow->updateOrder(
-                    array(
-                        'order_id' => $order->getId(),
-                        'order_sku' => $order->getIncrementId(),
-                        'order_process_state' => $this->_modelOrder->getOrderProcessState($this->_orderStateLengow),
-                        'extra' => Mage::helper('core')->jsonEncode($this->_orderData),
-                        'order_lengow_state' => $this->_orderStateLengow,
-                        'is_in_error' => 0
-                    )
-                );
-                $this->_helper->log(
-                    'Import',
-                    $this->_helper->setLogMessage('log.import.lengow_order_updated'),
-                    $this->_logOutput,
-                    $this->_marketplaceSku
-                );
             } else {
                 throw new Lengow_Connector_Model_Exception(
                     $this->_helper->setLogMessage('lengow_log.exception.order_is_empty')
@@ -464,14 +447,16 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
             $errorMessage = '[Magento error]: "' . $e->getMessage() . '" ' . $e->getFile() . ' line ' . $e->getLine();
         }
         if (isset($errorMessage)) {
-            $orderError = Mage::getModel('lengow/import_ordererror');
-            $orderError->createOrderError(
-                array(
-                    'order_lengow_id' => $this->_orderLengowId,
-                    'message' => $errorMessage,
-                    'type' => 'import'
-                )
-            );
+            if ($orderLengow->getData('is_in_error') == 1) {
+                $orderError = Mage::getModel('lengow/import_ordererror');
+                $orderError->createOrderError(
+                    array(
+                        'order_lengow_id' => $this->_orderLengowId,
+                        'message' => $errorMessage,
+                        'type' => 'import'
+                    )
+                );
+            }
             $decodedMessage = $this->_helper->decodeLogMessage($errorMessage, 'en_GB');
             $this->_helper->log(
                 'Import',
@@ -913,12 +898,13 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
      * Create order
      *
      * @param Lengow_Connector_Model_Import_Quote $quote Lengow quote instance
+     * @param Lengow_Connector_Model_Import_Order $orderLengow Lengow order instance
      *
      * @throws Lengow_Connector_Model_Exception order failed with quote
      *
      * @return Mage_Sales_Model_Order
      */
-    protected function _makeOrder(Lengow_Connector_Model_Import_Quote $quote)
+    protected function _makeOrder(Lengow_Connector_Model_Import_Quote $quote, $orderLengow)
     {
         $additionalDatas = array(
             'from_lengow' => true,
@@ -955,6 +941,22 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
         $order->setCreatedAt(Mage::getModel('core/date')->date('Y-m-d H:i:s', strtotime($orderDate)));
         $order->setUpdatedAt(Mage::getModel('core/date')->date('Y-m-d H:i:s', strtotime($orderDate)));
         $order->save();
+        // Update lengow_order table directly after creating the Magento order
+        $orderLengow->updateOrder(
+            array(
+                'order_id' => $order->getId(),
+                'order_sku' => $order->getIncrementId(),
+                'order_process_state' => $this->_modelOrder->getOrderProcessState($this->_orderStateLengow),
+                'order_lengow_state' => $this->_orderStateLengow,
+                'is_in_error' => 0
+            )
+        );
+        $this->_helper->log(
+            'Import',
+            $this->_helper->setLogMessage('log.import.lengow_order_updated'),
+            $this->_logOutput,
+            $this->_marketplaceSku
+        );
         // Re-adjust cents for total and shipping cost
         // Conversion Tax Include > Tax Exclude > Tax Include maybe make 0.01 amount error
         $priceIncludeTax = Mage::helper('tax')->priceIncludesTax($quote->getStore());

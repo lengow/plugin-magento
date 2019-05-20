@@ -8,6 +8,7 @@ Version 3.1.0
     - Bugfix: Recovery of products to be exported only with the EAV data model
     - Bugfix: [action] Management of orders waiting to return from the marketplace
     - Bugfix: [export] Caching legacy export data
+    - Bugfix: Update of the lengow_order table directly after the creation of the Magento order
 
 =============================================================
 Version 3.0.2
