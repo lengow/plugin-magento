@@ -241,7 +241,10 @@ lengow_setting.global_store_enable_comment|Verbindung zwischen Lengow und Shop a
 lengow_setting.global_catalog_id_title|Katalog-ID
 lengow_setting.global_catalog_id_comment|Ihre Katalog-ID für den Import von Bestellungen.<br />Getrennt durch ' ; '
 lengow_setting.global_advanced_setting|Alle erweiterten Einstellungen
+lengow_setting.global_tracking_enable_label|Aktivieren Sie den Lengow-Tracker
+lengow_setting.global_tracking_enable_comment|Mit diesem Tracker können Sie die auf Ihrer Website generierten Bestellstatistiken direkt in Lengow abrufen.
 lengow_setting.global_tracking_id_label|Tracker Product ID
+lengow_setting.global_tracking_id_comment|Der Name der eindeutigen Kennung, die in Lengow angegeben ist
 lengow_setting.global_authorized_ip_enable_label|Aktivieren Sie die Autorisierung über IP
 lengow_setting.global_authorized_ip_enable_comment|Aktivieren Sie diese Option, wenn Sie Ihren Export über IP sichern wollen. Standartmäßig ist ihr Export über einen Sicherheitsschlüssel gespeichert.
 lengow_setting.global_authorized_ip_label|IP authorisiert

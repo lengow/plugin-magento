@@ -1,4 +1,16 @@
 =============================================================
+Version 3.1.0
+=============================================================
+
+    - Feature: Disabling the Lengow tracker and changing the product ID
+    - Feature: Registering marketplace data in a json file
+    - Feature: Optimization of API calls between Magento and Lengow
+    - Bugfix: Recovery of products to be exported only with the EAV data model
+    - Bugfix: [action] Management of orders waiting to return from the marketplace
+    - Bugfix: [export] Caching legacy export data
+    - Bugfix: Update of the lengow_order table directly after the creation of the Magento order
+
+=============================================================
 Version 3.0.2
 =============================================================
 
@@ -50,10 +62,22 @@ Version 3.0.0
 	- Feature: Add new actions: re-import, resend and resync orders
 
 =============================================================
+Version 2.2.8
+=============================================================
+
+    - Feature: Incrementing the version for the Magento Marketplace
+
+=============================================================
 Version 2.2.7
 =============================================================
 
+    - Feature: Registering marketplace data in a json file
+    - Feature: [import] Add secondary phone number to addresses when the primary phone is empty
     - Bugfix: [export] Load category ids when product data is empty
+    - Bugfix: [action] Sending an action in v3 only for orders imported in v3
+    - Bugfix: [export] Get correct promotion dates for the latest versions of Magento
+    - Bugfix: [import] Product search on merchant_product_id then marketplace_product_id
+    - Bugfix: [import] Enhanced security to avoid duplicate orders following v2 / v3 migration
 
 =============================================================
 Version 2.2.6

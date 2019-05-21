@@ -61,21 +61,16 @@ class Lengow_Connector_Model_Connector
     protected $_token;
 
     /**
-     * @var integer ID account
-     */
-    protected $_accountId;
-
-    /**
      * @var array lengow url for curl timeout
      */
     protected $_lengowUrls = array(
-        '/v3.0/orders' => 15,
-        '/v3.0/orders/moi/' => 5,
-        '/v3.0/orders/actions/' => 10,
-        '/v3.0/marketplaces' => 10,
-        '/v3.0/plans' => 3,
+        '/v3.0/orders' => 20,
+        '/v3.0/orders/moi/' => 10,
+        '/v3.0/orders/actions/' => 15,
+        '/v3.0/marketplaces' => 15,
+        '/v3.0/plans' => 5,
         '/v3.0/stats' => 3,
-        '/v3.1/cms' => 3,
+        '/v3.1/cms' => 5,
     );
 
     /**
@@ -109,7 +104,6 @@ class Lengow_Connector_Model_Connector
         );
         if (isset($data['token'])) {
             $this->_token = $data['token'];
-            $this->_accountId = $data['account_id'];
             return $data;
         } else {
             return false;
@@ -131,9 +125,6 @@ class Lengow_Connector_Model_Connector
     {
         try {
             $this->connect();
-            if (!array_key_exists('account_id', $array)) {
-                $array['account_id'] = $this->_accountId;
-            }
             $data = $this->_callAction($method, $array, $type, $format, $body);
         } catch (Lengow_Connector_Model_Exception $e) {
             return $e->getMessage();
@@ -315,7 +306,7 @@ class Lengow_Connector_Model_Connector
         $url = $url['scheme'] . '://' . $url['host'] . $url['path'];
         switch ($type) {
             case 'GET':
-                $opts[CURLOPT_URL] = $url . '?' . http_build_query($args);
+                $opts[CURLOPT_URL] = $url . (!empty($args) ? '?' . http_build_query($args) : '');
                 $helper->log(
                     'Connector',
                     $helper->setLogMessage('log.connector.call_api', array('curl_url' => $opts[CURLOPT_URL]))

@@ -290,6 +290,12 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
                 && isset($apiActions[$action['action_id']]->errors)
             ) {
                 if ($apiActions[$action['action_id']]->queued == false) {
+                    // Order action is waiting to return from the marketplace
+                    if ($apiActions[$action['action_id']]->processed == false
+                        && empty($apiActions[$action['action_id']]->errors)
+                    ) {
+                        continue;
+                    }
                     // Finish action in lengow_action table
                     $lengowAction = Mage::getModel('lengow/import_action')->load($action['id']);
                     $lengowAction->updateAction(array('state' => self::STATE_FINISH));
@@ -306,7 +312,9 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
                         $processStateFinish = $orderLengow->getOrderProcessState('closed');
                         if ((int)$orderLengow->getData('order_process_state') != $processStateFinish) {
                             // If action is accepted -> close order and finish all order actions
-                            if ($apiActions[$action['action_id']]->processed == true) {
+                            if ($apiActions[$action['action_id']]->processed == true
+                                && empty($apiActions[$action['action_id']]->errors)
+                            ) {
                                 $orderLengow->updateOrder(
                                     array('order_process_state' => $processStateFinish)
                                 );

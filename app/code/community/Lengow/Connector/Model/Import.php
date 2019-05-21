@@ -200,7 +200,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
             // to activate lengow shipping method
             Mage::getSingleton('core/session')->setIsFromlengow(1);
             // check Lengow catalogs for order synchronisation
-            if (!$this->_preprodMode && !$this->_importOneOrder && $this->_typeImport === 'manual') {
+            if (!$this->_importOneOrder && $this->_typeImport === 'manual') {
                 Mage::helper('lengow_connector/sync')->syncCatalog();
             }
             $this->_helper->log(

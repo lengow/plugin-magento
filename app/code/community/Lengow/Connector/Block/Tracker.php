@@ -30,7 +30,9 @@ class Lengow_Connector_Block_Tracker extends Mage_Core_Block_Template
     protected function _prepareLayout()
     {
         parent::_prepareLayout();
-        $this->setChild('tracker', $this->getLayout()->createBlock('lengow/tag_simple', 'simple_tag'));
+        if ((bool)Mage::helper('lengow_connector/config')->get('tracking_enable')) {
+            $this->setChild('tracker', $this->getLayout()->createBlock('lengow/tag_simple', 'simple_tag'));
+        }
         return $this;
     }
 

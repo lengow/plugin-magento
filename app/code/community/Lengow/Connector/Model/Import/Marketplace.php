@@ -41,7 +41,7 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
     /**
      * @var array all marketplaces allowed for an account ID
      */
-    public static $marketplaces = array();
+    public static $marketplaces = false;
 
     /**
      * @var mixed the current marketplace
@@ -169,9 +169,8 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
      */
     public function loadApiMarketplace()
     {
-        if (count(self::$marketplaces) === 0) {
-            $connector = Mage::getModel('lengow/connector');
-            self::$marketplaces = $connector->queryApi('get', '/v3.0/marketplaces');
+        if (!self::$marketplaces) {
+            self::$marketplaces =  Mage::helper('lengow_connector/sync')->getMarketplaces();
         }
     }
 
