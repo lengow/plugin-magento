@@ -623,13 +623,12 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
      *
      * @param Mage_Sales_Model_Order $order Magento order instance
      * @param string $orderStateLengow lengow order status
-     * @param mixed $orderData order data
      * @param mixed $packageData package data
      * @param mixed $orderLengowId lengow order id or false
      *
      * @return string|false
      */
-    public function updateState($order, $orderStateLengow, $orderData, $packageData, $orderLengowId)
+    public function updateState($order, $orderStateLengow, $packageData, $orderLengowId)
     {
         // Finish actions if lengow order is shipped, closed, cancel or refunded
         $orderProcessState = $this->getOrderProcessState($orderStateLengow);
@@ -646,7 +645,6 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
             $params = array();
             if ($orderLengow->getData('order_lengow_state') != $orderStateLengow) {
                 $params['order_lengow_state'] = $orderStateLengow;
-                $params['extra'] = Mage::helper('core')->jsonEncode($orderData);
                 $params['tracking'] = count($trackings) > 0 ? (string)$trackings[0]->number : null;
             }
             if ($orderProcessState == self::PROCESS_STATE_FINISH) {

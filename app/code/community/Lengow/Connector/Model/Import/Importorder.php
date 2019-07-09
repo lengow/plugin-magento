@@ -541,7 +541,6 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
             $orderUpdated = $this->_modelOrder->updateState(
                 $order,
                 $this->_orderStateLengow,
-                $this->_orderData,
                 $this->_packageData,
                 $orderLengowId
             );
