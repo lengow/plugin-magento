@@ -111,6 +111,11 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
             'export' => false,
             'no_cache' => true,
         ),
+        'last_setting_update' => array(
+            'path' => 'lengow_global_options/advanced/last_setting_update',
+            'global' => true,
+            'no_cache' => true,
+        ),
         'selection_enable' => array(
             'path' => 'lengow_export_options/simple/export_selection_enable',
             'store' => true,
@@ -549,6 +554,7 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
             return false;
         }
         try {
+            /** @var Lengow_Connector_Model_Connector $connector */
             $connector = Mage::getModel('lengow/connector');
             $connector->init($accessToken, $secretToken);
             $result = $connector->connect();

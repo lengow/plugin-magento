@@ -98,7 +98,7 @@ class Lengow_Connector_Model_Connector
             '/access/get_token',
             array(
                 'access_token' => $this->_accessToken,
-                'secret' => $this->_secret
+                'secret' => $this->_secret,
             ),
             'POST'
         );
@@ -274,12 +274,13 @@ class Lengow_Connector_Model_Connector
      *
      * @throws Lengow_Connector_Model_Exception get Curl error
      *
-     * @return array
+     * @return mixed
      */
     protected function _makeRequest($type, $url, $args, $token, $body = '')
     {
         // Define CURLE_OPERATION_TIMEDOUT for old php versions
         defined('CURLE_OPERATION_TIMEDOUT') || define('CURLE_OPERATION_TIMEDOUT', CURLE_OPERATION_TIMEOUTED);
+        /** @var Lengow_Connector_Helper_Data $helper */
         $helper = Mage::helper('lengow_connector/data');
         $ch = curl_init();
         // Options
@@ -318,7 +319,7 @@ class Lengow_Connector_Model_Connector
                         $opts[CURLOPT_HTTPHEADER],
                         array(
                             'Content-Type: application/json',
-                            'Content-Length: ' . strlen($body)
+                            'Content-Length: ' . strlen($body),
                         )
                     );
                 }
@@ -362,7 +363,7 @@ class Lengow_Connector_Model_Connector
                 'lengow_log.exception.error_curl',
                 array(
                     'error_code' => $errorNumber,
-                    'error_message' => $errorText
+                    'error_message' => $errorText,
                 )
             );
             $errorMessage = $helper->setLogMessage(

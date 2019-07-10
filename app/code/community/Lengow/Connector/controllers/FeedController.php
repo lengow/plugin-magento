@@ -91,7 +91,7 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action
             // translation now works
             Mage::app()->getTranslator()->init('frontend', true);
         }
-        $dataHelper = Mage::helper('lengow_connector');
+        $helper = Mage::helper('lengow_connector');
         $securityHelper = Mage::helper('lengow_connector/security');
         if ($securityHelper->checkWebserviceAccess($token, $storeId)) {
             try {
@@ -131,20 +131,20 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action
             } catch (Exception $e) {
                 $errorMessage = '[Magento error] "' . $e->getMessage()
                     . '" ' . $e->getFile() . ' line ' . $e->getLine();
-                $dataHelper->log('Export', $errorMessage);
+                $helper->log('Export', $errorMessage);
                 $this->getResponse()->setHeader('HTTP/1.1', '500 Internal Server Error');
                 $this->getResponse()->setBody($errorMessage);
             }
         } else {
             if ((bool)Mage::helper('lengow_connector/config')->get('ip_enable')) {
-                $errorMessage = $dataHelper->__(
+                $errorMessage = $helper->__(
                     'log.export.unauthorised_ip',
                     array('ip' => $securityHelper->getRemoteIp())
                 );
             } else {
                 $errorMessage =  strlen($token) > 0
-                    ? $dataHelper->__('log.export.unauthorised_token', array('token' => $token))
-                    : $dataHelper->__('log.export.empty_token');
+                    ? $helper->__('log.export.unauthorised_token', array('token' => $token))
+                    : $helper->__('log.export.empty_token');
             }
             $this->getResponse()->setHeader('HTTP/1.1', '403 Forbidden');
             $this->getResponse()->setBody($errorMessage);

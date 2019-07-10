@@ -33,17 +33,22 @@ class Lengow_Connector_CronController extends Mage_Core_Controller_Front_Action
          * integer days                Import period
          * integer limit               Number of orders to import
          * integer store_id            Store id to import
-         * string  $marketplace_sku    Lengow marketplace order id to import
+         * string  marketplace_sku     Lengow marketplace order id to import
          * string  marketplace_name    Lengow marketplace name to import
+         * string  created_from        import of orders since
+         * string  created_to          import of orders until
          * integer delivery_address_id Lengow delivery address id to import
          * boolean preprod_mode        Activate preprod mode
          * boolean log_output          See logs (1) or not (0)
          * boolean get_sync            See synchronisation parameters in json format (1) or not (0)
          */
         $token = $this->getRequest()->getParam('token');
+        /** @var Lengow_Connector_Helper_Security $securityHelper */
         $securityHelper = Mage::helper('lengow_connector/security');
-        $dataHelper = Mage::helper('lengow_connector');
+        /** @var Lengow_Connector_Helper_Data $helper */
+        $helper = Mage::helper('lengow_connector');
         if ($securityHelper->checkWebserviceAccess($token)) {
+            /** @var Lengow_Connector_Helper_Sync $syncHelper */
             $syncHelper = Mage::helper('lengow_connector/sync');
             // get all store datas for synchronisation with Lengow
             if ($this->getRequest()->getParam('get_sync') == 1) {
@@ -74,6 +79,12 @@ class Lengow_Connector_CronController extends Mage_Core_Controller_Front_Action
                     if (!is_null($this->getRequest()->getParam('days'))) {
                         $params['days'] = (int)$this->getRequest()->getParam('days');
                     }
+                    if (!is_null($this->getRequest()->getParam('created_from'))) {
+                        $params['created_from'] = (string)$this->getRequest()->getParam('created_from');
+                    }
+                    if (!is_null($this->getRequest()->getParam('created_to'))) {
+                        $params['created_to'] = (string)$this->getRequest()->getParam('created_to');
+                    }
                     if (!is_null($this->getRequest()->getParam('limit'))) {
                         $params['limit'] = (int)$this->getRequest()->getParam('limit');
                     }
@@ -91,11 +102,13 @@ class Lengow_Connector_CronController extends Mage_Core_Controller_Front_Action
                     }
                     $params['type'] = 'cron';
                     // Import orders
+                    /** @var Lengow_Connector_Model_Import $import */
                     $import = Mage::getModel('lengow/import', $params);
                     $import->exec();
                 }
                 // sync action between Lengow and Magento
                 if (is_null($sync) || $sync === 'action') {
+                    /** @var Lengow_Connector_Model_Import_Action $action */
                     $action = Mage::getModel('lengow/import_action');
                     $action->checkFinishAction();
                     $action->checkOldAction();
@@ -121,20 +134,20 @@ class Lengow_Connector_CronController extends Mage_Core_Controller_Front_Action
                 if ($sync && !$syncHelper->isSyncAction($sync)) {
                     $this->getResponse()->setHeader('HTTP/1.1', '400 Bad Request');
                     $this->getResponse()->setBody(
-                        $dataHelper->__('log.import.not_valid_action', array('action' => $sync))
+                        $helper->__('log.import.not_valid_action', array('action' => $sync))
                     );
                 }
             }
         } else {
             if ((bool)Mage::helper('lengow_connector/config')->get('ip_enable')) {
-                $errorMessage = $dataHelper->__(
+                $errorMessage = $helper->__(
                     'log.export.unauthorised_ip',
                     array('ip' => $securityHelper->getRemoteIp())
                 );
             } else {
                 $errorMessage = strlen($token) > 0
-                    ? $dataHelper->__('log.export.unauthorised_token', array('token' => $token))
-                    : $dataHelper->__('log.export.empty_token');
+                    ? $helper->__('log.export.unauthorised_token', array('token' => $token))
+                    : $helper->__('log.export.empty_token');
             }
             $this->getResponse()->setHeader('HTTP/1.1', '403 Forbidden');
             $this->getResponse()->setBody($errorMessage);
