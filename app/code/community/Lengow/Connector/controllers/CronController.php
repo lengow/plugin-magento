@@ -63,7 +63,7 @@ class Lengow_Connector_CronController extends Mage_Core_Controller_Front_Action
                 $sync = $this->getRequest()->getParam('sync');
                 // sync catalogs id between Lengow and Magento
                 if (!$sync || $sync === 'catalog') {
-                    $syncHelper->syncCatalog();
+                    $syncHelper->syncCatalog($force);
                 }
                 // sync orders between Lengow and Magento
                 if (is_null($sync) || $sync === 'order') {

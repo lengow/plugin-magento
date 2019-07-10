@@ -47,6 +47,7 @@ class Lengow_Connector_Model_Config extends Mage_Core_Model_Config
         'last_option_cms_update',
         'installed_version',
         'last_marketplace_update',
+        'last_catalog_update',
         'last_setting_update',
     );
 

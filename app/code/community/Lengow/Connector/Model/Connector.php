@@ -31,18 +31,13 @@ class Lengow_Connector_Model_Connector
     // const LENGOW_API_URL = 'http://10.100.1.82:8081';
 
     /**
-     * @var string url of the SANDBOX Lengow
-     */
-    const LENGOW_API_SANDBOX_URL = 'https://api.lengow.net';
-
-    /**
      * @var array Default options for curl
      */
     public static $curlOpts = array(
         CURLOPT_CONNECTTIMEOUT => 10,
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_TIMEOUT => 10,
-        CURLOPT_USERAGENT => 'lengow-php-sdk',
+        CURLOPT_USERAGENT => 'lengow-cms-magento',
     );
 
     /**
@@ -69,7 +64,7 @@ class Lengow_Connector_Model_Connector
         '/v3.0/orders/actions/' => 15,
         '/v3.0/marketplaces' => 15,
         '/v3.0/plans' => 5,
-        '/v3.0/stats' => 3,
+        '/v3.0/stats' => 5,
         '/v3.1/cms' => 5,
     );
 
@@ -140,7 +135,7 @@ class Lengow_Connector_Model_Connector
      * @param string $format return format of API
      * @param string $body body datas for request
      *
-     * @return array
+     * @return mixed
      */
     public function get($method, $array = array(), $format = 'json', $body = '')
     {
@@ -155,26 +150,11 @@ class Lengow_Connector_Model_Connector
      * @param string $format return format of API
      * @param string $body body datas for request
      *
-     * @return array
+     * @return mixed
      */
     public function post($method, $array = array(), $format = 'json', $body = '')
     {
         return $this->call($method, $array, 'POST', $format, $body);
-    }
-
-    /**
-     * Head API call
-     *
-     * @param string $method Lengow method API call
-     * @param array $array Lengow method API parameters
-     * @param string $format return format of API
-     * @param string $body body datas for request
-     *
-     * @return array
-     */
-    public function head($method, $array = array(), $format = 'json', $body = '')
-    {
-        return $this->call($method, $array, 'HEAD', $format, $body);
     }
 
     /**
@@ -185,26 +165,11 @@ class Lengow_Connector_Model_Connector
      * @param string $format return format of API
      * @param string $body body datas for request
      *
-     * @return array
+     * @return mixed
      */
     public function put($method, $array = array(), $format = 'json', $body = '')
     {
         return $this->call($method, $array, 'PUT', $format, $body);
-    }
-
-    /**
-     * Delete API call
-     *
-     * @param string $method Lengow method API call
-     * @param array $array Lengow method API parameters
-     * @param string $format return format of API
-     * @param string $body body datas for request
-     *
-     * @return array
-     */
-    public function delete($method, $array = array(), $format = 'json', $body = '')
-    {
-        return $this->call($method, $array, 'DELETE', $format, $body);
     }
 
     /**
@@ -215,7 +180,7 @@ class Lengow_Connector_Model_Connector
      * @param string $format return format of API
      * @param string $body body datas for request
      *
-     * @return array
+     * @return mixed
      */
     public function patch($method, $array = array(), $format = 'json', $body = '')
     {
@@ -227,13 +192,13 @@ class Lengow_Connector_Model_Connector
      *
      * @param string $api Lengow method API call
      * @param array $args Lengow method API parameters
-     * @param string $type type of request GET|POST|PUT|HEAD|DELETE|PATCH
+     * @param string $type type of request GET|POST|PUT|PATCH
      * @param string $format return format of API
      * @param string $body body datas for request
      *
      * @throws Lengow_Connector_Model_Exception get Curl error
      *
-     * @return array
+     * @return mixed
      */
     private function _callAction($api, $args, $type, $format = 'json', $body = '')
     {

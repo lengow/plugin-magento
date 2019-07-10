@@ -78,7 +78,7 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
         ),
         'last_statistic_update' => array(
             'path' => 'lengow_global_options/advanced/last_statistic_update',
-            'export' => false,
+            'global' => true,
             'no_cache' => true,
         ),
         'order_statistic' => array(
@@ -88,7 +88,7 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
         ),
         'last_status_update' => array(
             'path' => 'lengow_global_options/advanced/last_status_update',
-            'export' => false,
+            'global' => true,
             'no_cache' => true,
         ),
         'account_status' => array(
@@ -98,7 +98,7 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
         ),
         'last_option_cms_update' => array(
             'path' => 'lengow_global_options/advanced/last_option_cms_update',
-            'export' => false,
+            'global' => true,
             'no_cache' => true,
         ),
         'installed_version' => array(
@@ -108,7 +108,12 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
         ),
         'last_marketplace_update' => array(
             'path' => 'lengow_global_options/advanced/last_marketplace_update',
-            'export' => false,
+            'global' => true,
+            'no_cache' => true,
+        ),
+        'last_catalog_update' => array(
+            'path' => 'lengow_global_options/advanced/last_catalog_update',
+            'global' => true,
             'no_cache' => true,
         ),
         'last_setting_update' => array(
