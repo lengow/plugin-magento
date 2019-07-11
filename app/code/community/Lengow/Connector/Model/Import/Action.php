@@ -33,6 +33,14 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
     const STATE_FINISH = 1;
 
     /**
+     * @var array Parameters to delete for Get call
+     */
+    public static $getParamsToDelete = array(
+        'shipping_date',
+        'delivery_date',
+    );
+
+    /**
      * @var array $_fieldList field list for the table lengow_order_line
      * required => Required fields when creating registration
      * update   => Fields allowed when updating registration
@@ -44,7 +52,7 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
         'action_type' => array('required' => true, 'updated' => false),
         'retry' => array('required' => false, 'updated' => true),
         'parameters' => array('required' => true, 'updated' => false),
-        'state' => array('required' => false, 'updated' => true)
+        'state' => array('required' => false, 'updated' => true),
     );
 
     /**
@@ -205,6 +213,111 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
     }
 
     /**
+     * Indicates whether an action can be created if it does not already exist
+     *
+     * @param array $params all available values
+     * @param Mage_Sales_Model_Order $order Magento order instance
+     *
+     * @throws Lengow_Connector_Model_Exception
+     *
+     * @return boolean
+     */
+    public function canSendAction($params, $order)
+    {
+        $sendAction = true;
+        // check if action is already created
+        $getParams = array_merge($params, array('queued' => 'True'));
+        // array key deletion for GET verification
+        foreach (self::$getParamsToDelete as $param) {
+            if (isset($getParams[$param])) {
+                unset($getParams[$param]);
+            }
+        }
+        $result = Mage::getModel('lengow/connector')->queryApi('get', '/v3.0/orders/actions/', $getParams);
+        if (isset($result->error) && isset($result->error->message)) {
+            throw new Lengow_Connector_Model_Exception($result->error->message);
+        }
+        if (isset($result->count) && $result->count > 0) {
+            foreach ($result->results as $row) {
+                $actionId = $this->getActionByActionId($row->id);
+                if ($actionId) {
+                    /** @var Lengow_Connector_Model_Import_Action $action */
+                    $action = Mage::getModel('lengow/import_action')->load($actionId);
+                    if ($action->getData('state') == 0) {
+                        $retry = (int)$action->getData('retry') + 1;
+                        $action->updateAction(array('retry' => $retry));
+                        $sendAction = false;
+                    }
+                    unset($action);
+                } else {
+                    // if update doesn't work, create new action
+                    $this->createAction(
+                        array(
+                            'order_id' => $order->getId(),
+                            'action_type' => $params['action_type'],
+                            'action_id' => $row->id,
+                            'order_line_sku' => isset($params['line']) ? $params['line'] : null,
+                            'parameters' => Mage::helper('core')->jsonEncode($params),
+                        )
+                    );
+                    $sendAction = false;
+                }
+            }
+        }
+        return $sendAction;
+    }
+
+    /**
+     * Send a new action on the order via the Lengow API
+     *
+     * @param array $params all available values
+     * @param Mage_Sales_Model_Order $order Magento order instance
+     *
+     * @throws Lengow_Connector_Model_Exception
+     */
+    public function sendAction($params, $order)
+    {
+        /** @var Lengow_Connector_Helper_Data $helper */
+        $helper = Mage::helper('lengow_connector/data');
+        if (!(bool)Mage::helper('lengow_connector/config')->get('preprod_mode_enable')) {
+            $result = Mage::getModel('lengow/connector')->queryApi('post', '/v3.0/orders/actions/', $params);
+            if (isset($result->id)) {
+                $this->createAction(
+                    array(
+                        'order_id' => $order->getId(),
+                        'action_type' => $params['action_type'],
+                        'action_id' => $result->id,
+                        'order_line_sku' => isset($params['line']) ? $params['line'] : null,
+                        'parameters' => Mage::helper('core')->jsonEncode($params),
+                    )
+                );
+            } else {
+                if ($result !== null) {
+                    $message = $helper->setLogMessage(
+                        'lengow_log.exception.action_not_created',
+                        array('error_message' => Mage::helper('core')->jsonEncode($result))
+                    );
+                } else {
+                    // Generating a generic error message when the Lengow API is unavailable
+                    $message = $helper->setLogMessage('lengow_log.exception.action_not_created_api');
+                }
+                throw new Lengow_Connector_Model_Exception($message);
+            }
+        }
+        // Create log for call action
+        $paramList = false;
+        foreach ($params as $param => $value) {
+            $paramList .= !$paramList ? '"' . $param . '": ' . $value : ' -- "' . $param . '": ' . $value;
+        }
+        $helper->log(
+            'API-OrderAction',
+            $helper->setLogMessage('log.order_action.call_tracking', array('parameters' => $paramList)),
+            false,
+            $order->getData('order_id_lengow')
+        );
+    }
+
+    /**
      * Removes all actions for one order Magento
      *
      * @param integer $orderId Magento order id
@@ -240,9 +353,9 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
      */
     public function checkFinishAction()
     {
-        $config = Mage::helper('lengow_connector/config');
+        /** @var Lengow_Connector_Helper_Data $helper */
         $helper = Mage::helper('lengow_connector/data');
-        if ((bool)$config->get('preprod_mode_enable')) {
+        if ((bool) Mage::helper('lengow_connector/config')->get('preprod_mode_enable')) {
             return false;
         }
         $helper->log('API-OrderAction', $helper->setLogMessage('log.order_action.check_completed_action'));
@@ -255,15 +368,14 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
         // Get all actions with API for 3 days
         $page = 1;
         $apiActions = array();
-        $connector = Mage::getModel('lengow/connector');
         do {
-            $results = $connector->queryApi(
+            $results = Mage::getModel('lengow/connector')->queryApi(
                 'get',
                 '/v3.0/orders/actions/',
                 array(
                     'updated_from' => date('c', strtotime(date('Y-m-d') . ' -3days')),
                     'updated_to' => date('c'),
-                    'page' => $page
+                    'page' => $page,
                 )
             );
             if (!is_object($results) || isset($results->error)) {
@@ -277,7 +389,7 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
             }
             $page++;
         } while ($results->next != null);
-        if (count($apiActions) == 0) {
+        if (count($apiActions) === 0) {
             return false;
         }
         // Check foreach action if is complete
@@ -297,14 +409,17 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
                         continue;
                     }
                     // Finish action in lengow_action table
+                    /** @var Lengow_Connector_Model_Import_Action $lengowAction */
                     $lengowAction = Mage::getModel('lengow/import_action')->load($action['id']);
                     $lengowAction->updateAction(array('state' => self::STATE_FINISH));
                     $orderLengowId = Mage::getModel('lengow/import_order')
                         ->getLengowOrderIdWithOrderId($action['order_id']);
                     // if lengow order not exist do nothing (compatibility v2)
                     if ($orderLengowId) {
+                        /** @var Lengow_Connector_Model_Import_Ordererror $orderError */
                         $orderError = Mage::getModel('lengow/import_ordererror');
                         $orderError->finishOrderErrors($orderLengowId, 'send');
+                        /** @var Lengow_Connector_Model_Import_Order $orderLengow */
                         $orderLengow = Mage::getModel('lengow/import_order')->load($orderLengowId);
                         if ($orderLengow->getData('is_in_error') == 1) {
                             $orderLengow->updateOrder(array('is_in_error' => 0));
@@ -315,9 +430,7 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
                             if ($apiActions[$action['action_id']]->processed == true
                                 && empty($apiActions[$action['action_id']]->errors)
                             ) {
-                                $orderLengow->updateOrder(
-                                    array('order_process_state' => $processStateFinish)
-                                );
+                                $orderLengow->updateOrder(array('order_process_state' => $processStateFinish));
                                 $this->finishAllActions($action['order_id']);
                             } else {
                                 // If action is denied -> create order error
@@ -359,9 +472,9 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
      */
     public function checkOldAction($actionType = null)
     {
+        /** @var Lengow_Connector_Helper_Data $helper */
         $helper = Mage::helper('lengow_connector/data');
-        $config = Mage::helper('lengow_connector/config');
-        if ((bool)$config->get('preprod_mode_enable')) {
+        if ((bool)Mage::helper('lengow_connector/config')->get('preprod_mode_enable')) {
             return false;
         }
         $helper->log('API-OrderAction', $helper->setLogMessage('log.order_action.check_old_action'));
@@ -372,7 +485,7 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
                 'created_at',
                 array(
                     'to' => strtotime('-3 days', time()),
-                    'datetime' => true
+                    'datetime' => true,
                 )
             );
         if (!is_null($actionType)) {
@@ -382,11 +495,13 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
 
         if (count($results) > 0) {
             foreach ($results as $result) {
+                /** @var Lengow_Connector_Model_Import_Action $action */
                 $action = Mage::getModel('lengow/import_action')->load($result['id']);
                 $action->updateAction(array('state' => self::STATE_FINISH));
                 $orderLengowId = Mage::getModel('lengow/import_order')
                     ->getLengowOrderIdWithOrderId($result['order_id']);
                 if ($orderLengowId) {
+                    /** @var Lengow_Connector_Model_Import_Order $orderLengow */
                     $orderLengow = Mage::getModel('lengow/import_order')->load($orderLengowId);
                     $processStateFinish = $orderLengow->getOrderProcessState('closed');
                     if ((int)$orderLengow->getData('order_process_state') != $processStateFinish
@@ -394,6 +509,7 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
                     ) {
                         // If action is denied -> create order error
                         $errorMessage = $helper->setLogMessage('lengow_log.exception.action_is_too_old');
+                        /** @var Lengow_Connector_Model_Import_Ordererror $orderError */
                         $orderError = Mage::getModel('lengow/import_ordererror');
                         $orderError->createOrderError(
                             array(
@@ -431,9 +547,9 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
      */
     public function checkActionNotSent()
     {
-        $config = Mage::helper('lengow_connector/config');
+        /** @var Lengow_Connector_Helper_Data $helper */
         $helper = Mage::helper('lengow_connector/data');
-        if ((bool)$config->get('preprod_mode_enable')) {
+        if ((bool)Mage::helper('lengow_connector/config')->get('preprod_mode_enable')) {
             return false;
         }
         $helper->log('API-OrderAction', $helper->setLogMessage('log.order_action.check_action_not_sent'));

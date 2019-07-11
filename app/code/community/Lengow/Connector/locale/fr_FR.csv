@@ -319,6 +319,7 @@ lengow_log.exception.order_line_required|numéro de la ligne de commande requis,
 lengow_log.exception.action_not_valid|l'action %{action} n'est pas valide
 lengow_log.exception.marketplace_action_not_present|l'action %{action} n'est pas présente pour cette place de marché
 lengow_log.exception.store_id_require|l'ID de la boutique est requis
+lengow_log.exception.marketplace_sku_require|la référence commande marketplace est requise
 lengow_log.exception.marketplace_name_require|le nom de la place de marché est requis
 lengow_log.exception.arg_is_required|envoi d'action impossible : %{arg_name} est requis
 lengow_log.exception.action_not_created|création d'action impossible : %{error_message}

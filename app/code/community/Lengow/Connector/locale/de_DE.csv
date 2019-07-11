@@ -319,6 +319,7 @@ lengow_log.exception.order_line_required|erforderliche Bestellzeile kann in der 
 lengow_log.exception.action_not_valid|aktion %{action} ist ungültig
 lengow_log.exception.marketplace_action_not_present|die Marktplatzaktion %{action} ist nicht vorhanden
 lengow_log.exception.store_id_require|laden-ID ist erforderlich
+lengow_log.exception.marketplace_sku_require|die Marktplatz-Orderreferenz ist erforderlich
 lengow_log.exception.marketplace_name_require|marktplatzname ist erforderlich
 lengow_log.exception.arg_is_required|Aktion nicht ausführbar: %{arg_name} ist erforderlich
 lengow_log.exception.action_not_created|Aktion kann nicht erstellt werden: %{error_message}

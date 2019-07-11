@@ -349,6 +349,7 @@ de:
       action_not_valid: "aktion %{action} ist ungültig"
       marketplace_action_not_present: "die Marktplatzaktion %{action} ist nicht vorhanden"
       store_id_require: "laden-ID ist erforderlich"
+      marketplace_sku_require: "die Marktplatz-Orderreferenz ist erforderlich"
       marketplace_name_require: "marktplatzname ist erforderlich"
       arg_is_required: "Aktion nicht ausführbar: %{arg_name} ist erforderlich"
       action_not_created: "Aktion kann nicht erstellt werden: %{error_message}"

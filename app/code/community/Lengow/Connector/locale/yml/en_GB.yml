@@ -349,6 +349,7 @@ en:
       action_not_valid: "action %{action} is not valid"
       marketplace_action_not_present: "the marketplace action %{action} is not present"
       store_id_require: "store ID is required"
+      marketplace_sku_require: "marketplace order reference is required"
       marketplace_name_require: "marketplace name is required"
       arg_is_required: "can't send action: %{arg_name} is required"
       action_not_created: "can't create action: %{error_message}"
