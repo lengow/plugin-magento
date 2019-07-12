@@ -291,10 +291,11 @@
                         <import_days>
                             <label>lengow_setting.import_days_title</label>
                             <comment>lengow_setting.import_days_comment</comment>
+                            <validate>validate-digits validate-digits-range digits-range-1-10</validate>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
-                            <show_in_store>1</show_in_store>
+                            <show_in_store>0</show_in_store>
                         </import_days>
                         <import_customer_group>
                             <label>lengow_setting.import_customer_group_title</label>

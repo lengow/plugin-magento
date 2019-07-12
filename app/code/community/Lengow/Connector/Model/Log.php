@@ -28,7 +28,7 @@ class Lengow_Connector_Model_Log extends Mage_Core_Model_Abstract
      * update   => Fields allowed when updating registration
      */
     protected $_fieldList = array(
-        'message' => array('required' => true, 'updated' => false)
+        'message' => array('required' => true, 'updated' => false),
     );
 
     /**

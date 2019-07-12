@@ -61,24 +61,24 @@ class Lengow_Connector_Test_Controller_Adminhtml_Lengow_ProductController extend
         $productAction->updateAttributes(array(1, 2), array('lengow_product' => 0), 0);
 
         $product = Mage::getModel('catalog/product')->load(1);
-        $this->assertTrue(!(boolean)$product->getLengowProduct());
+        $this->assertTrue(!(bool)$product->getLengowProduct());
 
         $product = Mage::getModel('catalog/product')->load(2);
-        $this->assertTrue(!(boolean)$product->getLengowProduct());
+        $this->assertTrue(!(bool)$product->getLengowProduct());
 
         $this->getRequest()->setMethod('POST')->setPost(
             array(
                 'product' => array(1),
-                'publish' => 1
+                'publish' => 1,
             )
         );
         $this->dispatch('adminhtml/lengow_product/massPublish/');
 
         $product = Mage::getModel('catalog/product')->load(1);
-        $this->assertTrue((boolean)$product->getLengowProduct());
+        $this->assertTrue((bool)$product->getLengowProduct());
 
         $product = Mage::getModel('catalog/product')->load(2);
-        $this->assertTrue(!(boolean)$product->getLengowProduct());
+        $this->assertTrue(!(bool)$product->getLengowProduct());
     }
 
     /**
@@ -93,7 +93,7 @@ class Lengow_Connector_Test_Controller_Adminhtml_Lengow_ProductController extend
         $productAction->updateAttributes(array(1), array('lengow_product' => 1), 0);
 
         $product = Mage::getModel('catalog/product')->load(1);
-        $this->assertTrue((boolean)$product->getLengowProduct());
+        $this->assertTrue((bool)$product->getLengowProduct());
 
         // --------------------------------------
         // Test : UnPublish first product to global
@@ -106,10 +106,10 @@ class Lengow_Connector_Test_Controller_Adminhtml_Lengow_ProductController extend
         $this->dispatch('adminhtml/lengow_product/massPublish/');
 
         $product = Mage::getModel('catalog/product')->load(1);
-        $this->assertTrue(!(boolean)$product->getLengowProduct());
+        $this->assertTrue(!(bool)$product->getLengowProduct());
 
         $product = Mage::getModel('catalog/product')->load(2);
-        $this->assertTrue(!(boolean)$product->getLengowProduct());
+        $this->assertTrue(!(bool)$product->getLengowProduct());
     }
 
     /**
@@ -124,10 +124,10 @@ class Lengow_Connector_Test_Controller_Adminhtml_Lengow_ProductController extend
         $productAction->updateAttributes(array(1, 2), array('lengow_product' => 0), 0);
 
         $product = Mage::getModel('catalog/product')->setStoreId(1)->load(1);
-        $this->assertTrue(!(boolean)$product->getLengowProduct());
+        $this->assertTrue(!(bool)$product->getLengowProduct());
 
         $product = Mage::getModel('catalog/product')->setStoreId(1)->load(2);
-        $this->assertTrue(!(boolean)$product->getLengowProduct());
+        $this->assertTrue(!(bool)$product->getLengowProduct());
 
         // --------------------------------------
         // Test : Publish first product to store 1
@@ -135,16 +135,16 @@ class Lengow_Connector_Test_Controller_Adminhtml_Lengow_ProductController extend
             array(
                 'product' => array(1),
                 'publish' => 1,
-                'store' => 1
+                'store' => 1,
             )
         );
         $this->dispatch('adminhtml/lengow_product/massPublish/');
 
         $product = Mage::getModel('catalog/product')->setStoreId(1)->load(1);
-        $this->assertTrue((boolean)$product->getLengowProduct());
+        $this->assertTrue((bool)$product->getLengowProduct());
 
         $product = Mage::getModel('catalog/product')->setStoreId(1)->load(2);
-        $this->assertTrue(!(boolean)$product->getLengowProduct());
+        $this->assertTrue(!(bool)$product->getLengowProduct());
     }
 
     /**
@@ -159,10 +159,10 @@ class Lengow_Connector_Test_Controller_Adminhtml_Lengow_ProductController extend
         $productAction->updateAttributes(array(1, 2), array('lengow_product' => 1), 1);
 
         $product = Mage::getModel('catalog/product')->setStoreId(1)->load(1);
-        $this->assertTrue((boolean)$product->getLengowProduct());
+        $this->assertTrue((bool)$product->getLengowProduct());
 
         $product = Mage::getModel('catalog/product')->setStoreId(1)->load(2);
-        $this->assertTrue((boolean)$product->getLengowProduct());
+        $this->assertTrue((bool)$product->getLengowProduct());
 
         // --------------------------------------
         // Test : UnPublish first product to store 1
@@ -170,16 +170,16 @@ class Lengow_Connector_Test_Controller_Adminhtml_Lengow_ProductController extend
             array(
                 'product' => array(1),
                 'publish' => 0,
-                'store' => 1
+                'store' => 1,
             )
         );
         $this->dispatch('adminhtml/lengow_product/massPublish/');
 
         $product = Mage::getModel('catalog/product')->setStoreId(1)->load(1);
-        $this->assertTrue(!(boolean)$product->getLengowProduct());
+        $this->assertTrue(!(bool)$product->getLengowProduct());
 
         $product = Mage::getModel('catalog/product')->setStoreId(1)->load(2);
-        $this->assertTrue((boolean)$product->getLengowProduct());
+        $this->assertTrue((bool)$product->getLengowProduct());
     }
 
     /**
@@ -194,25 +194,25 @@ class Lengow_Connector_Test_Controller_Adminhtml_Lengow_ProductController extend
         $productAction->updateAttributes(array(1, 2), array('lengow_product' => 1), 2);
 
         $product = Mage::getModel('catalog/product')->setStoreId(2)->load(1);
-        $this->assertTrue((boolean)$product->getLengowProduct());
+        $this->assertTrue((bool)$product->getLengowProduct());
 
         $product = Mage::getModel('catalog/product')->setStoreId(2)->load(2);
-        $this->assertTrue((boolean)$product->getLengowProduct());
+        $this->assertTrue((bool)$product->getLengowProduct());
 
         // --------------------------------------
         // Test : UnPublish first product to store 1
         $this->getRequest()->setMethod('POST')->setPost(
             array(
                 'product' => array(1),
-                'publish' => 0
+                'publish' => 0,
             )
         );
         $this->dispatch('adminhtml/lengow_product/massPublish/');
 
         $product = Mage::getModel('catalog/product')->setStoreId(2)->load(1);
-        $this->assertTrue((boolean)$product->getLengowProduct());
+        $this->assertTrue((bool)$product->getLengowProduct());
 
         $product = Mage::getModel('catalog/product')->setStoreId(2)->load(2);
-        $this->assertTrue((boolean)$product->getLengowProduct());
+        $this->assertTrue((bool)$product->getLengowProduct());
     }
 }

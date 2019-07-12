@@ -271,8 +271,8 @@ lengow_setting.export_cron_enable_comment|Geplante tasks aktivieren, um Ihren Fe
 lengow_setting.import_setting|Importeinstellungen
 lengow_setting.import_simple_setting|Einfache Importeinstellungen
 lengow_setting.import_advanced_setting|Erweiterte Importeinstellungen
-lengow_setting.import_days_title|Bestellungen von x Tagen importieren
-lengow_setting.import_days_comment|Anzahl der Tage auswählen
+lengow_setting.import_days_title|Synchronisieren Sie alle Bestellungen, die seit aktualisiert wurden
+lengow_setting.import_days_comment|Anzahl der Tage auswählen (Max. 10 Tage)
 lengow_setting.import_customer_group_title|Kundengruppe
 lengow_setting.import_customer_group_comment|Kundengruppe für Lengowkunden auswählen
 lengow_setting.import_default_shipping_method_title|Versandart
@@ -319,6 +319,7 @@ lengow_log.exception.order_line_required|erforderliche Bestellzeile kann in der 
 lengow_log.exception.action_not_valid|aktion %{action} ist ungültig
 lengow_log.exception.marketplace_action_not_present|die Marktplatzaktion %{action} ist nicht vorhanden
 lengow_log.exception.store_id_require|laden-ID ist erforderlich
+lengow_log.exception.marketplace_sku_require|die Marktplatz-Orderreferenz ist erforderlich
 lengow_log.exception.marketplace_name_require|marktplatzname ist erforderlich
 lengow_log.exception.arg_is_required|Aktion nicht ausführbar: %{arg_name} ist erforderlich
 lengow_log.exception.action_not_created|Aktion kann nicht erstellt werden: %{error_message}

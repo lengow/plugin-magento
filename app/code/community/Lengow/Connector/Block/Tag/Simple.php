@@ -30,7 +30,7 @@ class Lengow_Connector_Block_Tag_Simple extends Mage_Core_Block_Template
     protected function _prepareLayout()
     {
         parent::_prepareLayout();
-        if (Mage::app()->getRequest()->getActionName() == 'success') {
+        if (Mage::app()->getRequest()->getActionName() === 'success') {
             $orderId = Mage::getSingleton('checkout/session')->getLastOrderId();
             $order = Mage::getModel('sales/order')->load($orderId);
             $this->setData('account_id', Mage::helper('lengow_connector/config')->get('account_id'));

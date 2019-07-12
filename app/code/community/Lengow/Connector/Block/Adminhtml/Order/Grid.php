@@ -59,40 +59,42 @@ class Lengow_Connector_Block_Adminhtml_Order_Grid extends Mage_Adminhtml_Block_W
      */
     protected function _prepareColumns()
     {
+        /** @var Lengow_Connector_Helper_Data $helper */
+        $helper = Mage::helper('lengow_connector');
         $this->addColumn(
             'action',
             array(
-                'header' => Mage::helper('lengow_connector')->__('order.table.lengow_action'),
+                'header' => $helper->__('order.table.lengow_action'),
                 'index' => 'is_in_error',
                 'renderer' => 'Lengow_Connector_Block_Adminhtml_Order_Renderer_Action',
                 'type' => 'options',
                 'options' => array(
-                    0 => Mage::helper('lengow_connector')->__('order.table.action_success'),
-                    1 => Mage::helper('lengow_connector')->__('order.table.action_error'),
+                    0 => $helper->__('order.table.action_success'),
+                    1 => $helper->__('order.table.action_error'),
                 )
             )
         );
         $this->addColumn(
             'lengow_state',
             array(
-                'header' => Mage::helper('lengow_connector')->__('order.table.lengow_state'),
+                'header' => $helper->__('order.table.lengow_state'),
                 'index' => 'order_lengow_state',
                 'renderer' => 'Lengow_Connector_Block_Adminhtml_Order_Renderer_State',
                 'type' => 'options',
                 'options' => array(
-                    'accepted' => Mage::helper('lengow_connector')->__('order.table.status_accepted'),
-                    'waiting_shipment' => Mage::helper('lengow_connector')->__('order.table.status_waiting_shipment'),
-                    'shipped' => Mage::helper('lengow_connector')->__('order.table.status_shipped'),
-                    'refunded' => Mage::helper('lengow_connector')->__('order.table.status_refunded'),
-                    'closed' => Mage::helper('lengow_connector')->__('order.table.status_closed'),
-                    'canceled' => Mage::helper('lengow_connector')->__('order.table.status_canceled'),
+                    'accepted' => $helper->__('order.table.status_accepted'),
+                    'waiting_shipment' => $helper->__('order.table.status_waiting_shipment'),
+                    'shipped' => $helper->__('order.table.status_shipped'),
+                    'refunded' => $helper->__('order.table.status_refunded'),
+                    'closed' => $helper->__('order.table.status_closed'),
+                    'canceled' => $helper->__('order.table.status_canceled'),
                 )
             )
         );
         $this->addColumn(
             'marketplace_label',
             array(
-                'header' => Mage::helper('lengow_connector')->__('order.table.marketplace_name'),
+                'header' => $helper->__('order.table.marketplace_name'),
                 'index' => 'marketplace_label',
                 'column_css_class' => 'lengow_table_center',
             )
@@ -101,7 +103,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Grid extends Mage_Adminhtml_Block_W
             $this->addColumn(
                 'store_id',
                 array(
-                    'header' => Mage::helper('lengow_connector')->__('order.table.store'),
+                    'header' => $helper->__('order.table.store'),
                     'index' => 'store_id',
                     'filter_index' => 'main_table.store_id',
                     'type' => 'store',
@@ -112,7 +114,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Grid extends Mage_Adminhtml_Block_W
         $this->addColumn(
             'marketplace_sku',
             array(
-                'header' => Mage::helper('lengow_connector')->__('order.table.marketplace_sku'),
+                'header' => $helper->__('order.table.marketplace_sku'),
                 'index' => 'marketplace_sku',
                 'column_css_class' => 'lengow_table_center',
             )
@@ -120,7 +122,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Grid extends Mage_Adminhtml_Block_W
         $this->addColumn(
             'order_sku',
             array(
-                'header' => Mage::helper('lengow_connector')->__('order.table.magento_sku'),
+                'header' => $helper->__('order.table.magento_sku'),
                 'index' => 'order_sku',
                 'column_css_class' => 'lengow_table_center',
             )
@@ -128,7 +130,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Grid extends Mage_Adminhtml_Block_W
         $this->addColumn(
             'status',
             array(
-                'header' => Mage::helper('lengow_connector')->__('order.table.magento_status'),
+                'header' => $helper->__('order.table.magento_status'),
                 'index' => 'status',
                 'renderer' => 'Lengow_Connector_Block_Adminhtml_Order_Renderer_Magentostate',
                 'type' => 'options',
@@ -140,7 +142,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Grid extends Mage_Adminhtml_Block_W
         $this->addColumn(
             'order_date',
             array(
-                'header' => Mage::helper('lengow_connector')->__('order.table.order_date'),
+                'header' => $helper->__('order.table.order_date'),
                 'index' => 'order_date',
                 'type' => 'datetime',
                 'column_css_class' => 'lengow_table_center',
@@ -149,7 +151,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Grid extends Mage_Adminhtml_Block_W
         $this->addColumn(
             'customer_name',
             array(
-                'header' => Mage::helper('lengow_connector')->__('order.table.customer_name'),
+                'header' => $helper->__('order.table.customer_name'),
                 'index' => 'customer_name',
                 'column_css_class' => 'lengow_table_center',
             )
@@ -157,7 +159,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Grid extends Mage_Adminhtml_Block_W
         $this->addColumn(
             'delivery_country_iso',
             array(
-                'header' => Mage::helper('lengow_connector')->__('order.table.country'),
+                'header' => $helper->__('order.table.country'),
                 'index' => 'delivery_country_iso',
                 'renderer' => 'Lengow_Connector_Block_Adminhtml_Order_Renderer_Country',
                 'width' => '50px',
@@ -167,7 +169,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Grid extends Mage_Adminhtml_Block_W
         $this->addColumn(
             'order_item',
             array(
-                'header' => Mage::helper('lengow_connector')->__('order.table.items'),
+                'header' => $helper->__('order.table.items'),
                 'index' => 'order_item',
                 'width' => '50px',
                 'column_css_class' => 'lengow_table_center',
@@ -176,7 +178,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Grid extends Mage_Adminhtml_Block_W
         $this->addColumn(
             'total_paid',
             array(
-                'header' => Mage::helper('lengow_connector')->__('order.table.total_paid'),
+                'header' => $helper->__('order.table.total_paid'),
                 'index' => 'total_paid',
                 'filter_index' => 'main_table.total_paid',
                 'renderer' => 'Lengow_Connector_Block_Adminhtml_Order_Renderer_Total',
@@ -192,23 +194,25 @@ class Lengow_Connector_Block_Adminhtml_Order_Grid extends Mage_Adminhtml_Block_W
      */
     protected function _prepareMassaction()
     {
+        /** @var Lengow_Connector_Helper_Data $helper */
+        $helper = Mage::helper('lengow_connector');
         $this->setMassactionIdField('id');
         $this->getMassactionBlock()->setFormFieldName('order');
         $this->getMassactionBlock()->setUseAjax(true);
         $this->getMassactionBlock()->addItem(
             'reimport',
             array(
-                'label' => Mage::helper('lengow_connector')->__('order.table.button_reimport_order'),
+                'label' => $helper->__('order.table.button_reimport_order'),
                 'url' => $this->getUrl('*/*/massReImport', array('_current' => true)),
-                'complete' => 'reloadGrid'
+                'complete' => 'reloadGrid',
             )
         );
         $this->getMassactionBlock()->addItem(
             'resend',
             array(
-                'label' => Mage::helper('lengow_connector')->__('order.table.button_resend_order'),
+                'label' => $helper->__('order.table.button_resend_order'),
                 'url' => $this->getUrl('*/*/massReSend', array('_current' => true)),
-                'complete' => 'reloadGrid'
+                'complete' => 'reloadGrid',
             )
         );
         return $this;
@@ -232,7 +236,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Grid extends Mage_Adminhtml_Block_W
     public function getRowUrl($row)
     {
         if (Mage::getSingleton('admin/session')->isAllowed('sales/order/actions/view')) {
-            if ($row->getData('order_id') != null) {
+            if ($row->getData('order_id') !== null) {
                 return $this->getUrl('*/sales_order/view', array('order_id' => $row->getData('order_id')));
             }
         }

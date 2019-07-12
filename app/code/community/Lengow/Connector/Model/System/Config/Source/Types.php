@@ -29,12 +29,13 @@ class Lengow_Connector_Model_System_Config_Source_Types extends Mage_Core_Model_
      */
     public function toOptionArray()
     {
+        $helper = Mage::helper('adminhtml');
         return array(
-            array('value' => 'configurable', 'label' => Mage::helper('adminhtml')->__('Configurable')),
-            array('value' => 'simple', 'label' => Mage::helper('adminhtml')->__('Simple')),
-            array('value' => 'downloadable', 'label' => Mage::helper('adminhtml')->__('Downloadable')),
-            array('value' => 'grouped', 'label' => Mage::helper('adminhtml')->__('Grouped')),
-            array('value' => 'virtual', 'label' => Mage::helper('adminhtml')->__('Virtual'))
+            array('value' => 'configurable', 'label' => $helper->__('Configurable')),
+            array('value' => 'simple', 'label' => $helper->__('Simple')),
+            array('value' => 'downloadable', 'label' => $helper->__('Downloadable')),
+            array('value' => 'grouped', 'label' => $helper->__('Grouped')),
+            array('value' => 'virtual', 'label' => $helper->__('Virtual')),
         );
     }
 }

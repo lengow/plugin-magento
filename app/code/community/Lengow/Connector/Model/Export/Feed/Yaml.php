@@ -86,7 +86,7 @@ class Lengow_Connector_Model_Export_Feed_Yaml extends Lengow_Connector_Model_Exp
      * @param string $name The fielname
      * @param string $size The max spaces
      *
-     * @return string Spaces
+     * @return string
      */
     private function _addSpaces($name, $size)
     {

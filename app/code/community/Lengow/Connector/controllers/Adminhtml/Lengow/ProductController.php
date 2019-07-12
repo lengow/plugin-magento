@@ -78,12 +78,12 @@ class Lengow_Connector_Adminhtml_Lengow_ProductController extends Mage_Adminhtml
     public function massPublishAction()
     {
         $productIds = (array)$this->getRequest()->getParam('product');
-        $storeId = (integer)$this->getRequest()->getParam('store', Mage::app()->getStore()->getId());
+        $storeId = (int)$this->getRequest()->getParam('store', Mage::app()->getStore()->getId());
         // set default store if storeId is global
-        if ($storeId == 0) {
+        if ($storeId === 0) {
             $storeId = Mage::app()->getWebsite(true)->getDefaultGroup()->getDefaultStoreId();
         }
-        $publish = (integer)$this->getRequest()->getParam('publish');
+        $publish = (int)$this->getRequest()->getParam('publish');
         //update all attribute in one query
         $productAction = Mage::getSingleton('catalog/product_action');
         if ($storeId != 0) {

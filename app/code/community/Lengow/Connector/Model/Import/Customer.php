@@ -58,18 +58,20 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
      */
     public function createCustomer($orderData, $shippingAddress, $storeId, $marketplaceSku, $logOutput)
     {
+        /** @var Lengow_Connector_Helper_Data $helper */
+        $helper = Mage::helper('lengow_connector');
         $idWebsite = Mage::getModel('core/store')->load($storeId)->getWebsiteId();
         $array = array(
             'billing_address' => $this->_extractAddressDataFromAPI($orderData->billing_address),
-            'delivery_address' => $this->_extractAddressDataFromAPI($shippingAddress)
+            'delivery_address' => $this->_extractAddressDataFromAPI($shippingAddress),
         );
         // generation of fictitious email
-        $host = Mage::helper('lengow_connector/data')->getHost($storeId);
+        $host = $helper->getHost($storeId);
         $domain = !$host ? 'magento.shop' : $host;
         $array['billing_address']['email'] = $marketplaceSku . '-' . $orderData->marketplace . '@' . $domain;
-        Mage::helper('lengow_connector/data')->log(
+        $helper->log(
             'Import',
-            Mage::helper('lengow_connector/data')->setLogMessage(
+            $helper->setLogMessage(
                 'log.import.generate_unique_email',
                 array('email' => $array['billing_address']['email'])
             ),
@@ -90,7 +92,7 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
         $tempBillingNames = array(
             'firstname' => $array['billing_address']['first_name'],
             'lastname' => $array['billing_address']['last_name'],
-            'fullname' => $array['billing_address']['full_name']
+            'fullname' => $array['billing_address']['full_name'],
         );
         $billingNames = $this->_getNames($tempBillingNames);
         $array['billing_address']['first_name'] = $billingNames['firstname'];
@@ -101,7 +103,7 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
         $tempShippingNames = array(
             'firstname' => $array['delivery_address']['first_name'],
             'lastname' => $array['delivery_address']['last_name'],
-            'fullname' => $array['delivery_address']['full_name']
+            'fullname' => $array['delivery_address']['full_name'],
         );
         $shippingNames = $this->_getNames($tempShippingNames);
         $array['delivery_address']['first_name'] = $shippingNames['firstname'];

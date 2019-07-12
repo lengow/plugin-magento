@@ -102,7 +102,9 @@ class Lengow_Connector_Block_Adminhtml_Order_Tab
     {
         $fields = array();
         $order = $this->getOrder();
+        /** @var Lengow_Connector_Helper_Data $helper */
         $helper = Mage::helper('lengow_connector');
+        /** @var Lengow_Connector_Model_Import_Order $orderLengow */
         $orderLengow = Mage::getModel('lengow/import_order');
         $orderLengowId = $orderLengow->getLengowOrderIdWithOrderId($order->getData('entity_id'));
         // Get all Lengow data
@@ -148,12 +150,12 @@ class Lengow_Connector_Block_Adminhtml_Order_Tab
         // Construct fields list
         $fields[] = array('label' => $helper->__('order.table.marketplace_sku'), 'value' => $marketplaceSku);
         $fields[] = array('label' => $helper->__('order.table.marketplace_name'), 'value' => $marketplaceLabel);
-        if ($feedId != 0) {
+        if ($feedId !== 0) {
             $fields[] = array('label' => $helper->__('order.screen.feed_id'), 'value' => $feedId);
         } else {
             $fields[] = array(
                 'label' => $helper->__('order.screen.delivery_address_id'),
-                'value' => $deliveryAddressId
+                'value' => $deliveryAddressId,
             );
         }
         $fields[] = array('label' => $helper->__('order.table.total_paid'), 'value' => $totalPaid);
@@ -208,7 +210,8 @@ class Lengow_Connector_Block_Adminhtml_Order_Tab
             return false;
         }
         $magentoStatus = $order->getData('status');
-        if ($magentoStatus == 'complete' || $magentoStatus == 'cancel') {
+        if ($magentoStatus === 'complete' || $magentoStatus === 'cancel') {
+            /** @var Lengow_Connector_Model_Import_Order $orderLengow */
             $orderLengow = Mage::getModel('lengow/import_order');
             $orderLengowId = $orderLengow->getLengowOrderIdWithOrderId($order->getData('entity_id'));
             if ($orderLengowId) {

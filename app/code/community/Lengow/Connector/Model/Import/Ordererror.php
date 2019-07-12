@@ -42,7 +42,7 @@ class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
         'message' => array('required' => true, 'updated' => false),
         'type' => array('required' => true, 'updated' => false),
         'is_finished' => array('required' => false, 'updated' => true),
-        'mail' => array('required' => false, 'updated' => true)
+        'mail' => array('required' => false, 'updated' => true),
     );
 
     /**
@@ -191,6 +191,7 @@ class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
             ->getData();
         if (count($results) > 0) {
             foreach ($results as $result) {
+                /** @var Lengow_Connector_Model_Import_Ordererror $orderError */
                 $orderError = Mage::getModel('lengow/import_ordererror')->load($result['id']);
                 $orderError->updateOrderError(array('is_finished' => 1));
                 unset($orderError);
@@ -233,7 +234,7 @@ class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
                 ->addFieldToSelect('id')
                 ->getData();
         }
-        if (count($results) == 0) {
+        if (count($results) === 0) {
             return false;
         }
         return $results;

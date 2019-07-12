@@ -37,9 +37,8 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
         $args = func_get_args();
         $params = array();
         $isoCode = null;
-        $t = Mage::helper('lengow_connector/translation');
-        if ($args[0] == "") {
-            return "";
+        if ($args[0] === '') {
+            return '';
         } else {
             $message = $args[0];
         }
@@ -49,7 +48,7 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
         if (isset($args[2]) && strlen($args[2]) > 0) {
             $isoCode = $args[2];
         }
-        return $t->t($message, $params, $isoCode);
+        return Mage::helper('lengow_connector/translation')->t($message, $params, $isoCode);
     }
 
     /**
@@ -111,15 +110,14 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
             return false;
         }
         $decodedMessage = $this->decodeLogMessage($message, 'en_GB');
-        $finalMessage = (empty($category) ? '' : '[' . $category . '] ');
+        $finalMessage = empty($category) ? '' : '[' . $category . '] ';
         $finalMessage .= '' . (empty($marketplaceSku) ? '' : 'order ' . $marketplaceSku . ' : ');
         $finalMessage .= $decodedMessage;
         if ($display) {
             print_r($finalMessage . '<br />');
             flush();
         }
-        $log = Mage::getModel('lengow/log');
-        return $log->createLog(array('message' => $finalMessage));
+        return Mage::getModel('lengow/log')->createLog(array('message' => $finalMessage));
     }
 
     /**
@@ -132,7 +130,7 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function setLogMessage($key, $params = null)
     {
-        if (is_null($params) || (is_array($params) && count($params) == 0)) {
+        if (is_null($params) || (is_array($params) && count($params) === 0)) {
             return $key;
         }
         $allParams = array();

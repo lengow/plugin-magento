@@ -52,10 +52,12 @@ class Lengow_Connector_Block_Adminhtml_Action_Grid extends Mage_Adminhtml_Block_
      */
     protected function _prepareColumns()
     {
+        /** @var Lengow_Connector_Helper_Data $helper */
+        $helper = $this->helper('lengow_connector');
         $this->addColumn(
             'id',
             array(
-                'header' => Mage::helper('lengow_connector')->__('toolbox.table.id'),
+                'header' => $helper->__('toolbox.table.id'),
                 'index' => 'id',
                 'width' => '60px',
                 'type' => 'text',
@@ -65,7 +67,7 @@ class Lengow_Connector_Block_Adminhtml_Action_Grid extends Mage_Adminhtml_Block_
         $this->addColumn(
             'order_id',
             array(
-                'header' => Mage::helper('lengow_connector')->__('toolbox.table.order_id'),
+                'header' => $helper->__('toolbox.table.order_id'),
                 'index' => 'order_id',
                 'width' => '100px',
                 'column_css_class' => 'lengow_table_center',
@@ -74,7 +76,7 @@ class Lengow_Connector_Block_Adminhtml_Action_Grid extends Mage_Adminhtml_Block_
         $this->addColumn(
             'action_id',
             array(
-                'header' => Mage::helper('lengow_connector')->__('toolbox.table.action_id'),
+                'header' => $helper->__('toolbox.table.action_id'),
                 'index' => 'action_id',
                 'width' => '100px',
                 'column_css_class' => 'lengow_table_center',
@@ -83,7 +85,7 @@ class Lengow_Connector_Block_Adminhtml_Action_Grid extends Mage_Adminhtml_Block_
         $this->addColumn(
             'order_line_sku',
             array(
-                'header' => Mage::helper('lengow_connector')->__('toolbox.table.order_line_sku'),
+                'header' => $helper->__('toolbox.table.order_line_sku'),
                 'index' => 'order_line_sku',
                 'column_css_class' => 'lengow_table_center',
             )
@@ -91,7 +93,7 @@ class Lengow_Connector_Block_Adminhtml_Action_Grid extends Mage_Adminhtml_Block_
         $this->addColumn(
             'action_type',
             array(
-                'header' => Mage::helper('lengow_connector')->__('toolbox.table.action_type'),
+                'header' => $helper->__('toolbox.table.action_type'),
                 'index' => 'action_type',
                 'width' => '100px',
                 'column_css_class' => 'lengow_table_center',
@@ -100,7 +102,7 @@ class Lengow_Connector_Block_Adminhtml_Action_Grid extends Mage_Adminhtml_Block_
         $this->addColumn(
             'retry',
             array(
-                'header' => Mage::helper('lengow_connector')->__('toolbox.table.retry'),
+                'header' => $helper->__('toolbox.table.retry'),
                 'index' => 'retry',
                 'width' => '100px',
                 'column_css_class' => 'lengow_table_center',
@@ -109,7 +111,7 @@ class Lengow_Connector_Block_Adminhtml_Action_Grid extends Mage_Adminhtml_Block_
         $this->addColumn(
             'parameters',
             array(
-                'header' => Mage::helper('lengow_connector')->__('toolbox.table.parameters'),
+                'header' => $helper->__('toolbox.table.parameters'),
                 'index' => 'parameters',
                 'renderer' => 'Lengow_Connector_Block_Adminhtml_Action_Renderer_Parameter',
                 'column_css_class' => 'lengow_table_center',
@@ -118,7 +120,7 @@ class Lengow_Connector_Block_Adminhtml_Action_Grid extends Mage_Adminhtml_Block_
         $this->addColumn(
             'state',
             array(
-                'header' => Mage::helper('lengow_connector')->__('toolbox.table.state'),
+                'header' => $helper->__('toolbox.table.state'),
                 'index' => 'state',
                 'renderer' => 'Lengow_Connector_Block_Adminhtml_Action_Renderer_Status',
                 'column_css_class' => 'lengow_table_center',
@@ -127,7 +129,7 @@ class Lengow_Connector_Block_Adminhtml_Action_Grid extends Mage_Adminhtml_Block_
         $this->addColumn(
             'created_at',
             array(
-                'header' => Mage::helper('lengow_connector')->__('toolbox.table.created_at'),
+                'header' => $helper->__('toolbox.table.created_at'),
                 'index' => 'created_at',
                 'type' => 'datetime',
                 'column_css_class' => 'lengow_table_center',
@@ -136,7 +138,7 @@ class Lengow_Connector_Block_Adminhtml_Action_Grid extends Mage_Adminhtml_Block_
         $this->addColumn(
             'updated_at',
             array(
-                'header' => Mage::helper('lengow_connector')->__('toolbox.table.updated_at'),
+                'header' => $helper->__('toolbox.table.updated_at'),
                 'index' => 'updated_at',
                 'type' => 'datetime',
                 'column_css_class' => 'lengow_table_center',

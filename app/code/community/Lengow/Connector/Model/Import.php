@@ -23,6 +23,11 @@
 class Lengow_Connector_Model_Import extends Varien_Object
 {
     /**
+     * @var integer max import days for old versions
+     */
+    const MAX_IMPORT_DAYS = 10;
+
+    /**
      * @var Lengow_Connector_Helper_Data Lengow helper instance
      */
     protected $_helper = null;
@@ -88,6 +93,26 @@ class Lengow_Connector_Model_Import extends Varien_Object
     protected $_logOutput = false;
 
     /**
+     * @var string|false imports orders updated since
+     */
+    protected $_updatedFrom = false;
+
+    /**
+     * @var string|false imports orders updated until
+     */
+    protected $_updatedTo = false;
+
+    /**
+     * @var string|false imports orders created since
+     */
+    protected $_createdFrom = false;
+
+    /**
+     * @var string|false imports orders created until
+     */
+    protected $_createdTo = false;
+
+    /**
      * @var string account ID
      */
     protected $_accountId;
@@ -124,6 +149,8 @@ class Lengow_Connector_Model_Import extends Varien_Object
      * string  marketplace_sku     lengow marketplace order id to import
      * string  marketplace_name    lengow marketplace name to import
      * string  type                type of current import
+     * string  created_from        import of orders since
+     * string  created_to          import of orders until
      * integer delivery_address_id Lengow delivery address id to import
      * integer order_lengow_id     Lengow order id in Magento
      * integer store_id            store id for current import
@@ -154,18 +181,20 @@ class Lengow_Connector_Model_Import extends Varien_Object
             }
         } else {
             // recovering the time interval
-            $this->_days = (isset($params['days']) ? (int)$params['days'] : null);
-            $this->_limit = (isset($params['limit']) ? (int)$params['limit'] : 0);
+            $this->_getImportPeriod(
+                isset($params['days']) ? (int)$params['days'] : false,
+                isset($params['created_from']) ? $params['created_from'] : false,
+                isset($params['created_to']) ? $params['created_to'] : false
+            );
+            $this->_limit = isset($params['limit']) ? (int)$params['limit'] : 0;
         }
         // get other params
-        $this->_preprodMode = (
-        isset($params['preprod_mode'])
+        $this->_preprodMode = isset($params['preprod_mode'])
             ? (bool)$params['preprod_mode']
-            : (bool)$this->_configHelper->get('preprod_mode_enable')
-        );
-        $this->_typeImport = (isset($params['type']) ? $params['type'] : 'manual');
-        $this->_logOutput = (isset($params['log_output']) ? (bool)$params['log_output'] : false);
-        $this->_storeId = (isset($params['store_id']) ? (int)$params['store_id'] : null);
+            : (bool)$this->_configHelper->get('preprod_mode_enable');
+        $this->_typeImport = isset($params['type']) ? $params['type'] : 'manual';
+        $this->_logOutput = isset($params['log_output']) ? (bool)$params['log_output'] : false;
+        $this->_storeId = isset($params['store_id']) ? (int)$params['store_id'] : null;
     }
 
     /**
@@ -180,6 +209,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
         $orderError = 0;
         $errors = array();
         $globalError = false;
+        $syncOk = true;
         // clean logs > 20 days
         $this->_helper->cleanLog();
         if ($this->_importHelper->importIsInProcess() && !$this->_preprodMode && !$this->_importOneOrder) {
@@ -194,8 +224,6 @@ class Lengow_Connector_Model_Import extends Varien_Object
         } else {
             if (!$this->_importOneOrder) {
                 $this->_importHelper->setImportInProcess();
-                // update last import date
-                $this->_importHelper->updateDateImport($this->_typeImport);
             }
             // to activate lengow shipping method
             Mage::getSingleton('core/session')->setIsFromlengow(1);
@@ -228,7 +256,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
                             'log.import.start_for_store',
                             array(
                                 'store_name' => $store->getName(),
-                                'store_id' => (int)$store->getId()
+                                'store_id' => (int)$store->getId(),
                             )
                         ),
                         $this->_logOutput
@@ -259,7 +287,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
                                         'nb_order' => $totalOrders,
                                         'marketplace_sku' => $this->_marketplaceSku,
                                         'marketplace_name' => $this->_marketplaceName,
-                                        'account_id' => $this->_accountId
+                                        'account_id' => $this->_accountId,
                                     )
                                 ),
                                 $this->_logOutput
@@ -271,7 +299,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
                                     'log.import.find_all_orders',
                                     array(
                                         'nb_order' => $totalOrders,
-                                        'account_id' => $this->_accountId
+                                        'account_id' => $this->_accountId,
                                     )
                                 ),
                                 $this->_logOutput
@@ -283,8 +311,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
                             continue;
                         }
                         if (!is_null($this->_orderLengowId)) {
-                            $lengowOrderError = Mage::getModel('lengow/import_ordererror');
-                            $lengowOrderError->finishOrderErrors($this->_orderLengowId);
+                            Mage::getModel('lengow/import_ordererror')->finishOrderErrors($this->_orderLengowId);
                         }
                         // import orders in Magento
                         $result = $this->_importOrders($orders, (int)$store->getId());
@@ -300,14 +327,16 @@ class Lengow_Connector_Model_Import extends Varien_Object
                             . '" ' . $e->getFile() . ' line ' . $e->getLine();
                     }
                     if (isset($errorMessage)) {
+                        $syncOk = false;
                         if (!is_null($this->_orderLengowId)) {
+                            /** @var Lengow_Connector_Model_Import_Ordererror $lengowOrderError */
                             $lengowOrderError = Mage::getModel('lengow/import_ordererror');
                             $lengowOrderError->finishOrderErrors($this->_orderLengowId);
                             $lengowOrderError->createOrderError(
                                 array(
                                     'order_lengow_id' => $this->_orderLengowId,
                                     'message' => $errorMessage,
-                                    'type' => 'import'
+                                    'type' => 'import',
                                 )
                             );
                             unset($lengowOrderError);
@@ -354,6 +383,10 @@ class Lengow_Connector_Model_Import extends Varien_Object
                     $this->_logOutput
                 );
             }
+            // update last import date
+            if (!$this->_importOneOrder && $syncOk) {
+                $this->_importHelper->updateDateImport($this->_typeImport);
+            }
             // finish import process
             $this->_importHelper->setImportEnd();
             $this->_helper->log(
@@ -366,6 +399,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
                 $this->_importHelper->sendMailAlert($this->_logOutput);
             }
             if (!$this->_preprodMode && !$this->_importOneOrder && $this->_typeImport == 'manual') {
+                /** @var Lengow_Connector_Model_Import_Action $action */
                 $action = Mage::getModel('lengow/import_action');
                 $action->checkFinishAction();
                 $action->checkOldAction();
@@ -379,13 +413,14 @@ class Lengow_Connector_Model_Import extends Varien_Object
         if ($globalError) {
             $errors[0] = $globalError;
             if (isset($this->_orderLengowId) && $this->_orderLengowId) {
+                /** @var Lengow_Connector_Model_Import_Ordererror $lengowOrderError */
                 $lengowOrderError = Mage::getModel('lengow/import_ordererror');
                 $lengowOrderError->finishOrderErrors($this->_orderLengowId);
                 $lengowOrderError->createOrderError(
                     array(
                         'order_lengow_id' => $this->_orderLengowId,
                         'message' => $globalError,
-                        'type' => 'import'
+                        'type' => 'import',
                     )
                 );
                 unset($lengowOrderError);
@@ -399,7 +434,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
                 'order_new' => $orderNew,
                 'order_update' => $orderUpdate,
                 'order_error' => $orderError,
-                'error' => $errors
+                'error' => $errors,
             );
         }
     }
@@ -473,10 +508,6 @@ class Lengow_Connector_Model_Import extends Varien_Object
     {
         $page = 1;
         $orders = array();
-        // get import period
-        $days = (!is_null($this->_days) ? $this->_days : $this->_configHelper->get('days', $store->getId()));
-        $dateFrom = date('c', strtotime(date('Y-m-d') . ' -' . $days . 'days'));
-        $dateTo = date('c');
         // Convert order amount or not
         $noCurrencyConversion = !(bool)$this->_configHelper->get('currency_conversion_enabled', $store->getId());
         if ($this->_importOneOrder) {
@@ -486,20 +517,22 @@ class Lengow_Connector_Model_Import extends Varien_Object
                     'log.import.connector_get_order',
                     array(
                         'marketplace_sku' => $this->_marketplaceSku,
-                        'marketplace_name' => $this->_marketplaceName
+                        'marketplace_name' => $this->_marketplaceName,
                     )
                 ),
                 $this->_logOutput
             );
         } else {
+            $dateFrom = $this->_createdFrom ? $this->_createdFrom : $this->_updatedFrom;
+            $dateTo = $this->_createdTo ? $this->_createdTo : $this->_updatedTo;
             $this->_helper->log(
                 'Import',
                 $this->_helper->setLogMessage(
                     'log.import.connector_get_all_order',
                     array(
-                        'date_from' => date('Y-m-d', strtotime((string)$dateFrom)),
-                        'date_to' => date('Y-m-d', strtotime((string)$dateTo)),
-                        'catalog_id' => implode(', ', $this->_storeCatalogIds)
+                        'date_from' => date('Y-m-d H:i:s', strtotime((string)$dateFrom)),
+                        'date_to' => date('Y-m-d H:i:s', strtotime((string)$dateTo)),
+                        'catalog_id' => implode(', ', $this->_storeCatalogIds),
                     )
                 ),
                 $this->_logOutput
@@ -514,20 +547,32 @@ class Lengow_Connector_Model_Import extends Varien_Object
                         'marketplace' => $this->_marketplaceName,
                         'no_currency_conversion' => $noCurrencyConversion,
                         'account_id' => $this->_accountId,
-                        'page' => $page
+                        'page' => $page,
                     ),
                     'stream'
                 );
             } else {
+                if ($this->_createdFrom && $this->_createdTo) {
+                    $timeParams = [
+                        'marketplace_order_date_from' => $this->_createdFrom,
+                        'marketplace_order_date_to' => $this->_createdTo,
+                    ];
+                } else {
+                    $timeParams = [
+                        'updated_from' => $this->_updatedFrom,
+                        'updated_to' => $this->_updatedTo,
+                    ];
+                }
                 $results = $this->_connector->get(
                     '/v3.0/orders',
-                    array(
-                        'updated_from' => $dateFrom,
-                        'updated_to' => $dateTo,
-                        'catalog_ids' => implode(',', $this->_storeCatalogIds),
-                        'no_currency_conversion' => $noCurrencyConversion,
-                        'account_id' => $this->_accountId,
-                        'page' => $page
+                    array_merge(
+                        $timeParams,
+                        array(
+                            'catalog_ids' => implode(',', $this->_storeCatalogIds),
+                            'no_currency_conversion' => $noCurrencyConversion,
+                            'account_id' => $this->_accountId,
+                            'page' => $page,
+                        )
                     ),
                     'stream'
                 );
@@ -538,7 +583,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
                         'lengow_log.exception.no_connection_webservice',
                         array(
                             'store_name' => $store->getName(),
-                            'store_id' => $store->getId()
+                            'store_id' => $store->getId(),
                         )
                     )
                 );
@@ -550,7 +595,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
                         'lengow_log.exception.no_connection_webservice',
                         array(
                             'store_name' => $store->getName(),
-                            'store_id' => $store->getId()
+                            'store_id' => $store->getId(),
                         )
                     )
                 );
@@ -563,7 +608,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
                             'error_code' => $results->error->code,
                             'error_message' => $results->error->message,
                             'store_name' => $store->getName(),
-                            'store_id' => $store->getId()
+                            'store_id' => $store->getId(),
                         )
                     )
                 );
@@ -627,7 +672,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
                     continue;
                 }
                 $packageDeliveryAddressId = (int)$packageData->delivery->id;
-                $firstPackage = ($nbPackage > 1 ? false : true);
+                $firstPackage = $nbPackage > 1 ? false : true;
                 // check the package for re-import order
                 if ($this->_importOneOrder) {
                     if (!is_null($this->_deliveryAddressId)
@@ -644,6 +689,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
                 }
                 try {
                     // try to import or update order
+                    /** @var Lengow_Connector_Model_Import_Importorder $importOrder */
                     $importOrder = Mage::getModel(
                         'lengow/import_importorder',
                         array(
@@ -655,7 +701,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
                             'order_data' => $orderData,
                             'package_data' => $packageData,
                             'first_package' => $firstPackage,
-                            'import_helper' => $this->_importHelper
+                            'import_helper' => $this->_importHelper,
                         )
                     );
                     $order = $importOrder->importOrder();
@@ -730,7 +776,52 @@ class Lengow_Connector_Model_Import extends Varien_Object
         return array(
             'order_new' => $orderNew,
             'order_update' => $orderUpdate,
-            'order_error' => $orderError
+            'order_error' => $orderError,
         );
+    }
+
+    /**
+     * Get Import period
+     *
+     * @param integer|false $days Import period
+     * @param string|false $createdFrom Import of orders since
+     * @param string|false $createdTo Import of orders until
+     */
+    protected function _getImportPeriod($days, $createdFrom, $createdTo)
+    {
+        if ($createdFrom && $createdTo) {
+            // retrieval of orders created from ... until ...
+            $createdFromTimestamp = strtotime($createdFrom);
+            $createdToTimestamp = strtotime($createdTo) + 86399;
+            $intervalDay = (int) (($createdToTimestamp - $createdFromTimestamp) / 86400);
+            if ($intervalDay > self::MAX_IMPORT_DAYS) {
+                $dateFrom = date('c', $createdFromTimestamp);
+                $dateTo = date('c', ($createdFromTimestamp + self::MAX_IMPORT_DAYS * 86400));
+            } else {
+                $dateFrom = date('c', $createdFromTimestamp);
+                $dateTo = date('c', $createdToTimestamp);
+            }
+            $this->_createdFrom = $dateFrom;
+            $this->_createdTo = $dateTo;
+        } else {
+            // order recovery updated since ... days
+            $importDays = (int)$this->_configHelper->get('days');
+            // add security for older versions of the plugin
+            $importDays = $importDays > self::MAX_IMPORT_DAYS ? self::MAX_IMPORT_DAYS : $importDays;
+            if ($days) {
+                $importDays = $days > self::MAX_IMPORT_DAYS ? self::MAX_IMPORT_DAYS : $days;
+            } else {
+                $lastImport = $this->_importHelper->getLastImport();
+                $lastSettingUpdate = $this->_configHelper->get('last_setting_update');
+                if ($lastImport['timestamp'] !== 'none' && $lastImport['timestamp'] > strtotime($lastSettingUpdate)) {
+                    $currentTimestamp = time();
+                    $intervalDay = (int)(($currentTimestamp - $lastImport['timestamp']) / 86400);
+                    $intervalDay = $intervalDay === 0 ? 1 : $intervalDay;
+                    $importDays = $intervalDay > $importDays ? $importDays : $intervalDay;
+                }
+            }
+            $this->_updatedFrom = date('c', (time() - $importDays * 86400));
+            $this->_updatedTo = date('c');
+        }
     }
 }

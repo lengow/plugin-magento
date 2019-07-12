@@ -42,19 +42,21 @@ class Lengow_Connector_Adminhtml_Lengow_HomeController extends Mage_Adminhtml_Co
     {
         $isAjax = Mage::app()->getRequest()->isAjax();
         if ($isAjax) {
+            /** @var Lengow_Connector_Helper_Sync $syncHelper */
+            $syncHelper = Mage::helper('lengow_connector/sync');
             $action = (string)$this->getRequest()->getParam('action');
             if (strlen($action) > 0) {
                 switch ($action) {
-                    case "get_sync_data":
+                    case 'get_sync_data':
                         $data = array();
                         $data['function'] = 'sync';
-                        $data['parameters'] = Mage::helper('lengow_connector/sync')->getSyncData();
+                        $data['parameters'] = $syncHelper->getSyncData();
                         $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($data));
                         break;
-                    case "sync":
+                    case 'sync':
                         $data = $this->getRequest()->getParam('data', 0);
-                        Mage::helper('lengow_connector/sync')->sync($data);
-                        Mage::helper('lengow_connector/sync')->getStatusAccount(true);
+                        $syncHelper->sync($data);
+                        $syncHelper->getStatusAccount(true);
                         break;
                 }
             }
@@ -80,6 +82,6 @@ class Lengow_Connector_Adminhtml_Lengow_HomeController extends Mage_Adminhtml_Co
     public function refreshAction()
     {
         Mage::helper('lengow_connector/sync')->getStatusAccount(true);
-        Mage::app()->getResponse()->setRedirect(Mage::helper('adminhtml')->getUrl("adminhtml/lengow_home"));
+        Mage::app()->getResponse()->setRedirect(Mage::helper('adminhtml')->getUrl('adminhtml/lengow_home'));
     }
 }

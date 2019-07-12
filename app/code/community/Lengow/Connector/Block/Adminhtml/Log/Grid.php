@@ -52,10 +52,12 @@ class Lengow_Connector_Block_Adminhtml_Log_Grid extends Mage_Adminhtml_Block_Wid
      */
     protected function _prepareColumns()
     {
+        /** @var Lengow_Connector_Helper_Data $helper */
+        $helper = $this->helper('lengow_connector');
         $this->addColumn(
             'id',
             array(
-                'header' => Mage::helper('lengow_connector')->__('log.table.id'),
+                'header' => $helper->__('log.table.id'),
                 'width' => '80px',
                 'type' => 'text',
                 'index' => 'id',
@@ -64,7 +66,7 @@ class Lengow_Connector_Block_Adminhtml_Log_Grid extends Mage_Adminhtml_Block_Wid
         $this->addColumn(
             'date',
             array(
-                'header' => Mage::helper('lengow_connector')->__('log.table.date'),
+                'header' => $helper->__('log.table.date'),
                 'index' => 'date',
                 'type' => 'datetime',
                 'width' => '100px',
@@ -73,7 +75,7 @@ class Lengow_Connector_Block_Adminhtml_Log_Grid extends Mage_Adminhtml_Block_Wid
         $this->addColumn(
             'message',
             array(
-                'header' => Mage::helper('lengow_connector')->__('log.table.message'),
+                'header' => $helper->__('log.table.message'),
                 'index' => 'message',
             )
         );

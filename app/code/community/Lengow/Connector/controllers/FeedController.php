@@ -76,12 +76,12 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action
         $logOutput = $this->getRequest()->getParam('log_output', null);
         $currency = $this->getRequest()->getParam('currency', null);
         $updateExportDate = $this->getRequest()->getParam('update_export_date', null);
-        //get store data
+        // get store data
         $storeCode = $this->getRequest()->getParam('code', null);
         if ($storeCode) {
             $storeId = (int)Mage::getModel('core/store')->load($storeCode, 'code')->getId();
         } else {
-            $storeId = (integer)$this->getRequest()->getParam('store', Mage::app()->getStore()->getId());
+            $storeId = (int)$this->getRequest()->getParam('store', Mage::app()->getStore()->getId());
         }
         if ($locale = $this->getRequest()->getParam('locale', null)) {
             // changing locale works!
@@ -91,13 +91,16 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action
             // translation now works
             Mage::app()->getTranslator()->init('frontend', true);
         }
-        $dataHelper = Mage::helper('lengow_connector');
+        /** @var Lengow_Connector_Helper_Data $helper */
+        $helper = Mage::helper('lengow_connector');
+        /** @var Lengow_Connector_Helper_Security $securityHelper */
         $securityHelper = Mage::helper('lengow_connector/security');
         if ($securityHelper->checkWebserviceAccess($token, $storeId)) {
             try {
                 // config store
                 Mage::app()->getStore()->setCurrentStore($storeId);
                 // launch export process
+                /** @var Lengow_Connector_Model_Export $export */
                 $export = Mage::getModel(
                     'lengow/export',
                     array(
@@ -131,20 +134,20 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action
             } catch (Exception $e) {
                 $errorMessage = '[Magento error] "' . $e->getMessage()
                     . '" ' . $e->getFile() . ' line ' . $e->getLine();
-                $dataHelper->log('Export', $errorMessage);
+                $helper->log('Export', $errorMessage);
                 $this->getResponse()->setHeader('HTTP/1.1', '500 Internal Server Error');
                 $this->getResponse()->setBody($errorMessage);
             }
         } else {
             if ((bool)Mage::helper('lengow_connector/config')->get('ip_enable')) {
-                $errorMessage = $dataHelper->__(
+                $errorMessage = $helper->__(
                     'log.export.unauthorised_ip',
                     array('ip' => $securityHelper->getRemoteIp())
                 );
             } else {
                 $errorMessage =  strlen($token) > 0
-                    ? $dataHelper->__('log.export.unauthorised_token', array('token' => $token))
-                    : $dataHelper->__('log.export.empty_token');
+                    ? $helper->__('log.export.unauthorised_token', array('token' => $token))
+                    : $helper->__('log.export.empty_token');
             }
             $this->getResponse()->setHeader('HTTP/1.1', '403 Forbidden');
             $this->getResponse()->setBody($errorMessage);

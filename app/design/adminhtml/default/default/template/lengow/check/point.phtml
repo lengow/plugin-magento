@@ -1,3 +1,8 @@
+<?php
+    /** @var Lengow_Connector_Helper_Data $helper */
+    $helper = Mage::helper('lengow_connector');
+?>
+
 <table cellspacing="0" class="form-list">
     <colgroup class="label"></colgroup>
     <colgroup class="value"></colgroup>
@@ -7,7 +12,7 @@
         <tr id="row_update_module">
             <td class="label">
                 <label for="update_module">
-                    <?php echo Mage::helper('lengow_connector')->__('lengow_setting.global_plugin_version_title'); ?>
+                    <?php echo $helper->__('lengow_setting.global_plugin_version_title'); ?>
                 </label>
             </td>
             <td class="value">
@@ -17,7 +22,7 @@
         <tr id="row_magento_version">
             <td class="label">
                 <label for="magento_version">
-                    <?php echo Mage::helper('lengow_connector')->__('lengow_setting.global_magento_version_title'); ?>
+                    <?php echo $helper->__('lengow_setting.global_magento_version_title'); ?>
                 </label>
             </td>
             <td class="value">
@@ -27,17 +32,15 @@
         <tr id="row_module_compatibility">
             <td class="label">
                 <label for="magento_version">
-                    <?php
-                    echo Mage::helper('lengow_connector')->__('lengow_setting.global_plugin_compatibility_title');
-                    ?>
+                    <?php echo $helper->__('lengow_setting.global_plugin_compatibility_title'); ?>
                 </label>
             </td>
             <td class="value">
                 <?php
                 if ($this->checkValidMagentoVersion()) {
-                    echo Mage::helper('lengow_connector')->__('lengow_setting.global_plugin_compatibility_yes');
+                    echo $helper->__('lengow_setting.global_plugin_compatibility_yes');
                 } else {
-                    echo Mage::helper('lengow_connector')->__('lengow_setting.global_plugin_compatibility_no');
+                    echo $helper->__('lengow_setting.global_plugin_compatibility_no');
                 }
                 ?>
             </td>
@@ -45,7 +48,7 @@
         <tr id="row_ip_service">
             <td class="label">
                 <label for="ip_service">
-                    <?php echo Mage::helper('lengow_connector')->__('lengow_setting.global_server_ip_title'); ?>
+                    <?php echo $helper->__('lengow_setting.global_server_ip_title'); ?>
                 </label>
             </td>
             <td class="value">
@@ -54,7 +57,7 @@
         </tr>
         <tr>
             <td class="label" colspan="2">
-            <b><?php echo Mage::helper('lengow_connector')->__('lengow_setting.global_information_credential'); ?></b>
+            <b><?php echo $helper->__('lengow_setting.global_information_credential'); ?></b>
             </td>
         </tr>
     </tbody>

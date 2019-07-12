@@ -51,7 +51,7 @@ class Lengow_Connector_Model_Import_Quote extends Mage_Sales_Model_Quote
                         Mage_Tax_Model_Config::CONFIG_XML_PATH_BASED_ON,
                         $this->getStore()
                     );
-                    $countryId = ($basedOn == 'shipping')
+                    $countryId = $basedOn === 'shipping'
                         ? $this->getShippingAddress()->getCountryId()
                         : $this->getBillingAddress()->getCountryId();
                     $taxCalculator = Mage::getModel('tax/calculation');
@@ -93,26 +93,27 @@ class Lengow_Connector_Model_Import_Quote extends Mage_Sales_Model_Quote
     protected function _getProducts($products, $marketplace, $marketplaceSku, $logOutput)
     {
         $lengowProducts = array();
+        /** @var Lengow_Connector_Helper_Data $helper */
+        $helper = Mage::helper('lengow_connector/data');
         foreach ($products as $product) {
             $found = false;
             $magentoProduct = false;
             $productModel = Mage::getModel('catalog/product');
             $orderLineId = (string)$product->marketplace_order_line_id;
             // check whether the product is canceled
-            if ($product->marketplace_status != null) {
+            if ($product->marketplace_status !== null) {
                 $stateProduct = $marketplace->getStateLengow((string)$product->marketplace_status);
-                if ($stateProduct == 'canceled' || $stateProduct == 'refused') {
-                    $productId = (!is_null($product->merchant_product_id->id)
+                if ($stateProduct === 'canceled' || $stateProduct === 'refused') {
+                    $productId = !is_null($product->merchant_product_id->id)
                         ? (string)$product->merchant_product_id->id
-                        : (string)$product->marketplace_product_id
-                    );
-                    Mage::helper('lengow_connector/data')->log(
+                        : (string)$product->marketplace_product_id;
+                    $helper->log(
                         'Import',
-                        Mage::helper('lengow_connector/data')->setLogMessage(
+                        $helper->setLogMessage(
                             'log.import.product_state_canceled',
                             array(
                                 'product_id' => $productId,
-                                'state_product' => $stateProduct
+                                'state_product' => $stateProduct,
                             )
                         ),
                         $logOutput,
@@ -123,9 +124,9 @@ class Lengow_Connector_Model_Import_Quote extends Mage_Sales_Model_Quote
             }
             $productIds = array(
                 'merchant_product_id' => $product->merchant_product_id->id,
-                'marketplace_product_id' => $product->marketplace_product_id
+                'marketplace_product_id' => $product->marketplace_product_id,
             );
-            $productField = $product->merchant_product_id->field != null
+            $productField = $product->merchant_product_id->field !== null
                 ? strtolower((string)$product->merchant_product_id->field)
                 : false;
             // search product foreach value
@@ -178,14 +179,14 @@ class Lengow_Connector_Model_Import_Quote extends Mage_Sales_Model_Quote
                             'order_line_ids' => array($orderLineId),
                         );
                     }
-                    Mage::helper('lengow_connector/data')->log(
+                    $helper->log(
                         'Import',
-                        Mage::helper('lengow_connector/data')->setLogMessage(
+                        $helper->setLogMessage(
                             'log.import.product_be_found',
                             array(
                                 'product_id' => $magentoProduct->getId(),
                                 'attribute_name' => $attributeName,
-                                'attribute_value' => $attributeValue
+                                'attribute_value' => $attributeValue,
                             )
                         ),
                         $logOutput,
@@ -196,19 +197,18 @@ class Lengow_Connector_Model_Import_Quote extends Mage_Sales_Model_Quote
                 }
             }
             if (!$found) {
-                $productId = (!is_null($product->merchant_product_id->id)
+                $productId = !is_null($product->merchant_product_id->id)
                     ? (string)$product->merchant_product_id->id
-                    : (string)$product->marketplace_product_id
-                );
+                    : (string)$product->marketplace_product_id;
                 throw new Lengow_Connector_Model_Exception(
-                    Mage::helper('lengow_connector/data')->setLogMessage(
+                    $helper->setLogMessage(
                         'lengow_log.exception.product_not_be_found',
                         array('product_id' => $productId)
                     )
                 );
             } elseif ($magentoProduct->getTypeId() == Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE) {
                 throw new Lengow_Connector_Model_Exception(
-                    Mage::helper('lengow_connector/data')->setLogMessage(
+                    $helper->setLogMessage(
                         'lengow_log.exception.product_is_a_parent',
                         array('product_id' => $magentoProduct->getId())
                     )

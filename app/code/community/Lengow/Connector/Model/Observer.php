@@ -23,31 +23,6 @@
 class Lengow_Connector_Model_Observer
 {
     /**
-     * @var array path for Lengow options
-     */
-    protected $_lengowOptions = array(
-        'lengow_global_options',
-        'lengow_export_options',
-        'lengow_import_options'
-    );
-
-    /**
-     * @var array excludes attributes for export
-     */
-    protected $_excludeOptions = array(
-        'import_in_progress',
-        'last_import_manual',
-        'last_import_cron',
-        'export_last_export',
-        'last_statistic_update',
-        'order_statistic',
-        'see_migrate_block',
-        'last_status_update',
-        'account_status',
-        'last_option_cms_update',
-    );
-
-    /**
      * @var array order already shipped
      */
     protected $_alreadyShipped = array();
@@ -61,42 +36,9 @@ class Lengow_Connector_Model_Observer
     {
         $object = $observer->getEvent()->getObject();
         if (is_a($object, 'Mage_Core_Model_Config_Data')) {
-            $pathExplode = explode("/", $object['path']);
-            if (isset($pathExplode[0]) && in_array($pathExplode[0], $this->_lengowOptions)) {
-                if ($object['scope'] == 'stores' || $object['scope'] == 'default') {
-                    $oldValue = Mage::getStoreConfig($object['path'], $object['scope_id']);
-                    $value = $object['value'];
-                    if ($oldValue != $value && !in_array($pathExplode[2], $this->_excludeOptions)) {
-                        if ($pathExplode[2] == 'global_access_token' || $pathExplode[2] == 'global_secret_token') {
-                            $newValue = preg_replace("/[a-zA-Z0-9]/", '*', $value);
-                            $oldValue = preg_replace("/[a-zA-Z0-9]/", '*', $oldValue);
-                        } else {
-                            $newValue = $value;
-                        }
-                        if ($object['scope'] == 'stores') {
-                            $message = Mage::helper('lengow_connector/translation')->t(
-                                'log.setting.setting_change_for_store',
-                                array(
-                                    'key' => $object['path'],
-                                    'old_value' => $oldValue,
-                                    'value' => $newValue,
-                                    'store_id' => $object['scope_id']
-                                )
-                            );
-                        } else {
-                            $message = Mage::helper('lengow_connector/translation')->t(
-                                'log.setting.setting_change',
-                                array(
-                                    'key' => $object['path'],
-                                    'old_value' => $oldValue,
-                                    'value' => $newValue,
-                                )
-                            );
-                        }
-                        Mage::helper('lengow_connector')->log('Config', $message);
-                    }
-                }
-            }
+            /** @var Lengow_Connector_Model_Config $config */
+            $config =  Mage::getModel('lengow/config');
+            $config->checkAndLog($object['path'], $object['value'], $object['scope'], $object['scope_id']);
         }
     }
 
@@ -115,6 +57,7 @@ class Lengow_Connector_Model_Observer
             && Mage::getSingleton('core/session')->getCurrentOrderLengow() != $order->getData('order_id_lengow')
             && !array_key_exists($order->getData('order_id_lengow'), $this->_alreadyShipped)
         ) {
+            /** @var Lengow_Connector_Model_Import_Order $orderLengow */
             $orderLengow = Mage::getModel('lengow/import_order');
             $orderLengow->callAction('ship', $order, $shipment);
             $this->_alreadyShipped[$order->getData('order_id_lengow')] = true;
@@ -138,6 +81,7 @@ class Lengow_Connector_Model_Observer
             && Mage::getSingleton('core/session')->getCurrentOrderLengow() != $order->getData('order_id_lengow')
             && !array_key_exists($order->getData('order_id_lengow'), $this->_alreadyShipped)
         ) {
+            /** @var Lengow_Connector_Model_Import_Order $orderLengow */
             $orderLengow = Mage::getModel('lengow/import_order');
             $orderLengow->callAction('ship', $order, $shipment);
             $this->_alreadyShipped[$order->getData('order_id_lengow')] = true;
@@ -159,6 +103,7 @@ class Lengow_Connector_Model_Observer
         if ($order->getData('from_lengow') == 1
             && Mage::getSingleton('core/session')->getCurrentOrderLengow() != $order->getData('order_id_lengow')
         ) {
+            /** @var Lengow_Connector_Model_Import_Order $orderLengow */
             $orderLengow = Mage::getModel('lengow/import_order');
             $orderLengow->callAction('cancel', $order);
         }
@@ -174,6 +119,7 @@ class Lengow_Connector_Model_Observer
     {
         set_time_limit(0);
         ini_set('memory_limit', '1G');
+        /** @var Lengow_Connector_Helper_Config $configHelper */
         $configHelper = Mage::helper('lengow_connector/config');
         $storeCollection = Mage::getResourceModel('core/store_collection')->addFieldToFilter('is_active', 1);
         foreach ($storeCollection as $store) {
@@ -182,6 +128,7 @@ class Lengow_Connector_Model_Observer
                 try {
                     // config store
                     Mage::app()->getStore()->setCurrentStore($storeId);
+                    /** @var Lengow_Connector_Model_Export $export */
                     // launch export process
                     $export = Mage::getModel(
                         'lengow/export',
@@ -190,7 +137,7 @@ class Lengow_Connector_Model_Observer
                             'stream' => false,
                             'update_export_date' => false,
                             'log_output' => false,
-                            'type' => 'magento cron'
+                            'type' => 'magento cron',
                         )
                     );
                     $export->setOriginalCurrency(Mage::app()->getStore($storeId)->getCurrentCurrencyCode());
@@ -213,13 +160,16 @@ class Lengow_Connector_Model_Observer
     public function importCron()
     {
         if ((bool)Mage::helper('lengow_connector/config')->get('import_cron_enable')) {
+            /** @var Lengow_Connector_Helper_Sync $syncHelper */
             $syncHelper = Mage::helper('lengow_connector/sync');
             // sync catalogs id between Lengow and Magento
             $syncHelper->syncCatalog();
             // sync orders between Lengow and Magento
+            /** @var Lengow_Connector_Model_Import $import */
             $import = Mage::getModel('lengow/import', array('type' => 'magento cron'));
             $import->exec();
             // sync action between Lengow and Magento
+            /** @var Lengow_Connector_Model_Import_Action $action */
             $action = Mage::getModel('lengow/import_action');
             $action->checkFinishAction();
             $action->checkOldAction();
