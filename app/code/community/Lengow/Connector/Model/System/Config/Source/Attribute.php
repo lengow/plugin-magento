@@ -52,7 +52,7 @@ class Lengow_Connector_Model_System_Config_Source_Attribute extends Mage_Core_Mo
             if (!in_array($option->getAttributeCode(), $this->_excludes)) {
                 $attributeArray[] = array(
                     'value' => $option->getAttributeCode(),
-                    'label' => $option->getAttributeCode()
+                    'label' => $option->getAttributeCode(),
                 );
             }
         }

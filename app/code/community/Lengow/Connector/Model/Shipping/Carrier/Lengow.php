@@ -67,7 +67,7 @@ class Lengow_Connector_Model_Shipping_Carrier_Lengow
      */
     public function proccessAdditionalValidation(Mage_Shipping_Model_Rate_Request $request)
     {
-        if (Mage::getVersion() == '1.4.1.0') {
+        if (Mage::getVersion() === '1.4.1.0') {
             return $this->isActive();
         }
         return parent::proccessAdditionalValidation($request);

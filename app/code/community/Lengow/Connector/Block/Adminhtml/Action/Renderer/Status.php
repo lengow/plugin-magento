@@ -32,13 +32,13 @@ class Lengow_Connector_Block_Adminhtml_Action_Renderer_Status
      */
     public function render(Varien_Object $row)
     {
-        $status = $row->getData($this->getColumn()->getIndex());
-        if ($status == 0) {
-            return '<span class="lgw-label orange">'
-                . Mage::helper('lengow_connector')->__('toolbox.table.state_processing') . '</span>';
+        /** @var Lengow_Connector_Helper_Data $helper */
+        $helper = $this->helper('lengow_connector');
+        $status = (int)$row->getData($this->getColumn()->getIndex());
+        if ($status === 0) {
+            return '<span class="lgw-label orange">' . $helper->__('toolbox.table.state_processing') . '</span>';
         } else {
-            return '<span class="lgw-label">'
-                . Mage::helper('lengow_connector')->__('toolbox.table.state_complete') . '</span>';
+            return '<span class="lgw-label">' . $helper->__('toolbox.table.state_complete') . '</span>';
         }
     }
 }

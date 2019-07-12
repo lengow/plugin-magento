@@ -1,12 +1,16 @@
 <?php
+    /** @var Lengow_Connector_Helper_Data $helper */
     $helper = Mage::helper('lengow_connector');
+    /** @var Lengow_Connector_Helper_Config $configHelper */
     $configHelper = Mage::helper('lengow_connector/config');
+    /** @var Lengow_Connector_Helper_Import $importHelper */
     $importHelper = Mage::helper('lengow_connector/import');
     $lastImport = $importHelper->getLastImport();
     $reportMailActive = (bool)$configHelper->get('report_mail_enable');
     $reportMailLink = Mage::helper('adminhtml')
         ->getUrl('adminhtml/system_config/edit/section/lengow_import_options/');
     $reportMails = $configHelper->getReportEmailAddress();
+    /** @var Lengow_Connector_Model_Import_Order $order */
     $order = Mage::getModel('lengow/import_order');
     $seeMigrateBlock = (bool)$configHelper->get('see_migrate_block');
     $nbOrderImported = $order->countOrderImportedByLengow();
@@ -44,7 +48,7 @@
         </p>
         <p id="lengow_last_importation">
             <?php
-            if ($lastImport['type'] != 'none') {
+            if ($lastImport['type'] !== 'none') {
                 echo $helper->__('order.screen.last_order_importation', array(
                     'last_importation' => '<b>'.$helper->getDateInCorrectFormat($lastImport['timestamp']).'</b>'
                 ));

@@ -497,7 +497,7 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
                 continue;
             }
         }
-        if (count($reportEmailAddress) == 0) {
+        if (count($reportEmailAddress) === 0) {
             $reportEmailAddress[] = Mage::getStoreConfig('trans_email/ident_general/email');
         }
         return $reportEmailAddress;

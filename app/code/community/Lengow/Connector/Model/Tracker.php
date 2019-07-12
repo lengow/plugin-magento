@@ -46,7 +46,7 @@ class Lengow_Connector_Model_Tracker extends Varien_Object
                 $productDatas = array(
                     'product_id' => $product->getData($identifier),
                     'price' => $price,
-                    'quantity' => $quantity
+                    'quantity' => $quantity,
                 );
                 $productsCart[] = $productDatas;
             }

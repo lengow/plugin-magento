@@ -137,7 +137,7 @@ class Lengow_Connector_Model_Observer
                             'stream' => false,
                             'update_export_date' => false,
                             'log_output' => false,
-                            'type' => 'magento cron'
+                            'type' => 'magento cron',
                         )
                     );
                     $export->setOriginalCurrency(Mage::app()->getStore($storeId)->getCurrentCurrencyCode());

@@ -29,19 +29,20 @@ class Lengow_Connector_Model_System_Config_Source_Status extends Mage_Core_Model
      */
     public function toOptionArray()
     {
+        $helper = Mage::helper('adminhtml');
         return array(
             array(
                 'value' => Mage_Catalog_Model_Product_Status::STATUS_ENABLED,
-                'label' => Mage::helper('adminhtml')->__('Enabled')
+                'label' => $helper->__('Enabled'),
             ),
             array(
                 'value' => Mage_Catalog_Model_Product_Status::STATUS_DISABLED,
-                'label' => Mage::helper('adminhtml')->__('Disabled')
+                'label' => $helper->__('Disabled'),
             ),
             array(
                 'value' => Mage_Catalog_Model_Product_Status::STATUS_ENABLED
                     . ',' . Mage_Catalog_Model_Product_Status::STATUS_DISABLED,
-                'label' => Mage::helper('adminhtml')->__('Enabled') . ', ' . Mage::helper('adminhtml')->__('Disabled')
+                'label' => $helper->__('Enabled') . ', ' . $helper->__('Disabled'),
             ),
         );
     }

@@ -25,7 +25,7 @@ class Lengow_Connector_Block_Adminhtml_System_Config_Check_Point extends Mage_Ad
     /**
      * @var Lengow_Connector_Helper_Security Lengow security helper
      */
-    protected $_helper;
+    protected $_securityHelper;
 
     /**
      * Construct
@@ -33,7 +33,7 @@ class Lengow_Connector_Block_Adminhtml_System_Config_Check_Point extends Mage_Ad
     public function __construct()
     {
         $this->setTemplate('lengow/check/point.phtml');
-        $this->_helper = Mage::helper('lengow_connector/security');
+        $this->_securityHelper = Mage::helper('lengow_connector/security');
         parent::_construct();
     }
 
@@ -44,7 +44,7 @@ class Lengow_Connector_Block_Adminhtml_System_Config_Check_Point extends Mage_Ad
      */
     public function getPluginVersion()
     {
-        return $this->_helper->getPluginVersion();
+        return $this->_securityHelper->getPluginVersion();
     }
 
     /**
@@ -54,7 +54,7 @@ class Lengow_Connector_Block_Adminhtml_System_Config_Check_Point extends Mage_Ad
      */
     public function getMagentoVersion()
     {
-        return $this->_helper->getMagentoVersion();
+        return $this->_securityHelper->getMagentoVersion();
     }
 
     /**
@@ -64,7 +64,7 @@ class Lengow_Connector_Block_Adminhtml_System_Config_Check_Point extends Mage_Ad
      */
     public function checkValidMagentoVersion()
     {
-        return $this->_helper->checkValidMagentoVersion();
+        return $this->_securityHelper->checkValidMagentoVersion();
     }
 
     /**
@@ -74,6 +74,6 @@ class Lengow_Connector_Block_Adminhtml_System_Config_Check_Point extends Mage_Ad
      */
     public function getServerIp()
     {
-        return $this->_helper->getServerIp();
+        return $this->_securityHelper->getServerIp();
     }
 }

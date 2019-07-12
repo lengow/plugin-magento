@@ -1,14 +1,16 @@
 <?php
-$statusAccount = Mage::helper('lengow_connector/sync')->getStatusAccount();
-if ((bool)Mage::helper('lengow_connector/config')->get('preprod_mode_enable')) { ?>
-        <span id="lgw-preprod">
-            <?php echo Mage::helper('lengow_connector')->__('header.preprod_active'); ?>
-        </span>
-<?php }
-if ($statusAccount['type'] == 'free_trial' && !$statusAccount['expired']) :?>
-	    <p id="lgw-counter" class="pull-right">
-	            <?php echo Mage::helper('lengow_connector')->__('header.counter', array('counter' => $statusAccount['day'])); ?>
-	        <a href="http://my.lengow.io/" target="_blank"><?php echo Mage::helper('lengow_connector')->__('header.upgrade_account'); ?></a>
-	    </p>
-    <div class="clear"></div>
-<?php endif; ?>
+    /** @var Lengow_Connector_Helper_Data $helper */
+    $helper = Mage::helper('lengow_connector');
+    $statusAccount = Mage::helper('lengow_connector/sync')->getStatusAccount();
+    if ((bool)Mage::helper('lengow_connector/config')->get('preprod_mode_enable')) { ?>
+            <span id="lgw-preprod">
+                <?php echo $helper->__('header.preprod_active'); ?>
+            </span>
+    <?php }
+    if ($statusAccount['type'] === 'free_trial' && !$statusAccount['expired']) :?>
+            <p id="lgw-counter" class="pull-right">
+                    <?php echo $helper->__('header.counter', array('counter' => $statusAccount['day'])); ?>
+                <a href="http://my.lengow.io/" target="_blank"><?php echo $helper->__('header.upgrade_account'); ?></a>
+            </p>
+        <div class="clear"></div>
+    <?php endif; ?>

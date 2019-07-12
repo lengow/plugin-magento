@@ -32,12 +32,14 @@ class Lengow_Connector_Block_Adminhtml_Product_Renderer_Lengow
      */
     public function render(Varien_Object $row)
     {
-        $value = $row->getData($this->getColumn()->getIndex());
-        if ($value == 1) {
-            $value = $this->helper('lengow_connector')->__('global.just_yes');
+        /** @var Lengow_Connector_Helper_Data $helper */
+        $helper = $this->helper('lengow_connector');
+        $value = (int)$row->getData($this->getColumn()->getIndex());
+        if ($value === 1) {
+            $value = $helper->__('global.just_yes');
             $class = 'lgw-btn-green';
         } else {
-            $value = $this->helper('lengow_connector')->__('global.just_no');
+            $value = $helper->__('global.just_no');
             $class = 'lgw-btn-red';
         }
         return '<span class="publish-lgw lgw-label ' . $class . '">' . $value . '</span>';

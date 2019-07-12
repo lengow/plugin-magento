@@ -18,9 +18,10 @@
  */
 
 $version = '3.1.1';
-$config = Mage::helper('lengow_connector/config');
-$installedVersion = $config->get('installed_version');
+/** @var Lengow_Connector_Helper_Config $configHelper */
+$configHelper = Mage::helper('lengow_connector/config');
+$installedVersion = $configHelper->get('installed_version');
 
 if (version_compare($installedVersion, $version, '<')) {
-    $config->set('installed_version', $version);
+    $configHelper->set('installed_version', $version);
 }

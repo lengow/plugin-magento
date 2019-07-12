@@ -38,7 +38,7 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
     protected $_lengowStates = array(
         'waiting_shipment',
         'shipped',
-        'closed'
+        'closed',
     );
 
     /**
@@ -184,6 +184,7 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
     {
         $errors = Mage::getModel('lengow/import_ordererror')->getImportErrors();
         if ($errors) {
+            /** @var Lengow_Connector_Helper_Data $helper */
             $helper = Mage::helper('lengow_connector');
             $subject = $helper->decodeLogMessage('lengow_log.mail_report.subject_report_mail');
             $support = $helper->decodeLogMessage('lengow_log.mail_report.no_error_in_report_mail');

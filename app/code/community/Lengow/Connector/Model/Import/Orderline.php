@@ -29,7 +29,7 @@ class Lengow_Connector_Model_Import_Orderline extends Mage_Core_Model_Abstract
      */
     protected $_fieldList = array(
         'order_id' => array('required' => true, 'updated' => false),
-        'order_line_id' => array('required' => true, 'updated' => false)
+        'order_line_id' => array('required' => true, 'updated' => false),
     );
 
     /**
@@ -61,6 +61,7 @@ class Lengow_Connector_Model_Import_Orderline extends Mage_Core_Model_Abstract
         try {
             return $this->save();
         } catch (\Exception $e) {
+            /** @var Lengow_Connector_Helper_Data $helper */
             $helper = Mage::helper('lengow_connector/data');
             $errorMessage = 'Orm error: "' . $e->getMessage() . '" ' . $e->getFile() . ' line ' . $e->getLine();
             $helper->log(

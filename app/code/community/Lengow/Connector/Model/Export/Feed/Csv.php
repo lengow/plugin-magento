@@ -104,7 +104,7 @@ class Lengow_Connector_Model_Export_Feed_Csv extends Lengow_Connector_Model_Expo
      *
      * @param string $str The fieldname
      *
-     * @return string The formated header
+     * @return string
      */
     private function _clean($str)
     {

@@ -32,24 +32,26 @@ class Lengow_Connector_Block_Adminhtml_Order_Renderer_Action
      */
     public function render(Varien_Object $row)
     {
+        /** @var Lengow_Connector_Helper_Data $helper */
         $helper = $this->helper('lengow_connector');
-        if ($row->getData('is_in_error') == 1 && $row->getData('order_process_state') != 2) {
+        $orderProcessState = (int)$row->getData('order_process_state');
+        if ($row->getData('is_in_error') == 1 && $orderProcessState !== 2) {
             $orderLengowId = $row->getData('id');
-            $errorType = $row->getData('order_process_state') == 0 ? 'import' : 'send';
+            $errorType = $orderProcessState === 0 ? 'import' : 'send';
             $url = Mage::helper('adminhtml')->getUrl('adminhtml/lengow_order/') . '?isAjax=true';
-            $orderError = Mage::getModel('lengow/import_ordererror');
-            $errorOrders = $orderError->getOrderErrors($orderLengowId, $errorType, false);
+            $errorOrders = Mage::getModel('lengow/import_ordererror')
+                ->getOrderErrors($orderLengowId, $errorType, false);
             $errorMessages = array();
             if ($errorOrders) {
                 foreach ($errorOrders as $errorOrder) {
-                    if ($errorOrder['message'] != '') {
+                    if ($errorOrder['message'] !== '') {
                         $errorMessages[] = $helper->cleanData($helper->decodeLogMessage($errorOrder['message']), false);
                     } else {
                         $errorMessages[] = $helper->decodeLogMessage('order.table.no_error_message');
                     }
                 }
             }
-            if ($errorType == 'import') {
+            if ($errorType === 'import') {
                 $tootlip = $helper->decodeLogMessage('order.table.order_not_imported')
                     . '<br/>' . join('<br/>', $errorMessages);
                 return '<a class="lengow_action lengow_tooltip lgw-btn lgw-btn-white"
@@ -66,9 +68,9 @@ class Lengow_Connector_Block_Adminhtml_Order_Renderer_Action
             }
         } else {
             //check if order actions in progress
-            if (!is_null($row->getData('order_id')) && $row->getData('order_process_state') == 1) {
-                $action = Mage::getModel('lengow/import_action');
-                $lastActionType = $action->getLastOrderActionType($row->getData('order_id'));
+            $orderId = $row->getData('order_id');
+            if (!is_null($orderId) && $orderProcessState === 1) {
+                $lastActionType = Mage::getModel('lengow/import_action')->getLastOrderActionType($orderId);
                 if ($lastActionType) {
                     return '<a class="lengow_action lengow_tooltip lgw-btn lgw-btn-white">'
                         . $helper->decodeLogMessage(

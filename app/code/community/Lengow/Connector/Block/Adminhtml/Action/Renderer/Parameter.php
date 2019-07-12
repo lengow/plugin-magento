@@ -36,14 +36,14 @@ class Lengow_Connector_Block_Adminhtml_Action_Renderer_Parameter
         $parameters = json_decode($parameters, true);
         $return = '';
         foreach ($parameters as $key => $value) {
-            if ($key == 'line' || $key == 'action_type') {
+            if ($key === 'line' || $key === 'action_type') {
                 continue;
-            } elseif ($key == 'tracking_number') {
+            } elseif ($key === 'tracking_number') {
                 $key = 'tracking';
-            } elseif ($key == 'marketplace_order_id') {
+            } elseif ($key === 'marketplace_order_id') {
                 $key = 'marketplace sku';
             }
-            $return .= strlen($return) == 0
+            $return .= strlen($return) === 0
                 ? ucfirst($key) . ': ' . $value . ' '
                 : '- ' . ucfirst($key) . ': ' . $value . ' ';
         }

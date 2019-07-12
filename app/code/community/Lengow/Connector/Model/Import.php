@@ -672,7 +672,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
                     continue;
                 }
                 $packageDeliveryAddressId = (int)$packageData->delivery->id;
-                $firstPackage = ($nbPackage > 1 ? false : true);
+                $firstPackage = $nbPackage > 1 ? false : true;
                 // check the package for re-import order
                 if ($this->_importOneOrder) {
                     if (!is_null($this->_deliveryAddressId)

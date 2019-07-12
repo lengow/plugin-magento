@@ -76,12 +76,12 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action
         $logOutput = $this->getRequest()->getParam('log_output', null);
         $currency = $this->getRequest()->getParam('currency', null);
         $updateExportDate = $this->getRequest()->getParam('update_export_date', null);
-        //get store data
+        // get store data
         $storeCode = $this->getRequest()->getParam('code', null);
         if ($storeCode) {
             $storeId = (int)Mage::getModel('core/store')->load($storeCode, 'code')->getId();
         } else {
-            $storeId = (integer)$this->getRequest()->getParam('store', Mage::app()->getStore()->getId());
+            $storeId = (int)$this->getRequest()->getParam('store', Mage::app()->getStore()->getId());
         }
         if ($locale = $this->getRequest()->getParam('locale', null)) {
             // changing locale works!
@@ -91,13 +91,16 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action
             // translation now works
             Mage::app()->getTranslator()->init('frontend', true);
         }
+        /** @var Lengow_Connector_Helper_Data $helper */
         $helper = Mage::helper('lengow_connector');
+        /** @var Lengow_Connector_Helper_Security $securityHelper */
         $securityHelper = Mage::helper('lengow_connector/security');
         if ($securityHelper->checkWebserviceAccess($token, $storeId)) {
             try {
                 // config store
                 Mage::app()->getStore()->setCurrentStore($storeId);
                 // launch export process
+                /** @var Lengow_Connector_Model_Export $export */
                 $export = Mage::getModel(
                     'lengow/export',
                     array(

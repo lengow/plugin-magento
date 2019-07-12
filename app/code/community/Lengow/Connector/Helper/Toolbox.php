@@ -138,6 +138,7 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
             'title' => $this->_helper->__('toolbox.screen.import_cron_enable'),
             'state' => (bool)$this->_configHelper->get('import_cron_enable'),
         );
+        /** @var Lengow_Connector_Model_Import_Order $order */
         $order = Mage::getModel('lengow/import_order');
         $nbOrderImported = $order->countOrderImportedByLengow();
         $orderWithError = $order->countOrderWithError();
@@ -197,6 +198,7 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
      */
     public function getExportInformations($store)
     {
+        /** @var Lengow_Connector_Model_Export $export */
         $export = Mage::getModel('lengow/export', array("store_id" => $store->getId()));
         $checklist = array();
         try {
@@ -325,38 +327,29 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
                         if ($fileMd !== $data[1]) {
                             $fileErrors[] = array(
                                 'title' => $filePath,
-                                'state' => false
+                                'state' => false,
                             );
                         }
                     } else {
                         $fileDeletes[] = array(
                             'title' => $filePath,
-                            'state' => false
+                            'state' => false,
                         );
                     }
                 }
                 fclose($file);
             }
             $checklist[] = array(
-                'title' => $this->_helper->__(
-                    'toolbox.screen.file_checked',
-                    array('nb_file' => $fileCounter)
-                ),
-                'state' => true
+                'title' => $this->_helper->__('toolbox.screen.file_checked', array('nb_file' => $fileCounter)),
+                'state' => true,
             );
             $checklist[] = array(
-                'title' => $this->_helper->__(
-                    'toolbox.screen.file_modified',
-                    array('nb_file' => count($fileErrors))
-                ),
-                'state' => (count($fileErrors) > 0 ? false : true)
+                'title' => $this->_helper->__('toolbox.screen.file_modified', array('nb_file' => count($fileErrors))),
+                'state' => count($fileErrors) > 0 ? false : true,
             );
             $checklist[] = array(
-                'title' => $this->_helper->__(
-                    'toolbox.screen.file_deleted',
-                    array('nb_file' => count($fileDeletes))
-                ),
-                'state' => (count($fileDeletes) > 0 ? false : true)
+                'title' => $this->_helper->__('toolbox.screen.file_deleted', array('nb_file' => count($fileDeletes))),
+                'state' => count($fileDeletes) > 0 ? false : true,
             );
             $html .= $this->_getContent($checklist);
             if (count($fileErrors) > 0) {
@@ -372,7 +365,7 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
         } else {
             $checklist[] = array(
                 'title' => $this->_helper->__('toolbox.screen.file_not_exists'),
-                'state' => false
+                'state' => false,
             );
             $html .= $this->_getContent($checklist);
         }

@@ -1,9 +1,10 @@
-<?php 
-$helper = Mage::helper('lengow_connector');
-$stats = Mage::helper('lengow_connector/sync')->getStatistic();
-$totalOrder = isset($stats['total_order']) ? $stats['total_order'] : 0;
-$nbOrder = isset($stats['nb_order']) ? $stats['nb_order'] : 0;
-$orderToBeSent = Mage::getModel('lengow/import_order')->countOrderToBeSent();
+<?php
+    /** @var Lengow_Connector_Helper_Data $helper */
+    $helper = Mage::helper('lengow_connector');
+    $stats = Mage::helper('lengow_connector/sync')->getStatistic();
+    $totalOrder = isset($stats['total_order']) ? $stats['total_order'] : 0;
+    $nbOrder = isset($stats['nb_order']) ? $stats['nb_order'] : 0;
+    $orderToBeSent = Mage::getModel('lengow/import_order')->countOrderToBeSent();
 ?>
 
 <div class="lgw-container">

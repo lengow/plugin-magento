@@ -29,9 +29,10 @@ class Lengow_Connector_Model_System_Config_Source_Tracking extends Mage_Core_Mod
      */
     public function toOptionArray()
     {
+        $helper = Mage::helper('adminhtml');
         return array(
-            array('value' => 'sku', 'label' => Mage::helper('adminhtml')->__('Sku')),
-            array('value' => 'entity_id', 'label' => Mage::helper('adminhtml')->__('ID product')),
+            array('value' => 'sku', 'label' => $helper->__('Sku')),
+            array('value' => 'entity_id', 'label' => $helper->__('ID product')),
         );
     }
 }

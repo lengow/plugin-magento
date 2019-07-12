@@ -90,7 +90,7 @@ class Lengow_Connector_Helper_Translation extends Mage_Core_Helper_Abstract
      * @param string $text localization key
      * @param array $args replace word in string
      *
-     * @return string Final Translate string
+     * @return string
      */
     protected function translateFinal($text, $args)
     {
@@ -122,8 +122,8 @@ class Lengow_Connector_Helper_Translation extends Mage_Core_Helper_Abstract
         }
         $translation = array();
         if (file_exists($filename)) {
-            if (($handle = fopen($filename, "r")) !== false) {
-                while (($data = fgetcsv($handle, 1000, "|")) !== false) {
+            if (($handle = fopen($filename, 'r')) !== false) {
+                while (($data = fgetcsv($handle, 1000, '|')) !== false) {
                     $translation[$data[0]] = $data[1];
                 }
                 fclose($handle);
