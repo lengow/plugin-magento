@@ -469,12 +469,13 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
             foreach ($website->getGroups() as $group) {
                 $stores = $group->getStores();
                 foreach ($stores as $store) {
-                    if ($token == $this->get('token', $store->getId())) {
+                    if ($token === $this->get('token', $store->getId())) {
                         return $store;
                     }
                 }
             }
         }
+        return false;
     }
 
     /**

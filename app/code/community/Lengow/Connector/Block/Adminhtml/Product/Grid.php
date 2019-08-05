@@ -43,7 +43,7 @@ class Lengow_Connector_Block_Adminhtml_Product_Grid extends Mage_Adminhtml_Block
     {
         $storeId = (int)$this->getRequest()->getParam('store', 0);
         // set default store if storeId is global
-        if ($storeId == 0) {
+        if ($storeId === 0) {
             $storeId = Mage::app()->getWebsite(true)->getDefaultGroup()->getDefaultStoreId();
         }
         return Mage::app()->getStore($storeId);
@@ -108,7 +108,7 @@ class Lengow_Connector_Block_Adminhtml_Product_Grid extends Mage_Adminhtml_Block
     protected function _addColumnFilterToCollection($column)
     {
         if ($this->getCollection()) {
-            if ($column->getId() == 'websites') {
+            if ($column->getId() === 'websites') {
                 $this->getCollection()->joinField(
                     'websites',
                     'catalog/product_website',
@@ -289,8 +289,8 @@ class Lengow_Connector_Block_Adminhtml_Product_Grid extends Mage_Adminhtml_Block
                         'values' => array(
                             0 => $helper->__('global.just_no'),
                             1 => $helper->__('global.just_yes'),
-                        )
-                    )
+                        ),
+                    ),
                 )
             )
         );
@@ -319,7 +319,7 @@ class Lengow_Connector_Block_Adminhtml_Product_Grid extends Mage_Adminhtml_Block
                 '*/catalog_product/edit',
                 array(
                     'store' => $this->getRequest()->getParam('store'),
-                    'id' => $row->getId()
+                    'id' => $row->getId(),
                 )
             );
         }

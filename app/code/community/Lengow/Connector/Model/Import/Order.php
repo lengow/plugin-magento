@@ -497,7 +497,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
             return false;
         }
         // check success update in BDD
-        if ($order->getData('is_reimported_lengow') == 1) {
+        if ((bool)$order->getData('is_reimported_lengow')) {
             return true;
         }
         return false;

@@ -141,7 +141,7 @@ class Lengow_Connector_Model_Export_Feed_Csv extends Lengow_Connector_Model_Expo
             '/[\x{00D9}\x{00DA}\x{00DB}\x{00DC}\x{016E}]/u',
             '/[\x{017B}\x{0179}\x{017D}]/u',
             '/[\x{00C6}]/u',
-            '/[\x{0152}]/u'
+            '/[\x{0152}]/u',
         );
         $replacements = array(
             'a',
@@ -174,7 +174,7 @@ class Lengow_Connector_Model_Export_Feed_Csv extends Lengow_Connector_Model_Expo
             'U',
             'Z',
             'AE',
-            'OE'
+            'OE',
         );
         return preg_replace($patterns, $replacements, $str);
     }

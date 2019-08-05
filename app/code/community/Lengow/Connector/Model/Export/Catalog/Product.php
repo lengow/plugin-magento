@@ -197,7 +197,7 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
         $datas = array();
         $datas['currency'] = $toCurrency->getCode();
         // get prices with or without conversion
-        if ($this->getOriginalCurrency() == $toCurrency->getCode()) {
+        if ($this->getOriginalCurrency() === $toCurrency->getCode()) {
             $discountAmount = $priceIncludingTax - $finalPriceIncludingTax;
             $datas['price_excl_tax'] = round($finalPriceExcludingTax, 2);
             $datas['price_incl_tax'] = round($finalPriceIncludingTax, 2);
@@ -311,12 +311,12 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
             }
         }
         // use category cache if category already exists
-        if (isset($category) && $category['entity_id'] != '') {
+        if (isset($category) && $category['entity_id'] !== '') {
             if (isset($categoryCache[$category['entity_id']])) {
                 return $categoryCache[$category['entity_id']];
             }
         }
-        if (isset($category) && $category['path'] != '') {
+        if (isset($category) && $category['path'] !== '') {
             $categories = explode('/', $categoryBuffer['path']);
         } else {
             $categories = array();
@@ -334,9 +334,9 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
             $c = Mage::getModel('catalog/category')
                 ->setStoreId($storeId)
                 ->load($cid);
-            if ($c->getId() != 1) {
-                // No root category
-                if ($i == 0) {
+            if ((int)$c->getId() !== 1) {
+                // no root category
+                if ($i === 0) {
                     $datas['category'] = $c->getName();
                     $datas['category_url'] = $c->getUrl();
                     $ariane[] = $c->getName();

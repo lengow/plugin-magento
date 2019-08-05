@@ -101,7 +101,7 @@ class Lengow_Connector_CronController extends Mage_Core_Controller_Front_Action
                         $params['store_id'] = (int)$this->getRequest()->getParam('store_id');
                     }
                     $params['type'] = 'cron';
-                    // Import orders
+                    // synchronise orders
                     /** @var Lengow_Connector_Model_Import $import */
                     $import = Mage::getModel('lengow/import', $params);
                     $import->exec();

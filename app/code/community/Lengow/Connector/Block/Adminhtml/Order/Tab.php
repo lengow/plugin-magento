@@ -123,7 +123,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Tab
             $carrierMethod = $orderLengow->getData('carrier_method');
             $carrierTracking = $orderLengow->getData('carrier_tracking');
             $carrierIdRelay = $orderLengow->getData('carrier_id_relay');
-            $sentMarketplace = $orderLengow->getData('sent_marketplace');
+            $sentMarketplace = (bool)$orderLengow->getData('sent_marketplace');
             $importedAt = $helper->getDateInCorrectFormat(strtotime($orderLengow->getData('created_at')));
             $message = $orderLengow->getData('message');
             $extra = $orderLengow->getData('extra');
@@ -141,12 +141,12 @@ class Lengow_Connector_Block_Adminhtml_Order_Tab
             $carrierMethod = $order->getData('carrier_method_lengow');
             $carrierTracking = $order->getData('carrier_tracking_lengow');
             $carrierIdRelay = $order->getData('carrier_id_relay_lengow');
-            $sentMarketplace = 0;
+            $sentMarketplace = false;
             $importedAt = $helper->getDateInCorrectFormat(strtotime($order->getData('carrier_id_relay_lengow')));
             $message = $order->getData('created_at');
             $extra = $order->getData('xml_node_lengow');
         }
-        $sentMarketplace = $sentMarketplace == 1 ? $helper->__('global.just_yes') : $helper->__('global.just_no');
+        $sentMarketplace = $sentMarketplace ? $helper->__('global.just_yes') : $helper->__('global.just_no');
         // construct fields list
         $fields[] = array('label' => $helper->__('order.table.marketplace_sku'), 'value' => $marketplaceSku);
         $fields[] = array('label' => $helper->__('order.table.marketplace_name'), 'value' => $marketplaceLabel);
@@ -216,7 +216,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Tab
             $orderLengowId = $orderLengow->getLengowOrderIdWithOrderId($order->getData('entity_id'));
             if ($orderLengowId) {
                 $orderLengow = $orderLengow->load($orderLengowId);
-                if ($orderLengow->getData('order_process_state') != $orderLengow->getOrderProcessState('closed')) {
+                if ((int)$orderLengow->getData('order_process_state') !== $orderLengow->getOrderProcessState('closed')) {
                     return true;
                 }
             } else {
