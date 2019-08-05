@@ -588,8 +588,9 @@ class Lengow_Connector_Model_Export extends Varien_Object
             // product variation
             $datas['type'] = $productType;
             $datas['variation'] = $variationName;
-            $datas['image_default'] = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA)
-                . 'catalog/product' . $product->getImage();
+            $datas['image_default'] = (!is_null($product->getImage()) && $product->getImage() !== 'no_selection')
+                ? Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . 'catalog/product' . $product->getImage()
+                : '';
             $datas['child_name'] = $this->_helper->cleanData($product->getName());
             $datas['language'] = Mage::app()->getLocale()->getLocaleCode();
             // get correct feed
