@@ -5,10 +5,10 @@
     $isoCode = strtolower(substr(Mage::app()->getLocale()->getLocaleCode(), 0, 2));
     if ($isNewMerchant || $isSync) {
         echo $this->getChildHtml("lengow_new");
-        echo '<input type="hidden" id="lengow_sync_link" value="'.$isSync.'">';
-        echo '<input type="hidden" id="lengow_lang_iso" value="'.$isoCode.'">';
-    } elseif (($statusAccount['type'] == 'free_trial' && $statusAccount['expired'])
-        || ($statusAccount['type'] == 'bad_payer')
+        echo '<input type="hidden" id="lengow_sync_link" value="' . $isSync . '">';
+        echo '<input type="hidden" id="lengow_lang_iso" value="' . $isoCode . '">';
+    } elseif (($statusAccount['type'] === 'free_trial' && $statusAccount['expired'])
+        || ($statusAccount['type'] === 'bad_payer')
     ) {
         echo $this->getChildHtml('lengow_status');
     } else {

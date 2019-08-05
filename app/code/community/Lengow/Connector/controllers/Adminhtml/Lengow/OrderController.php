@@ -116,7 +116,7 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
             );
         }
         $helper->log('Import', $synchroMessage, false, $marketplaceSku);
-        $url = Mage::helper('adminhtml')->getUrl("adminhtml/sales_order/view", array('order_id' => $orderId));
+        $url = Mage::helper('adminhtml')->getUrl('adminhtml/sales_order/view', array('order_id' => $orderId));
         Mage::app()->getResponse()->setRedirect($url);
     }
 
@@ -131,7 +131,7 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
         if (!$newOrderId) {
             $newOrderId = $orderId;
         }
-        $url = Mage::helper('adminhtml')->getUrl("adminhtml/sales_order/view", array('order_id' => $newOrderId));
+        $url = Mage::helper('adminhtml')->getUrl('adminhtml/sales_order/view', array('order_id' => $newOrderId));
         Mage::app()->getResponse()->setRedirect($url);
     }
 
@@ -145,7 +145,7 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
         $order = Mage::getModel('sales/order')->load($orderId);
         $shipment = $action === 'ship' ? $order->getShipmentsCollection()->getFirstItem() : null;
         Mage::getModel('lengow/import_order')->callAction($action, $order, $shipment);
-        $url = Mage::helper('adminhtml')->getUrl("adminhtml/sales_order/view", array('order_id' => $orderId));
+        $url = Mage::helper('adminhtml')->getUrl('adminhtml/sales_order/view', array('order_id' => $orderId));
         Mage::app()->getResponse()->setRedirect($url);
     }
 
@@ -234,7 +234,7 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
                 array('nb_order' => $results['order_error'])
             );
         }
-        if (count($messages) == 0) {
+        if (empty($messages)) {
             $messages[] = $helper->__('lengow_log.error.no_notification');
         }
         if (isset($results['error'])) {

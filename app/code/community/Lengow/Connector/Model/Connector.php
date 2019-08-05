@@ -219,11 +219,11 @@ class Lengow_Connector_Model_Connector
         switch ($format) {
             case 'json':
                 return json_decode($data, true);
-            case 'csv':
-                return $data;
             case 'xml':
                 return simplexml_load_string($data);
+            case 'csv':
             case 'stream':
+            default:
                 return $data;
         }
     }
@@ -243,12 +243,12 @@ class Lengow_Connector_Model_Connector
      */
     protected function _makeRequest($type, $url, $args, $token, $body = '')
     {
-        // Define CURLE_OPERATION_TIMEDOUT for old php versions
+        // define CURLE_OPERATION_TIMEDOUT for old php versions
         defined('CURLE_OPERATION_TIMEDOUT') || define('CURLE_OPERATION_TIMEDOUT', CURLE_OPERATION_TIMEOUTED);
         /** @var Lengow_Connector_Helper_Data $helper */
         $helper = Mage::helper('lengow_connector/data');
         $ch = curl_init();
-        // Options
+        // default curl Options
         $opts = self::$curlOpts;
         // get special timeout for specific Lengow API
         if (array_key_exists($url, $this->_lengowUrls)) {
@@ -266,7 +266,7 @@ class Lengow_Connector_Model_Connector
         $opts[CURLOPT_VERBOSE] = false;
         if (isset($token)) {
             $opts[CURLOPT_HTTPHEADER] = array(
-                'Authorization: ' . $token
+                'Authorization: ' . $token,
             );
         }
         $url = $url['scheme'] . '://' . $url['host'] . $url['path'];
@@ -308,7 +308,7 @@ class Lengow_Connector_Model_Connector
                 $opts[CURLOPT_POSTFIELDS] = http_build_query($args);
                 break;
         }
-        // Execute url request
+        // execute url request
         curl_setopt_array($ch, $opts);
         $result = curl_exec($ch);
         $errorNumber = curl_errno($ch);

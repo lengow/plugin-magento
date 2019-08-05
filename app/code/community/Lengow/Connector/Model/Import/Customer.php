@@ -88,7 +88,7 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
             $this->setPasswordHash($this->hashPassword($this->generatePassword(8)));
             $this->setFromLengow(1);
         }
-        // Billing address
+        // billing address
         $tempBillingNames = array(
             'firstname' => $array['billing_address']['first_name'],
             'lastname' => $array['billing_address']['last_name'],
@@ -99,7 +99,7 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
         $array['billing_address']['last_name'] = $billingNames['lastname'];
         $billingAddress = $this->_convertAddress($array['billing_address']);
         $this->addAddress($billingAddress);
-        // Shipping address
+        // shipping address
         $tempShippingNames = array(
             'firstname' => $array['delivery_address']['first_name'],
             'lastname' => $array['delivery_address']['last_name'],
@@ -108,7 +108,7 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
         $shippingNames = $this->_getNames($tempShippingNames);
         $array['delivery_address']['first_name'] = $shippingNames['firstname'];
         $array['delivery_address']['last_name'] = $shippingNames['lastname'];
-        // Get relay id if exist
+        // get relay id if exist
         if (count($shippingAddress->trackings) > 0 && !is_null($shippingAddress->trackings[0]->relay->id)) {
             $array['delivery_address']['tracking_relay'] = $shippingAddress->trackings[0]->relay->id;
         }
@@ -158,12 +158,12 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
         Mage::helper('core')->copyFieldset('lengow_convert_address', 'to_' . $type . '_address', $data, $address);
         $firstLine = $data['first_line'];
         $secondLine = $data['second_line'];
-        // Fix first line address
+        // fix first line address
         if (empty($firstLine) && !empty($secondLine)) {
             $firstLine = $secondLine;
             $secondLine = null;
         }
-        // Fix second line address
+        // fix second line address
         if (!empty($secondLine)) {
             $firstLine = $firstLine . "\n" . $secondLine;
         }

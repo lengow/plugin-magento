@@ -76,7 +76,7 @@ class Lengow_Connector_Model_System_Config_Source_Attribute extends Mage_Core_Mo
         if (is_null(Mage::getStoreConfig('lengow_export_options/advanced/export_attribute', $storeId))) {
             $attributeList = '';
             foreach ($attributeArray as $attribute) {
-                if ($attribute['value'] != 'none') {
+                if ($attribute['value'] !== 'none') {
                     $attributeList .= $attribute['value'] . ',';
                 }
             }

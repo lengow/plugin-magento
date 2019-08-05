@@ -161,9 +161,9 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
                 }
             }
         }
-        // Save last update date for a specific settings (change synchronisation interval time)
+        // save last update date for a specific settings (change synchronisation interval time)
         $this->_configHelper->set('last_setting_update', date('Y-m-d H:i:s'));
-        // Clean config cache to valid configuration
+        // clean config cache to valid configuration
         Mage::app()->getCacheInstance()->cleanType('config');
     }
 
@@ -208,9 +208,9 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
                 }
             }
         }
-        // Clean config cache to valid configuration
+        // clean config cache to valid configuration
         if ($cleanCache) {
-            // Save last update date for a specific settings (change synchronisation interval time)
+            // save last update date for a specific settings (change synchronisation interval time)
             $this->_configHelper->set('last_setting_update', date('Y-m-d H:i:s'));
             Mage::app()->getCacheInstance()->cleanType('config');
         }
@@ -394,17 +394,17 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
                 && (time() - strtotime($updatedAt)) < $this->_cacheTimes['marketplace']
                 && file_exists($filePath)
             ) {
-                // Recovering data with the marketplaces.json file
+                // recovering data with the marketplaces.json file
                 $marketplacesData = file_get_contents($filePath);
                 if ($marketplacesData) {
                     return json_decode($marketplacesData);
                 }
             }
         }
-        // Recovering data with the API
+        // recovering data with the API
         $result = Mage::getModel('lengow/connector')->queryApi('get', '/v3.0/marketplaces');
         if ($result && is_object($result) && !isset($result->error)) {
-            // Updated marketplaces.json file
+            // updated marketplaces.json file
             $file = new Varien_Io_File();
             $file->cd($folderPath);
             $file->streamOpen($this->_marketplaceJson, 'w+');
@@ -415,7 +415,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
             $this->_configHelper->set('last_marketplace_update', date('Y-m-d H:i:s'));
             return $result;
         } else {
-            // If the API does not respond, use marketplaces.json if it exists
+            // if the API does not respond, use marketplaces.json if it exists
             if (file_exists($filePath)) {
                 $marketplacesData = file_get_contents($filePath);
                 if ($marketplacesData) {

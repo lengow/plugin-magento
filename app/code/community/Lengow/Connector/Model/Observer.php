@@ -53,8 +53,8 @@ class Lengow_Connector_Model_Observer
     {
         $shipment = $observer->getEvent()->getShipment();
         $order = $shipment->getOrder();
-        if ($order->getData('from_lengow') == 1
-            && Mage::getSingleton('core/session')->getCurrentOrderLengow() != $order->getData('order_id_lengow')
+        if ((bool)$order->getData('from_lengow')
+            && Mage::getSingleton('core/session')->getCurrentOrderLengow() !== $order->getData('order_id_lengow')
             && !array_key_exists($order->getData('order_id_lengow'), $this->_alreadyShipped)
         ) {
             /** @var Lengow_Connector_Model_Import_Order $orderLengow */
@@ -77,8 +77,8 @@ class Lengow_Connector_Model_Observer
         $track = $observer->getEvent()->getTrack();
         $shipment = $track->getShipment();
         $order = $shipment->getOrder();
-        if ($order->getData('from_lengow') == 1
-            && Mage::getSingleton('core/session')->getCurrentOrderLengow() != $order->getData('order_id_lengow')
+        if ((bool)$order->getData('from_lengow')
+            && Mage::getSingleton('core/session')->getCurrentOrderLengow() !== $order->getData('order_id_lengow')
             && !array_key_exists($order->getData('order_id_lengow'), $this->_alreadyShipped)
         ) {
             /** @var Lengow_Connector_Model_Import_Order $orderLengow */
@@ -100,8 +100,8 @@ class Lengow_Connector_Model_Observer
     {
         $payment = $observer->getEvent()->getPayment();
         $order = $payment->getOrder();
-        if ($order->getData('from_lengow') == 1
-            && Mage::getSingleton('core/session')->getCurrentOrderLengow() != $order->getData('order_id_lengow')
+        if ((bool)$order->getData('from_lengow')
+            && Mage::getSingleton('core/session')->getCurrentOrderLengow() !== $order->getData('order_id_lengow')
         ) {
             /** @var Lengow_Connector_Model_Import_Order $orderLengow */
             $orderLengow = Mage::getModel('lengow/import_order');

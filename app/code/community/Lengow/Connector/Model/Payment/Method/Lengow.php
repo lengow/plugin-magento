@@ -51,7 +51,7 @@ class Lengow_Connector_Model_Payment_Method_Lengow extends Mage_Payment_Model_Me
     /**
      * Check whether payment method can be used
      *
-     * @param Mage_Sales_Model_Quote $quote Magento quote instance
+     * @param Mage_Sales_Model_Quote|null $quote Magento quote instance
      *
      * @return boolean
      */

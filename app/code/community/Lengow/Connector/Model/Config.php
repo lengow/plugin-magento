@@ -94,7 +94,7 @@ class Lengow_Connector_Model_Config extends Mage_Core_Model_Config
      */
     public function checkAndLog($path, $value, $scope = 'default', $scopeId = 0)
     {
-        $pathExplode = explode("/", $path);
+        $pathExplode = explode('/', $path);
         if (isset($pathExplode[0]) && in_array($pathExplode[0], $this->_lengowOptions)) {
             if ($scope === 'default' || $scope === 'stores') {
                 $oldValue = Mage::getStoreConfig($path, $scopeId);
@@ -126,7 +126,7 @@ class Lengow_Connector_Model_Config extends Mage_Core_Model_Config
                         );
                     }
                     Mage::helper('lengow_connector')->log('Config', $message);
-                    // Save last update date for a specific settings (change synchronisation interval time)
+                    // save last update date for a specific settings (change synchronisation interval time)
                     if (in_array($pathExplode[2], $this->_updatedSettings)) {
                         Mage::helper('lengow_connector/config')->set('last_setting_update', date('Y-m-d H:i:s'));
                     }

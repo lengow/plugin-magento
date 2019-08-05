@@ -11,7 +11,7 @@ class Lengow_Connector_Test_Controller_FeedController extends Lengow_Connector_T
     public function indexAction()
     {
         $this->mockAdminUserSession();
-        //test page
+        // test page
         $this->dispatch('lengow/feed/index');
         $this->assertRequestRoute('lengow/feed/index', '[Log - Url]');
     }

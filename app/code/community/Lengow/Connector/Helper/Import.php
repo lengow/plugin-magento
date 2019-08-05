@@ -23,7 +23,7 @@
 class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
 {
     /**
-     * @var Lengow_Connector_Helper_Config Lengow config helper instance
+     * @var Lengow_Connector_Helper_Config|null Lengow config helper instance
      */
     protected $_configHelper = null;
 

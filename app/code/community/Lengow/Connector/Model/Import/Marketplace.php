@@ -254,8 +254,8 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
      *
      * @param string $action order action (ship or cancel)
      * @param Mage_Sales_Model_Order $order Magento order instance
-     * @param Mage_Sales_Model_Order_Shipment $shipment Magento shipment instance
-     * @param string $orderLineId Lengow order line id
+     * @param Mage_Sales_Model_Order_Shipment|null $shipment Magento shipment instance
+     * @param string|null $orderLineId Lengow order line id
      *
      * @return boolean
      */
@@ -303,7 +303,7 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
         if (isset($errorMessage)) {
             if ($orderLengow) {
                 $processStateFinish = $orderLengow->getOrderProcessState('closed');
-                if ((int)$orderLengow->getData('order_process_state') != $processStateFinish) {
+                if ((int)$orderLengow->getData('order_process_state') !== $processStateFinish) {
                     $orderLengow->updateOrder(array('is_in_error' => 1));
                     Mage::getModel('lengow/import_ordererror')->createOrderError(
                         array(
@@ -415,7 +415,7 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
     {
         $params = [];
         $actions = $this->getAction($action);
-        // Get all order informations
+        // get all order informations
         foreach ($marketplaceArguments as $arg) {
             switch ($arg) {
                 case 'tracking_number':
@@ -479,7 +479,7 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
     protected function _checkAndCleanParams($action, $params)
     {
         $actions = $this->getAction($action);
-        // Check all required arguments
+        // check all required arguments
         if (isset($actions['args'])) {
             foreach ($actions['args'] as $arg) {
                 if (!isset($params[$arg]) || strlen($params[$arg]) === 0) {
@@ -492,7 +492,7 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
                 }
             }
         }
-        // Clean empty optional arguments
+        // clean empty optional arguments
         if (isset($actions['optional_args'])) {
             foreach ($actions['optional_args'] as $arg) {
                 if (isset($params[$arg]) && strlen($params[$arg]) === 0) {
@@ -541,7 +541,7 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
             }
         }
         // no match
-        if ($code === 'custom') {
+        if ($code === Mage_Sales_Model_Order_Shipment_Track::CUSTOM_CARRIER_CODE) {
             return $title;
         }
         return $code;

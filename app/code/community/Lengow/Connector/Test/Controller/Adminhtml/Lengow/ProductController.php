@@ -11,7 +11,7 @@ class Lengow_Connector_Test_Controller_Adminhtml_Lengow_ProductController extend
     public function indexAction()
     {
         $this->mockAdminUserSession();
-        //test page
+        // test page
         $this->dispatch('adminhtml/lengow_product/index');
         $this->assertRequestRoute('adminhtml/lengow_product/index', '[Log - Url]');
     }
@@ -25,7 +25,7 @@ class Lengow_Connector_Test_Controller_Adminhtml_Lengow_ProductController extend
     public function gridAction()
     {
         $this->mockAdminUserSession();
-        //test page
+        // test page
         $this->dispatch('adminhtml/lengow_product/grid');
         $this->assertRequestRoute('adminhtml/lengow_product/grid', '[Log - Url]');
     }
@@ -56,7 +56,7 @@ class Lengow_Connector_Test_Controller_Adminhtml_Lengow_ProductController extend
      */
     private function publishProductGlobal()
     {
-        //set lengow product to 0
+        // set lengow product to 0
         $productAction = Mage::getSingleton('catalog/product_action');
         $productAction->updateAttributes(array(1, 2), array('lengow_product' => 0), 0);
 
@@ -88,7 +88,7 @@ class Lengow_Connector_Test_Controller_Adminhtml_Lengow_ProductController extend
      */
     private function unPublishProductGlobal()
     {
-        //set lengow product to 0
+        // set lengow product to 0
         $productAction = Mage::getSingleton('catalog/product_action');
         $productAction->updateAttributes(array(1), array('lengow_product' => 1), 0);
 
@@ -119,7 +119,7 @@ class Lengow_Connector_Test_Controller_Adminhtml_Lengow_ProductController extend
      */
     private function publishProductStore()
     {
-        //reset product
+        // reset product
         $productAction = Mage::getSingleton('catalog/product_action');
         $productAction->updateAttributes(array(1, 2), array('lengow_product' => 0), 0);
 
@@ -154,7 +154,7 @@ class Lengow_Connector_Test_Controller_Adminhtml_Lengow_ProductController extend
      */
     public function unPublishProductStore()
     {
-        //reset product
+        // reset product
         $productAction = Mage::getSingleton('catalog/product_action');
         $productAction->updateAttributes(array(1, 2), array('lengow_product' => 1), 1);
 
@@ -189,7 +189,7 @@ class Lengow_Connector_Test_Controller_Adminhtml_Lengow_ProductController extend
      */
     public function unPublishProductStoreGlobal()
     {
-        //reset product
+        // reset product
         $productAction = Mage::getSingleton('catalog/product_action');
         $productAction->updateAttributes(array(1, 2), array('lengow_product' => 1), 2);
 

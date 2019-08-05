@@ -107,7 +107,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Tab
         /** @var Lengow_Connector_Model_Import_Order $orderLengow */
         $orderLengow = Mage::getModel('lengow/import_order');
         $orderLengowId = $orderLengow->getLengowOrderIdWithOrderId($order->getData('entity_id'));
-        // Get all Lengow data
+        // get all Lengow data
         if ($orderLengowId) {
             $orderLengow = $orderLengow->load($orderLengowId);
             $marketplaceSku = $orderLengow->getData('marketplace_sku');
@@ -147,7 +147,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Tab
             $extra = $order->getData('xml_node_lengow');
         }
         $sentMarketplace = $sentMarketplace == 1 ? $helper->__('global.just_yes') : $helper->__('global.just_no');
-        // Construct fields list
+        // construct fields list
         $fields[] = array('label' => $helper->__('order.table.marketplace_sku'), 'value' => $marketplaceSku);
         $fields[] = array('label' => $helper->__('order.table.marketplace_name'), 'value' => $marketplaceLabel);
         if ($feedId !== 0) {

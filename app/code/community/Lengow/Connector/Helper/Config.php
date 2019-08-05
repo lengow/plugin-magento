@@ -497,7 +497,7 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
                 continue;
             }
         }
-        if (count($reportEmailAddress) === 0) {
+        if (empty($reportEmailAddress)) {
             $reportEmailAddress[] = Mage::getStoreConfig('trans_email/ident_general/email');
         }
         return $reportEmailAddress;
@@ -513,7 +513,7 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
         $allCurrencies = array();
         $storeCollection = Mage::getResourceModel('core/store_collection')->addFieldToFilter('is_active', 1);
         foreach ($storeCollection as $store) {
-            // Get store currencies
+            // get store currencies
             try {
                 $storeCurrencies = Mage::app()->getStore($store->getId())->getAvailableCurrencyCodes();
                 if (is_array($storeCurrencies)) {
@@ -555,7 +555,7 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
             return false;
         }
         list($accountId, $accessToken, $secretToken) = $this->getAccessIds();
-        if (is_null($accountId) || $accountId == 0 || !is_numeric($accountId)) {
+        if (is_null($accountId) || (int)$accountId === 0 || !is_numeric($accountId)) {
             return false;
         }
         try {
@@ -576,7 +576,7 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
     /**
      * Get Values by store or global
      *
-     * @param integer $storeId Magento store id
+     * @param integer|null $storeId Magento store id
      *
      * @return array
      */

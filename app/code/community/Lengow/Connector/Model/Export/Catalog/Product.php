@@ -88,7 +88,7 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
             $result = $methodModel->collectRates(
                 $this->_getShippingRateRequest($productInstance, $countryCode)
             );
-            if ($result != null) {
+            if ($result !== null) {
                 if ($result->getError()) {
                     Mage::logException(new Exception($result->getError()));
                 } else {
@@ -163,7 +163,7 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
         $taxClassId = $productInstance->getTaxClassId();
         $request = $calculator->getRateRequest(null, null, null, $store);
         $taxPercent = $calculator->getRate($request->setProductClassId($taxClassId));
-        if ($productInstance->getTypeId() == 'grouped') {
+        if ($productInstance->getTypeId() === 'grouped') {
             $price = 0;
             $finalPrice = 0;
             $childs = Mage::getModel('catalog/product_type_grouped')->getChildrenIds($productInstance->getId());
@@ -286,7 +286,7 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
     public function getCategories($productInstance, $parentInstance, $storeId, &$categoryCache = array())
     {
         $idRootCategory = Mage::app()->getStore($storeId)->getRootCategoryId();
-        if ($productInstance->getVisibility() == Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE
+        if ((int)$productInstance->getVisibility() === Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE
             && isset($parentInstance)
         ) {
             $categories = $parentInstance->getCategoryCollection()
@@ -297,7 +297,7 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
                 ->addPathsFilter('1/' . $idRootCategory . '/')
                 ->exportToArray();
         }
-        // Old config value #levelcategory
+        // old config value #levelcategory
         $maxLevel = 5;
         $currentLevel = 0;
         $categoryBuffer = false;
@@ -384,7 +384,7 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
             $images = $tempImages;
             unset($tempImages, $files, $parentImages);
         }
-        // Old config value #maxImage
+        // old config value #maxImage
         for ($i = 1; $i < 11; $i++) {
             $data['image_url_' . $i] = '';
         }

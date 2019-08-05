@@ -7,7 +7,7 @@
 <div class="lgw-container">
     <div class="lgw-box">
         <div class="lgw-row">
-        <?php if ($statusAccount['type'] == 'free_trial' && $statusAccount['expired']) : ?>
+        <?php if ($statusAccount['type'] === 'free_trial' && $statusAccount['expired']) : ?>
             <div class="lgw-col-6 display-inline-block">
                 <h2 class="text-center"><?php echo $helper->__('status.screen.title_end_free_trial'); ?></h2>
                 <h3 class="text-center"><?php echo $helper->__('status.screen.subtitle_end_free_trial'); ?></h3>

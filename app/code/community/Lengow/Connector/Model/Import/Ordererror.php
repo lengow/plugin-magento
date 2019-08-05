@@ -69,7 +69,7 @@ class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
             }
         }
         foreach ($params as $key => $value) {
-            if ($key == 'type') {
+            if ($key === 'type') {
                 $value = $this->getOrderErrorType($value);
             }
             $this->setData($key, $value);
@@ -127,17 +127,16 @@ class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
     /**
      * Return type value
      *
-     * @param string $type order error type (import or send)
+     * @param string|null $type order error type (import or send)
      *
      * @return integer
      */
     public function getOrderErrorType($type = null)
     {
         switch ($type) {
-            case 'import':
-                return self::TYPE_ERROR_IMPORT;
             case 'send':
                 return self::TYPE_ERROR_SEND;
+            case 'import':
             default:
                 return self::TYPE_ERROR_IMPORT;
         }
@@ -147,8 +146,8 @@ class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
      * Get all order errors
      *
      * @param integer $orderLengowId Lengow order id
-     * @param string $type order error type (import or send)
-     * @param boolean $finished log finished
+     * @param string|null $type order error type (import or send)
+     * @param boolean|null $finished log finished
      *
      * @return array|false
      *
@@ -208,7 +207,7 @@ class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
      */
     public function getImportErrors()
     {
-        // Compatibility for version 1.5
+        // compatibility for version 1.5
         if (Mage::getVersion() < '1.6.0.0') {
             $results = $this->getCollection()
                 ->join(
@@ -234,7 +233,7 @@ class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
                 ->addFieldToSelect('id')
                 ->getData();
         }
-        if (count($results) === 0) {
+        if (empty($results)) {
             return false;
         }
         return $results;
