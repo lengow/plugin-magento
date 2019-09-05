@@ -11,8 +11,7 @@ class Lengow_Connector_Test_Controller_Adminhtml_Lengow_LogController extends Le
     public function indexAction()
     {
         $this->mockAdminUserSession();
-
-        //test page
+        // test page
         $this->dispatch('adminhtml/lengow_log/index');
         $this->assertRequestRoute('adminhtml/lengow_log/index', '[Log - Url]');
     }
@@ -26,8 +25,7 @@ class Lengow_Connector_Test_Controller_Adminhtml_Lengow_LogController extends Le
     public function gridAction()
     {
         $this->mockAdminUserSession();
-
-        //test page
+        // test page
         $this->dispatch('adminhtml/lengow_log/grid');
         $this->assertRequestRoute('adminhtml/lengow_log/grid', '[Log - Url]');
     }

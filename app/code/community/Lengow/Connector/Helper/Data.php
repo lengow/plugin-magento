@@ -100,13 +100,13 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
      * @param string $category log category
      * @param string $message log message
      * @param boolean $display display on screen
-     * @param string $marketplaceSku Lengow order id
+     * @param string|null $marketplaceSku Lengow order id
      *
      * @return boolean
      */
-    public function log($category, $message = "", $display = false, $marketplaceSku = null)
+    public function log($category, $message = '', $display = false, $marketplaceSku = null)
     {
-        if (strlen($message) == 0) {
+        if (strlen($message) === 0) {
             return false;
         }
         $decodedMessage = $this->decodeLogMessage($message, 'en_GB');
@@ -124,13 +124,13 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
      * Set message with params for translation
      *
      * @param string $key log key
-     * @param array $params log parameters
+     * @param array|null $params log parameters
      *
      * @return string
      */
     public function setLogMessage($key, $params = null)
     {
-        if (is_null($params) || (is_array($params) && count($params) === 0)) {
+        if (is_null($params) || (is_array($params) && empty($params))) {
             return $key;
         }
         $allParams = array();
@@ -146,8 +146,8 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
      * Decode message with params for translation
      *
      * @param string $message log message
-     * @param string $isoCode iso code for translation
-     * @param mixed $params log parameters
+     * @param string|null $isoCode iso code for translation
+     * @param mixed|null $params log parameters
      *
      * @return string
      */
@@ -242,7 +242,7 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
         }
         $value = nl2br($value);
         $value = Mage::helper('core/string')->cleanString($value);
-        // Reject overly long 2 byte sequences, as well as characters above U+10000 and replace with blank
+        // reject overly long 2 byte sequences, as well as characters above U+10000 and replace with blank
         $value = preg_replace(
             '/[\x00-\x08\x10\x0B\x0C\x0E-\x19\x7F]' .
             '|[\x00-\x7F][\x80-\xBF]+' .
@@ -252,7 +252,7 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
             '',
             $value
         );
-        // Reject overly long 3 byte sequences and UTF-16 surrogates and replace with blank
+        // reject overly long 3 byte sequences and UTF-16 surrogates and replace with blank
         $value = preg_replace(
             '/\xE0[\x80-\x9F][\x80-\xBF]' . '|\xED[\xA0-\xBF][\x80-\xBF]/S',
             '',
@@ -280,7 +280,7 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
                 chr(29),
                 chr(28),
                 "\n",
-                "\r"
+                "\r",
             ),
             array(
                 ' ',
@@ -297,7 +297,7 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
                 '',
                 '',
                 '',
-                ''
+                '',
             ),
             $value
         );

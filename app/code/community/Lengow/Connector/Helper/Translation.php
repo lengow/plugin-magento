@@ -33,12 +33,12 @@ class Lengow_Connector_Helper_Translation extends Mage_Core_Helper_Abstract
     public $fallbackIsoCode = 'en_GB';
 
     /**
-     * @var string iso code
+     * @var string|null iso code
      */
     protected $_isoCode = null;
 
     /**
-     * @var string force iso code for log
+     * @var string|null force iso code for log
      */
     public static $forceIsoCode = null;
 
@@ -55,7 +55,7 @@ class Lengow_Connector_Helper_Translation extends Mage_Core_Helper_Abstract
      *
      * @param string $message localization key
      * @param array $args replace word in string
-     * @param array $isoCode iso code
+     * @param array|null $isoCode iso code
      *
      * @return string
      */
@@ -111,7 +111,7 @@ class Lengow_Connector_Helper_Translation extends Mage_Core_Helper_Abstract
      * Load csv file
      *
      * @param string $isoCode translation iso code
-     * @param string $filename file location
+     * @param string|null $filename file location
      *
      * @return boolean
      */

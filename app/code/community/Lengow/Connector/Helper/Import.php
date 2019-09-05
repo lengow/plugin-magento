@@ -23,7 +23,7 @@
 class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
 {
     /**
-     * @var Lengow_Connector_Helper_Config Lengow config helper instance
+     * @var Lengow_Connector_Helper_Config|null Lengow config helper instance
      */
     protected $_configHelper = null;
 
@@ -195,7 +195,7 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
                     null,
                     array('marketplace_sku' => $error['marketplace_sku'])
                 );
-                $message = $error['message'] != '' ? $helper->decodeLogMessage($error['message']): $support;
+                $message = $error['message'] !== '' ? $helper->decodeLogMessage($error['message']): $support;
                 $mailBody .= '<li>' . $order . ' - ' . $message . '</li>';
                 $orderError = Mage::getModel('lengow/import_ordererror')->load($error['id']);
                 $orderError->updateOrderError(array('mail' => 1));

@@ -5,7 +5,7 @@
     $config = Mage::helper('lengow_connector/config');
     $defaultStore = Mage::app()->getWebsite(true)->getDefaultGroup()->getDefaultStoreId();
     $currentStore = (int)$this->getRequest()->getParam('store', Mage::app()->getStore()->getId());
-    $storeId = $currentStore == 0 ? $defaultStore : $currentStore;
+    $storeId = $currentStore === 0 ? $defaultStore : $currentStore;
     $store = Mage::app()->getStore($storeId);
     /** @var Lengow_Connector_Model_Export $export */
     $export = Mage::getModel('lengow/export', array('store_id' => $storeId));
@@ -53,7 +53,7 @@
         <br>
         <br>
         <hr>
-        <div class="lgw-switch <?php if ($config->get('selection_enable', $storeId) == '1'): ?> checked <?php endif; ?>">
+        <div class="lgw-switch <?php if ((bool)$config->get('selection_enable', $storeId)): ?> checked <?php endif; ?>">
             <label>
                 <div><span></span>
                     <input
@@ -63,7 +63,7 @@
                         data-href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_product/'); ?>?isAjax=true"
                         data-action="change_option_selected"
                         data-id_store="<?php echo $storeId; ?>"
-                        value="1" <?php if ($config->get('selection_enable', $storeId) == '1'): ?> 
+                        value="1" <?php if ((bool)$config->get('selection_enable', $storeId)): ?>
                         checked="checked" <?php endif; ?>>
                 </div> <?php echo $helper->__('product.screen.include_specific_product'); ?>
             </label>

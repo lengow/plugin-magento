@@ -46,7 +46,7 @@
         function receiveMessage(event) {
             switch (event.data.function) {
                 case 'sync':
-                    // Store lengow information into Magento :
+                    // store lengow information into Magento :
                     // account_id
                     // access_token
                     // secret_token
@@ -57,7 +57,7 @@
                     });
                     break;
                 case 'sync_and_reload':
-                    // Store lengow information into Magento and reload it
+                    // store lengow information into Magento and reload it
                     // account_id
                     // access_token
                     // secret_token
@@ -71,11 +71,11 @@
                     });
                     break;
                 case 'reload':
-                    // Reload the parent page (after sync is ok)
+                    // reload the parent page (after sync is ok)
                     location.reload();
                     break;
                 case 'cancel':
-                    // Reload Dashboard page
+                    // reload Dashboard page
                     var hrefCancel = location.href.replace('?isSync=true', '');
                     window.location.replace(hrefCancel);
                     break;

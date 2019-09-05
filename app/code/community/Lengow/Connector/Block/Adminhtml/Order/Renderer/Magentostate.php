@@ -33,8 +33,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Renderer_Magentostate
     public function render(Varien_Object $row)
     {
         $magentoState = $row->getData('status');
-        $sentMarketplace = $row->getData('sent_marketplace');
-        if ($sentMarketplace == 1) {
+        if ((bool)$row->getData('sent_marketplace')) {
             return '<span class="lgw-label">'
                 . Mage::helper('lengow_connector')->__('order.table.status_shipped_by_mkp') . '</span>';
         } else {

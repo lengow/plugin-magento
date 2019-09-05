@@ -47,10 +47,7 @@ class Lengow_Connector_Model_Import_Quote extends Mage_Sales_Model_Quote
                 $price = $lengowProduct['price_unit'];
                 // if price not include tax -> get shipping cost without tax
                 if (!$priceIncludeTax) {
-                    $basedOn = Mage::getStoreConfig(
-                        Mage_Tax_Model_Config::CONFIG_XML_PATH_BASED_ON,
-                        $this->getStore()
-                    );
+                    $basedOn = Mage::getStoreConfig(Mage_Tax_Model_Config::CONFIG_XML_PATH_BASED_ON, $this->getStore());
                     $countryId = $basedOn === 'shipping'
                         ? $this->getShippingAddress()->getCountryId()
                         : $this->getBillingAddress()->getCountryId();
@@ -221,7 +218,7 @@ class Lengow_Connector_Model_Import_Quote extends Mage_Sales_Model_Quote
     /**
      * Get Lengow Products
      *
-     * @param string $productId Magento product id
+     * @param string|null $productId Magento product id
      *
      * @return array
      */

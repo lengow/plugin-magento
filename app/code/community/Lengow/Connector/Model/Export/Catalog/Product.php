@@ -88,7 +88,7 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
             $result = $methodModel->collectRates(
                 $this->_getShippingRateRequest($productInstance, $countryCode)
             );
-            if ($result != null) {
+            if ($result !== null) {
                 if ($result->getError()) {
                     Mage::logException(new Exception($result->getError()));
                 } else {
@@ -163,7 +163,7 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
         $taxClassId = $productInstance->getTaxClassId();
         $request = $calculator->getRateRequest(null, null, null, $store);
         $taxPercent = $calculator->getRate($request->setProductClassId($taxClassId));
-        if ($productInstance->getTypeId() == 'grouped') {
+        if ($productInstance->getTypeId() === 'grouped') {
             $price = 0;
             $finalPrice = 0;
             $childs = Mage::getModel('catalog/product_type_grouped')->getChildrenIds($productInstance->getId());
@@ -197,7 +197,7 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
         $datas = array();
         $datas['currency'] = $toCurrency->getCode();
         // get prices with or without conversion
-        if ($this->getOriginalCurrency() == $toCurrency->getCode()) {
+        if ($this->getOriginalCurrency() === $toCurrency->getCode()) {
             $discountAmount = $priceIncludingTax - $finalPriceIncludingTax;
             $datas['price_excl_tax'] = round($finalPriceExcludingTax, 2);
             $datas['price_incl_tax'] = round($finalPriceIncludingTax, 2);
@@ -286,7 +286,7 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
     public function getCategories($productInstance, $parentInstance, $storeId, &$categoryCache = array())
     {
         $idRootCategory = Mage::app()->getStore($storeId)->getRootCategoryId();
-        if ($productInstance->getVisibility() == Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE
+        if ((int)$productInstance->getVisibility() === Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE
             && isset($parentInstance)
         ) {
             $categories = $parentInstance->getCategoryCollection()
@@ -297,7 +297,7 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
                 ->addPathsFilter('1/' . $idRootCategory . '/')
                 ->exportToArray();
         }
-        // Old config value #levelcategory
+        // old config value #levelcategory
         $maxLevel = 5;
         $currentLevel = 0;
         $categoryBuffer = false;
@@ -311,12 +311,12 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
             }
         }
         // use category cache if category already exists
-        if (isset($category) && $category['entity_id'] != '') {
+        if (isset($category) && $category['entity_id'] !== '') {
             if (isset($categoryCache[$category['entity_id']])) {
                 return $categoryCache[$category['entity_id']];
             }
         }
-        if (isset($category) && $category['path'] != '') {
+        if (isset($category) && $category['path'] !== '') {
             $categories = explode('/', $categoryBuffer['path']);
         } else {
             $categories = array();
@@ -334,9 +334,9 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
             $c = Mage::getModel('catalog/category')
                 ->setStoreId($storeId)
                 ->load($cid);
-            if ($c->getId() != 1) {
-                // No root category
-                if ($i == 0) {
+            if ((int)$c->getId() !== 1) {
+                // no root category
+                if ($i === 0) {
                     $datas['category'] = $c->getName();
                     $datas['category_url'] = $c->getUrl();
                     $ariane[] = $c->getName();
@@ -384,7 +384,7 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
             $images = $tempImages;
             unset($tempImages, $files, $parentImages);
         }
-        // Old config value #maxImage
+        // old config value #maxImage
         for ($i = 1; $i < 11; $i++) {
             $data['image_url_' . $i] = '';
         }

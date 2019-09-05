@@ -179,16 +179,16 @@ foreach ($listAttributes as $attr) {
 // *********************************************************
 
 $newAttributes = array('lengow_product');
-// Add new Attribute group
+// add new Attribute group
 $groupName = 'Lengow';
 $entityTypeId = $installer->getEntityTypeId('catalog_product');
-//Add group Lengow in all Attribute Set
+// add group Lengow in all Attribute Set
 $attributeSetCollection = Mage::getResourceModel('eav/entity_attribute_set_collection')->load();
 foreach ($attributeSetCollection as $id => $attributeSet) {
-    // Add group lengow in attribute set
+    // add group lengow in attribute set
     $installer->addAttributeGroup($entityTypeId, $attributeSet->getId(), $groupName, 100);
     $attributeGroupId = $installer->getAttributeGroupId($entityTypeId, $attributeSet->getId(), $groupName);
-    // Add new attribute (lengow_product) on Group (Lengow)
+    // add new attribute (lengow_product) on Group (Lengow)
     foreach ($newAttributes as $attributeCode) {
         $attributeId = $installer->getAttributeId('catalog_product', $attributeCode);
         $entityTypeId = $attributeSet->getEntityTypeId();
@@ -200,12 +200,12 @@ foreach ($attributeSetCollection as $id => $attributeSet) {
 //                  Create Lengow tables
 // *********************************************************
 
-// Compatibility for version 1.5
+// compatibility for version 1.5
 $typeText = Mage::getVersion() < '1.6.0.0' ? Varien_Db_Ddl_Table::TYPE_LONGVARCHAR : Varien_Db_Ddl_Table::TYPE_TEXT;
 
 // create table lengow_order
 $tableName = $installer->getTable('lengow_order');
-if ((bool)$installer->getConnection()->showTableStatus($tableName) != true) {
+if (!(bool)$installer->getConnection()->showTableStatus($tableName)) {
     $table = $installer->getConnection()
         ->newTable($installer->getTable('lengow_order'))
         ->addColumn(
@@ -518,7 +518,7 @@ if ((bool)$installer->getConnection()->showTableStatus($tableName) != true) {
             'Extra'
         );
     $installer->getConnection()->createTable($table);
-    // Compatibility with version 1.5
+    // compatibility with version 1.5
     if (Mage::getVersion() < '1.6.0.0') {
         $installer->getConnection()->modifyColumn($tableName, 'id', 'int(11) NOT NULL auto_increment');
         $installer->getConnection()->modifyColumn($tableName, 'total_paid', 'DECIMAL(17,2) UNSIGNED NULL');
@@ -528,7 +528,7 @@ if ((bool)$installer->getConnection()->showTableStatus($tableName) != true) {
 
 // create table lengow_order_line
 $tableName = $installer->getTable('lengow_order_line');
-if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
+if (!(bool)$installer->getConnection()->showTableStatus($tableName)) {
     $table = $installer->getConnection()
         ->newTable($installer->getTable('lengow_order_line'))
         ->addColumn(
@@ -564,7 +564,7 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
             'Order Line Id'
         );
     $installer->getConnection()->createTable($table);
-    // Compatibility with version 1.5
+    // compatibility with version 1.5
     if (Mage::getVersion() < '1.6.0.0') {
         $installer->getConnection()->modifyColumn($tableName, 'id', 'int(11) NOT NULL auto_increment');
     }
@@ -584,7 +584,7 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
 
 // create table lengow_order_error
 $tableName = $installer->getTable('lengow_order_error');
-if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
+if (!(bool)$installer->getConnection()->showTableStatus($tableName)) {
     $table = $installer->getConnection()
         ->newTable($installer->getTable('lengow_order_error'))
         ->addColumn(
@@ -669,7 +669,7 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
             'Updated At'
         );
     $installer->getConnection()->createTable($table);
-    // Compatibility with version 1.5
+    // compatibility with version 1.5
     if (Mage::getVersion() < '1.6.0.0') {
         $installer->getConnection()->modifyColumn($tableName, 'id', 'int(11) NOT NULL auto_increment');
     }
@@ -677,7 +677,7 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
 
 // create table lengow_action
 $tableName = $installer->getTable('lengow_action');
-if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
+if (!(bool)$installer->getConnection()->showTableStatus($tableName)) {
     $table = $installer->getConnection()
         ->newTable($installer->getTable('lengow_action'))
         ->addColumn(
@@ -783,7 +783,7 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
             'Updated At'
         );
     $installer->getConnection()->createTable($table);
-    // Compatibility with version 1.5
+    // compatibility with version 1.5
     if (Mage::getVersion() < '1.6.0.0') {
         $installer->getConnection()->modifyColumn($tableName, 'id', 'int(11) NOT NULL auto_increment');
     }
@@ -791,7 +791,7 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
 
 // create table lengow_log
 $tableName = $installer->getTable('lengow_log');
-if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
+if (!(bool)$installer->getConnection()->showTableStatus($tableName)) {
     $table = $installer->getConnection()
         ->newTable($installer->getTable('lengow_log'))
         ->addColumn(
@@ -825,7 +825,7 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
             'Message'
         );
     $installer->getConnection()->createTable($table);
-    // Compatibility with version 1.5
+    // compatibility with version 1.5
     if (Mage::getVersion() < '1.6.0.0') {
         $installer->getConnection()->modifyColumn($tableName, 'id', 'int(11) NOT NULL auto_increment');
     }
@@ -835,11 +835,11 @@ if ((boolean)$installer->getConnection()->showTableStatus($tableName) != true) {
 //            Create Lengow technical error status
 // *********************************************************
 
-//check if order state and status 'Lengow technical error' exists
+// check if order state and status 'Lengow technical error' exists
 $collections = Mage::getModel('sales/order_status')->getCollection()->toOptionArray();
 $lengowTechnicalExists = false;
 foreach ($collections as $value) {
-    if ($value['value'] == 'lengow_technical_error') {
+    if ($value['value'] === 'lengow_technical_error') {
         $lengowTechnicalExists = true;
     }
 }
@@ -847,7 +847,7 @@ foreach ($collections as $value) {
 $statusTable = $installer->getTable('sales/order_status');
 $statusStateTable = $installer->getTable('sales/order_status_state');
 if (!$lengowTechnicalExists) {
-    // Insert statuses
+    // insert statuses
     $installer->getConnection()->insertArray(
         $statusTable,
         array('status', 'label'),
@@ -858,7 +858,7 @@ if (!$lengowTechnicalExists) {
             ),
         )
     );
-    // Insert states and mapping of statuses to states
+    // insert states and mapping of statuses to states
     $installer->getConnection()->insertArray(
         $statusStateTable,
         array('status', 'state', 'is_default'),
@@ -878,7 +878,7 @@ $installer->endSetup();
 //                    Setting Migration
 // *********************************************************
 
-// All settings update
+// all settings update
 $newSettings = array(
     array(
         'old_path' => 'lensync/orders/active_store',
@@ -976,7 +976,7 @@ $newSettings = array(
         'store' => false,
     ),
 );
-// All the settings to delete
+// all the settings to delete
 $deleteSettings = array(
     'lentracker/general/account_id',
     'lentracker/general/access_token',
@@ -1008,11 +1008,11 @@ $deleteSettings = array(
     'lensync/orders/fake_email',
     'lensync/hidden/last_synchro',
 );
-// Get Store collection
+// get Store collection
 $storeCollection = Mage::getResourceModel('core/store_collection')->addFieldToFilter('is_active', 1);
 $authorisedIp = Mage::getStoreConfig('lenexport/performances/valid_ip');
 $trackerType = Mage::getStoreConfig('lentracker/tag/type');
-// Update settings
+// update settings
 foreach ($newSettings as $setting) {
     $globalValue = Mage::getStoreConfig($setting['old_path']);
     if (!is_null($globalValue)) {
@@ -1021,7 +1021,7 @@ foreach ($newSettings as $setting) {
     }
     if ($setting['store']) {
         foreach ($storeCollection as $store) {
-            // Get value by collection -> getStoreConfig() by store don't work (already null)
+            // get value by collection -> getStoreConfig() by store don't work (already null)
             $storeValues = Mage::getModel('core/config_data')->getCollection()
                 ->addFieldToFilter('path', $setting['old_path'])
                 ->addFieldToFilter('scope_id', $store->getId())
@@ -1042,7 +1042,7 @@ foreach ($newSettings as $setting) {
         }
     }
 }
-// Delete settings
+// delete settings
 foreach ($deleteSettings as $settingPath) {
     foreach ($storeCollection as $store) {
         Mage::getModel('core/config')->deleteConfig($settingPath, 'store', $store->getId());

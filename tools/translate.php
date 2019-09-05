@@ -17,19 +17,19 @@
  */
 
 error_reporting(E_ALL);
-ini_set("display_errors", 1);
+ini_set('display_errors', 1);
 
 $listDefaultValues = array();
 
 $directory = dirname(dirname(__FILE__)) . '/app/code/community/Lengow/Connector/locale/yml/';
 $listFiles = array_diff(scandir($directory), array('..', '.', 'index.php'));
 $listFiles = array_diff($listFiles, array('en_GB.yml'));
-array_unshift($listFiles, "en_GB.yml");
+array_unshift($listFiles, 'en_GB.yml');
 
 foreach ($listFiles as $list) {
     $ymlFile = yaml_parse_file($directory . $list);
     $locale = basename($directory . $list, '.yml');
-    if ($list == 'log.yml') {
+    if ($list === 'log.yml') {
         $fp = fopen(dirname(dirname(__FILE__)) . '/app/code/community/Lengow/Connector/locale/en_GB.csv', 'a+');
     } else {
         $fp = fopen(

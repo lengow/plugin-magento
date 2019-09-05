@@ -84,9 +84,9 @@ class Lengow_Connector_Adminhtml_Lengow_ProductController extends Mage_Adminhtml
             $storeId = Mage::app()->getWebsite(true)->getDefaultGroup()->getDefaultStoreId();
         }
         $publish = (int)$this->getRequest()->getParam('publish');
-        //update all attribute in one query
+        // update all attribute in one query
         $productAction = Mage::getSingleton('catalog/product_action');
-        if ($storeId != 0) {
+        if ($storeId !== 0) {
             $defaultStoreProductToUpdate = array();
             foreach ($productIds as $productId) {
                 $lengowProductValue = Mage::getResourceModel('catalog/product')->getAttributeRawValue(
@@ -102,8 +102,8 @@ class Lengow_Connector_Adminhtml_Lengow_ProductController extends Mage_Adminhtml
             if (count($defaultStoreProductToUpdate) > 0) {
                 $productAction->updateAttributes($defaultStoreProductToUpdate, array('lengow_product' => 0), 0);
             }
-            if ($storeId != 0) {
-                //set value for other store
+            if ($storeId !== 0) {
+                // set value for other store
                 $productAction->updateAttributes($productIds, array('lengow_product' => $publish), $storeId);
             }
         } else {

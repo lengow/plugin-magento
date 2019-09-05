@@ -71,7 +71,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Grid extends Mage_Adminhtml_Block_W
                 'options' => array(
                     0 => $helper->__('order.table.action_success'),
                     1 => $helper->__('order.table.action_error'),
-                )
+                ),
             )
         );
         $this->addColumn(
@@ -88,7 +88,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Grid extends Mage_Adminhtml_Block_W
                     'refunded' => $helper->__('order.table.status_refunded'),
                     'closed' => $helper->__('order.table.status_closed'),
                     'canceled' => $helper->__('order.table.status_canceled'),
-                )
+                ),
             )
         );
         $this->addColumn(

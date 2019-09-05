@@ -57,7 +57,7 @@ class Lengow_Connector_Model_Export_Feed_Yaml extends Lengow_Connector_Model_Exp
      */
     public function makeData($array, $args = array())
     {
-        if ($args['max_character'] % 2 == 1) {
+        if ($args['max_character'] % 2 === 1) {
             $maxCharacter = $args['max_character'] + 1;
         } else {
             $maxCharacter = $args['max_character'] + 2;
