@@ -29,7 +29,7 @@
 /app/code/community/Lengow/Connector/Block/Payment/Info/Purchaseorder.php|ab166ba499ff7bd11e696a6384ef73a7
 /app/code/community/Lengow/Connector/Helper/Data.php|a2b7ef089e6d5f75b2a211481d8f2eca
 /app/code/community/Lengow/Connector/Helper/Config.php|8adde15ccb3af7e193a16771211e9e9d
-/app/code/community/Lengow/Connector/Helper/Sync.php|a2dbfffd8ae6084845553a6e6c90871b
+/app/code/community/Lengow/Connector/Helper/Sync.php|53e61a9eac05c52402c8aceaa9e756a1
 /app/code/community/Lengow/Connector/Helper/Toolbox.php|a3cd988afd63f5cff5db0576a8826d85
 /app/code/community/Lengow/Connector/Helper/Translation.php|5868a8c13faef6f9f153592b9a668164
 /app/code/community/Lengow/Connector/Helper/Security.php|2f959f4e273fc4298153c79c2884b409
@@ -86,8 +86,8 @@
 /app/code/community/Lengow/Connector/locale/yml/de_DE.yml|6fbcdcd873d02e73a46c79c2c94889f9
 /app/code/community/Lengow/Connector/locale/yml/fr_FR.yml|29a159725c74b94d7c62b835edbbc7f4
 /app/code/community/Lengow/Connector/locale/yml/en_GB.yml|9c8db08e05a9f13bcd005ba7797318a1
-/app/code/community/Lengow/Connector/locale/yml/log.yml|c45ebdea9de272f3b4791180cd91eca6
-/app/code/community/Lengow/Connector/locale/en_GB.csv|05db0556b35399f5f3c93b9b208d68a4
+/app/code/community/Lengow/Connector/locale/yml/log.yml|055edf0812172c896c226f35e59c5c30
+/app/code/community/Lengow/Connector/locale/en_GB.csv|bedfbaf374306a63a2028ed40786acb3
 /app/code/community/Lengow/Connector/locale/fr_FR.csv|cd434bf9dc872e95cb58fe195e6dde2a
 /app/code/community/Lengow/Connector/locale/de_DE.csv|4f68676188458dbf9022c124b546c228
 /app/code/community/Lengow/Connector/sql/lengow_connector_setup/mysql4-upgrade-3.0.2-3.1.0.php|f926fa1ab554ed5ff51773320951b69f
