@@ -353,8 +353,6 @@ class Lengow_Connector_Model_Export extends Varien_Object
         }
         // get products list to export
         $productCollection = $this->_getQuery();
-        $tempProductCollection = $productCollection;
-        $tempProductCollection->getSelect()->columns('COUNT(DISTINCT e.entity_id) As total');
         // limit & offset
         if ($this->_config['limit']) {
             if ($this->_config['offset']) {
@@ -877,11 +875,11 @@ class Lengow_Connector_Model_Export extends Varien_Object
                 'left'
             )
             ->addAttributeToFilter('type_id', array('nlike' => 'bundle'));
-        $productCollection = clone $productCollection;
-        $productCollection->getSelect()->columns('COUNT(DISTINCT e.entity_id) As total');
         // enable flat catalog on the fly
         $flatProcess->setStatus($flatProcessStatus);
-        return (int)$productCollection->getFirstItem()->getTotal();
+        $productCollection->getSelect()->distinct(true)->group('entity_id');
+        $products = $productCollection->getData();
+        return count($products);
     }
 
     /**
@@ -892,8 +890,9 @@ class Lengow_Connector_Model_Export extends Varien_Object
     public function getTotalExportedProduct()
     {
         $productCollection = $this->_getQuery();
-        $productCollection->getSelect()->columns('COUNT(DISTINCT e.entity_id) As total');
-        return (int)$productCollection->getFirstItem()->getTotal();
+        $productCollection->getSelect()->distinct(true)->group('entity_id');
+        $products = $productCollection->getData();
+        return count($products);
     }
 
     /**

@@ -405,14 +405,25 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
         $result = Mage::getModel('lengow/connector')->queryApi('get', '/v3.0/marketplaces');
         if ($result && is_object($result) && !isset($result->error)) {
             // updated marketplaces.json file
-            $file = new Varien_Io_File();
-            $file->cd($folderPath);
-            $file->streamOpen($this->_marketplaceJson, 'w+');
-            $file->streamlock();
-            $file->streamWrite(json_encode($result));
-            $file->streamUnlock();
-            $file->streamClose();
-            $this->_configHelper->set('last_marketplace_update', date('Y-m-d H:i:s'));
+            try {
+                $file = new Varien_Io_File();
+                $file->cd($folderPath);
+                $file->streamOpen($this->_marketplaceJson, 'w+');
+                $file->streamlock();
+                $file->streamWrite(json_encode($result));
+                $file->streamUnlock();
+                $file->streamClose();
+                $this->_configHelper->set('last_marketplace_update', date('Y-m-d H:i:s'));
+            } catch (Exception $e) {
+                $helper = Mage::helper('lengow_connector/data');
+                $helper->log(
+                    'Import',
+                    $helper->setLogMessage(
+                        'log.import.marketplace_update_failed',
+                        array('error_message' => $e->getMessage())
+                    )
+                );
+            }
             return $result;
         } else {
             // if the API does not respond, use marketplaces.json if it exists

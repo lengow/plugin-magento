@@ -125,9 +125,9 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action
                 if ($getParams) {
                     $this->getResponse()->setBody($export->getExportParams());
                 } elseif ($mode === 'size') {
-                    $this->getResponse()->setBody($export->getTotalExportedProduct());
+                    $this->getResponse()->setBody((string)$export->getTotalExportedProduct());
                 } elseif ($mode === 'total') {
-                    $this->getResponse()->setBody($export->getTotalProduct());
+                    $this->getResponse()->setBody((string)$export->getTotalProduct());
                 } else {
                     $export->exec();
                 }
