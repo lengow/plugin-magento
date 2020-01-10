@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2019 Lengow SAS
+ * Copyright 2020 Lengow SAS
  *
  * NOTICE OF LICENSE
  *
@@ -13,7 +13,7 @@
  * @package     Lengow_Connector
  * @subpackage  sql
  * @author      Team module <team-module@lengow.com>
- * @copyright   2019 Lengow SAS
+ * @copyright   2020 Lengow SAS
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 

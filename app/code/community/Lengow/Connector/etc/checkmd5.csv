@@ -97,7 +97,7 @@
 /app/code/community/Lengow/Connector/sql/lengow_connector_setup/mysql4-upgrade-3.1.2-3.1.3.php|eb9bebf560e56b1893609bf1b6c03590
 /app/code/community/Lengow/Connector/sql/lengow_connector_setup/mysql4-install-3.0.0.php|48dc59449dc6ae0e10cff5a5d8b842d1
 /app/code/community/Lengow/Connector/sql/lengow_connector_setup/mysql4-upgrade-3.1.1-3.1.2.php|6139e3228c3d21a667cb9995a4691233
-/app/code/community/Lengow/Connector/sql/lengow_connector_setup/mysql4-upgrade-3.1.3-3.2.0.php|5b5fa7abefb5d9b91c23c345b2e59d99
+/app/code/community/Lengow/Connector/sql/lengow_connector_setup/mysql4-upgrade-3.1.3-3.2.0.php|3c93fa45a514030e92a06612e5763212
 /app/design/adminhtml/default/default/template/lengow/toolbox/index.phtml|476759bca364a9920726263d30f86c12
 /app/design/adminhtml/default/default/template/lengow/layout/legal.phtml|d276351a39f7478878fc41a3de7e19bc
 /app/design/adminhtml/default/default/template/lengow/layout/order.phtml|63bfd80ea59e5f10b67e56db8f5929b2
