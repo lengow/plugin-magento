@@ -242,7 +242,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
         }
         // skip import if the order is anonymized
         if ($this->_orderData->anonymized) {
-            this->_helper->log(
+            $this->_helper->log(
                 'Import',
                 $this->_helper->setLogMessage('log.import.anonymized_order'),
                 $this->_logOutput,
