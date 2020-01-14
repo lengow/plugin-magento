@@ -34,7 +34,7 @@
 /app/code/community/Lengow/Connector/Helper/Translation.php|5868a8c13faef6f9f153592b9a668164
 /app/code/community/Lengow/Connector/Helper/Security.php|2f959f4e273fc4298153c79c2884b409
 /app/code/community/Lengow/Connector/Helper/Import.php|190a1e3e91c00987ffcbabb04ecad48d
-/app/code/community/Lengow/Connector/Model/Connector.php|178870ad69be8f1b8f242a30d020df35
+/app/code/community/Lengow/Connector/Model/Connector.php|1a327edf4e91a83c9cf517fd6cc6a355
 /app/code/community/Lengow/Connector/Model/Log.php|176869e796ee307614683f60949cde30
 /app/code/community/Lengow/Connector/Model/Import/Action.php|379b5992c4c224735269eb3ce630ca02
 /app/code/community/Lengow/Connector/Model/Import/Quote/Item.php|1f06706d466ce2e0172d3cf412f2ebf3
