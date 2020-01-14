@@ -171,10 +171,11 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
      * Sync Lengow catalogs for order synchronisation
      *
      * @param boolean $force force cache update
+     * @param boolean $logOutput see log or not
      *
      * @return boolean
      */
-    public function syncCatalog($force = false)
+    public function syncCatalog($force = false, $logOutput = false)
     {
         $cleanCache = false;
         if ($this->_configHelper->isNewMerchant()) {
@@ -186,7 +187,13 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
                 return false;
             }
         }
-        $result = Mage::getModel('lengow/connector')->queryApi('get', '/v3.1/cms');
+        $result = Mage::getModel('lengow/connector')->queryApi(
+            Lengow_Connector_Model_Connector::GET,
+            Lengow_Connector_Model_Connector::API_CMS,
+            array(),
+            '',
+            $logOutput
+        );
         if (isset($result->cms)) {
             $cmsToken = $this->_configHelper->getToken();
             foreach ($result->cms as $cms) {
@@ -256,10 +263,11 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
      * Set CMS options
      *
      * @param boolean $force force cache update
+     * @param boolean $logOutput see log or not
      *
      * @return boolean
      */
-    public function setCmsOption($force = false)
+    public function setCmsOption($force = false, $logOutput = false)
     {
         if ($this->_configHelper->isNewMerchant() || (bool)$this->_configHelper->get('preprod_mode_enable')) {
             return false;
@@ -271,7 +279,13 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
             }
         }
         $options = Mage::helper('core')->jsonEncode($this->getOptionData());
-        Mage::getModel('lengow/connector')->queryApi('put', '/v3.1/cms', array(), $options);
+        Mage::getModel('lengow/connector')->queryApi(
+            Lengow_Connector_Model_Connector::PUT,
+            Lengow_Connector_Model_Connector::API_CMS,
+            array(),
+            '',
+            $logOutput
+        );
         $this->_configHelper->set('last_option_cms_update', date('Y-m-d H:i:s'));
         return true;
     }
@@ -280,10 +294,11 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
      * Get Status Account
      *
      * @param boolean $force force cache update
+     * @param boolean $logOutput see log or not
      *
      * @return array|false
      */
-    public function getStatusAccount($force = false)
+    public function getStatusAccount($force = false, $logOutput = false)
     {
         if ($this->_configHelper->isNewMerchant()) {
             return false;
@@ -294,7 +309,13 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
                 return json_decode($this->_configHelper->get('account_status'), true);
             }
         }
-        $result = Mage::getModel('lengow/connector')->queryApi('get', '/v3.0/plans');
+        $result = Mage::getModel('lengow/connector')->queryApi(
+            Lengow_Connector_Model_Connector::GET,
+            Lengow_Connector_Model_Connector::API_PLAN,
+            array(),
+            '',
+            $logOutput
+        );
         if (isset($result->isFreeTrial)) {
             $status = array(
                 'type' => $result->isFreeTrial ? 'free_trial' : '',
@@ -317,10 +338,11 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
      * Get Statistic for all stores
      *
      * @param boolean $force force cache update
+     * @param boolean $logOutput see log or not
      *
      * @return array
      */
-    public function getStatistic($force = false)
+    public function getStatistic($force = false, $logOutput = false)
     {
         if (!$force) {
             $updatedAt = $this->_configHelper->get('last_statistic_update');
@@ -330,13 +352,15 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
         }
         $allCurrencyCodes = $this->_configHelper->getAllAvailableCurrencyCodes();
         $result =  Mage::getModel('lengow/connector')->queryApi(
-            'get',
-            '/v3.0/stats',
+            Lengow_Connector_Model_Connector::GET,
+            Lengow_Connector_Model_Connector::API_STATISTIC,
             array(
                 'date_from' => date('c', strtotime(date('Y-m-d') . ' -10 years')),
                 'date_to' => date('c'),
                 'metrics' => 'year',
-            )
+            ),
+            '',
+            $logOutput
         );
         if (isset($result->level0)) {
             $stats = $result->level0[0];
@@ -381,10 +405,11 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
      * Get marketplace data
      *
      * @param boolean $force force cache update
+     * @param boolean $logOutput see log or not
      *
      * @return array|false
      */
-    public function getMarketplaces($force = false)
+    public function getMarketplaces($force = false, $logOutput = false)
     {
         $folderPath = Mage::getModuleDir('etc', 'Lengow_Connector');
         $filePath = $folderPath . DS . $this->_marketplaceJson;
@@ -402,7 +427,13 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
             }
         }
         // recovering data with the API
-        $result = Mage::getModel('lengow/connector')->queryApi('get', '/v3.0/marketplaces');
+        $result = Mage::getModel('lengow/connector')->queryApi(
+            Lengow_Connector_Model_Connector::GET,
+            Lengow_Connector_Model_Connector::API_MARKETPLACE,
+            array(),
+            '',
+            $logOutput
+        );
         if ($result && is_object($result) && !isset($result->error)) {
             // updated marketplaces.json file
             try {
@@ -421,7 +452,8 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
                     $helper->setLogMessage(
                         'log.import.marketplace_update_failed',
                         array('error_message' => $e->getMessage())
-                    )
+                    ),
+                    $logOutput
                 );
             }
             return $result;

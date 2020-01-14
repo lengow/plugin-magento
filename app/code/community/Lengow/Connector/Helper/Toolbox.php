@@ -54,16 +54,6 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Check if PHP Curl is activated
-     *
-     * @return boolean
-     */
-    public function isCurlActivated()
-    {
-        return function_exists('curl_version');
-    }
-
-    /**
      * Get array of plugin informations
      *
      * @return string
@@ -212,7 +202,7 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
         );
         $checklist[] = array(
             'title' => $this->_helper->__('toolbox.screen.store_catalog_id'),
-            'message' =>  $this->_configHelper->get('catalog_id', $store->getId()),
+            'message' => $this->_configHelper->get('catalog_id', $store->getId()),
         );
         $checklist[] = array(
             'title' => $this->_helper->__('toolbox.screen.store_product_total'),

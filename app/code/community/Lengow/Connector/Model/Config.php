@@ -35,6 +35,8 @@ class Lengow_Connector_Model_Config extends Mage_Core_Model_Config
      * @var array excludes attributes for export
      */
     protected $_excludeOptions = array(
+        'authorization_token',
+        'last_authorization_token_update',
         'import_in_progress',
         'last_import_manual',
         'last_import_cron',

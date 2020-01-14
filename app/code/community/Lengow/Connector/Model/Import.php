@@ -406,9 +406,9 @@ class Lengow_Connector_Model_Import extends Varien_Object
             if (!$this->_preprodMode && !$this->_importOneOrder && $this->_typeImport === 'manual') {
                 /** @var Lengow_Connector_Model_Import_Action $action */
                 $action = Mage::getModel('lengow/import_action');
-                $action->checkFinishAction();
-                $action->checkOldAction();
-                $action->checkActionNotSent();
+                $action->checkFinishAction($this->_logOutput);
+                $action->checkOldAction($this->_logOutput);
+                $action->checkActionNotSent($this->_logOutput);
                 unset($action);
             }
         }
@@ -451,9 +451,11 @@ class Lengow_Connector_Model_Import extends Varien_Object
      */
     protected function _checkCredentials()
     {
-        if ($this->_configHelper->isValidAuth()) {
+        /** @var Lengow_Connector_Model_Connector $connector */
+        $connector = Mage::getModel('lengow/connector');
+        if ($connector->isValidAuth($this->_logOutput)) {
             list($this->_accountId, $this->_accessToken, $this->_secretToken) = $this->_configHelper->getAccessIds();
-            $this->_connector = Mage::getModel('lengow/connector');
+            $this->_connector = $connector;
             $this->_connector->init($this->_accessToken, $this->_secretToken);
             return true;
         }
@@ -544,45 +546,63 @@ class Lengow_Connector_Model_Import extends Varien_Object
             );
         }
         do {
-            if ($this->_importOneOrder) {
-                $results = $this->_connector->get(
-                    '/v3.0/orders',
-                    array(
-                        'marketplace_order_id' => $this->_marketplaceSku,
-                        'marketplace' => $this->_marketplaceName,
-                        'no_currency_conversion' => $noCurrencyConversion,
-                        'account_id' => $this->_accountId,
-                        'page' => $page,
-                    ),
-                    'stream'
-                );
-            } else {
-                if ($this->_createdFrom && $this->_createdTo) {
-                    $timeParams = [
-                        'marketplace_order_date_from' => $this->_createdFrom,
-                        'marketplace_order_date_to' => $this->_createdTo,
-                    ];
-                } else {
-                    $timeParams = [
-                        'updated_from' => $this->_updatedFrom,
-                        'updated_to' => $this->_updatedTo,
-                    ];
-                }
-                $results = $this->_connector->get(
-                    '/v3.0/orders',
-                    array_merge(
-                        $timeParams,
+            try {
+                if ($this->_importOneOrder) {
+                    $results = $this->_connector->get(
+                        Lengow_Connector_Model_Connector::API_ORDER,
                         array(
-                            'catalog_ids' => implode(',', $this->_storeCatalogIds),
+                            'marketplace_order_id' => $this->_marketplaceSku,
+                            'marketplace' => $this->_marketplaceName,
                             'no_currency_conversion' => $noCurrencyConversion,
                             'account_id' => $this->_accountId,
                             'page' => $page,
+                        ),
+                        Lengow_Connector_Model_Connector::FORMAT_STREAM,
+                        '',
+                        $this->_logOutput
+                    );
+                } else {
+                    if ($this->_createdFrom && $this->_createdTo) {
+                        $timeParams = [
+                            'marketplace_order_date_from' => $this->_createdFrom,
+                            'marketplace_order_date_to' => $this->_createdTo,
+                        ];
+                    } else {
+                        $timeParams = [
+                            'updated_from' => $this->_updatedFrom,
+                            'updated_to' => $this->_updatedTo,
+                        ];
+                    }
+                    $results = $this->_connector->get(
+                        Lengow_Connector_Model_Connector::API_ORDER,
+                        array_merge(
+                            $timeParams,
+                            array(
+                                'catalog_ids' => implode(',', $this->_storeCatalogIds),
+                                'no_currency_conversion' => $noCurrencyConversion,
+                                'account_id' => $this->_accountId,
+                                'page' => $page,
+                            )
+                        ),
+                        Lengow_Connector_Model_Connector::FORMAT_STREAM,
+                        '',
+                        $this->_logOutput
+                    );
+                }
+            } catch (Exception $e) {
+                throw new Lengow_Connector_Model_Exception(
+                    $this->_helper->setLogMessage(
+                        'lengow_log.exception.error_lengow_webservice',
+                        array(
+                            'error_code' => $e->getCode(),
+                            'error_message' => $this->_helper->decodeLogMessage($e->getMessage(), 'en_GB'),
+                            'store_name' => $store->getName(),
+                            'store_id' => $store->getId(),
                         )
-                    ),
-                    'stream'
+                    )
                 );
             }
-            if (is_null($results)) {
+            if ($results === null) {
                 throw new Lengow_Connector_Model_Exception(
                     $this->_helper->setLogMessage(
                         'lengow_log.exception.no_connection_webservice',
@@ -599,19 +619,6 @@ class Lengow_Connector_Model_Import extends Varien_Object
                     $this->_helper->setLogMessage(
                         'lengow_log.exception.no_connection_webservice',
                         array(
-                            'store_name' => $store->getName(),
-                            'store_id' => $store->getId(),
-                        )
-                    )
-                );
-            }
-            if (isset($results->error)) {
-                throw new Lengow_Connector_Model_Exception(
-                    $this->_helper->setLogMessage(
-                        'lengow_log.exception.error_lengow_webservice',
-                        array(
-                            'error_code' => $results->error->code,
-                            'error_message' => $results->error->message,
                             'store_name' => $store->getName(),
                             'store_id' => $store->getId(),
                         )
@@ -736,7 +743,8 @@ class Lengow_Connector_Model_Import extends Varien_Object
                         $magentoOrder = Mage::getModel('sales/order')->load($order['order_id']);
                         $synchro = Mage::getModel('lengow/import_order')->synchronizeOrder(
                             $magentoOrder,
-                            $this->_connector
+                            $this->_connector,
+                            $this->_logOutput
                         );
                         if ($synchro) {
                             $synchroMessage = $this->_helper->setLogMessage(
@@ -798,7 +806,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
             // retrieval of orders created from ... until ...
             $createdFromTimestamp = strtotime($createdFrom);
             $createdToTimestamp = strtotime($createdTo) + 86399;
-            $intervalDay = (int) (($createdToTimestamp - $createdFromTimestamp) / 86400);
+            $intervalDay = (int)(($createdToTimestamp - $createdFromTimestamp) / 86400);
             if ($intervalDay > self::MAX_IMPORT_DAYS) {
                 $dateFrom = date('c', $createdFromTimestamp);
                 $dateTo = date('c', ($createdFromTimestamp + self::MAX_IMPORT_DAYS * 86400));
