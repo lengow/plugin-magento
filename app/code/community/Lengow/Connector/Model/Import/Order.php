@@ -506,7 +506,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
     /**
      * Get Magento equivalent to lengow order state
      *
-     * @param  string $orderStateLengow Lengow state
+     * @param string $orderStateLengow Lengow state
      *
      * @return integer
      */
@@ -708,10 +708,11 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
      *
      * @param Mage_Sales_Model_Order $order Magento order instance
      * @param Lengow_Connector_Model_Connector|null $connector Lengow Connector for API calls
+     * @param boolean $logOutput see log or not
      *
      * @return boolean
      */
-    public function synchronizeOrder($order, $connector = null)
+    public function synchronizeOrder($order, $connector = null, $logOutput = false)
     {
         if (!(bool)$order->getData('from_lengow')) {
             return false;
@@ -719,10 +720,10 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
         /** @var Lengow_Connector_Helper_Config $configHelper */
         $configHelper = Mage::helper('lengow_connector/config');
         list($accountId, $accessToken, $secretToken) = $configHelper->getAccessIds();
-        if (is_null($connector)) {
-            if ($configHelper->isValidAuth()) {
-                /** @var Lengow_Connector_Model_Connector $connector */
-                $connector = Mage::getModel('lengow/connector');
+        if ($connector === null) {
+            /** @var Lengow_Connector_Model_Connector $connector */
+            $connector = Mage::getModel('lengow/connector');
+            if ($connector->isValidAuth($logOutput)) {
                 $connector->init($accessToken, $secretToken);
             } else {
                 return false;
@@ -736,18 +737,36 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
             }
             // compatibility V2
             if ($order->getData('feed_id_lengow') != 0) {
-                $this->checkAndChangeMarketplaceName($order, $connector);
+                $this->checkAndChangeMarketplaceName($order, $connector, $logOutput);
             }
-            $result = $connector->patch(
-                '/v3.0/orders/moi/',
-                array(
-                    'account_id' => $accountId,
-                    'marketplace_order_id' => $order->getData('order_id_lengow'),
-                    'marketplace' => $order->getData('marketplace_lengow'),
-                    'merchant_order_id' => $magentoIds,
-                )
-            );
-            if (is_null($result)
+            try {
+                $result = $connector->patch(
+                    Lengow_Connector_Model_Connector::API_ORDER_MOI,
+                    array(
+                        'account_id' => $accountId,
+                        'marketplace_order_id' => $order->getData('order_id_lengow'),
+                        'marketplace' => $order->getData('marketplace_lengow'),
+                        'merchant_order_id' => $magentoIds,
+                    ),
+                    Lengow_Connector_Model_Connector::FORMAT_JSON,
+                    '',
+                    $logOutput
+                );
+            } catch (Exception $e) {
+                /** @var Lengow_Connector_Helper_Data $helper */
+                $helper = Mage::helper('lengow_connector');
+                $message = $helper->decodeLogMessage($e->getMessage(), 'en_GB');
+                $error = $helper->setLogMessage(
+                    'log.connector.error_api',
+                    array(
+                        'error_code' => $e->getCode(),
+                        'error_message' => $message,
+                    )
+                );
+                $helper->log('Connector', $error, $logOutput);
+                return false;
+            }
+            if ($result === null
                 || (isset($result['detail']) && $result['detail'] === 'Pas trouvé.')
                 || isset($result['error'])
             ) {
@@ -764,10 +783,11 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
      *
      * @param Mage_Sales_Model_Order $order Magento order instance
      * @param Lengow_Connector_Model_Connector|null $connector Lengow Connector for API calls
+     * @param boolean $logOutput see log or not
      *
      * @return boolean
      */
-    public function checkAndChangeMarketplaceName($order, $connector = null)
+    public function checkAndChangeMarketplaceName($order, $connector = null, $logOutput = false)
     {
         if (!(bool)$order->getData('from_lengow')) {
             return false;
@@ -776,23 +796,40 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
         $configHelper = Mage::helper('lengow_connector/config');
         list($accountId, $accessToken, $secretToken) = $configHelper->getAccessIds();
         if (is_null($connector)) {
-            if ($configHelper->isValidAuth()) {
-                /** @var Lengow_Connector_Model_Connector $connector */
-                $connector = Mage::getModel('lengow/connector');
+            /** @var Lengow_Connector_Model_Connector $connector */
+            $connector = Mage::getModel('lengow/connector');
+            if ($connector->isValidAuth($logOutput)) {
                 $connector->init($accessToken, $secretToken);
             } else {
                 return false;
             }
         }
-        $results = $connector->get(
-            '/v3.0/orders',
-            array(
-                'marketplace_order_id' => $order->getData('order_id_lengow'),
-                'marketplace' => $order->getData('marketplace_lengow'),
-                'account_id' => $accountId,
-            ),
-            'stream'
-        );
+        try {
+            $results = $connector->get(
+                Lengow_Connector_Model_Connector::API_ORDER,
+                array(
+                    'marketplace_order_id' => $order->getData('order_id_lengow'),
+                    'marketplace' => $order->getData('marketplace_lengow'),
+                    'account_id' => $accountId,
+                ),
+                Lengow_Connector_Model_Connector::FORMAT_STREAM,
+                '',
+                $logOutput
+            );
+        } catch (Exception $e) {
+            /** @var Lengow_Connector_Helper_Data $helper */
+            $helper = Mage::helper('lengow_connector');
+            $message = $helper->decodeLogMessage($e->getMessage(), 'en_GB');
+            $error = $helper->setLogMessage(
+                'log.connector.error_api',
+                array(
+                    'error_code' => $e->getCode(),
+                    'error_message' => $message,
+                )
+            );
+            $helper->log('Connector', $error, $logOutput);
+            return false;
+        }
         if (is_null($results)) {
             return false;
         }
@@ -805,7 +842,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
                 try {
                     $order->setData('marketplace_lengow', (string)$order->marketplace);
                     $order->save();
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     continue;
                 }
             }
@@ -952,8 +989,8 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
         }
         $orderLines = array();
         $results = Mage::getModel('lengow/connector')->queryApi(
-            'get',
-            '/v3.0/orders',
+            Lengow_Connector_Model_Connector::GET,
+            Lengow_Connector_Model_Connector::API_ORDER,
             array(
                 'marketplace_order_id' => $order->getData('order_id_lengow'),
                 'marketplace' => $order->getData('marketplace_lengow'),

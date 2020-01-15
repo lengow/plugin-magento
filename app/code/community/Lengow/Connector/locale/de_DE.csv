@@ -309,9 +309,7 @@ lengow_log.error.no_country_for_billing_address|Fehler Lengow: Rechnungsadresse 
 lengow_log.exception.product_not_be_found|produkt %{product_id} konnte nicht gefunden werden
 lengow_log.exception.product_is_a_parent|produkt %{product_id} hat eine Vorgänger-ID. Produktvariation wird benötigt
 lengow_log.exception.no_connection_webservice|verbindung mit dem Lengow Webservice im Laden %{store_name} (%{store_id}) funktionierte nicht.
-lengow_log.exception.error_lengow_webservice|Lengow Webservice : %{error_code} - %{error_message} auf Lager %{store_name} (%{store_id})
-lengow_log.exception.timeout_api|API Anruf wegen Zeitüberschreitung blockiert
-lengow_log.exception.error_curl|fehler Curl %{error_code} - %{error_message}
+lengow_log.exception.error_lengow_webservice|Lengow Webservice : %{error_code} - "%{error_message}" auf Lager %{store_name} (%{store_id})
 lengow_log.exception.marketplace_not_present|Lengow Fehler: %{marketplace_name} erscheint nicht in der Marketplace-Liste
 lengow_log.exception.order_failed_with_quote|auf dem Angebot basierende Bestellung konnte nicht erstellt werden
 lengow_log.exception.order_is_empty|bestellung konnte nicht gespeichert werden

@@ -233,7 +233,11 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
                 unset($getParams[$param]);
             }
         }
-        $result = Mage::getModel('lengow/connector')->queryApi('get', '/v3.0/orders/actions/', $getParams);
+        $result = Mage::getModel('lengow/connector')->queryApi(
+            Lengow_Connector_Model_Connector::GET,
+            Lengow_Connector_Model_Connector::API_ORDER_ACTION,
+            $getParams
+        );
         if (isset($result->error) && isset($result->error->message)) {
             throw new Lengow_Connector_Model_Exception($result->error->message);
         }
@@ -280,7 +284,11 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
         /** @var Lengow_Connector_Helper_Data $helper */
         $helper = Mage::helper('lengow_connector/data');
         if (!(bool)Mage::helper('lengow_connector/config')->get('preprod_mode_enable')) {
-            $result = Mage::getModel('lengow/connector')->queryApi('post', '/v3.0/orders/actions/', $params);
+            $result = Mage::getModel('lengow/connector')->queryApi(
+                Lengow_Connector_Model_Connector::POST,
+                Lengow_Connector_Model_Connector::API_ORDER_ACTION,
+                $params
+            );
             if (isset($result->id)) {
                 $this->createAction(
                     array(
@@ -349,16 +357,18 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
     /**
      * Check if active actions are finished
      *
+     * @param boolean $logOutput see log or not
+     *
      * @return boolean
      */
-    public function checkFinishAction()
+    public function checkFinishAction($logOutput = false)
     {
         /** @var Lengow_Connector_Helper_Data $helper */
         $helper = Mage::helper('lengow_connector/data');
-        if ((bool) Mage::helper('lengow_connector/config')->get('preprod_mode_enable')) {
+        if ((bool)Mage::helper('lengow_connector/config')->get('preprod_mode_enable')) {
             return false;
         }
-        $helper->log('API-OrderAction', $helper->setLogMessage('log.order_action.check_completed_action'));
+        $helper->log('API-OrderAction', $helper->setLogMessage('log.order_action.check_completed_action'), $logOutput);
         // get all active actions
         $activeActions = $this->getActiveActions();
         // if no active action, do nothing
@@ -370,13 +380,15 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
         $apiActions = array();
         do {
             $results = Mage::getModel('lengow/connector')->queryApi(
-                'get',
-                '/v3.0/orders/actions/',
+                Lengow_Connector_Model_Connector::GET,
+                Lengow_Connector_Model_Connector::API_ORDER_ACTION,
                 array(
                     'updated_from' => date('c', strtotime(date('Y-m-d') . ' -3days')),
                     'updated_to' => date('c'),
                     'page' => $page,
-                )
+                ),
+                '',
+                $logOutput
             );
             if (!is_object($results) || isset($results->error)) {
                 break;
@@ -448,7 +460,7 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
                                         'log.order_action.call_action_failed',
                                         array('decoded_message' => $apiActions[$action['action_id']]->errors)
                                     ),
-                                    false,
+                                    $logOutput,
                                     $orderLengow->getData('marketplace_sku')
                                 );
                                 unset($orderError);
@@ -466,39 +478,27 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
     /**
      * Remove old actions > 3 days
      *
-     * @param string|null $actionType action type (null, ship or cancel)
+     * @param boolean $logOutput see log or not
      *
      * @return boolean
      */
-    public function checkOldAction($actionType = null)
+    public function checkOldAction($logOutput = false)
     {
         /** @var Lengow_Connector_Helper_Data $helper */
         $helper = Mage::helper('lengow_connector/data');
         if ((bool)Mage::helper('lengow_connector/config')->get('preprod_mode_enable')) {
             return false;
         }
-        $helper->log('API-OrderAction', $helper->setLogMessage('log.order_action.check_old_action'));
+        $helper->log('API-OrderAction', $helper->setLogMessage('log.order_action.check_old_action'), $logOutput);
         // get all old order action (+ 3 days)
-        $collection = $this->getCollection()
-            ->addFieldToFilter('state', self::STATE_NEW)
-            ->addFieldToFilter(
-                'created_at',
-                array(
-                    'to' => strtotime('-3 days', time()),
-                    'datetime' => true,
-                )
-            );
-        if (!is_null($actionType)) {
-            $collection->addFieldToFilter('action_type', $actionType);
-        }
-        $results = $collection->getData();
-        if (count($results) > 0) {
-            foreach ($results as $result) {
+        $actions = $this->getOldActions();
+        if ($actions) {
+            foreach ($actions as $action) {
                 /** @var Lengow_Connector_Model_Import_Action $action */
-                $action = Mage::getModel('lengow/import_action')->load($result['id']);
+                $action = Mage::getModel('lengow/import_action')->load($action['id']);
                 $action->updateAction(array('state' => self::STATE_FINISH));
                 $orderLengowId = Mage::getModel('lengow/import_order')
-                    ->getLengowOrderIdWithOrderId($result['order_id']);
+                    ->getLengowOrderIdWithOrderId($action['order_id']);
                 if ($orderLengowId) {
                     /** @var Lengow_Connector_Model_Import_Order $orderLengow */
                     $orderLengow = Mage::getModel('lengow/import_order')->load($orderLengowId);
@@ -525,7 +525,7 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
                                 'log.order_action.call_action_failed',
                                 array('decoded_message' => $decodedMessage)
                             ),
-                            false,
+                            $logOutput,
                             $orderLengow->getData('marketplace_sku')
                         );
                         unset($orderError);
@@ -540,18 +540,40 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
     }
 
     /**
+     * Get old untreated actions of more than 3 days
+     *
+     * @return array|false
+     */
+    public function getOldActions()
+    {
+        $collection = $this->getCollection()
+            ->addFieldToFilter('state', self::STATE_NEW)
+            ->addFieldToFilter(
+                'created_at',
+                array(
+                    'to' => strtotime('-3 days', time()),
+                    'datetime' => true,
+                )
+            );
+        $results = $collection->getData();
+        return !empty($results) ? $results : false;
+    }
+
+    /**
      * Check if actions are not sent
+     *
+     * @param boolean $logOutput see log or not
      *
      * @return boolean
      */
-    public function checkActionNotSent()
+    public function checkActionNotSent($logOutput = false)
     {
         /** @var Lengow_Connector_Helper_Data $helper */
         $helper = Mage::helper('lengow_connector/data');
         if ((bool)Mage::helper('lengow_connector/config')->get('preprod_mode_enable')) {
             return false;
         }
-        $helper->log('API-OrderAction', $helper->setLogMessage('log.order_action.check_action_not_sent'));
+        $helper->log('API-OrderAction', $helper->setLogMessage('log.order_action.check_action_not_sent'), $logOutput);
         // get unsent orders
         $unsentOrders = Mage::getModel('lengow/import_order')->getUnsentOrders();
         if ($unsentOrders) {
