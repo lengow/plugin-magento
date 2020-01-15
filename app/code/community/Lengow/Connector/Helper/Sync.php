@@ -283,7 +283,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
             Lengow_Connector_Model_Connector::PUT,
             Lengow_Connector_Model_Connector::API_CMS,
             array(),
-            '',
+            $options,
             $logOutput
         );
         $this->_configHelper->set('last_option_cms_update', date('Y-m-d H:i:s'));

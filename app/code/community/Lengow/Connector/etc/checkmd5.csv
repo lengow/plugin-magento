@@ -29,7 +29,7 @@
 /app/code/community/Lengow/Connector/Block/Payment/Info/Purchaseorder.php|ab166ba499ff7bd11e696a6384ef73a7
 /app/code/community/Lengow/Connector/Helper/Data.php|a2b7ef089e6d5f75b2a211481d8f2eca
 /app/code/community/Lengow/Connector/Helper/Config.php|612eecc134f2d9c311c9a07bc4cef2a9
-/app/code/community/Lengow/Connector/Helper/Sync.php|a023ed44bc21a1ac9a35244c50602a9d
+/app/code/community/Lengow/Connector/Helper/Sync.php|214db74dd49d7f4cd2ec3ebcae52b7f0
 /app/code/community/Lengow/Connector/Helper/Toolbox.php|dad500325b8570a013d01abca422803e
 /app/code/community/Lengow/Connector/Helper/Translation.php|5868a8c13faef6f9f153592b9a668164
 /app/code/community/Lengow/Connector/Helper/Security.php|2f959f4e273fc4298153c79c2884b409
