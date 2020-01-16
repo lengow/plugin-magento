@@ -46,6 +46,18 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
             'global' => true,
             'no_cache' => true,
         ),
+        'authorization_token' => [
+            'path' => 'lengow_global_options/store_credential/authorization_token',
+            'global' => true,
+            'export' => false,
+            'no_cache' => true,
+        ],
+        'last_authorization_token_update' => [
+            'path' => 'lengow_global_options/store_credential/last_authorization_token_update',
+            'global' => true,
+            'export' => false,
+            'no_cache' => true,
+        ],
         'store_enable' => array(
             'path' => 'lengow_global_options/store_credential/global_store_enable',
             'store' => true,
@@ -543,35 +555,6 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
             return false;
         }
         return true;
-    }
-
-    /**
-     * Check API Authentication
-     *
-     * @return boolean
-     */
-    public function isValidAuth()
-    {
-        if (!Mage::helper('lengow_connector/toolbox')->isCurlActivated()) {
-            return false;
-        }
-        list($accountId, $accessToken, $secretToken) = $this->getAccessIds();
-        if (is_null($accountId) || (int)$accountId === 0 || !is_numeric($accountId)) {
-            return false;
-        }
-        try {
-            /** @var Lengow_Connector_Model_Connector $connector */
-            $connector = Mage::getModel('lengow/connector');
-            $connector->init($accessToken, $secretToken);
-            $result = $connector->connect();
-        } catch (Lengow_Connector_Model_Exception $e) {
-            return false;
-        }
-        if (isset($result['token'])) {
-            return true;
-        } else {
-            return false;
-        }
     }
 
     /**
