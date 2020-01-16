@@ -240,6 +240,16 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
                 return false;
             }
         }
+        // skip import if the order is anonymized
+        if ($this->_orderData->anonymized) {
+            $this->_helper->log(
+                'Import',
+                $this->_helper->setLogMessage('log.import.anonymized_order'),
+                $this->_logOutput,
+                $this->_marketplaceSku
+            );
+            return false;
+        }
         // checks if an external id already exists
         $orderMagentoId = $this->_checkExternalIds($this->_orderData->merchant_order_id);
         if ($orderMagentoId && !$this->_preprodMode && !$this->_isReimported) {
