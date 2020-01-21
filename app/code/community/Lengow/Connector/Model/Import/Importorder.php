@@ -208,6 +208,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
             'import'
         );
         if ($importLog) {
+            $dateMessage = Mage::getModel('core/date')->date('Y-m-d H:i:s', strtotime($importLog['created_at']));
             $decodedMessage = $this->_helper->decodeLogMessage($importLog['message'], 'en_GB');
             $this->_helper->log(
                 'Import',
@@ -215,7 +216,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
                     'log.import.error_already_created',
                     array(
                         'decoded_message' => $decodedMessage,
-                        'date_message' => $importLog['created_at'],
+                        'date_message' => $dateMessage,
                     )
                 ),
                 $this->_logOutput,

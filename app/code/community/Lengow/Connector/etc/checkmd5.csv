@@ -44,7 +44,7 @@
 /app/code/community/Lengow/Connector/Model/Import/Orderline.php|4ba41f92737e7891074285cbbcce490f
 /app/code/community/Lengow/Connector/Model/Import/Ordererror.php|8450dda0326690f6111889f5c02d4f45
 /app/code/community/Lengow/Connector/Model/Import/Quote.php|f00e50f7ba97a85c43608e2441b5c4f1
-/app/code/community/Lengow/Connector/Model/Import/Importorder.php|c91a19f4dfb5df9fe2da3446e4894988
+/app/code/community/Lengow/Connector/Model/Import/Importorder.php|cd9a0fea8422b0bcedf5ebd4ad2c7a96
 /app/code/community/Lengow/Connector/Model/Observer.php|b275e26365f54f919b2b426483a457c0
 /app/code/community/Lengow/Connector/Model/Config.php|fd731ed33c5e58e21990861f81755f63
 /app/code/community/Lengow/Connector/Model/Export/Feed/Abstract.php|226b2f555d14d8eae517b66008f52a31
