@@ -114,7 +114,8 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
         $finalMessage .= '' . (empty($marketplaceSku) ? '' : 'order ' . $marketplaceSku . ' : ');
         $finalMessage .= $decodedMessage;
         if ($display) {
-            print_r($finalMessage . '<br />');
+            $date = Mage::getModel('core/date')->date('Y-m-d H:i:s');
+            print_r($date . ' - ' . $finalMessage . '<br />');
             flush();
         }
         return Mage::getModel('lengow/log')->createLog(array('message' => $finalMessage));

@@ -33,6 +33,16 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
     const STATE_FINISH = 1;
 
     /**
+     * @var integer max interval time for action synchronisation (3 days)
+     */
+    const MAX_INTERVAL_TIME = 259200;
+
+    /**
+     * @var integer security interval time for action synchronisation (2 hours)
+     */
+    const SECURITY_INTERVAL_TIME = 7200;
+
+    /**
      * @var array Parameters to delete for Get call
      */
     public static $getParamsToDelete = array(
@@ -365,7 +375,9 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
     {
         /** @var Lengow_Connector_Helper_Data $helper */
         $helper = Mage::helper('lengow_connector/data');
-        if ((bool)Mage::helper('lengow_connector/config')->get('preprod_mode_enable')) {
+        /** @var Lengow_Connector_Helper_Config $configHelper */
+        $configHelper = Mage::helper('lengow_connector/config');
+        if ((bool)$configHelper->get('preprod_mode_enable')) {
             return false;
         }
         $helper->log('API-OrderAction', $helper->setLogMessage('log.order_action.check_completed_action'), $logOutput);
@@ -375,16 +387,31 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
         if (!$activeActions) {
             return true;
         }
-        // get all actions with API for 3 days
+        // get all actions with API (max 3 days)
         $page = 1;
         $apiActions = array();
+        $coreDate = Mage::getModel('core/date');
+        $intervalTime = $this->_getIntervalTime();
+        $dateFrom = time() - $intervalTime;
+        $dateTo = time();
+        $helper->log(
+            'API-OrderAction',
+            $helper->setLogMessage(
+                'log.order_action.connector_get_all_action',
+                array(
+                    'date_from' => $coreDate->date('Y-m-d H:i:s', $dateFrom),
+                    'date_to' => $coreDate->date('Y-m-d H:i:s', $dateTo),
+                )
+            ),
+            $logOutput
+        );
         do {
             $results = Mage::getModel('lengow/connector')->queryApi(
                 Lengow_Connector_Model_Connector::GET,
                 Lengow_Connector_Model_Connector::API_ORDER_ACTION,
                 array(
-                    'updated_from' => date('c', strtotime(date('Y-m-d') . ' -3days')),
-                    'updated_to' => date('c'),
+                    'updated_from' => $coreDate->date('c', $dateFrom),
+                    'updated_to' => $coreDate->date('c', $dateTo),
                     'page' => $page,
                 ),
                 '',
@@ -472,6 +499,7 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
                 }
             }
         }
+        $configHelper->set('last_action_sync', time());
         return true;
     }
 
@@ -551,7 +579,7 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
             ->addFieldToFilter(
                 'created_at',
                 array(
-                    'to' => strtotime('-3 days', time()),
+                    'to' => time() - self::MAX_INTERVAL_TIME,
                     'datetime' => true,
                 )
             );
@@ -584,5 +612,22 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
             }
         }
         return true;
+    }
+
+    /**
+     * Get interval time for action synchronisation
+     *
+     * @return integer
+     */
+    protected function _getIntervalTime()
+    {
+        $intervalTime = self::MAX_INTERVAL_TIME;
+        $lastActionSynchronisation = Mage::helper('lengow_connector/config')->get('last_action_sync');
+        if ($lastActionSynchronisation) {
+            $lastIntervalTime = time() - (int)$lastActionSynchronisation;
+            $lastIntervalTime = $lastIntervalTime + self::SECURITY_INTERVAL_TIME;
+            $intervalTime = $lastIntervalTime > $intervalTime ? $intervalTime : $lastIntervalTime;
+        }
+        return $intervalTime;
     }
 }
