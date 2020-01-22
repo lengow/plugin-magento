@@ -258,6 +258,11 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
             'global' => true,
             'no_cache' => true,
         ),
+        'last_action_sync' => array(
+            'path' => 'lengow_import_options/advanced/last_action_sync',
+            'global' => true,
+            'no_cache' => true,
+        ),
         'see_migrate_block' => array(
             'path' => 'lengow_import_options/advanced/see_migrate_block',
             'export' => false,
@@ -551,7 +556,7 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
     public function isNewMerchant()
     {
         list($accountId, $accessToken, $secretToken) = $this->getAccessIds();
-        if (!is_null($accountId) && !is_null($accessToken) && !is_null($secretToken)) {
+        if ($accountId !== null && $accessToken !== null && $secretToken !== null) {
             return false;
         }
         return true;
