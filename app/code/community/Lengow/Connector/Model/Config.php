@@ -130,7 +130,7 @@ class Lengow_Connector_Model_Config extends Mage_Core_Model_Config
                     Mage::helper('lengow_connector')->log('Config', $message);
                     // save last update date for a specific settings (change synchronisation interval time)
                     if (in_array($pathExplode[2], $this->_updatedSettings)) {
-                        Mage::helper('lengow_connector/config')->set('last_setting_update', date('Y-m-d H:i:s'));
+                        Mage::helper('lengow_connector/config')->set('last_setting_update', time());
                     }
                 }
             }

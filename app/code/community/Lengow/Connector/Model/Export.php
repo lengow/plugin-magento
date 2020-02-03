@@ -1009,17 +1009,18 @@ class Lengow_Connector_Model_Export extends Varien_Object
             );
             return false;
         }
+        $coreDate = Mage::getModel('core/date');
         foreach ($listFiles as $file) {
             if (preg_match('/^' . $this->_fileName . '\.[\d]{10}/', $file)) {
-                $fileModified = date('Y-m-d H:i:s', filemtime($directory . $file));
+                $fileModified = $coreDate->gmtDate('Y-m-d H:i:s', filemtime($directory . $file));
                 $fileModifiedDatetime = new DateTime($fileModified);
                 $fileModifiedDatetime->add(new DateInterval('P10D'));
-                if (date('Y-m-d') > $fileModifiedDatetime->format('Y-m-d')) {
+                if ($coreDate->gmtDate('Y-m-d') > $fileModifiedDatetime->format('Y-m-d')) {
                     unlink($directory . $file);
                 }
                 $fileModifiedDatetime = new DateTime($fileModified);
                 $fileModifiedDatetime->add(new DateInterval('PT20S'));
-                if (date('Y-m-d H:i:s') < $fileModifiedDatetime->format('Y-m-d H:i:s')) {
+                if ($coreDate->gmtDate('Y-m-d H:i:s') < $fileModifiedDatetime->format('Y-m-d H:i:s')) {
                     return true;
                 }
             }
