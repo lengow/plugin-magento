@@ -451,7 +451,7 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
                     break;
                 case 'shipping_date':
                 case 'delivery_date':
-                    $params[$arg] = date('c');
+                    $params[$arg] = Mage::getModel('core/date')->date('c');
                     break;
                 default:
                     if (isset($actions['optional_args']) && in_array($arg, $actions['optional_args'])) {

@@ -162,7 +162,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
             }
         }
         // save last update date for a specific settings (change synchronisation interval time)
-        $this->_configHelper->set('last_setting_update', date('Y-m-d H:i:s'));
+        $this->_configHelper->set('last_setting_update', time());
         // clean config cache to valid configuration
         Mage::app()->getCacheInstance()->cleanType('config');
     }
@@ -183,7 +183,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
         }
         if (!$force) {
             $updatedAt = $this->_configHelper->get('last_catalog_update');
-            if (!is_null($updatedAt) && (time() - strtotime($updatedAt)) < $this->_cacheTimes['catalog']) {
+            if (!is_null($updatedAt) && (time() - (int)$updatedAt) < $this->_cacheTimes['catalog']) {
                 return false;
             }
         }
@@ -218,10 +218,10 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
         // clean config cache to valid configuration
         if ($cleanCache) {
             // save last update date for a specific settings (change synchronisation interval time)
-            $this->_configHelper->set('last_setting_update', date('Y-m-d H:i:s'));
+            $this->_configHelper->set('last_setting_update', time());
             Mage::app()->getCacheInstance()->cleanType('config');
         }
-        $this->_configHelper->set('last_catalog_update', date('Y-m-d H:i:s'));
+        $this->_configHelper->set('last_catalog_update', time());
         return true;
     }
 
@@ -274,7 +274,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
         }
         if (!$force) {
             $updatedAt = $this->_configHelper->get('last_option_cms_update');
-            if (!is_null($updatedAt) && (time() - strtotime($updatedAt)) < $this->_cacheTimes['cms_option']) {
+            if (!is_null($updatedAt) && (time() - (int)$updatedAt) < $this->_cacheTimes['cms_option']) {
                 return false;
             }
         }
@@ -286,7 +286,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
             $options,
             $logOutput
         );
-        $this->_configHelper->set('last_option_cms_update', date('Y-m-d H:i:s'));
+        $this->_configHelper->set('last_option_cms_update', time());
         return true;
     }
 
@@ -305,7 +305,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
         }
         if (!$force) {
             $updatedAt = $this->_configHelper->get('last_status_update');
-            if (!is_null($updatedAt) && (time() - strtotime($updatedAt)) < $this->_cacheTimes['status_account']) {
+            if (!is_null($updatedAt) && (time() - (int)$updatedAt) < $this->_cacheTimes['status_account']) {
                 return json_decode($this->_configHelper->get('account_status'), true);
             }
         }
@@ -324,7 +324,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
                 'legacy' => $result->accountVersion === 'v2' ? true : false,
             );
             $this->_configHelper->set('account_status', Mage::helper('core')->jsonEncode($status));
-            $this->_configHelper->set('last_status_update', date('Y-m-d H:i:s'));
+            $this->_configHelper->set('last_status_update', time());
             return $status;
         } else {
             if ($this->_configHelper->get('last_status_update')) {
@@ -346,17 +346,19 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
     {
         if (!$force) {
             $updatedAt = $this->_configHelper->get('last_statistic_update');
-            if (!is_null($updatedAt) && (time() - strtotime($updatedAt)) < $this->_cacheTimes['statistic']) {
+            if (!is_null($updatedAt) && (time() - (int)$updatedAt) < $this->_cacheTimes['statistic']) {
                 return json_decode($this->_configHelper->get('order_statistic'), true);
             }
         }
+        $coreDate = Mage::getModel('core/date');
         $allCurrencyCodes = $this->_configHelper->getAllAvailableCurrencyCodes();
+        $dateFromTimestamp = $coreDate->timestamp($coreDate->gmtDate('Y-m-d') . ' -10 years');
         $result =  Mage::getModel('lengow/connector')->queryApi(
             Lengow_Connector_Model_Connector::GET,
             Lengow_Connector_Model_Connector::API_STATISTIC,
             array(
-                'date_from' => date('c', strtotime(date('Y-m-d') . ' -10 years')),
-                'date_to' => date('c'),
+                'date_from' => $coreDate->gmtDate('c', $dateFromTimestamp),
+                'date_to' => $coreDate->date('c'),
                 'metrics' => 'year',
             ),
             '',
@@ -397,7 +399,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
             $return['total_order'] = number_format($return['total_order'], 2, ',', ' ');
         }
         $this->_configHelper->set('order_statistic', Mage::helper('core')->jsonEncode($return));
-        $this->_configHelper->set('last_statistic_update', date('Y-m-d H:i:s'));
+        $this->_configHelper->set('last_statistic_update', time());
         return $return;
     }
 
@@ -416,7 +418,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
         if (!$force) {
             $updatedAt = $this->_configHelper->get('last_marketplace_update');
             if (!is_null($updatedAt)
-                && (time() - strtotime($updatedAt)) < $this->_cacheTimes['marketplace']
+                && (time() - (int)$updatedAt) < $this->_cacheTimes['marketplace']
                 && file_exists($filePath)
             ) {
                 // recovering data with the marketplaces.json file
@@ -444,7 +446,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
                 $file->streamWrite(json_encode($result));
                 $file->streamUnlock();
                 $file->streamClose();
-                $this->_configHelper->set('last_marketplace_update', date('Y-m-d H:i:s'));
+                $this->_configHelper->set('last_marketplace_update', time());
             } catch (Exception $e) {
                 $helper = Mage::helper('lengow_connector/data');
                 $helper->log(

@@ -946,8 +946,10 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
         } else {
             $orderDate = (string)$this->_orderData->imported_at;
         }
-        $order->setCreatedAt(Mage::getModel('core/date')->date('Y-m-d H:i:s', strtotime($orderDate)));
-        $order->setUpdatedAt(Mage::getModel('core/date')->date('Y-m-d H:i:s', strtotime($orderDate)));
+        $coreDate = Mage::getModel('core/date');
+        $orderDateTimestamp = $coreDate->timestamp($orderDate);
+        $order->setCreatedAt($coreDate->gmtDate('Y-m-d H:i:s', $orderDateTimestamp));
+        $order->setUpdatedAt($coreDate->gmtDate('Y-m-d H:i:s', $orderDateTimestamp));
         $order->save();
         // update lengow_order table directly after creating the Magento order
         $orderLengow->updateOrder(
@@ -1027,6 +1029,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
         } else {
             $orderDate = (string)$this->_orderData->imported_at;
         }
+        $coreDate = Mage::getModel('core/date');
         $params = array(
             'store_id' => (int)$this->_storeId,
             'marketplace_sku' => $this->_marketplaceSku,
@@ -1034,7 +1037,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
             'marketplace_label' => (string)$this->_marketplaceLabel,
             'delivery_address_id' => (int)$this->_deliveryAddressId,
             'order_lengow_state' => $this->_orderStateLengow,
-            'order_date' => Mage::getModel('core/date')->date('Y-m-d H:i:s', strtotime($orderDate)),
+            'order_date' => $coreDate->gmtDate('Y-m-d H:i:s', $coreDate->timestamp($orderDate)),
             'is_in_error' => 1,
         );
         if (isset($this->_orderData->comments) && is_array($this->_orderData->comments)) {
