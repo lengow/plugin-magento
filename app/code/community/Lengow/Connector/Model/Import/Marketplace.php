@@ -518,18 +518,18 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
             $titleCleaned = $this->_cleanString($title);
             // search by Magento carrier code
             // strict search
-            $result = $this->searchCarrierCode($codeCleaned);
+            $result = $this->_searchCarrierCode($codeCleaned);
             if (!$result) {
                 // approximate search
-                $result = $this->searchCarrierCode($codeCleaned, false);
+                $result = $this->_searchCarrierCode($codeCleaned, false);
             }
             // search by Magento carrier title if it is different from the Magento carrier code
             if (!$result && $titleCleaned !== $codeCleaned) {
                 // strict search
-                $result = $this->searchCarrierCode($titleCleaned);
+                $result = $this->_searchCarrierCode($titleCleaned);
                 if (!$result) {
                     // approximate search
-                    $result = $this->searchCarrierCode($titleCleaned, false);
+                    $result = $this->_searchCarrierCode($titleCleaned, false);
                 }
             }
             if ($result) {
@@ -564,7 +564,7 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
      *
      * @return string|false
      */
-    private function searchCarrierCode($search, $strict = true)
+    private function _searchCarrierCode($search, $strict = true)
     {
         $result = false;
         foreach ($this->carriers as $key => $label) {
