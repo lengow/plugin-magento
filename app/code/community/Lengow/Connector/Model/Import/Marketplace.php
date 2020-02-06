@@ -162,7 +162,7 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
     public function loadApiMarketplace()
     {
         if (!self::$marketplaces) {
-            self::$marketplaces =  Mage::helper('lengow_connector/sync')->getMarketplaces();
+            self::$marketplaces = Mage::helper('lengow_connector/sync')->getMarketplaces();
         }
     }
 
@@ -553,7 +553,7 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
     private function _cleanString($string)
     {
         $cleanFilters = array(' ', '-', '_', '.');
-        return strtolower(str_replace($cleanFilters, '',  trim($string)));
+        return strtolower(str_replace($cleanFilters, '', trim($string)));
     }
 
     /**
@@ -588,7 +588,7 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
      *
      * @param string $pattern search pattern
      * @param string $subject string to search
-     *  @param boolean $strict strict search
+     * @param boolean $strict strict search
      *
      * @return boolean
      */
