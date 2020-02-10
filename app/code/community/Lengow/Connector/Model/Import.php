@@ -38,6 +38,21 @@ class Lengow_Connector_Model_Import extends Varien_Object
     const SECURITY_INTERVAL_TIME = 7200;
 
     /**
+     * @var string manual import type
+     */
+    const TYPE_MANUAL = 'manual';
+
+    /**
+     * @var string cron import type
+     */
+    const TYPE_CRON = 'cron';
+
+    /**
+     * @var string Magento cron import type
+     */
+    const TYPE_MAGENTO_CRON = 'magento cron';
+
+    /**
      * @var Lengow_Connector_Helper_Data|null Lengow helper instance
      */
     protected $_helper = null;
@@ -178,7 +193,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
         $this->_preprodMode = isset($params['preprod_mode'])
             ? (bool)$params['preprod_mode']
             : (bool)$this->_configHelper->get('preprod_mode_enable');
-        $this->_typeImport = isset($params['type']) ? $params['type'] : 'manual';
+        $this->_typeImport = isset($params['type']) ? $params['type'] : self::TYPE_MANUAL;
         $this->_logOutput = isset($params['log_output']) ? (bool)$params['log_output'] : false;
         $this->_storeId = isset($params['store_id']) ? (int)$params['store_id'] : null;
         // get params for synchronise one or all orders
@@ -227,10 +242,10 @@ class Lengow_Connector_Model_Import extends Varien_Object
                 'lengow_log.error.rest_time_to_import',
                 array('rest_time' => $this->_importHelper->restTimeToImport())
             );
-            $this->_helper->log('Import', $globalError, $this->_logOutput);
+            $this->_helper->log(Lengow_Connector_Helper_Data::CODE_IMPORT, $globalError, $this->_logOutput);
         } elseif (!$this->_checkCredentials()) {
             $globalError = $this->_helper->setLogMessage('lengow_log.error.credentials_not_valid');
-            $this->_helper->log('Import', $globalError, $this->_logOutput);
+            $this->_helper->log(Lengow_Connector_Helper_Data::CODE_IMPORT, $globalError, $this->_logOutput);
         } else {
             if (!$this->_importOneOrder) {
                 $this->_importHelper->setImportInProcess();
@@ -238,17 +253,17 @@ class Lengow_Connector_Model_Import extends Varien_Object
             // to activate lengow shipping method
             Mage::getSingleton('core/session')->setIsFromlengow(1);
             // check Lengow catalogs for order synchronisation
-            if (!$this->_importOneOrder && $this->_typeImport === 'manual') {
+            if (!$this->_importOneOrder && $this->_typeImport === self::TYPE_MANUAL) {
                 Mage::helper('lengow_connector/sync')->syncCatalog();
             }
             $this->_helper->log(
-                'Import',
+                Lengow_Connector_Helper_Data::CODE_IMPORT,
                 $this->_helper->setLogMessage('log.import.start', array('type' => $this->_typeImport)),
                 $this->_logOutput
             );
             if ($this->_preprodMode) {
                 $this->_helper->log(
-                    'Import',
+                    Lengow_Connector_Helper_Data::CODE_IMPORT,
                     $this->_helper->setLogMessage('log.import.preprod_mode_active'),
                     $this->_logOutput
                 );
@@ -261,7 +276,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
                 }
                 if ($this->_configHelper->storeIsActive((int)$store->getId())) {
                     $this->_helper->log(
-                        'Import',
+                        Lengow_Connector_Helper_Data::CODE_IMPORT,
                         $this->_helper->setLogMessage(
                             'log.import.start_for_store',
                             array(
@@ -281,7 +296,11 @@ class Lengow_Connector_Model_Import extends Varien_Object
                                     'store_id' => (int)$store->getId(),
                                 )
                             );
-                            $this->_helper->log('Import', $errorCatalogIds, $this->_logOutput);
+                            $this->_helper->log(
+                                Lengow_Connector_Helper_Data::CODE_IMPORT,
+                                $errorCatalogIds,
+                                $this->_logOutput
+                            );
                             $errors[(int)$store->getId()] = $errorCatalogIds;
                             continue;
                         }
@@ -290,7 +309,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
                         $totalOrders = count($orders);
                         if ($this->_importOneOrder) {
                             $this->_helper->log(
-                                'Import',
+                                Lengow_Connector_Helper_Data::CODE_IMPORT,
                                 $this->_helper->setLogMessage(
                                     'log.import.find_one_order',
                                     array(
@@ -304,7 +323,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
                             );
                         } else {
                             $this->_helper->log(
-                                'Import',
+                                Lengow_Connector_Helper_Data::CODE_IMPORT,
                                 $this->_helper->setLogMessage(
                                     'log.import.find_all_orders',
                                     array(
@@ -351,9 +370,12 @@ class Lengow_Connector_Model_Import extends Varien_Object
                             );
                             unset($lengowOrderError);
                         }
-                        $decodedMessage = $this->_helper->decodeLogMessage($errorMessage, 'en_GB');
+                        $decodedMessage = $this->_helper->decodeLogMessage(
+                            $errorMessage,
+                            Lengow_Connector_Helper_Translation::DEFAULT_ISO_CODE
+                        );
                         $this->_helper->log(
-                            'Import',
+                            Lengow_Connector_Helper_Data::CODE_IMPORT,
                             $this->_helper->setLogMessage(
                                 'log.import.import_failed',
                                 array('decoded_message' => $decodedMessage)
@@ -369,7 +391,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
             }
             if (!$this->_importOneOrder) {
                 $this->_helper->log(
-                    'Import',
+                    Lengow_Connector_Helper_Data::CODE_IMPORT,
                     $this->_helper->setLogMessage(
                         'lengow_log.error.nb_order_imported',
                         array('nb_order' => $orderNew)
@@ -377,7 +399,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
                     $this->_logOutput
                 );
                 $this->_helper->log(
-                    'Import',
+                    Lengow_Connector_Helper_Data::CODE_IMPORT,
                     $this->_helper->setLogMessage(
                         'lengow_log.error.nb_order_updated',
                         array('nb_order' => $orderUpdate)
@@ -385,7 +407,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
                     $this->_logOutput
                 );
                 $this->_helper->log(
-                    'Import',
+                    Lengow_Connector_Helper_Data::CODE_IMPORT,
                     $this->_helper->setLogMessage(
                         'lengow_log.error.nb_order_with_error',
                         array('nb_order' => $orderError)
@@ -400,7 +422,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
             // finish import process
             $this->_importHelper->setImportEnd();
             $this->_helper->log(
-                'Import',
+                Lengow_Connector_Helper_Data::CODE_IMPORT,
                 $this->_helper->setLogMessage('log.import.end', array('type' => $this->_typeImport)),
                 $this->_logOutput
             );
@@ -408,7 +430,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
             if ($this->_configHelper->get('report_mail_enable') && !$this->_preprodMode && !$this->_importOneOrder) {
                 $this->_importHelper->sendMailAlert($this->_logOutput);
             }
-            if (!$this->_preprodMode && !$this->_importOneOrder && $this->_typeImport === 'manual') {
+            if (!$this->_preprodMode && !$this->_importOneOrder && $this->_typeImport === self::TYPE_MANUAL) {
                 /** @var Lengow_Connector_Model_Import_Action $action */
                 $action = Mage::getModel('lengow/import_action');
                 $action->checkFinishAction($this->_logOutput);
@@ -484,7 +506,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
         foreach ($catalogIds as $catalogId) {
             if (array_key_exists($catalogId, $this->_catalogIds)) {
                 $this->_helper->log(
-                    'Import',
+                    Lengow_Connector_Helper_Data::CODE_IMPORT,
                     $this->_helper->setLogMessage(
                         'log.import.catalog_id_already_used',
                         array(
@@ -525,7 +547,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
         $noCurrencyConversion = !(bool)$this->_configHelper->get('currency_conversion_enabled', $store->getId());
         if ($this->_importOneOrder) {
             $this->_helper->log(
-                'Import',
+                Lengow_Connector_Helper_Data::CODE_IMPORT,
                 $this->_helper->setLogMessage(
                     'log.import.connector_get_order',
                     array(
@@ -539,7 +561,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
             $dateFrom = $this->_createdFrom ? $this->_createdFrom : $this->_updatedFrom;
             $dateTo = $this->_createdTo ? $this->_createdTo : $this->_updatedTo;
             $this->_helper->log(
-                'Import',
+                Lengow_Connector_Helper_Data::CODE_IMPORT,
                 $this->_helper->setLogMessage(
                     'log.import.connector_get_all_order',
                     array(
@@ -601,7 +623,10 @@ class Lengow_Connector_Model_Import extends Varien_Object
                         'lengow_log.exception.error_lengow_webservice',
                         array(
                             'error_code' => $e->getCode(),
-                            'error_message' => $this->_helper->decodeLogMessage($e->getMessage(), 'en_GB'),
+                            'error_message' => $this->_helper->decodeLogMessage(
+                                $e->getMessage(),
+                                Lengow_Connector_Helper_Translation::DEFAULT_ISO_CODE
+                            ),
                             'store_name' => $store->getName(),
                             'store_id' => $store->getId(),
                         )
@@ -669,7 +694,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
             // if order contains no package
             if (empty($orderData->packages)) {
                 $this->_helper->log(
-                    'Import',
+                    Lengow_Connector_Helper_Data::CODE_IMPORT,
                     $this->_helper->setLogMessage('log.import.error_no_package'),
                     $this->_logOutput,
                     $marketplaceSku
@@ -682,7 +707,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
                 // check whether the package contains a shipping address
                 if (!isset($packageData->delivery->id)) {
                     $this->_helper->log(
-                        'Import',
+                        Lengow_Connector_Helper_Data::CODE_IMPORT,
                         $this->_helper->setLogMessage('log.import.error_no_delivery_address'),
                         $this->_logOutput,
                         $marketplaceSku
@@ -697,7 +722,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
                         && $this->_deliveryAddressId !== $packageDeliveryAddressId
                     ) {
                         $this->_helper->log(
-                            'Import',
+                            Lengow_Connector_Helper_Data::CODE_IMPORT,
                             $this->_helper->setLogMessage('log.import.error_wrong_package_number'),
                             $this->_logOutput,
                             $marketplaceSku
@@ -730,9 +755,12 @@ class Lengow_Connector_Model_Import extends Varien_Object
                         . '" ' . $e->getFile() . ' line ' . $e->getLine();
                 }
                 if (isset($errorMessage)) {
-                    $decodedMessage = $this->_helper->decodeLogMessage($errorMessage, 'en_GB');
+                    $decodedMessage = $this->_helper->decodeLogMessage(
+                        $errorMessage,
+                        Lengow_Connector_Helper_Translation::DEFAULT_ISO_CODE
+                    );
                     $this->_helper->log(
-                        'Import',
+                        Lengow_Connector_Helper_Data::CODE_IMPORT,
                         $this->_helper->setLogMessage(
                             'log.import.order_import_failed',
                             array('decoded_message' => $decodedMessage)
@@ -763,7 +791,12 @@ class Lengow_Connector_Model_Import extends Varien_Object
                                 array('order_id' => $magentoOrder->getIncrementId())
                             );
                         }
-                        $this->_helper->log('Import', $synchroMessage, $this->_logOutput, $marketplaceSku);
+                        $this->_helper->log(
+                            Lengow_Connector_Helper_Data::CODE_IMPORT,
+                            $synchroMessage,
+                            $this->_logOutput,
+                            $marketplaceSku
+                        );
                         unset($magentoOrder);
                     }
                     // clean current order in session
@@ -831,7 +864,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
                 // get dynamic interval time for cron synchronisation
                 $lastImport = $this->_importHelper->getLastImport();
                 $lastSettingUpdate = (int)$this->_configHelper->get('last_setting_update');
-                if ($this->_typeImport !== 'manual'
+                if ($this->_typeImport !== self::TYPE_MANUAL
                     && $lastImport['timestamp'] !== 'none'
                     && $lastImport['timestamp'] > $lastSettingUpdate
                 ) {

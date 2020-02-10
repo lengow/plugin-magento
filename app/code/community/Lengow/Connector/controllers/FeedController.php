@@ -134,7 +134,7 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action
             } catch (Exception $e) {
                 $errorMessage = '[Magento error] "' . $e->getMessage()
                     . '" ' . $e->getFile() . ' line ' . $e->getLine();
-                $helper->log('Export', $errorMessage);
+                $helper->log(Lengow_Connector_Helper_Data::CODE_EXPORT, $errorMessage);
                 $this->getResponse()->setHeader('HTTP/1.1', '500 Internal Server Error');
                 $this->getResponse()->setBody($errorMessage);
             }

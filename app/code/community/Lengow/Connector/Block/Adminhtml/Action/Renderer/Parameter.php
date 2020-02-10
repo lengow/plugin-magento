@@ -36,9 +36,11 @@ class Lengow_Connector_Block_Adminhtml_Action_Renderer_Parameter
         $parameters = json_decode($parameters, true);
         $return = '';
         foreach ($parameters as $key => $value) {
-            if ($key === 'line' || $key === 'action_type') {
+            if ($key === Lengow_Connector_Model_Import_Action::ARG_LINE
+                || $key === Lengow_Connector_Model_Import_Action::ARG_ACTION_TYPE
+            ) {
                 continue;
-            } elseif ($key === 'tracking_number') {
+            } elseif ($key === Lengow_Connector_Model_Import_Action::ARG_TRACKING_NUMBER) {
                 $key = 'tracking';
             } elseif ($key === 'marketplace_order_id') {
                 $key = 'marketplace sku';

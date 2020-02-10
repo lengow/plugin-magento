@@ -151,7 +151,7 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
             : $this->_helper->getDateInCorrectFormat($lastImport['timestamp'], true);
         if ($lastImport['type'] === 'none') {
             $lastImportType = $this->_helper->__('toolbox.screen.last_import_none');
-        } elseif ($lastImport['type'] === 'cron') {
+        } elseif ($lastImport['type'] === Lengow_Connector_Model_Import::TYPE_CRON) {
             $lastImportType = $this->_helper->__('toolbox.screen.last_import_cron');
         } else {
             $lastImportType = $this->_helper->__('toolbox.screen.last_import_manual');

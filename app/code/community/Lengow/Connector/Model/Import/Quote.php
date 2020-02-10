@@ -100,12 +100,14 @@ class Lengow_Connector_Model_Import_Quote extends Mage_Sales_Model_Quote
             // check whether the product is canceled
             if ($product->marketplace_status !== null) {
                 $stateProduct = $marketplace->getStateLengow((string)$product->marketplace_status);
-                if ($stateProduct === 'canceled' || $stateProduct === 'refused') {
+                if ($stateProduct === Lengow_Connector_Model_Import_Order::STATE_CANCELED
+                    || $stateProduct === Lengow_Connector_Model_Import_Order::STATE_REFUSED
+                ) {
                     $productId = !is_null($product->merchant_product_id->id)
                         ? (string)$product->merchant_product_id->id
                         : (string)$product->marketplace_product_id;
                     $helper->log(
-                        'Import',
+                        Lengow_Connector_Helper_Data::CODE_IMPORT,
                         $helper->setLogMessage(
                             'log.import.product_state_canceled',
                             array(
@@ -177,7 +179,7 @@ class Lengow_Connector_Model_Import_Quote extends Mage_Sales_Model_Quote
                         );
                     }
                     $helper->log(
-                        'Import',
+                        Lengow_Connector_Helper_Data::CODE_IMPORT,
                         $helper->setLogMessage(
                             'log.import.product_be_found',
                             array(

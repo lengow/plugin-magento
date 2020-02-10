@@ -46,7 +46,7 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
                 if ($action) {
                     switch ($action) {
                         case 'import_all':
-                            $params = array('type' => 'manual');
+                            $params = array('type' => Lengow_Connector_Model_Import::TYPE_MANUAL);
                             $results = Mage::getModel('lengow/import', $params)->exec();
                             $informations = $this->getInformations();
                             $informations['messages'] = $this->getMessages($results);
@@ -115,7 +115,7 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
                 array('order_id' => $order->getIncrementId())
             );
         }
-        $helper->log('Import', $synchroMessage, false, $marketplaceSku);
+        $helper->log(Lengow_Connector_Helper_Data::CODE_IMPORT, $synchroMessage, false, $marketplaceSku);
         $url = Mage::helper('adminhtml')->getUrl('adminhtml/sales_order/view', array('order_id' => $orderId));
         Mage::app()->getResponse()->setRedirect($url);
     }
@@ -141,9 +141,13 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
     public function reSendAction()
     {
         $orderId = $this->getRequest()->getParam('order_id');
-        $action = $this->getRequest()->getParam('action') === 'canceled' ? 'cancel' : 'ship';
+        $action = $this->getRequest()->getParam('action') === 'canceled'
+            ? Lengow_Connector_Model_Import_Action::TYPE_CANCEL
+            : Lengow_Connector_Model_Import_Action::TYPE_SHIP;
         $order = Mage::getModel('sales/order')->load($orderId);
-        $shipment = $action === 'ship' ? $order->getShipmentsCollection()->getFirstItem() : null;
+        $shipment = $action === Lengow_Connector_Model_Import_Action::TYPE_SHIP
+            ? $order->getShipmentsCollection()->getFirstItem()
+            : null;
         Mage::getModel('lengow/import_order')->callAction($action, $order, $shipment);
         $url = Mage::helper('adminhtml')->getUrl('adminhtml/sales_order/view', array('order_id' => $orderId));
         Mage::app()->getResponse()->setRedirect($url);
