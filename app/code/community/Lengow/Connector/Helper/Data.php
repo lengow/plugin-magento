@@ -28,6 +28,41 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
     const LOG_LIFE = 20;
 
     /**
+     * @var string setting log code
+     */
+    const CODE_SETTING = 'Setting';
+
+    /**
+     * @var string connector log code
+     */
+    const CODE_CONNECTOR = 'Connector';
+
+    /**
+     * @var string export log code
+     */
+    const CODE_EXPORT = 'Export';
+
+    /**
+     * @var string import log code
+     */
+    const CODE_IMPORT = 'Import';
+
+    /**
+     * @var string action log code
+     */
+    const CODE_ACTION = 'Action';
+
+    /**
+     * @var string mail report code
+     */
+    const CODE_MAIL_REPORT = 'Mail Report';
+
+    /**
+     * @var string orm code
+     */
+    const CODE_ORM = 'Orm';
+
+    /**
      * User another translation system (key based)
      *
      * @return string
@@ -109,7 +144,7 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
         if (strlen($message) === 0) {
             return false;
         }
-        $decodedMessage = $this->decodeLogMessage($message, 'en_GB');
+        $decodedMessage = $this->decodeLogMessage($message, Lengow_Connector_Helper_Translation::DEFAULT_ISO_CODE);
         $finalMessage = empty($category) ? '' : '[' . $category . '] ';
         $finalMessage .= '' . (empty($marketplaceSku) ? '' : 'order ' . $marketplaceSku . ' : ');
         $finalMessage .= $decodedMessage;
@@ -139,8 +174,7 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
             $value = str_replace(array('|', '=='), array('', ''), $value);
             $allParams[] = $param . '==' . $value;
         }
-        $message = $key . '[' . join('|', $allParams) . ']';
-        return $message;
+        return $key . '[' . join('|', $allParams) . ']';
     }
 
     /**

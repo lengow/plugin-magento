@@ -36,9 +36,9 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
      * @var array valid states lengow to create a Lengow order
      */
     protected $_lengowStates = array(
-        'waiting_shipment',
-        'shipped',
-        'closed',
+        Lengow_Connector_Model_Import_Order::STATE_WAITING_SHIPMENT,
+        Lengow_Connector_Model_Import_Order::STATE_SHIPPED,
+        Lengow_Connector_Model_Import_Order::STATE_CLOSED,
     );
 
     /**
@@ -143,7 +143,9 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
      */
     public function updateDateImport($type)
     {
-        if ($type === 'cron' || $type === 'magento cron') {
+        if ($type === Lengow_Connector_Model_Import::TYPE_CRON
+            || $type === Lengow_Connector_Model_Import::TYPE_MAGENTO_CRON
+        ) {
             $this->_configHelper->set('last_import_cron', Mage::getModel('core/date')->gmtTimestamp());
         } else {
             $this->_configHelper->set('last_import_manual', Mage::getModel('core/date')->gmtTimestamp());
@@ -162,14 +164,20 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
 
         if ($timestampCron && $timestampManual) {
             if ((int)$timestampCron > (int)$timestampManual) {
-                return array('type' => 'cron', 'timestamp' => (int)$timestampCron);
+                return array(
+                    'type' => Lengow_Connector_Model_Import::TYPE_CRON,
+                    'timestamp' => (int)$timestampCron,
+                );
             } else {
-                return array('type' => 'manual', 'timestamp' => (int)$timestampManual);
+                return array(
+                    'type' => Lengow_Connector_Model_Import::TYPE_MANUAL,
+                    'timestamp' => (int)$timestampManual,
+                );
             }
         } elseif ($timestampCron && !$timestampManual) {
-            return array('type' => 'cron', 'timestamp' => (int)$timestampCron);
+            return array('type' => Lengow_Connector_Model_Import::TYPE_CRON, 'timestamp' => (int)$timestampCron);
         } elseif ($timestampManual && !$timestampCron) {
-            return array('type' => 'manual', 'timestamp' => (int)$timestampManual);
+            return array('type' =>  Lengow_Connector_Model_Import::TYPE_MANUAL, 'timestamp' => (int)$timestampManual);
         }
 
         return array('type' => 'none', 'timestamp' => 'none');
@@ -215,13 +223,13 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
                     try {
                         $mail->send();
                         $helper->log(
-                            'MailReport',
+                            Lengow_Connector_Helper_Data::CODE_MAIL_REPORT,
                             $helper->setLogMessage('log.mail_report.send_mail_to', array('email' => $email)),
                             $logOutput
                         );
                     } catch (Exception $e) {
                         $helper->log(
-                            'MailReport',
+                            Lengow_Connector_Helper_Data::CODE_MAIL_REPORT,
                             $helper->setLogMessage('log.mail_report.unable_send_mail_to', array('email' => $email)),
                             $logOutput
                         );

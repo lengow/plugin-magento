@@ -82,12 +82,14 @@ class Lengow_Connector_Block_Adminhtml_Order_Grid extends Mage_Adminhtml_Block_W
                 'renderer' => 'Lengow_Connector_Block_Adminhtml_Order_Renderer_State',
                 'type' => 'options',
                 'options' => array(
-                    'accepted' => $helper->__('order.table.status_accepted'),
-                    'waiting_shipment' => $helper->__('order.table.status_waiting_shipment'),
-                    'shipped' => $helper->__('order.table.status_shipped'),
-                    'refunded' => $helper->__('order.table.status_refunded'),
-                    'closed' => $helper->__('order.table.status_closed'),
-                    'canceled' => $helper->__('order.table.status_canceled'),
+                    Lengow_Connector_Model_Import_Order::STATE_ACCEPTED => $helper->__('order.table.status_accepted'),
+                    Lengow_Connector_Model_Import_Order::STATE_WAITING_SHIPMENT => $helper->__(
+                        'order.table.status_waiting_shipment'
+                    ),
+                    Lengow_Connector_Model_Import_Order::STATE_SHIPPED => $helper->__('order.table.status_shipped'),
+                    Lengow_Connector_Model_Import_Order::STATE_REFUNDED => $helper->__('order.table.status_refunded'),
+                    Lengow_Connector_Model_Import_Order::STATE_CLOSED => $helper->__('order.table.status_closed'),
+                    Lengow_Connector_Model_Import_Order::STATE_CANCELED => $helper->__('order.table.status_canceled'),
                 ),
             )
         );

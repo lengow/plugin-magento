@@ -224,7 +224,10 @@ class Lengow_Connector_Model_Connector
             $this->init($accessToken, $secretToken);
             $this->connect();
         } catch (Lengow_Connector_Model_Exception $e) {
-            $message = $this->_helper->decodeLogMessage($e->getMessage(), 'en_GB');
+            $message = $this->_helper->decodeLogMessage(
+                $e->getMessage(),
+                Lengow_Connector_Helper_Translation::DEFAULT_ISO_CODE
+            );
             $error = $this->_helper->setLogMessage(
                 'log.connector.error_api',
                 array(
@@ -232,7 +235,7 @@ class Lengow_Connector_Model_Connector
                     'error_message' => $message,
                 )
             );
-            $this->_helper->log('Connector', $error, $logOutput);
+            $this->_helper->log(Lengow_Connector_Helper_Data::CODE_CONNECTOR, $error, $logOutput);
             return false;
         }
         return true;
@@ -269,7 +272,10 @@ class Lengow_Connector_Model_Connector
                 $logOutput
             );
         } catch (Lengow_Connector_Model_Exception $e) {
-            $message = $this->_helper->decodeLogMessage($e->getMessage(), 'en_GB');
+            $message = $this->_helper->decodeLogMessage(
+                $e->getMessage(),
+                Lengow_Connector_Helper_Translation::DEFAULT_ISO_CODE
+            );
             $error = $this->_helper->setLogMessage(
                 'log.connector.error_api',
                 array(
@@ -277,7 +283,7 @@ class Lengow_Connector_Model_Connector
                     'error_message' => $message,
                 )
             );
-            $this->_helper->log('Connector', $error, $logOutput);
+            $this->_helper->log(Lengow_Connector_Helper_Data::CODE_CONNECTOR, $error, $logOutput);
             return false;
         }
         return json_decode($results);
@@ -404,7 +410,7 @@ class Lengow_Connector_Model_Connector
         } catch (Lengow_Connector_Model_Exception $e) {
             if ($e->getCode() === self::CODE_403) {
                 $this->_helper->log(
-                    'Connector',
+                    Lengow_Connector_Helper_Data::CODE_CONNECTOR,
                     $this->_helper->setLogMessage('log.connector.retry_get_token'),
                     $logOutput
                 );
@@ -547,7 +553,7 @@ class Lengow_Connector_Model_Connector
                 break;
         }
         $this->_helper->log(
-            'Connector',
+            Lengow_Connector_Helper_Data::CODE_CONNECTOR,
             $this->_helper->setLogMessage(
                 'log.connector.call_api',
                 array(

@@ -64,14 +64,14 @@ class Lengow_Connector_CronController extends Mage_Core_Controller_Front_Action
                 // get sync action if exists
                 $sync = $this->getRequest()->getParam('sync');
                 // sync catalogs id between Lengow and Magento
-                if (!$sync || $sync === 'catalog') {
+                if (!$sync || $sync === Lengow_Connector_Helper_Sync::SYNC_CATALOG) {
                     $syncHelper->syncCatalog($force, $logOutput);
                 }
                 // sync orders between Lengow and Magento
-                if (is_null($sync) || $sync === 'order') {
+                if (is_null($sync) || $sync === Lengow_Connector_Helper_Sync::SYNC_ORDER) {
                     // array of params for import order
                     $params = array(
-                        'type' => 'cron',
+                        'type' => Lengow_Connector_Model_Import::TYPE_CRON,
                         'log_output' => $logOutput,
                     );
                     // check if the GET parameters are available
@@ -108,7 +108,7 @@ class Lengow_Connector_CronController extends Mage_Core_Controller_Front_Action
                     $import->exec();
                 }
                 // sync action between Lengow and Magento
-                if (is_null($sync) || $sync === 'action') {
+                if (is_null($sync) || $sync === Lengow_Connector_Helper_Sync::SYNC_ACTION) {
                     /** @var Lengow_Connector_Model_Import_Action $action */
                     $action = Mage::getModel('lengow/import_action');
                     $action->checkFinishAction($logOutput);
@@ -116,19 +116,19 @@ class Lengow_Connector_CronController extends Mage_Core_Controller_Front_Action
                     $action->checkActionNotSent($logOutput);
                 }
                 // sync options between Lengow and Magento
-                if (is_null($sync) || $sync === 'cms_option') {
+                if (is_null($sync) || $sync === Lengow_Connector_Helper_Sync::SYNC_CMS_OPTION) {
                     $syncHelper->setCmsOption($force, $logOutput);
                 }
                 // sync marketplaces between Lengow and Magento
-                if ($sync === 'marketplace') {
+                if ($sync === Lengow_Connector_Helper_Sync::SYNC_MARKETPLACE) {
                     $syncHelper->getMarketplaces($force, $logOutput);
                 }
                 // sync status account between Lengow and Magento
-                if ($sync === 'status_account') {
+                if ($sync === Lengow_Connector_Helper_Sync::SYNC_STATUS_ACCOUNT) {
                     $syncHelper->getStatusAccount($force, $logOutput);
                 }
                 // sync statistics between Lengow and Magento
-                if ($sync === 'statistic') {
+                if ($sync === Lengow_Connector_Helper_Sync::SYNC_STATISTIC) {
                     $syncHelper->getStatistic($force, $logOutput);
                 }
                 // sync option is not valid

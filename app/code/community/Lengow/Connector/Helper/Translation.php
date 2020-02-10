@@ -23,14 +23,14 @@
 class Lengow_Connector_Helper_Translation extends Mage_Core_Helper_Abstract
 {
     /**
+     * @var string default iso code
+     */
+    const DEFAULT_ISO_CODE = 'en_GB';
+
+    /**
      * @var array all translations
      */
     protected static $_translation = null;
-
-    /**
-     * @var string fallback iso code
-     */
-    public $fallbackIsoCode = 'en_GB';
 
     /**
      * @var string|null iso code
@@ -73,11 +73,11 @@ class Lengow_Connector_Helper_Translation extends Mage_Core_Helper_Abstract
         if (isset(self::$_translation[$isoCode][$message])) {
             return $this->translateFinal(self::$_translation[$isoCode][$message], $args);
         } else {
-            if (!isset(self::$_translation[$this->fallbackIsoCode])) {
-                $this->loadFile($this->fallbackIsoCode);
+            if (!isset(self::$_translation[self::DEFAULT_ISO_CODE])) {
+                $this->loadFile(self::DEFAULT_ISO_CODE);
             }
-            if (isset(self::$_translation[$this->fallbackIsoCode][$message])) {
-                return $this->translateFinal(self::$_translation[$this->fallbackIsoCode][$message], $args);
+            if (isset(self::$_translation[self::DEFAULT_ISO_CODE][$message])) {
+                return $this->translateFinal(self::$_translation[self::DEFAULT_ISO_CODE][$message], $args);
             } else {
                 return 'Missing Translation [' . $message . ']';
             }

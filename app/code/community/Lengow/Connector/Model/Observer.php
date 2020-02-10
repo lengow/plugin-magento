@@ -59,7 +59,7 @@ class Lengow_Connector_Model_Observer
         ) {
             /** @var Lengow_Connector_Model_Import_Order $orderLengow */
             $orderLengow = Mage::getModel('lengow/import_order');
-            $orderLengow->callAction('ship', $order, $shipment);
+            $orderLengow->callAction(Lengow_Connector_Model_Import_Action::TYPE_SHIP, $order, $shipment);
             $this->_alreadyShipped[$order->getData('order_id_lengow')] = true;
         }
         return $this;
@@ -83,7 +83,7 @@ class Lengow_Connector_Model_Observer
         ) {
             /** @var Lengow_Connector_Model_Import_Order $orderLengow */
             $orderLengow = Mage::getModel('lengow/import_order');
-            $orderLengow->callAction('ship', $order, $shipment);
+            $orderLengow->callAction(Lengow_Connector_Model_Import_Action::TYPE_SHIP, $order, $shipment);
             $this->_alreadyShipped[$order->getData('order_id_lengow')] = true;
         }
         return $this;
@@ -105,7 +105,7 @@ class Lengow_Connector_Model_Observer
         ) {
             /** @var Lengow_Connector_Model_Import_Order $orderLengow */
             $orderLengow = Mage::getModel('lengow/import_order');
-            $orderLengow->callAction('cancel', $order);
+            $orderLengow->callAction(Lengow_Connector_Model_Import_Action::TYPE_CANCEL, $order);
         }
         return $this;
     }
@@ -137,7 +137,7 @@ class Lengow_Connector_Model_Observer
                             'stream' => false,
                             'update_export_date' => false,
                             'log_output' => false,
-                            'type' => 'magento cron',
+                            'type' => Lengow_Connector_Model_Export::TYPE_MAGENTO_CRON,
                         )
                     );
                     $export->setOriginalCurrency(Mage::app()->getStore($storeId)->getCurrentCurrencyCode());
@@ -145,7 +145,7 @@ class Lengow_Connector_Model_Observer
                 } catch (Exception $e) {
                     $errorMessage = '[Magento error] "' . $e->getMessage()
                         . '" ' . $e->getFile() . ' line ' . $e->getLine();
-                    Mage::helper('lengow_connector')->log('Export', $errorMessage);
+                    Mage::helper('lengow_connector')->log(Lengow_Connector_Helper_Data::CODE_EXPORT, $errorMessage);
                 }
             }
         }
@@ -166,7 +166,10 @@ class Lengow_Connector_Model_Observer
             $syncHelper->syncCatalog();
             // sync orders between Lengow and Magento
             /** @var Lengow_Connector_Model_Import $import */
-            $import = Mage::getModel('lengow/import', array('type' => 'magento cron'));
+            $import = Mage::getModel(
+                'lengow/import',
+                array('type' => Lengow_Connector_Model_Import::TYPE_MAGENTO_CRON)
+            );
             $import->exec();
             // sync action between Lengow and Magento
             /** @var Lengow_Connector_Model_Import_Action $action */

@@ -216,7 +216,10 @@ class Lengow_Connector_Block_Adminhtml_Order_Tab
             $orderLengowId = $orderLengow->getLengowOrderIdWithOrderId($order->getData('entity_id'));
             if ($orderLengowId) {
                 $orderLengow = $orderLengow->load($orderLengowId);
-                if ((int)$orderLengow->getData('order_process_state') !== $orderLengow->getOrderProcessState('closed')) {
+                $orderProcessStateClosed = $orderLengow->getOrderProcessState(
+                    Lengow_Connector_Model_Import_Order::STATE_CLOSED
+                );
+                if ((int)$orderLengow->getData('order_process_state') !== $orderProcessStateClosed) {
                     return true;
                 }
             } else {

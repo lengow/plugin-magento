@@ -70,7 +70,7 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
         $domain = !$host ? 'magento.shop' : $host;
         $array['billing_address']['email'] = $marketplaceSku . '-' . $orderData->marketplace . '@' . $domain;
         $helper->log(
-            'Import',
+            Lengow_Connector_Helper_Data::CODE_IMPORT,
             $helper->setLogMessage(
                 'log.import.generate_unique_email',
                 array('email' => $array['billing_address']['email'])

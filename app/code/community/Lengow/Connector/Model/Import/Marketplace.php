@@ -26,8 +26,8 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
      * @var array all valid actions
      */
     public static $validActions = array(
-        'ship',
-        'cancel',
+        Lengow_Connector_Model_Import_Action::TYPE_SHIP,
+        Lengow_Connector_Model_Import_Action::TYPE_CANCEL,
     );
 
     /**
@@ -236,12 +236,12 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
         if (isset($this->actions[$action])) {
             $actions = $this->actions[$action];
             if (isset($actions['args']) && is_array($actions['args'])) {
-                if (in_array('line', $actions['args'])) {
+                if (in_array(Lengow_Connector_Model_Import_Action::ARG_LINE, $actions['args'])) {
                     return true;
                 }
             }
             if (isset($actions['optional_args']) && is_array($actions['optional_args'])) {
-                if (in_array('line', $actions['optional_args'])) {
+                if (in_array(Lengow_Connector_Model_Import_Action::ARG_LINE, $actions['optional_args'])) {
                     return true;
                 }
             }
@@ -282,11 +282,11 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
             $params = $this->_checkAndCleanParams($action, $params);
             // complete the values with the specific values of the account
             if (!is_null($orderLineId)) {
-                $params['line'] = $orderLineId;
+                $params[Lengow_Connector_Model_Import_Action::ARG_LINE] = $orderLineId;
             }
             $params['marketplace_order_id'] = $order->getData('order_id_lengow');
             $params['marketplace'] = $order->getData('marketplace_lengow');
-            $params['action_type'] = $action;
+            $params[Lengow_Connector_Model_Import_Action::ARG_ACTION_TYPE] = $action;
             // checks whether the action is already created to not return an action
             /** @var Lengow_Connector_Model_Import_Action $orderAction */
             $orderAction = Mage::getModel('lengow/import_action');
@@ -302,7 +302,9 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
         }
         if (isset($errorMessage)) {
             if ($orderLengow) {
-                $processStateFinish = $orderLengow->getOrderProcessState('closed');
+                $processStateFinish = $orderLengow->getOrderProcessState(
+                    Lengow_Connector_Model_Import_Order::STATE_CLOSED
+                );
                 if ((int)$orderLengow->getData('order_process_state') !== $processStateFinish) {
                     $orderLengow->updateOrder(array('is_in_error' => 1));
                     Mage::getModel('lengow/import_ordererror')->createOrderError(
@@ -314,9 +316,12 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
                     );
                 }
             }
-            $decodedMessage = $helper->decodeLogMessage($errorMessage, 'en_GB');
+            $decodedMessage = $helper->decodeLogMessage(
+                $errorMessage,
+                Lengow_Connector_Helper_Translation::DEFAULT_ISO_CODE
+            );
             $helper->log(
-                'API-OrderAction',
+                Lengow_Connector_Helper_Data::CODE_ACTION,
                 $helper->setLogMessage(
                     'log.order_action.call_action_failed',
                     array('decoded_message' => $decodedMessage)
@@ -418,17 +423,17 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
         // get all order informations
         foreach ($marketplaceArguments as $arg) {
             switch ($arg) {
-                case 'tracking_number':
-                    $trackings = $shipment->getAllTracks();
-                    if (!empty($trackings)) {
-                        $lastTrack = end($trackings);
+                case Lengow_Connector_Model_Import_Action::ARG_TRACKING_NUMBER:
+                    $tracks = $shipment->getAllTracks();
+                    if (!empty($tracks)) {
+                        $lastTrack = end($tracks);
                     }
                     $params[$arg] = isset($lastTrack) ? $lastTrack->getNumber() : '';
                     break;
-                case 'carrier':
-                case 'carrier_name':
-                case 'shipping_method':
-                case 'custom_carrier':
+                case Lengow_Connector_Model_Import_Action::ARG_CARRIER:
+                case Lengow_Connector_Model_Import_Action::ARG_CARRIER_NAME:
+                case Lengow_Connector_Model_Import_Action::ARG_SHIPPING_METHOD:
+                case Lengow_Connector_Model_Import_Action::ARG_CUSTOM_CARRIER:
                     $carrierCode = false;
                     if ($lengowOrder) {
                         $carrierCode = strlen((string)$lengowOrder->getData('carrier')) > 0
@@ -436,9 +441,9 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
                             : false;
                     }
                     if (!$carrierCode) {
-                        $trackings = $shipment->getAllTracks();
-                        if (!empty($trackings)) {
-                            $lastTrack = end($trackings);
+                        $tracks = $shipment->getAllTracks();
+                        if (!empty($tracks)) {
+                            $lastTrack = end($tracks);
                         }
                         $carrierCode = isset($lastTrack)
                             ? $this->_matchCarrier($lastTrack->getCarrierCode(), $lastTrack->getTitle())
@@ -446,11 +451,11 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
                     }
                     $params[$arg] = $carrierCode;
                     break;
-                case 'shipping_price':
+                case Lengow_Connector_Model_Import_Action::ARG_SHIPPING_PRICE:
                     $params[$arg] = $order->getShippingInclTax();
                     break;
-                case 'shipping_date':
-                case 'delivery_date':
+                case Lengow_Connector_Model_Import_Action::ARG_SHIPPING_DATE:
+                case Lengow_Connector_Model_Import_Action::ARG_DELIVERY_DATE:
                     $params[$arg] = Mage::getModel('core/date')->date('c');
                     break;
                 default:
