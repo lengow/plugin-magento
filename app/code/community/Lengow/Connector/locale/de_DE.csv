@@ -21,10 +21,6 @@ dashboard.screen.orders_title|Bestellungen
 dashboard.screen.orders_text|Verwalten Sie Ihre Bestellungen direkt in Ihrem Magento-Dashboard
 dashboard.screen.settings_title|Einstellungen
 dashboard.screen.settings_text|Konfigurieren Sie Ihr Magento-Plugin 
-dashboard.screen.partner_business|Lengow, Ihr Geschäftspartner
-dashboard.screen.stat_turnover|Umsatz
-dashboard.screen.stat_nb_orders|Bestellungen
-dashboard.screen.stat_more_stats|Wünschen Sie mehr Statistiken?
 dashboard.screen.some_help_title|Benötigen Sie Hilfe?
 dashboard.screen.get_in_touch|Kontaktieren Sie Lengow
 dashboard.screen.visit_help_center|Schauen Sie im Help Center
@@ -34,12 +30,6 @@ status.screen.subtitle_end_free_trial|Ihr Testzeitraum ist nun abgelaufen
 status.screen.first_description_end_free_trial|Ihr 15-tägiger Testzeitraum ist nun abgelaufen. Wir wissen, dass es traurige Neuigkeiten sind, aber das Beste kommt erst noch. Wir hoffen aufrichtig, dass Lengow zu Ihrem Unternehmenserfolg beitragen konnte.
 status.screen.second_description_end_free_trial|Ihr Account wird gesperrt, bis Sie eine neue Lizenz erwerben. Dies gilt auch für bereits erstellte Verteilungen und Imports!
 status.screen.third_description_end_free_trial|Ihr Trial-Account wird 30 Tage nach dem Ende Ihres Test-Zeitraums automatisch gelöscht. Gehen Sie auf Nummer sicher und melden Sie sich an - nur so sichern Sie Ihre bereits geleistete Arbeit an Ihren Kanälen.
-status.screen.subtitle_bad_payer|Ihr Konto wurde vorläufig geschlossen
-status.screen.first_description_bad_payer|Wir informieren Sie, dass wir Ihren Zugang zu Ihrem Konto blockieren mussten, da die automatische Überweisung leider nicht bei uns eingegangen ist.
-status.screen.second_description_bad_payer|Die Publizierung Ihres Produktdatenfeeds wurde vorübergehend eingestellt. Wir empfehlen Ihnen dringend, mit uns in Kontakt zu treten über
-status.screen.phone_bad_payer|oder telefonisch unter: +49 (0)3222-17 41 093
-status.screen.third_description_bad_payer|Wir hoffen auf eine zeitnahe neue Zusammenarbeit.
-status.screen.facturation_button|Siehe meine Rechnungsinformation
 status.screen.upgrade_account_button|Ich bin bereit mich anzumelden!
 status.screen.refresh_action| Meinen Account aktualisieren
 product.screen.title|Produkt exportieren

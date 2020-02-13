@@ -43,11 +43,6 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
     const SYNC_STATUS_ACCOUNT = 'status_account';
 
     /**
-     * @var string sync statistic action
-     */
-    const SYNC_STATISTIC = 'statistic';
-
-    /**
      * @var string sync marketplace action
      */
     const SYNC_MARKETPLACE = 'marketplace';
@@ -63,13 +58,12 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
     const SYNC_ACTION = 'action';
 
     /**
-     * @var array cache time for catalog, statistic, account status, cms options and marketplace synchronisation
+     * @var array cache time for catalog, account status, cms options and marketplace synchronisation
      */
     protected $_cacheTimes = array(
         self::SYNC_CATALOG => 21600,
         self::SYNC_CMS_OPTION => 86400,
         self::SYNC_STATUS_ACCOUNT => 86400,
-        self::SYNC_STATISTIC => 86400,
         self::SYNC_MARKETPLACE => 43200,
     );
 
@@ -80,7 +74,6 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
         self::SYNC_ORDER,
         self::SYNC_CMS_OPTION,
         self::SYNC_STATUS_ACCOUNT,
-        self::SYNC_STATISTIC,
         self::SYNC_MARKETPLACE,
         self::SYNC_ACTION,
         self::SYNC_CATALOG,
@@ -127,9 +120,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
             return true;
         }
         $statusAccount = $this->getStatusAccount();
-        if (($statusAccount['type'] === 'free_trial' && $statusAccount['expired'])
-            || $statusAccount['type'] === 'bad_payer'
-        ) {
+        if (($statusAccount['type'] === 'free_trial' && $statusAccount['expired'])) {
             return true;
         }
         return false;
@@ -372,75 +363,6 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
             }
         }
         return false;
-    }
-
-    /**
-     * Get Statistic for all stores
-     *
-     * @param boolean $force force cache update
-     * @param boolean $logOutput see log or not
-     *
-     * @return array
-     */
-    public function getStatistic($force = false, $logOutput = false)
-    {
-        if (!$force) {
-            $updatedAt = $this->_configHelper->get('last_statistic_update');
-            if (!is_null($updatedAt) && (time() - (int)$updatedAt) < $this->_cacheTimes[self::SYNC_STATISTIC]) {
-                return json_decode($this->_configHelper->get('order_statistic'), true);
-            }
-        }
-        $coreDate = Mage::getModel('core/date');
-        $allCurrencyCodes = $this->_configHelper->getAllAvailableCurrencyCodes();
-        $dateFromTimestamp = $coreDate->timestamp($coreDate->gmtDate('Y-m-d') . ' -10 years');
-        $result =  Mage::getModel('lengow/connector')->queryApi(
-            Lengow_Connector_Model_Connector::GET,
-            Lengow_Connector_Model_Connector::API_STATISTIC,
-            array(
-                'date_from' => $coreDate->gmtDate('c', $dateFromTimestamp),
-                'date_to' => $coreDate->date('c'),
-                'metrics' => 'year',
-            ),
-            '',
-            $logOutput
-        );
-        if (isset($result->level0)) {
-            $stats = $result->level0[0];
-            $return = array(
-                'total_order' => $stats->revenue,
-                'nb_order' => (int)$stats->transactions,
-                'currency' => $result->currency->iso_a3,
-                'available' => false,
-            );
-        } else {
-            if ($this->_configHelper->get('last_statistic_update')) {
-                return json_decode($this->_configHelper->get('order_statistic'), true);
-            } else {
-                return array(
-                    'total_order' => 0,
-                    'nb_order' => 0,
-                    'currency' => '',
-                    'available' => false,
-                );
-            }
-        }
-        if ($return['total_order'] > 0 || $return['nb_order'] > 0) {
-            $return['available'] = true;
-        }
-        if ($return['currency'] && in_array($return['currency'], $allCurrencyCodes)) {
-            try {
-                $return['total_order'] = Mage::app()->getLocale()
-                    ->currency($return['currency'])
-                    ->toCurrency($return['total_order']);
-            } catch (\Exception $e) {
-                $return['total_order'] = number_format($return['total_order'], 2, ',', ' ');
-            }
-        } else {
-            $return['total_order'] = number_format($return['total_order'], 2, ',', ' ');
-        }
-        $this->_configHelper->set('order_statistic', Mage::helper('core')->jsonEncode($return));
-        $this->_configHelper->set('last_statistic_update', time());
-        return $return;
     }
 
     /**

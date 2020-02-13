@@ -88,16 +88,6 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
             'global' => true,
             'no_cache' => false,
         ),
-        'last_statistic_update' => array(
-            'path' => 'lengow_global_options/advanced/last_statistic_update',
-            'global' => true,
-            'no_cache' => true,
-        ),
-        'order_statistic' => array(
-            'path' => 'lengow_global_options/advanced/order_statistic',
-            'export' => false,
-            'no_cache' => true,
-        ),
         'last_status_update' => array(
             'path' => 'lengow_global_options/advanced/last_status_update',
             'global' => true,
