@@ -23,5 +23,13 @@ $configHelper = Mage::helper('lengow_connector/config');
 $installedVersion = $configHelper->get('installed_version');
 
 if (version_compare($installedVersion, $version, '<')) {
+
+    // ***********************************************************
+    // Delete statistic configurations for versions 3.0.0 - 3.1.3
+    // ***********************************************************
+
+    Mage::getModel('core/config')->deleteConfig('lengow_global_options/advanced/last_statistic_update');
+    Mage::getModel('core/config')->deleteConfig('lengow_global_options/advanced/order_statistic');
+
     $configHelper->set('installed_version', $version);
 }
