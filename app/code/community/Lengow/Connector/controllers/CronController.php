@@ -68,38 +68,38 @@ class Lengow_Connector_CronController extends Mage_Core_Controller_Front_Action
                     $syncHelper->syncCatalog($force, $logOutput);
                 }
                 // sync orders between Lengow and Magento
-                if (is_null($sync) || $sync === Lengow_Connector_Helper_Sync::SYNC_ORDER) {
+                if ($sync === null || $sync === Lengow_Connector_Helper_Sync::SYNC_ORDER) {
                     // array of params for import order
                     $params = array(
                         'type' => Lengow_Connector_Model_Import::TYPE_CRON,
                         'log_output' => $logOutput,
                     );
                     // check if the GET parameters are available
-                    if (!is_null($this->getRequest()->getParam('preprod_mode'))) {
+                    if ($this->getRequest()->getParam('preprod_mode') !== null) {
                         $params['preprod_mode'] = (bool)$this->getRequest()->getParam('preprod_mode');
                     }
-                    if (!is_null($this->getRequest()->getParam('days'))) {
+                    if ($this->getRequest()->getParam('days') !== null) {
                         $params['days'] = (int)$this->getRequest()->getParam('days');
                     }
-                    if (!is_null($this->getRequest()->getParam('created_from'))) {
+                    if ($this->getRequest()->getParam('created_from') !== null) {
                         $params['created_from'] = (string)$this->getRequest()->getParam('created_from');
                     }
-                    if (!is_null($this->getRequest()->getParam('created_to'))) {
+                    if ($this->getRequest()->getParam('created_to') !== null) {
                         $params['created_to'] = (string)$this->getRequest()->getParam('created_to');
                     }
-                    if (!is_null($this->getRequest()->getParam('limit'))) {
+                    if ($this->getRequest()->getParam('limit') !== null) {
                         $params['limit'] = (int)$this->getRequest()->getParam('limit');
                     }
-                    if (!is_null($this->getRequest()->getParam('marketplace_sku'))) {
+                    if ($this->getRequest()->getParam('marketplace_sku') !== null) {
                         $params['marketplace_sku'] = (string)$this->getRequest()->getParam('marketplace_sku');
                     }
-                    if (!is_null($this->getRequest()->getParam('marketplace_name'))) {
+                    if ($this->getRequest()->getParam('marketplace_name') !== null) {
                         $params['marketplace_name'] = (string)$this->getRequest()->getParam('marketplace_name');
                     }
-                    if (!is_null($this->getRequest()->getParam('delivery_address_id'))) {
+                    if ($this->getRequest()->getParam('delivery_address_id') !== null) {
                         $params['delivery_address_id'] = (int)$this->getRequest()->getParam('delivery_address_id');
                     }
-                    if (!is_null($this->getRequest()->getParam('store_id'))) {
+                    if ($this->getRequest()->getParam('store_id') !== null) {
                         $params['store_id'] = (int)$this->getRequest()->getParam('store_id');
                     }
                     // synchronise orders
@@ -108,7 +108,7 @@ class Lengow_Connector_CronController extends Mage_Core_Controller_Front_Action
                     $import->exec();
                 }
                 // sync action between Lengow and Magento
-                if (is_null($sync) || $sync === Lengow_Connector_Helper_Sync::SYNC_ACTION) {
+                if ($sync === null || $sync === Lengow_Connector_Helper_Sync::SYNC_ACTION) {
                     /** @var Lengow_Connector_Model_Import_Action $action */
                     $action = Mage::getModel('lengow/import_action');
                     $action->checkFinishAction($logOutput);
@@ -116,7 +116,7 @@ class Lengow_Connector_CronController extends Mage_Core_Controller_Front_Action
                     $action->checkActionNotSent($logOutput);
                 }
                 // sync options between Lengow and Magento
-                if (is_null($sync) || $sync === Lengow_Connector_Helper_Sync::SYNC_CMS_OPTION) {
+                if ($sync === null || $sync === Lengow_Connector_Helper_Sync::SYNC_CMS_OPTION) {
                     $syncHelper->setCmsOption($force, $logOutput);
                 }
                 // sync marketplaces between Lengow and Magento

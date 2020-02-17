@@ -281,7 +281,7 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
             // check required arguments and clean value for empty optionals arguments
             $params = $this->_checkAndCleanParams($action, $params);
             // complete the values with the specific values of the account
-            if (!is_null($orderLineId)) {
+            if ($orderLineId  !== null) {
                 $params[Lengow_Connector_Model_Import_Action::ARG_LINE] = $orderLineId;
             }
             $params['marketplace_order_id'] = $order->getData('order_id_lengow');

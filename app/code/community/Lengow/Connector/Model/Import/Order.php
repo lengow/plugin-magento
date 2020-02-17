@@ -224,7 +224,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
     public function getOrderIdIfExist($marketplaceSku, $marketplaceName, $deliveryAddressId, $marketplaceLegacy)
     {
         // v2 compatibility
-        $in = is_null($marketplaceLegacy)
+        $in = $marketplaceLegacy === null
             ? array($marketplaceName)
             : array($marketplaceName, strtolower($marketplaceLegacy));
         // get order id from Magento flat order table
@@ -236,7 +236,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
             ->addAttributeToSelect('delivery_address_id_lengow')
             ->addAttributeToSelect('feed_id_lengow')
             ->getData();
-        if (count($results) > 0) {
+        if (!empty($results)) {
             foreach ($results as $result) {
                 if ($result['delivery_address_id_lengow'] == 0 && $result['feed_id_lengow'] != 0) {
                     return $result['entity_id'];
@@ -299,7 +299,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
             ->addAttributeToFilter('follow_by_lengow', array('eq' => 1))
             ->addAttributeToSelect('order_id_lengow')
             ->getData();
-        if (count($results) > 0) {
+        if (!empty($results)) {
             return $results[0]['order_id_lengow'];
         }
         return false;
@@ -321,7 +321,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
             ->addAttributeToFilter('follow_by_lengow', array('eq' => 1))
             ->addAttributeToSelect('entity_id')
             ->getData();
-        if (count($results) > 0) {
+        if (!empty($results)) {
             return $results;
         }
         return false;
@@ -342,7 +342,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
             ->addFieldToFilter('delivery_address_id', $deliveryAddressId)
             ->addFieldToSelect('id')
             ->getData();
-        if (count($results) > 0) {
+        if (!empty($results)) {
             return (int)$results[0]['id'];
         }
         return false;
@@ -361,7 +361,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
             ->addFieldToFilter('order_id', $orderId)
             ->addFieldToSelect('id')
             ->getData();
-        if (count($results) > 0) {
+        if (!empty($results)) {
             return (int)$results[0]['id'];
         }
         return false;
@@ -414,7 +414,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
                 ->addFieldToFilter('main_table.is_in_error', array('eq' => 0))
                 ->getData();
         }
-        if (count($results) > 0) {
+        if (!empty($results)) {
             $unsentOrders = array();
             foreach ($results as $result) {
                 if (!Mage::getModel('lengow/import_action')->getActiveActionByOrderId($result['order_id'])) {
@@ -426,7 +426,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
                     );
                 }
             }
-            if (count($unsentOrders) > 0) {
+            if (!empty($unsentOrders)) {
                 return $unsentOrders;
             }
         }
@@ -471,7 +471,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
         $orderLengow = Mage::getModel('lengow/import_order')->load($orderLengowId);
         if ((int)$orderLengow->getData('order_process_state') === 1 && (bool)$orderLengow->getData('is_in_error')) {
             $orderId = $orderLengow->getData('order_id');
-            if (!is_null($orderId)) {
+            if ($orderId !== null) {
                 $order = Mage::getModel('sales/order')->load($orderId);
                 $action = Mage::getModel('lengow/import_action')->getLastOrderActionType($orderId);
                 if (!$action) {
@@ -635,9 +635,9 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
                 $shipment->register();
                 $shipment->getOrder()->setIsInProcess(true);
                 // add tracking information
-                if (!is_null($trackingNumber) && $trackingNumber !== '') {
+                if ($trackingNumber !== null && $trackingNumber !== '') {
                     $title = $carrierName;
-                    if (is_null($title) || $title === 'None') {
+                    if ($title !== null || $title === 'None') {
                         $title = $carrierMethod;
                     }
                     $track = Mage::getModel('sales/order_shipment_track')
@@ -695,7 +695,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
             $params = array();
             if ($orderLengow->getData('order_lengow_state') !== $orderStateLengow) {
                 $params['order_lengow_state'] = $orderStateLengow;
-                $params['carrier_tracking'] = count($trackings) > 0 ? (string)$trackings[0]->number : null;
+                $params['carrier_tracking'] = !empty($trackings) ? (string)$trackings[0]->number : null;
             }
             if ($orderProcessState === self::PROCESS_STATE_FINISH) {
                 if ((int)$orderLengow->getData('order_process_state') !== $orderProcessState) {
@@ -705,7 +705,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
                     $params['is_in_error'] = 0;
                 }
             }
-            if (count($params) > 0) {
+            if (!empty($params)) {
                 $orderLengow->updateOrder($params);
             }
             unset($orderLengow);
@@ -726,10 +726,11 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
                 if ($order->getState() === $this->getOrderState(self::STATE_NEW)) {
                     $this->toInvoice();
                 }
-                if (count($trackings) > 0) {
-                    $carrierName = !is_null($trackings[0]->carrier) ? (string)$trackings[0]->carrier : null;
-                    $carrierMethod = !is_null($trackings[0]->method) ? (string)$trackings[0]->method : null;
-                    $trackingNumber = !is_null($trackings[0]->number) ? (string)$trackings[0]->number : null;
+                if (!empty($trackings)) {
+                    $tracking = $trackings[0];
+                    $carrierName = $tracking->carrier !== null ? (string)$tracking->carrier : null;
+                    $carrierMethod = $tracking->method !== null ? (string)$tracking->method : null;
+                    $trackingNumber = $tracking->number !== null ? (string)$tracking->number : null;
                 }
                 $this->toShip(
                     $order,
@@ -847,7 +848,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
         /** @var Lengow_Connector_Helper_Config $configHelper */
         $configHelper = Mage::helper('lengow_connector/config');
         list($accountId, $accessToken, $secretToken) = $configHelper->getAccessIds();
-        if (is_null($connector)) {
+        if ($connector === null) {
             /** @var Lengow_Connector_Model_Connector $connector */
             $connector = Mage::getModel('lengow/connector');
             if ($connector->isValidAuth($logOutput)) {
@@ -885,7 +886,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
             $helper->log(Lengow_Connector_Helper_Data::CODE_CONNECTOR, $error, $logOutput);
             return false;
         }
-        if (is_null($results)) {
+        if ($results === null) {
             return false;
         }
         $results = json_decode($results);
@@ -1064,13 +1065,13 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
                 $productLines[] = array('order_line_id' => (string)$product->marketplace_order_line_id);
             }
             if ((int)$order->getData('delivery_address_id_lengow') === 0) {
-                return count($productLines) > 0 ? $productLines : false;
+                return !empty($productLines) ? $productLines : false;
             } else {
                 $orderLines[(int)$package->delivery->id] = $productLines;
             }
         }
         $return = $orderLines[$order->getData('delivery_address_id_lengow')];
-        return count($return) > 0 ? $return : false;
+        return !empty($return) ? $return : false;
     }
 
     /**

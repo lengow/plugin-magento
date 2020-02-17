@@ -102,7 +102,7 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
             '_nosid' => true,
             '_store_to_url' => false,
         );
-        if (count($additionalParams) > 0) {
+        if (!empty($additionalParams)) {
             $defaultParams = array_merge($defaultParams, $additionalParams);
         }
         return Mage::getModel('core/url')->setStore($storeId)->getUrl('lengow/feed', $defaultParams);
@@ -123,7 +123,7 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
             '_nosid' => true,
             '_store_to_url' => false,
         );
-        if (count($additionalParams) > 0) {
+        if (!empty($additionalParams)) {
             $defaultParams = array_merge($defaultParams, $additionalParams);
         }
         return Mage::getModel('core/url')->setStore($defaultStoreId)->getUrl('lengow/cron', $defaultParams);
@@ -166,7 +166,7 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function setLogMessage($key, $params = null)
     {
-        if (is_null($params) || (is_array($params) && empty($params))) {
+        if ($params === null || (is_array($params) && empty($params))) {
             return $key;
         }
         $allParams = array();
@@ -191,7 +191,7 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
         if (preg_match('/^(([a-z\_]*\.){1,3}[a-z\_]*)(\[(.*)\]|)$/', $message, $result)) {
             if (isset($result[1])) {
                 $key = $result[1];
-                if (isset($result[4]) && is_null($params)) {
+                if (isset($result[4]) && $params === null) {
                     $strParam = $result[4];
                     $allParams = explode('|', $strParam);
                     foreach ($allParams as $param) {

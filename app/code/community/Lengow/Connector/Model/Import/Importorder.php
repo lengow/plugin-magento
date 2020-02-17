@@ -354,7 +354,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
         $this->_loadTrackingData();
         // get customer name and email
         $customerName = $this->_getCustomerName();
-        $customerEmail = !is_null($this->_orderData->billing_address->email)
+        $customerEmail = $this->_orderData->billing_address->email !== null
             ? (string)$this->_orderData->billing_address->email
             : (string)$this->_packageData->delivery->email;
         // update Lengow order with new informations
@@ -617,15 +617,15 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
         if ($this->_orderData->total_order == -1) {
             $errorMessages[] = $this->_helper->setLogMessage('lengow_log.error.no_change_rate');
         }
-        if (is_null($this->_orderData->billing_address)) {
+        if ($this->_orderData->billing_address === null) {
             $errorMessages[] = $this->_helper->setLogMessage('lengow_log.error.no_billing_address');
-        } elseif (is_null($this->_orderData->billing_address->common_country_iso_a2)) {
+        } elseif ($this->_orderData->billing_address->common_country_iso_a2 === null) {
             $errorMessages[] = $this->_helper->setLogMessage('lengow_log.error.no_country_for_billing_address');
         }
-        if (is_null($this->_packageData->delivery->common_country_iso_a2)) {
+        if ($this->_packageData->delivery->common_country_iso_a2 === null) {
             $errorMessages[] = $this->_helper->setLogMessage('lengow_log.error.no_country_for_delivery_address');
         }
-        if (count($errorMessages) > 0) {
+        if (!empty($errorMessages)) {
             foreach ($errorMessages as $errorMessage) {
                 Mage::getModel('lengow/import_ordererror')->createOrderError(
                     array(
@@ -663,7 +663,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
     protected function _checkExternalIds($externalIds)
     {
         $orderMagentoId = false;
-        if (!is_null($externalIds) && count($externalIds) > 0) {
+        if ($externalIds !== null && !empty($externalIds)) {
             foreach ($externalIds as $externalId) {
                 $lineId = $this->_modelOrder->getOrderIdWithDeliveryAddress(
                     (int)$externalId,
@@ -709,7 +709,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
         $totalAmount = 0;
         foreach ($this->_packageData->cart as $product) {
             // check whether the product is canceled for amount
-            if (!is_null($product->marketplace_status)) {
+            if ($product->marketplace_status !== null) {
                 $stateProduct = $this->_marketplace->getStateLengow((string)$product->marketplace_status);
                 if ($stateProduct === Lengow_Connector_Model_Import_Order::STATE_CANCELED
                     || $stateProduct === Lengow_Connector_Model_Import_Order::STATE_REFUSED
@@ -731,12 +731,13 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
     protected function _loadTrackingData()
     {
         $trackings = $this->_packageData->delivery->trackings;
-        if (count($trackings) > 0) {
-            $this->_carrierName = !is_null($trackings[0]->carrier) ? (string)$trackings[0]->carrier : null;
-            $this->_carrierMethod = !is_null($trackings[0]->method) ? (string)$trackings[0]->method : null;
-            $this->_trackingNumber = !is_null($trackings[0]->number) ? (string)$trackings[0]->number : null;
-            $this->_relayId = !is_null($trackings[0]->relay->id) ? (string)$trackings[0]->relay->id : null;
-            if (!is_null($trackings[0]->is_delivered_by_marketplace) && $trackings[0]->is_delivered_by_marketplace) {
+        if (!empty($trackings)) {
+            $tracking = $trackings[0];
+            $this->_carrierName = $tracking->carrier !== null ? (string)$tracking->carrier : null;
+            $this->_carrierMethod = $tracking->method !== null ? (string)$tracking->method : null;
+            $this->_trackingNumber = $tracking->number !== null ? (string)$tracking->number : null;
+            $this->_relayId = $tracking->relay->id !== null ? (string)$tracking->relay->id : null;
+            if ($tracking->is_delivered_by_marketplace !== null && $tracking->is_delivered_by_marketplace) {
                 $this->_shippedByMp = true;
             }
         }
@@ -859,7 +860,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
         }
         // get payment informations
         $paymentInfo = '';
-        if (count($this->_orderData->payments) > 0) {
+        if (!empty($this->_orderData->payments)) {
             $payment = $this->_orderData->payments[0];
             $paymentInfo .= ' - ' . (string)$payment->type;
             if (isset($payment->payment_terms->external_transaction_id)) {
@@ -973,7 +974,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
             );
         }
         // modify order dates to use actual dates
-        if (!is_null($this->_orderData->marketplace_order_date)) {
+        if ($this->_orderData->marketplace_order_date !== null) {
             $orderDate = (string)$this->_orderData->marketplace_order_date;
         } else {
             $orderDate = (string)$this->_orderData->imported_at;
@@ -1038,7 +1039,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
             $this->_modelOrder->toInvoice($order);
         }
         $carrierName = $this->_carrierName;
-        if (is_null($carrierName) || $carrierName === 'None') {
+        if ($carrierName === null || $carrierName === 'None') {
             $carrierName = $this->_carrierMethod;
         }
         $order->setShippingDescription(
@@ -1056,7 +1057,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
     protected function _createLengowOrder()
     {
         // get all params to create order
-        if (!is_null($this->_orderData->marketplace_order_date)) {
+        if ($this->_orderData->marketplace_order_date !== null) {
             $orderDate = (string)$this->_orderData->marketplace_order_date;
         } else {
             $orderDate = (string)$this->_orderData->imported_at;

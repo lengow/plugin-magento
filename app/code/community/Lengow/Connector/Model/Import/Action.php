@@ -217,7 +217,7 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
         $results = $this->getCollection()
             ->addFieldToFilter('action_id', $actionId)
             ->getData();
-        if (count($results) > 0) {
+        if (!empty($results)) {
             return (int)$results[0]['id'];
         }
         return false;
@@ -236,11 +236,11 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
         $collection = $this->getCollection()
             ->addFieldToFilter('order_id', $orderId)
             ->addFieldToFilter('state', self::STATE_NEW);
-        if (!is_null($actionType)) {
+        if ($actionType !== null) {
             $collection->addFieldToFilter('action_type', $actionType);
         }
         $results = $collection->getData();
-        if (count($results) > 0) {
+        if (!empty($results)) {
             return $results;
         }
         return false;
@@ -259,7 +259,7 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
             ->addFieldToFilter('order_id', $orderId)
             ->addFieldToFilter('state', self::STATE_NEW)
             ->addFieldToSelect('action_type');
-        if (count($results) > 0) {
+        if (!empty($results)) {
             $lastAction = $results->getLastItem()->getData();
             return (string)$lastAction['action_type'];
         }
@@ -276,7 +276,7 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
         $results = $this->getCollection()
             ->addFieldToFilter('main_table.state', self::STATE_NEW)
             ->getData();
-        if (count($results) > 0) {
+        if (!empty($results)) {
             return $results;
         }
         return false;
@@ -413,11 +413,11 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
         $collection = $this->getCollection()
             ->addFieldToFilter('order_id', $orderId)
             ->addFieldToFilter('state', self::STATE_NEW);
-        if (!is_null($actionType)) {
+        if ($actionType !== null) {
             $collection->addFieldToFilter('action_type', $actionType);
         }
         $results = $collection->addFieldToSelect('id')->getData();
-        if (count($results) > 0) {
+        if (!empty($results)) {
             foreach ($results as $result) {
                 $action = Mage::getModel('lengow/import_action')->load($result['id']);
                 $action->updateAction(array('state' => self::STATE_FINISH));

@@ -54,7 +54,7 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
                             break;
                         case 're_import':
                             $orderLengowId = Mage::app()->getRequest()->getParam('order_lengow_id');
-                            if (!is_null($orderLengowId)) {
+                            if ($orderLengowId !== null) {
                                 $result = Mage::getModel('lengow/import_order')->reImportOrder((int)$orderLengowId);
                                 $informations = $this->getInformations();
                                 $informations['import_order'] = $result;
@@ -63,7 +63,7 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
                             break;
                         case 're_send':
                             $orderLengowId = Mage::app()->getRequest()->getParam('order_lengow_id');
-                            if (!is_null($orderLengowId)) {
+                            if ($orderLengowId !== null) {
                                 $result = Mage::getModel('lengow/import_order')->reSendOrder((int)$orderLengowId);
                                 $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($result));
                             }
@@ -159,7 +159,7 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
     public function massReImportAction()
     {
         $orderLengowIds = $this->getRequest()->getParam('order');
-        if (count($orderLengowIds) > 0) {
+        if (!empty($orderLengowIds)) {
             /** @var Lengow_Connector_Model_Import_Order $orderLengow */
             $orderLengow = Mage::getModel('lengow/import_order');
             foreach ($orderLengowIds as $orderLengowId) {
@@ -174,7 +174,7 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
     public function massReSendAction()
     {
         $orderLengowIds = $this->getRequest()->getParam('order');
-        if (count($orderLengowIds) > 0) {
+        if (!empty($orderLengowIds)) {
             /** @var Lengow_Connector_Model_Import_Order $orderLengow */
             $orderLengow = Mage::getModel('lengow/import_order');
             foreach ($orderLengowIds as $orderLengowId) {

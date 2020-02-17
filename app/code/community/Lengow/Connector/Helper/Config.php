@@ -278,7 +278,7 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
                 ->addFieldToFilter('path', $this->_options[$key]['path'])
                 ->addFieldToFilter('scope_id', $storeId)
                 ->getData();
-            $value = count($collections) > 0 ? $collections[0]['value'] : '';
+            $value = !empty($collections) ? $collections[0]['value'] : '';
         } else {
             $value = Mage::getStoreConfig($this->_options[$key]['path'], $storeId);
         }
@@ -413,7 +413,7 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
     public function setActiveStore($storeId)
     {
         $storeIsActive = $this->storeIsActive($storeId);
-        $storeHasCatalog = count(self::getCatalogIds($storeId)) > 0;
+        $storeHasCatalog = !empty(self::getCatalogIds($storeId));
         $this->set('store_enable', $storeHasCatalog, $storeId);
         return $storeIsActive !== $storeHasCatalog ? true : false;
     }

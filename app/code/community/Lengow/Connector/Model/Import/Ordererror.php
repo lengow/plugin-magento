@@ -155,16 +155,16 @@ class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
     public function getOrderErrors($orderLengowId, $type = null, $finished = null)
     {
         $collection = $this->getCollection()->addFieldToFilter('order_lengow_id', $orderLengowId);
-        if (!is_null($type)) {
+        if ($type !== null) {
             $errorType = $this->getOrderErrorType($type);
             $collection->addFieldToFilter('type', $errorType);
         }
-        if (!is_null($finished)) {
+        if ($finished !== null) {
             $errorFinished = $finished ? 1 : 0;
             $collection->addFieldToFilter('is_finished', $errorFinished);
         }
         $results = $collection->getData();
-        if (count($results) > 0) {
+        if (!empty($results)) {
             return $results;
         }
         return false;
@@ -188,7 +188,7 @@ class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
             ->addFieldToFilter('type', $errorType)
             ->addFieldToSelect('id')
             ->getData();
-        if (count($results) > 0) {
+        if (!empty($results)) {
             foreach ($results as $result) {
                 /** @var Lengow_Connector_Model_Import_Ordererror $orderError */
                 $orderError = Mage::getModel('lengow/import_ordererror')->load($result['id']);

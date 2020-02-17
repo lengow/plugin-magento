@@ -211,7 +211,7 @@ class Lengow_Connector_Model_Connector
             return false;
         }
         list($accountId, $accessToken, $secretToken) = $this->_configHelper->getAccessIds();
-        if (is_null($accountId) || (int)$accountId === 0 || !is_numeric($accountId)) {
+        if ($accountId === null || (int)$accountId === 0 || !is_numeric($accountId)) {
             return false;
         }
         try {

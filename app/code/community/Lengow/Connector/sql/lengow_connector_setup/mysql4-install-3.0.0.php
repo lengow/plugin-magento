@@ -1015,7 +1015,7 @@ $trackerType = Mage::getStoreConfig('lentracker/tag/type');
 // update settings
 foreach ($newSettings as $setting) {
     $globalValue = Mage::getStoreConfig($setting['old_path']);
-    if (!is_null($globalValue)) {
+    if ($globalValue !== null) {
         Mage::getModel('core/config')->saveConfig($setting['new_path'], $globalValue);
         Mage::getModel('core/config')->deleteConfig($setting['old_path']);
     }
@@ -1026,7 +1026,7 @@ foreach ($newSettings as $setting) {
                 ->addFieldToFilter('path', $setting['old_path'])
                 ->addFieldToFilter('scope_id', $store->getId())
                 ->getData();
-            if (count($storeValues) > 0 && $storeValues[0]['value'] != $globalValue) {
+            if (!empty($storeValues) && $storeValues[0]['value'] != $globalValue) {
                 Mage::getModel('core/config')->saveConfig(
                     $setting['new_path'],
                     $storeValues[0]['value'],
@@ -1057,7 +1057,7 @@ $configHelper = Mage::helper('lengow_connector/config');
 //      Active ip authorization if authorized ips exist
 // *********************************************************
 
-if (!is_null($authorisedIp) && strlen($authorisedIp) > 0) {
+if ($authorisedIp !== null && strlen($authorisedIp) > 0) {
     $configHelper->set('ip_enable', 1);
 }
 
@@ -1065,7 +1065,7 @@ if (!is_null($authorisedIp) && strlen($authorisedIp) > 0) {
 //      Active Lengow tracker if the old tracker was used
 // *********************************************************
 
-if (!is_null($trackerType) && in_array($trackerType, array('simpletag', 'tagcapsule'))) {
+if ($trackerType !== null && in_array($trackerType, array('simpletag', 'tagcapsule'))) {
     $configHelper->set('tracking_enable', 1);
 }
 
@@ -1075,7 +1075,7 @@ if (!is_null($trackerType) && in_array($trackerType, array('simpletag', 'tagcaps
 
 Mage::getModel('lengow/import_order')->migrateOldOrder();
 $seeMigrateBlock =  $configHelper->get('see_migrate_block');
-if (is_null($seeMigrateBlock)) {
+if ($seeMigrateBlock === null) {
     $configHelper->set('see_migrate_block', 1);
 }
 

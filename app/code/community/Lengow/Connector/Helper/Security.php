@@ -128,7 +128,7 @@ class Lengow_Connector_Helper_Security extends Mage_Core_Helper_Abstract
     public function getAuthorizedIps()
     {
         $ips = $this->_configHelper->get('authorized_ip');
-        if (!is_null($ips) && (bool)$this->_configHelper->get('ip_enable')) {
+        if ($ips !== null && (bool)$this->_configHelper->get('ip_enable')) {
             $ips = trim(str_replace(array("\r\n", ',', '-', '|', ' '), ';', $ips), ';');
             $ips = explode(';', $ips);
             $authorizedIps = array_merge($ips, $this->_ipsLengow);

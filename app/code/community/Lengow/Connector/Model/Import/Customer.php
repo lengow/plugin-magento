@@ -109,7 +109,7 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
         $array['delivery_address']['first_name'] = $shippingNames['firstname'];
         $array['delivery_address']['last_name'] = $shippingNames['lastname'];
         // get relay id if exist
-        if (count($shippingAddress->trackings) > 0 && !is_null($shippingAddress->trackings[0]->relay->id)) {
+        if (!empty($shippingAddress->trackings) && $shippingAddress->trackings[0]->relay->id !== null) {
             $array['delivery_address']['tracking_relay'] = $shippingAddress->trackings[0]->relay->id;
         }
         $shippingAddress = $this->_convertAddress($array['delivery_address'], 'shipping');
@@ -247,7 +247,7 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
     protected function _splitNames($fullname)
     {
         $split = explode(' ', $fullname);
-        if ($split && count($split)) {
+        if ($split && !empty($split)) {
             $names['firstname'] = $split[0];
             $names['lastname'] = '';
             for ($i = 1; $i < count($split); $i++) {

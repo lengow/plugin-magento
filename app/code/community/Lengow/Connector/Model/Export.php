@@ -301,14 +301,14 @@ class Lengow_Connector_Model_Export extends Varien_Object
         $this->_storeId = $this->_store->getId();
         // get format (csv by default)
         $format = isset($params['format']) ? $params['format'] : null;
-        if (is_null($format) || !in_array($format, $this->_availableFormats)) {
+        if ($format === null || !in_array($format, $this->_availableFormats)) {
             $this->_fileFormat = 'csv';
         } else {
             $this->_fileFormat = $format;
         }
         // get stream export or export in a file
         $stream = isset($params['stream']) ? (bool)$params['stream'] : null;
-        if (is_null($stream)) {
+        if ($stream === null) {
             $this->_stream = $this->_configHelper->get('file_enable', $this->_storeId) ? false : true;
         } else {
             $this->_stream = $stream;
@@ -605,7 +605,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
             // product variation
             $datas['type'] = $productType;
             $datas['variation'] = $variationName;
-            $datas['image_default'] = (!is_null($product->getImage()) && $product->getImage() !== 'no_selection')
+            $datas['image_default'] = ($product->getImage() !== null && $product->getImage() !== 'no_selection')
                 ? Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . 'catalog/product' . $product->getImage()
                 : '';
             $datas['child_name'] = $this->_helper->cleanData($product->getName());
@@ -766,7 +766,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
      */
     protected function _setLegacyFields()
     {
-        if (is_null($this->_legacy)) {
+        if ($this->_legacy === null) {
             $statusAccount = Mage::helper('lengow_connector/sync')->getStatusAccount();
             if ($statusAccount && isset($statusAccount['legacy'])) {
                 $this->_legacy = $statusAccount['legacy'];

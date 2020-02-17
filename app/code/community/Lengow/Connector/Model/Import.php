@@ -271,7 +271,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
             // get all store for import
             $storeCollection = Mage::getResourceModel('core/store_collection')->addFieldToFilter('is_active', 1);
             foreach ($storeCollection as $store) {
-                if (!is_null($this->_storeId) && (int)$store->getId() !== $this->_storeId) {
+                if ($this->_storeId !== null && (int)$store->getId() !== $this->_storeId) {
                     continue;
                 }
                 if ($this->_configHelper->storeIsActive((int)$store->getId())) {
@@ -339,7 +339,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
                         } elseif ($totalOrders <= 0) {
                             continue;
                         }
-                        if (!is_null($this->_orderLengowId)) {
+                        if ($this->_orderLengowId !== null) {
                             Mage::getModel('lengow/import_ordererror')->finishOrderErrors($this->_orderLengowId);
                         }
                         // import orders in Magento
@@ -357,7 +357,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
                     }
                     if (isset($errorMessage)) {
                         $syncOk = false;
-                        if (!is_null($this->_orderLengowId)) {
+                        if ($this->_orderLengowId !== null) {
                             /** @var Lengow_Connector_Model_Import_Ordererror $lengowOrderError */
                             $lengowOrderError = Mage::getModel('lengow/import_ordererror');
                             $lengowOrderError->finishOrderErrors($this->_orderLengowId);
@@ -522,7 +522,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
                 $storeCatalogIds[] = $catalogId;
             }
         }
-        if (count($storeCatalogIds) > 0) {
+        if (!empty($storeCatalogIds)) {
             $this->_storeCatalogIds = $storeCatalogIds;
             return true;
         }
@@ -661,7 +661,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
                 $orders[] = $order;
             }
             $page++;
-            $finish = (is_null($results->next) || $this->_importOneOrder) ? true : false;
+            $finish = ($results->next === null || $this->_importOneOrder) ? true : false;
         } while ($finish != true);
         return $orders;
     }
@@ -718,9 +718,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
                 $firstPackage = $nbPackage > 1 ? false : true;
                 // check the package for re-import order
                 if ($this->_importOneOrder) {
-                    if (!is_null($this->_deliveryAddressId)
-                        && $this->_deliveryAddressId !== $packageDeliveryAddressId
-                    ) {
+                    if ($this->_deliveryAddressId !== null && $this->_deliveryAddressId !== $packageDeliveryAddressId) {
                         $this->_helper->log(
                             Lengow_Connector_Helper_Data::CODE_IMPORT,
                             $this->_helper->setLogMessage('log.import.error_wrong_package_number'),

@@ -61,10 +61,10 @@ class Lengow_Connector_Helper_Translation extends Mage_Core_Helper_Abstract
      */
     public function t($message, $args = array(), $isoCode = null)
     {
-        if (!is_null(self::$forceIsoCode)) {
+        if (self::$forceIsoCode !== null) {
             $isoCode = self::$forceIsoCode;
         }
-        if (is_null($isoCode)) {
+        if ($isoCode === null) {
             $isoCode = $this->_isoCode;
         }
         if (!isset(self::$_translation[$isoCode])) {
@@ -130,6 +130,6 @@ class Lengow_Connector_Helper_Translation extends Mage_Core_Helper_Abstract
             }
         }
         self::$_translation[$isoCode] = $translation;
-        return count($translation) > 0;
+        return !empty($translation);
     }
 }

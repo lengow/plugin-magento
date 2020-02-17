@@ -85,7 +85,7 @@ class Lengow_Connector_Model_Import_Orderline extends Mage_Core_Model_Abstract
             ->addFieldToFilter('order_id', $orderId)
             ->addFieldToSelect('order_line_id')
             ->getData();
-        if (count($results) > 0) {
+        if (!empty($results)) {
             return $results;
         }
         return false;

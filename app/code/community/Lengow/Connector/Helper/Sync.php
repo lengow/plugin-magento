@@ -214,7 +214,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
         }
         if (!$force) {
             $updatedAt = $this->_configHelper->get('last_catalog_update');
-            if (!is_null($updatedAt) && (time() - (int)$updatedAt) < $this->_cacheTimes[self::SYNC_CATALOG]) {
+            if ($updatedAt !== null && (time() - (int)$updatedAt) < $this->_cacheTimes[self::SYNC_CATALOG]) {
                 return false;
             }
         }
@@ -305,7 +305,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
         }
         if (!$force) {
             $updatedAt = $this->_configHelper->get('last_option_cms_update');
-            if (!is_null($updatedAt) && (time() - (int)$updatedAt) < $this->_cacheTimes[self::SYNC_CMS_OPTION]) {
+            if ($updatedAt !== null && (time() - (int)$updatedAt) < $this->_cacheTimes[self::SYNC_CMS_OPTION]) {
                 return false;
             }
         }
@@ -336,7 +336,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
         }
         if (!$force) {
             $updatedAt = $this->_configHelper->get('last_status_update');
-            if (!is_null($updatedAt) && (time() - (int)$updatedAt) < $this->_cacheTimes[self::SYNC_STATUS_ACCOUNT]) {
+            if ($updatedAt !== null && (time() - (int)$updatedAt) < $this->_cacheTimes[self::SYNC_STATUS_ACCOUNT]) {
                 return json_decode($this->_configHelper->get('account_status'), true);
             }
         }
@@ -379,7 +379,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
         $filePath = $folderPath . DS . $this->_marketplaceJson;
         if (!$force) {
             $updatedAt = $this->_configHelper->get('last_marketplace_update');
-            if (!is_null($updatedAt)
+            if ($updatedAt !== null
                 && (time() - (int)$updatedAt) < $this->_cacheTimes[self::SYNC_MARKETPLACE]
                 && file_exists($filePath)
             ) {
