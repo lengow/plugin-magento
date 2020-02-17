@@ -637,7 +637,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
                 // add tracking information
                 if ($trackingNumber !== null && $trackingNumber !== '') {
                     $title = $carrierName;
-                    if ($title !== null || $title === 'None') {
+                    if ($title === null || $title === 'None') {
                         $title = $carrierMethod;
                     }
                     $track = Mage::getModel('sales/order_shipment_track')
