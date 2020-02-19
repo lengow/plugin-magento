@@ -127,6 +127,10 @@ class Lengow_Connector_CronController extends Mage_Core_Controller_Front_Action
                 if ($sync === Lengow_Connector_Helper_Sync::SYNC_STATUS_ACCOUNT) {
                     $syncHelper->getStatusAccount($force, $logOutput);
                 }
+                // sync plugin data between Lengow and Magento
+                if ($sync === Lengow_Connector_Helper_Sync::SYNC_PLUGIN_DATA) {
+                    $syncHelper->getPluginData($force, $logOutput);
+                }
                 // sync option is not valid
                 if ($sync && !$syncHelper->isSyncAction($sync)) {
                     $this->getResponse()->setHeader('HTTP/1.1', '400 Bad Request');

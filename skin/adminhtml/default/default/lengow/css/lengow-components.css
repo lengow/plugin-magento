@@ -166,6 +166,18 @@ body.lengow-connector .grey_frame input[type="text"] {
   line-height: 21px;
 }
 
+.lgw-label-preprod {
+    color: white;
+    background: #e55a4d;
+    height: 20px;
+    line-height: 20px;
+    padding: 0 5px;
+    border-radius: 5px;
+    display: inline-block;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
 /*************************************************/
 /*                    TOOLTIP                    */
 /*************************************************/

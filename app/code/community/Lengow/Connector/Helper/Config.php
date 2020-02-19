@@ -123,6 +123,18 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
             'global' => true,
             'no_cache' => true,
         ),
+        'last_plugin_data_update' => array(
+            'path' => 'lengow_global_options/advanced/last_plugin_data_update',
+            'global' => true,
+            'export' => false,
+            'no_cache' => true,
+        ),
+        'plugin_data' => array(
+            'path' => 'lengow_global_options/advanced/plugin_data',
+            'global' => true,
+            'export' => false,
+            'no_cache' => true,
+        ),
         'selection_enable' => array(
             'path' => 'lengow_export_options/simple/export_selection_enable',
             'store' => true,
@@ -413,7 +425,8 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
     public function setActiveStore($storeId)
     {
         $storeIsActive = $this->storeIsActive($storeId);
-        $storeHasCatalog = !empty(self::getCatalogIds($storeId));
+        $catalogIds = self::getCatalogIds($storeId);
+        $storeHasCatalog = !empty($catalogIds);
         $this->set('store_enable', $storeHasCatalog, $storeId);
         return $storeIsActive !== $storeHasCatalog ? true : false;
     }

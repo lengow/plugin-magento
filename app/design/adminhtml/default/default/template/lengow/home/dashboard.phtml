@@ -8,7 +8,7 @@
     <div class="lgw-box lgw-home-header text-center">
         <img src="<?php echo $this->getSkinUrl('lengow/images/') ?>lengow-white-big.png" alt="lengow">
         <h1><?php echo $helper->__('dashboard.screen.welcome_back'); ?></h1>
-        <a href="http://my.lengow.io/" class="lgw-btn" target="_blank" title="<?php echo $helper->__('dashboard.screen.go_to_lengow'); ?>">
+        <a href="//my.<?php echo Lengow_Connector_Model_Connector::LENGOW_URL; ?>" class="lgw-btn" target="_blank" title="<?php echo $helper->__('dashboard.screen.go_to_lengow'); ?>">
             <?php echo $helper->__('dashboard.screen.go_to_lengow'); ?>
         </a>
     </div>
