@@ -1061,6 +1061,9 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
         $orderDate = $this->_orderData->marketplace_order_date !== null
             ? (string)$this->_orderData->marketplace_order_date
             : (string)$this->_orderData->imported_at;
+        $message = (isset($this->_orderData->comments) && is_array($this->_orderData->comments))
+            ? join(',', $this->_orderData->comments)
+            : (string)$this->_orderData->comments;
         $coreDate = Mage::getModel('core/date');
         $params = array(
             'store_id' => (int)$this->_storeId,
@@ -1070,13 +1073,9 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
             'delivery_address_id' => (int)$this->_deliveryAddressId,
             'order_lengow_state' => $this->_orderStateLengow,
             'order_date' => $coreDate->gmtDate('Y-m-d H:i:s', $coreDate->timestamp($orderDate)),
+            'message' => $message,
             'is_in_error' => 1,
         );
-        if (isset($this->_orderData->comments) && is_array($this->_orderData->comments)) {
-            $params['message'] = join(',', $this->_orderData->comments);
-        } else {
-            $params['message'] = (string)$this->_orderData->comments;
-        }
         // create lengow order
         $this->_modelOrder->createOrder($params);
         // get lengow order id
