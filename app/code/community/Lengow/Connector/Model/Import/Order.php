@@ -309,7 +309,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
      * Get order ids from lengow order ID
      *
      * @param string $marketplaceSku marketplace sku
-     * @param string $marketplaceName delivery address id
+     * @param string $marketplaceName marketplace name
      *
      * @return array|false
      */
@@ -331,14 +331,16 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
      * Get ID record from lengow orders table
      *
      * @param string $marketplaceSku marketplace sku
+     * @param string $marketplaceName marketplace name
      * @param integer $deliveryAddressId delivery address id
      *
      * @return integer|false
      */
-    public function getLengowOrderId($marketplaceSku, $deliveryAddressId)
+    public function getLengowOrderId($marketplaceSku, $marketplaceName, $deliveryAddressId)
     {
         $results = $this->getCollection()
             ->addFieldToFilter('marketplace_sku', $marketplaceSku)
+            ->addFieldToFilter('marketplace_name', $marketplaceName)
             ->addFieldToFilter('delivery_address_id', $deliveryAddressId)
             ->addFieldToSelect('id')
             ->getData();

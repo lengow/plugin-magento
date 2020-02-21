@@ -286,6 +286,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
         // get a record in the lengow order table
         $this->_orderLengowId = $this->_modelOrder->getLengowOrderId(
             $this->_marketplaceSku,
+            $this->_marketplace->name,
             $this->_deliveryAddressId
         );
         // if order is cancelled or new -> skip
@@ -1057,16 +1058,14 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
     protected function _createLengowOrder()
     {
         // get all params to create order
-        if ($this->_orderData->marketplace_order_date !== null) {
-            $orderDate = (string)$this->_orderData->marketplace_order_date;
-        } else {
-            $orderDate = (string)$this->_orderData->imported_at;
-        }
+        $orderDate = $this->_orderData->marketplace_order_date !== null
+            ? (string)$this->_orderData->marketplace_order_date
+            : (string)$this->_orderData->imported_at;
         $coreDate = Mage::getModel('core/date');
         $params = array(
             'store_id' => (int)$this->_storeId,
             'marketplace_sku' => $this->_marketplaceSku,
-            'marketplace_name' => strtolower((string)$this->_orderData->marketplace),
+            'marketplace_name' => $this->_marketplace->name,
             'marketplace_label' => (string)$this->_marketplaceLabel,
             'delivery_address_id' => (int)$this->_deliveryAddressId,
             'order_lengow_state' => $this->_orderStateLengow,
@@ -1083,6 +1082,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
         // get lengow order id
         $this->_orderLengowId = $this->_modelOrder->getLengowOrderId(
             $this->_marketplaceSku,
+            $this->_marketplace->name,
             $this->_deliveryAddressId
         );
         if (!$this->_orderLengowId) {
