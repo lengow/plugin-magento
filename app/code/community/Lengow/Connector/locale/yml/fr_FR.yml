@@ -14,6 +14,8 @@ fr:
     preprod_active: "Mode préproduction "
     counter: "Période d'essai : %{counter} jour(s) restant(s)."
     upgrade_account: "Souscrire"
+    new_version_available: "La nouvelle version %{version} est disponible !"
+    download_plugin: "Télécharger"
   footer:
     toolbox: "Toolbox"
     legals: "Mentions légales"

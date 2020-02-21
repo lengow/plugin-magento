@@ -3,6 +3,7 @@
 
         var syncLink = $('#lengow_sync_link').val();
         var isoCode = $('#lengow_lang_iso').val();
+        var lengowUrl = $('#lengow_url').val();
 
         $('#lengow-container').hide();
         $('<iframe id="lengow-iframe">', {
@@ -21,22 +22,12 @@
                     data: {action: 'get_sync_data', form_key: FORM_KEY},
                     dataType: 'json',
                     success: function (data) {
-                        var targetFrame = document.getElementById("lengow-iframe").contentWindow;
+                        var targetFrame = document.getElementById('lengow-iframe').contentWindow;
                         targetFrame.postMessage(data, '*');
                     }
                 });
             };
-            if (syncLink) {
-                // syncIframe.src = '//cms.lengow.io/sync/';
-                // syncIframe.src = '//cms.lengow.net/sync/';
-                syncIframe.src = '//cms.rec.lengow.hom/sync/';
-                // syncIframe.src = '//cms.dev.lengow.hom/sync/';
-            } else {
-                // syncIframe.src = '//cms.lengow.io/';
-                // syncIframe.src = '//cms.lengow.net/';
-                syncIframe.src = '//cms.rec.lengow.hom/';
-                // syncIframe.src = '//cms.dev.lengow.hom/';
-            }
+            syncIframe.src = syncLink ? '//cms.'+lengowUrl+'/sync/' : '//cms.'+lengowUrl+'/';
             syncIframe.src = syncIframe.src+'?lang='+isoCode+'&clientType=magento';
             $('#lengow-iframe').show();
         }

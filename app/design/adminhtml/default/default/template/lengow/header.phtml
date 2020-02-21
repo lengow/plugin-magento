@@ -1,16 +1,34 @@
 <?php
     /** @var Lengow_Connector_Helper_Data $helper */
     $helper = Mage::helper('lengow_connector');
-    $statusAccount = Mage::helper('lengow_connector/sync')->getStatusAccount();
+    $syncHelper = Mage::helper('lengow_connector/sync');
+    $statusAccount = $syncHelper->getStatusAccount();
+    $pluginData = $syncHelper->getPluginData();
     if ((bool)Mage::helper('lengow_connector/config')->get('preprod_mode_enable')) { ?>
             <span id="lgw-preprod">
                 <?php echo $helper->__('header.preprod_active'); ?>
             </span>
-    <?php }
-    if ($statusAccount['type'] === 'free_trial' && !$statusAccount['expired']) :?>
-            <p id="lgw-counter" class="pull-right">
+    <?php } ?>
+    <div class="lgw-row">
+        <p class="text-left lgw-col-6">
+            <?php if ($pluginData && version_compare(Mage::helper('lengow_connector/security')->getPluginVersion(), $pluginData['version'], '<')) :?>
+                <span id="lgw-plugin-available">
+                    <?php echo $helper->__('header.new_version_available', array('version' => $pluginData['version'])); ?>
+                    <a href="//my.<?php echo Lengow_Connector_Model_Connector::LENGOW_URL . $pluginData['download_link']; ?>" target="_blank">
+                        <?php echo $helper->__('header.download_plugin'); ?>
+                    </a>
+                </span>
+            <?php endif; ?>
+        </p>
+        <p class="text-right lgw-col-6">
+            <?php if ($statusAccount['type'] === 'free_trial' && !$statusAccount['expired']) :?>
+                <span id="lgw-counter">
                     <?php echo $helper->__('header.counter', array('counter' => $statusAccount['day'])); ?>
-                <a href="http://my.lengow.io/" target="_blank"><?php echo $helper->__('header.upgrade_account'); ?></a>
-            </p>
-        <div class="clear"></div>
-    <?php endif; ?>
+                    <a href="//my.<?php echo Lengow_Connector_Model_Connector::LENGOW_URL; ?>" target="_blank">
+                        <?php echo $helper->__('header.upgrade_account'); ?>
+                    </a>
+                </span>
+            <?php endif; ?>
+        </p>
+    </div>
+

@@ -9,6 +9,8 @@ global.just_no|Non
 header.preprod_active|Mode préproduction 
 header.counter|Période d'essai : %{counter} jour(s) restant(s).
 header.upgrade_account|Souscrire
+header.new_version_available|La nouvelle version %{version} est disponible !
+header.download_plugin|Télécharger
 footer.toolbox|Toolbox
 footer.legals|Mentions légales
 footer.plugin_lengow|Lengow Magento Module

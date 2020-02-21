@@ -14,6 +14,8 @@ de:
     preprod_active: "Vorproduktionsmodus"
     counter: "Testzeitraum: %{counter} Tag(e) verbleiben."
     upgrade_account: "Jetzt anmelden!"
+    new_version_available: "Eine neue Version %{version} ist verfügbar!"
+    download_plugin: "Herunterladen"
   footer:
     toolbox: "Toolbox"
     legals: "Rechtshinweise"
