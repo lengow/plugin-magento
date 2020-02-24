@@ -235,8 +235,8 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
             'global' => true,
             'no_cache' => false,
         ),
-        'preprod_mode_enable' => array(
-            'path' => 'lengow_import_options/advanced/import_preprod_mode_enable',
+        'debug_mode_enable' => array(
+            'path' => 'lengow_import_options/advanced/import_debug_mode_enable',
             'global' => true,
             'no_cache' => false,
         ),
@@ -429,6 +429,16 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
         $storeHasCatalog = !empty($catalogIds);
         $this->set('store_enable', $storeHasCatalog, $storeId);
         return $storeIsActive !== $storeHasCatalog ? true : false;
+    }
+
+    /**
+     * Recovers if debug mode is active or not
+     *
+     * @return boolean
+     */
+    public function debugModeIsActive()
+    {
+        return (bool)$this->get('debug_mode_enable');
     }
 
     /**

@@ -307,7 +307,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
      */
     public function setCmsOption($force = false, $logOutput = false)
     {
-        if ($this->_configHelper->isNewMerchant() || (bool)$this->_configHelper->get('preprod_mode_enable')) {
+        if ($this->_configHelper->isNewMerchant() || $this->_configHelper->debugModeIsActive()) {
             return false;
         }
         if (!$force) {

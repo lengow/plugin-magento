@@ -967,7 +967,7 @@ $newSettings = array(
     ),
     array(
         'old_path' => 'lensync/performances/debug',
-        'new_path' => 'lengow_import_options/advanced/import_preprod_mode_enable',
+        'new_path' => 'lengow_import_options/advanced/import_debug_mode_enable',
         'store' => false,
     ),
     array(

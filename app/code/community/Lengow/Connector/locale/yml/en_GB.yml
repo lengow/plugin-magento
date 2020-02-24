@@ -11,7 +11,7 @@ en:
     just_yes: "Yes"
     just_no: "No"
   header:
-    preprod_active: "Pre-production mode"
+    debug_active: "Debug Mode"
     counter: "Trial period: %{counter} day(s) left."
     upgrade_account: "Subscribe"
     new_version_available: "A new version %{version} is available!"
@@ -72,7 +72,7 @@ en:
       title: "Orders"
       button_import: "Synchronize Orders"
       button_migrate: "Don't show this message again"
-      preprod_warning_message: "You are in pre-production mode. You can import orders, but no interaction with Lengow is possible. <a href=%{url}>Change this</a>"
+      debug_warning_message: "You are in Debug Mode. You can import orders, but no interaction with Lengow is possible. <a href=%{url}>Change this</a>"
       nb_old_order_imported: "You have already imported and processed %{nb_order} orders with Lengow"
       order_visible_in_page: "%{nb_order} orders are waiting to be sent and are visible here"
       where_see_old_order: "You can consult processed orders in the Magento order screen"
@@ -304,8 +304,8 @@ en:
     import_ship_mp_enabled_title: "Import orders shipped by marketplaces"
     import_stock_ship_mp_title: "I want to decrease my stock"
     import_stock_ship_mp_comment: "Use this option to take marketplaces orders into account for your Magento backoffice"
-    import_preprod_mode_enable_title: "Preprod mode"
-    import_preprod_mode_enable_comment: "Only for preproduction mode: no order synchronisation with Lengow, orders imported every time"
+    import_debug_mode_enable_title: "Activate Debug Mode"
+    import_debug_mode_enable_comment: "Use Debug Mode for testing and to simulate fictitious orders. Please note that you have to activate this setting on your pre-production server ONLY"
     import_cron_enable_title: "Enable Magento cron"
     import_cron_enable_comment: "Enable the scheduled task to import your order every 30 minutes"
   lengow_log:

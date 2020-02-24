@@ -108,9 +108,9 @@ class Lengow_Connector_Model_Import extends Varien_Object
     protected $_importOneOrder = false;
 
     /**
-     * @var boolean use preprod mode
+     * @var boolean use debug mode
      */
-    protected $_preprodMode = false;
+    protected $_debugMode = false;
 
     /**
      * @var boolean display log messages
@@ -182,7 +182,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
      * integer days                import period
      * integer limit               number of orders to import
      * boolean log_output          display log messages
-     * boolean preprod_mode        preprod mode
+     * boolean debug_mode          debug mode
      */
     public function __construct($params = array())
     {
@@ -190,9 +190,9 @@ class Lengow_Connector_Model_Import extends Varien_Object
         $this->_importHelper = Mage::helper('lengow_connector/import');
         $this->_configHelper = Mage::helper('lengow_connector/config');
         // get generic params for synchronisation
-        $this->_preprodMode = isset($params['preprod_mode'])
-            ? (bool)$params['preprod_mode']
-            : (bool)$this->_configHelper->get('preprod_mode_enable');
+        $this->_debugMode = isset($params['debug_mode'])
+            ? (bool)$params['debug_mode']
+            : $this->_configHelper->debugModeIsActive();
         $this->_typeImport = isset($params['type']) ? $params['type'] : self::TYPE_MANUAL;
         $this->_logOutput = isset($params['log_output']) ? (bool)$params['log_output'] : false;
         $this->_storeId = isset($params['store_id']) ? (int)$params['store_id'] : null;
@@ -237,7 +237,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
         $syncOk = true;
         // clean logs > 20 days
         $this->_helper->cleanLog();
-        if ($this->_importHelper->importIsInProcess() && !$this->_preprodMode && !$this->_importOneOrder) {
+        if ($this->_importHelper->importIsInProcess() && !$this->_debugMode && !$this->_importOneOrder) {
             $globalError = $this->_helper->setLogMessage(
                 'lengow_log.error.rest_time_to_import',
                 array('rest_time' => $this->_importHelper->restTimeToImport())
@@ -261,10 +261,10 @@ class Lengow_Connector_Model_Import extends Varien_Object
                 $this->_helper->setLogMessage('log.import.start', array('type' => $this->_typeImport)),
                 $this->_logOutput
             );
-            if ($this->_preprodMode) {
+            if ($this->_debugMode) {
                 $this->_helper->log(
                     Lengow_Connector_Helper_Data::CODE_IMPORT,
-                    $this->_helper->setLogMessage('log.import.preprod_mode_active'),
+                    $this->_helper->setLogMessage('log.import.debug_mode_active'),
                     $this->_logOutput
                 );
             }
@@ -427,10 +427,10 @@ class Lengow_Connector_Model_Import extends Varien_Object
                 $this->_logOutput
             );
             // sending email in error for orders
-            if ($this->_configHelper->get('report_mail_enable') && !$this->_preprodMode && !$this->_importOneOrder) {
+            if ($this->_configHelper->get('report_mail_enable') && !$this->_debugMode && !$this->_importOneOrder) {
                 $this->_importHelper->sendMailAlert($this->_logOutput);
             }
-            if (!$this->_preprodMode && !$this->_importOneOrder && $this->_typeImport === self::TYPE_MANUAL) {
+            if (!$this->_debugMode && !$this->_importOneOrder && $this->_typeImport === self::TYPE_MANUAL) {
                 /** @var Lengow_Connector_Model_Import_Action $action */
                 $action = Mage::getModel('lengow/import_action');
                 $action->checkFinishAction($this->_logOutput);
@@ -686,7 +686,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
             }
             $nbPackage = 0;
             $marketplaceSku = (string)$orderData->marketplace_order_id;
-            if ($this->_preprodMode) {
+            if ($this->_debugMode) {
                 $marketplaceSku .= '--' . time();
             }
             // set current order to cancel hook updateOrderStatus
@@ -735,7 +735,7 @@ class Lengow_Connector_Model_Import extends Varien_Object
                         'lengow/import_importorder',
                         array(
                             'store_id' => $storeId,
-                            'preprod_mode' => $this->_preprodMode,
+                            'debug_mode' => $this->_debugMode,
                             'log_output' => $this->_logOutput,
                             'marketplace_sku' => $marketplaceSku,
                             'delivery_address_id' => $packageDeliveryAddressId,
@@ -770,8 +770,8 @@ class Lengow_Connector_Model_Import extends Varien_Object
                     continue;
                 }
                 if (isset($order)) {
-                    // sync to lengow if no preprod_mode
-                    if (!$this->_preprodMode && isset($order['order_new']) && $order['order_new']) {
+                    // sync to lengow if no debug_mode
+                    if (!$this->_debugMode && isset($order['order_new']) && $order['order_new']) {
                         $magentoOrder = Mage::getModel('sales/order')->load($order['order_id']);
                         $synchro = Mage::getModel('lengow/import_order')->synchronizeOrder(
                             $magentoOrder,
