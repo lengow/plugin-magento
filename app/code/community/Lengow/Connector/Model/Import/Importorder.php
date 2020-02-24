@@ -108,6 +108,11 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
     protected $_firstPackage;
 
     /**
+     * @var boolean import one order var from lengow import
+     */
+    protected $_importOneOrder;
+
+    /**
      * @var boolean re-import order
      */
     protected $_isReimported = false;
@@ -184,6 +189,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
      * boolean order_data          order data
      * boolean package_data        package data
      * boolean first_package       first package
+     * boolean import_one_order    import one order
      * boolean import_helper       import helper
      */
     public function __construct($params = array())
@@ -197,6 +203,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
         $this->_orderData = $params['order_data'];
         $this->_packageData = $params['package_data'];
         $this->_firstPackage = $params['first_package'];
+        $this->_importOneOrder = $params['import_one_order'];
         $this->_importHelper = $params['import_helper'];
         // get helpers
         $this->_helper = Mage::helper('lengow_connector/data');
@@ -213,6 +220,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
      * Create or update order
      *
      * @return array|false
+     * @throws Exception
      */
     public function importOrder()
     {
@@ -259,15 +267,30 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
                 return false;
             }
         }
-        // skip import if the order is anonymized
-        if ($this->_orderData->anonymized) {
-            $this->_helper->log(
-                Lengow_Connector_Helper_Data::CODE_IMPORT,
-                $this->_helper->setLogMessage('log.import.anonymized_order'),
-                $this->_logOutput,
-                $this->_marketplaceSku
-            );
-            return false;
+        if (!$this->_importOneOrder) {
+            // skip import if the order is anonymized
+            if ($this->_orderData->anonymized) {
+                $this->_helper->log(
+                    Lengow_Connector_Helper_Data::CODE_IMPORT,
+                    $this->_helper->setLogMessage('log.import.anonymized_order'),
+                    $this->_logOutput,
+                    $this->_marketplaceSku
+                );
+                return false;
+            }
+            // skip import if the order is older than 3 months
+            $dateTimeOrder = new DateTime($this->_orderData->marketplace_order_date);
+            $interval = $dateTimeOrder->diff(new DateTime());
+            $monthsInterval = $interval->m + ($interval->y * 12);
+            if ($monthsInterval >= Lengow_Connector_Model_Import::MONTH_INTERVAL_TIME) {
+                $this->_helper->log(
+                    Lengow_Connector_Helper_Data::CODE_IMPORT,
+                    $this->_helper->setLogMessage('log.import.old_order'),
+                    $this->_logOutput,
+                    $this->_marketplaceSku
+                );
+                return false;
+            }
         }
         // checks if an external id already exists
         $orderMagentoId = $this->_checkExternalIds($this->_orderData->merchant_order_id);
