@@ -4,9 +4,9 @@
     $syncHelper = Mage::helper('lengow_connector/sync');
     $statusAccount = $syncHelper->getStatusAccount();
     $pluginData = $syncHelper->getPluginData();
-    if ((bool)Mage::helper('lengow_connector/config')->get('preprod_mode_enable')) { ?>
-            <span id="lgw-preprod">
-                <?php echo $helper->__('header.preprod_active'); ?>
+    if (Mage::helper('lengow_connector/config')->debugModeIsActive()) { ?>
+            <span id="lgw-debug">
+                <?php echo $helper->__('header.debug_active'); ?>
             </span>
     <?php } ?>
     <div class="lgw-row">

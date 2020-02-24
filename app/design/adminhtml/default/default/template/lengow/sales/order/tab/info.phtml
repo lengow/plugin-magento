@@ -25,7 +25,7 @@
     if ($this->isLengowOrder()) {
         if ($this->isFollowByLengow()) {
         ?>
-            <?php if (!(bool)Mage::helper('lengow_connector/config')->get('preprod_mode_enable', $storeId)) { ?>
+            <?php if (!Mage::helper('lengow_connector/config')->debugModeIsActive()) { ?>
                 <div id="lgw-info-btn">
                     <button type="button" class="lgw-btn">
                         <a href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_order/synchronize/', array('order_id' => $order['entity_id'])); ?>">

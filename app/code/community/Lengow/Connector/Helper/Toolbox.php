@@ -91,7 +91,7 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
         );
         $checklist[] = array(
             'title' => $this->_helper->__('toolbox.screen.pre_production_enable'),
-            'state' => !(bool)$this->_configHelper->get('preprod_mode_enable'),
+            'state' => !$this->_configHelper->debugModeIsActive(),
         );
         $filePath = Mage::getBaseDir('media') . DS . 'lengow' . DS . 'test.txt';
         $file = fopen($filePath, 'w+');

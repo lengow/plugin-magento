@@ -355,7 +355,7 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
     {
         /** @var Lengow_Connector_Helper_Data $helper */
         $helper = Mage::helper('lengow_connector/data');
-        if (!(bool)Mage::helper('lengow_connector/config')->get('preprod_mode_enable')) {
+        if (!Mage::helper('lengow_connector/config')->debugModeIsActive()) {
             $result = Mage::getModel('lengow/connector')->queryApi(
                 Lengow_Connector_Model_Connector::POST,
                 Lengow_Connector_Model_Connector::API_ORDER_ACTION,
@@ -441,7 +441,7 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
         $helper = Mage::helper('lengow_connector/data');
         /** @var Lengow_Connector_Helper_Config $configHelper */
         $configHelper = Mage::helper('lengow_connector/config');
-        if ((bool)$configHelper->get('preprod_mode_enable')) {
+        if ($configHelper->debugModeIsActive()) {
             return false;
         }
         $helper->log(
@@ -584,7 +584,7 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
     {
         /** @var Lengow_Connector_Helper_Data $helper */
         $helper = Mage::helper('lengow_connector/data');
-        if ((bool)Mage::helper('lengow_connector/config')->get('preprod_mode_enable')) {
+        if (Mage::helper('lengow_connector/config')->debugModeIsActive()) {
             return false;
         }
         $helper->log(
@@ -677,7 +677,7 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
     {
         /** @var Lengow_Connector_Helper_Data $helper */
         $helper = Mage::helper('lengow_connector/data');
-        if ((bool)Mage::helper('lengow_connector/config')->get('preprod_mode_enable')) {
+        if (Mage::helper('lengow_connector/config')->debugModeIsActive()) {
             return false;
         }
         $helper->log(

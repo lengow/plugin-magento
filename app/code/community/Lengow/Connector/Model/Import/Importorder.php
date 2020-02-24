@@ -63,9 +63,9 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
     protected $_storeId = null;
 
     /**
-     * @var boolean use preprod mode
+     * @var boolean use debug mode
      */
-    protected $_preprodMode = false;
+    protected $_debugMode = false;
 
     /**
      * @var boolean display log messages
@@ -177,7 +177,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
      *
      * @param array $params optional options
      * integer store_id            Id store for current order
-     * boolean preprod_mode        preprod mode
+     * boolean debug_mode          debug mode
      * boolean log_output          display log messages
      * boolean marketplace_sku     marketplace sku
      * boolean delivery_address_id delivery address id
@@ -190,7 +190,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
     {
         // get params
         $this->_storeId = $params['store_id'];
-        $this->_preprodMode = $params['preprod_mode'];
+        $this->_debugMode = $params['debug_mode'];
         $this->_logOutput = $params['log_output'];
         $this->_marketplaceSku = $params['marketplace_sku'];
         $this->_deliveryAddressId = $params['delivery_address_id'];
@@ -271,7 +271,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
         }
         // checks if an external id already exists
         $orderMagentoId = $this->_checkExternalIds($this->_orderData->merchant_order_id);
-        if ($orderMagentoId && !$this->_preprodMode && !$this->_isReimported) {
+        if ($orderMagentoId && !$this->_debugMode && !$this->_isReimported) {
             $this->_helper->log(
                 Lengow_Connector_Helper_Data::CODE_IMPORT,
                 $this->_helper->setLogMessage(

@@ -38,7 +38,7 @@ class Lengow_Connector_CronController extends Mage_Core_Controller_Front_Action
          * string  created_from        import of orders since
          * string  created_to          import of orders until
          * integer delivery_address_id Lengow delivery address id to import
-         * boolean preprod_mode        Activate preprod mode
+         * boolean debug_mode          Activate debug mode
          * boolean log_output          See logs (1) or not (0)
          * boolean get_sync            See synchronisation parameters in json format (1) or not (0)
          */
@@ -75,8 +75,8 @@ class Lengow_Connector_CronController extends Mage_Core_Controller_Front_Action
                         'log_output' => $logOutput,
                     );
                     // check if the GET parameters are available
-                    if ($this->getRequest()->getParam('preprod_mode') !== null) {
-                        $params['preprod_mode'] = (bool)$this->getRequest()->getParam('preprod_mode');
+                    if ($this->getRequest()->getParam('debug_mode') !== null) {
+                        $params['debug_mode'] = (bool)$this->getRequest()->getParam('debug_mode');
                     }
                     if ($this->getRequest()->getParam('days') !== null) {
                         $params['days'] = (int)$this->getRequest()->getParam('days');
