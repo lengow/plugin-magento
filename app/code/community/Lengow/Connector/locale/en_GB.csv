@@ -6,7 +6,7 @@ menu.help|Help
 module.name|Lengow
 global.just_yes|Yes
 global.just_no|No
-header.preprod_active|Pre-production mode
+header.debug_active|Debug Mode
 header.counter|Trial period: %{counter} day(s) left.
 header.upgrade_account|Subscribe
 header.new_version_available|A new version %{version} is available!
@@ -57,7 +57,7 @@ product.table.publication|Post
 order.screen.title|Orders
 order.screen.button_import|Synchronize Orders
 order.screen.button_migrate|Don't show this message again
-order.screen.preprod_warning_message|You are in pre-production mode. You can import orders, but no interaction with Lengow is possible. <a href=%{url}>Change this</a>
+order.screen.debug_warning_message|You are in Debug Mode. You can import orders, but no interaction with Lengow is possible. <a href=%{url}>Change this</a>
 order.screen.nb_old_order_imported|You have already imported and processed %{nb_order} orders with Lengow
 order.screen.order_visible_in_page|%{nb_order} orders are waiting to be sent and are visible here
 order.screen.where_see_old_order|You can consult processed orders in the Magento order screen
@@ -277,8 +277,8 @@ lengow_setting.import_report_mail_address_comment|Email separated by ;
 lengow_setting.import_ship_mp_enabled_title|Import orders shipped by marketplaces
 lengow_setting.import_stock_ship_mp_title|I want to decrease my stock
 lengow_setting.import_stock_ship_mp_comment|Use this option to take marketplaces orders into account for your Magento backoffice
-lengow_setting.import_preprod_mode_enable_title|Preprod mode
-lengow_setting.import_preprod_mode_enable_comment|Only for preproduction mode: no order synchronisation with Lengow, orders imported every time
+lengow_setting.import_debug_mode_enable_title|Activate Debug Mode
+lengow_setting.import_debug_mode_enable_comment|Use Debug Mode for testing and to simulate fictitious orders. Please note that you have to activate this setting on your pre-production server ONLY
 lengow_setting.import_cron_enable_title|Enable Magento cron
 lengow_setting.import_cron_enable_comment|Enable the scheduled task to import your order every 30 minutes
 lengow_log.error.nb_order_imported|%{nb_order} order(s) imported
@@ -335,7 +335,7 @@ log.export.error_configurable_product_disabled|WARNING! %{nb_product} simple pro
 log.export.error_folder_not_created|unable to create folder %{folder_path}.
 log.export.error_folder_not_writable|unable to access the folder %{folder_path}.
 log.import.not_valid_action|Action: %{action} is not a valid action
-log.import.preprod_mode_active|WARNING! Pre-production mode is activated
+log.import.debug_mode_active|WARNING! Debug Mode is activated
 log.import.start|## start %{type} import ##
 log.import.end|## end %{type} import ##
 log.import.start_for_store|start import in store %{store_name} (%{store_id})

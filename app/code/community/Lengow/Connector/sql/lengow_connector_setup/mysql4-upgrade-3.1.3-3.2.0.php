@@ -31,5 +31,11 @@ if (version_compare($installedVersion, $version, '<')) {
     Mage::getModel('core/config')->deleteConfig('lengow_global_options/advanced/last_statistic_update');
     Mage::getModel('core/config')->deleteConfig('lengow_global_options/advanced/order_statistic');
 
+    // *************************************************************
+    // Delete preprod mode configuration for versions 3.0.0 - 3.1.3
+    // *************************************************************
+
+    Mage::getModel('core/config')->deleteConfig('lengow_import_options/advanced/import_preprod_mode_enable');
+
     $configHelper->set('installed_version', $version);
 }

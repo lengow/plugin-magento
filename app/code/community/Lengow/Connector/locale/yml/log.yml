@@ -19,7 +19,7 @@ en:
       error_folder_not_writable: "unable to access the folder %{folder_path}."
     import:
       not_valid_action: "Action: %{action} is not a valid action"
-      preprod_mode_active: "WARNING! Pre-production mode is activated"
+      debug_mode_active: "WARNING! Debug Mode is activated"
       start: "## start %{type} import ##"
       end: "## end %{type} import ##"
       start_for_store: "start import in store %{store_name} (%{store_id})"

@@ -7,6 +7,7 @@ Version 3.2.0
     - Feature: [import] Protection of the import for orders older than 3 months
     - Feature: Optimization of API calls for synchronisation of orders and actions
     - Feature: Display of an alert when the plugin is no longer up to date
+    - Feature: Renaming from Preprod Mode to Debug Mode
     - Bugfix: Refactoring and optimization of dates with the correct locale
     - Bugfix: [action] Improved carrier matching with a strict then approximate search
     - Bugfix: [import] Enhanced security for orders that change their marketplace name
