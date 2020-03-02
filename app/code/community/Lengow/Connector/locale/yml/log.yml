@@ -57,6 +57,7 @@ en:
       quantity_back_reimported_order: "adding quantity back to stock count (order is re-imported)"
       quantity_back_shipped_by_marketplace: "adding quantity back to stock count (order shipped by marketplace)"
       anonymized_order: "Order is anonymized and has not been imported"
+      old_order: "Order is older than 3 months and has not been imported"
     mail_report:
       send_mail_to: "report email sent to %{email}"
       unable_send_mail_to: "unable to send report email to %{email}"
