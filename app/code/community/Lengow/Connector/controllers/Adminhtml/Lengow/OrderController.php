@@ -46,7 +46,7 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
                 if ($action) {
                     switch ($action) {
                         case 'import_all':
-                            $params = array('type' => 'manual');
+                            $params = array('type' => Lengow_Connector_Model_Import::TYPE_MANUAL);
                             $results = Mage::getModel('lengow/import', $params)->exec();
                             $informations = $this->getInformations();
                             $informations['messages'] = $this->getMessages($results);
@@ -54,7 +54,7 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
                             break;
                         case 're_import':
                             $orderLengowId = Mage::app()->getRequest()->getParam('order_lengow_id');
-                            if (!is_null($orderLengowId)) {
+                            if ($orderLengowId !== null) {
                                 $result = Mage::getModel('lengow/import_order')->reImportOrder((int)$orderLengowId);
                                 $informations = $this->getInformations();
                                 $informations['import_order'] = $result;
@@ -63,7 +63,7 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
                             break;
                         case 're_send':
                             $orderLengowId = Mage::app()->getRequest()->getParam('order_lengow_id');
-                            if (!is_null($orderLengowId)) {
+                            if ($orderLengowId !== null) {
                                 $result = Mage::getModel('lengow/import_order')->reSendOrder((int)$orderLengowId);
                                 $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($result));
                             }
@@ -115,7 +115,7 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
                 array('order_id' => $order->getIncrementId())
             );
         }
-        $helper->log('Import', $synchroMessage, false, $marketplaceSku);
+        $helper->log(Lengow_Connector_Helper_Data::CODE_IMPORT, $synchroMessage, false, $marketplaceSku);
         $url = Mage::helper('adminhtml')->getUrl('adminhtml/sales_order/view', array('order_id' => $orderId));
         Mage::app()->getResponse()->setRedirect($url);
     }
@@ -141,9 +141,13 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
     public function reSendAction()
     {
         $orderId = $this->getRequest()->getParam('order_id');
-        $action = $this->getRequest()->getParam('action') === 'canceled' ? 'cancel' : 'ship';
+        $action = $this->getRequest()->getParam('action') === 'canceled'
+            ? Lengow_Connector_Model_Import_Action::TYPE_CANCEL
+            : Lengow_Connector_Model_Import_Action::TYPE_SHIP;
         $order = Mage::getModel('sales/order')->load($orderId);
-        $shipment = $action === 'ship' ? $order->getShipmentsCollection()->getFirstItem() : null;
+        $shipment = $action === Lengow_Connector_Model_Import_Action::TYPE_SHIP
+            ? $order->getShipmentsCollection()->getFirstItem()
+            : null;
         Mage::getModel('lengow/import_order')->callAction($action, $order, $shipment);
         $url = Mage::helper('adminhtml')->getUrl('adminhtml/sales_order/view', array('order_id' => $orderId));
         Mage::app()->getResponse()->setRedirect($url);
@@ -155,7 +159,7 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
     public function massReImportAction()
     {
         $orderLengowIds = $this->getRequest()->getParam('order');
-        if (count($orderLengowIds) > 0) {
+        if (!empty($orderLengowIds)) {
             /** @var Lengow_Connector_Model_Import_Order $orderLengow */
             $orderLengow = Mage::getModel('lengow/import_order');
             foreach ($orderLengowIds as $orderLengowId) {
@@ -170,7 +174,7 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
     public function massReSendAction()
     {
         $orderLengowIds = $this->getRequest()->getParam('order');
-        if (count($orderLengowIds) > 0) {
+        if (!empty($orderLengowIds)) {
             /** @var Lengow_Connector_Model_Import_Order $orderLengow */
             $orderLengow = Mage::getModel('lengow/import_order');
             foreach ($orderLengowIds as $orderLengowId) {

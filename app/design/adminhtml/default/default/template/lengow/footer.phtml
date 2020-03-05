@@ -3,7 +3,7 @@
     $helper = Mage::helper('lengow_connector');
 ?>
 <div id="footer" class="lgw-footer">
-    <div class="pull-right">
+    <div class="text-center">
         <a href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_toolbox/'); ?>"
             class="sub-link" title="<?php echo $helper->__('footer.toolbox') ?>"><?php echo $helper->__('footer.toolbox') ?></a>
         |
@@ -11,6 +11,9 @@
             class="sub-link" title="<?php echo $helper->__('footer.legals') ?>"><?php echo $helper->__('footer.legals') ?></a>
         |
         <?php echo $helper->__('footer.plugin_lengow'); ?> - v.<?php echo Mage::helper('lengow_connector/security')->getPluginVersion(); ?>
+        <?php if( Lengow_Connector_Model_Connector::LENGOW_URL === 'lengow.net' ) { ?>
+            <span class="lgw-label-preprod">preprod</span>
+        <?php } ?>
         |
         copyright © <?php echo date('Y'); ?>  <a href="<?php echo $helper->__('footer.lengow_link_url'); ?>" class="sub-link" title="Lengow.com" target="_blank">Lengow</a> 
     </div>

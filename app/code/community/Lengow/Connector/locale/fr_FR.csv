@@ -6,9 +6,11 @@ menu.help|Aide
 module.name|Lengow
 global.just_yes|Oui
 global.just_no|Non
-header.preprod_active|Mode préproduction 
+header.debug_active|Debug Mode
 header.counter|Période d'essai : %{counter} jour(s) restant(s).
 header.upgrade_account|Souscrire
+header.new_version_available|La nouvelle version %{version} est disponible !
+header.download_plugin|Télécharger
 footer.toolbox|Toolbox
 footer.legals|Mentions légales
 footer.plugin_lengow|Lengow Magento Module
@@ -21,10 +23,6 @@ dashboard.screen.orders_title|Commandes
 dashboard.screen.orders_text|Gérer vos commandes directement sur votre tableau de bord Magento.
 dashboard.screen.settings_title|Paramètres
 dashboard.screen.settings_text|Configurer les principaux paramètres de votre plugin Magento
-dashboard.screen.partner_business|Lengow, partenaire de votre activité e-commerce
-dashboard.screen.stat_turnover|Chiffre d'affaires
-dashboard.screen.stat_nb_orders|Commandes
-dashboard.screen.stat_more_stats|Plus de statistiques ?
 dashboard.screen.some_help_title|Besoin d'aide ?
 dashboard.screen.get_in_touch|Prenez contact avec les équipes Lengow.
 dashboard.screen.visit_help_center|Visitez notre Help Center
@@ -34,12 +32,6 @@ status.screen.subtitle_end_free_trial|Vous avez atteint la fin de votre période
 status.screen.first_description_end_free_trial|Vos 15 jours d'essai gratuit sur la plateforme Lengow sont maintenant terminés. Nous espérons qu'ils ont été bénéfiques à votre activité e-commerce.
 status.screen.second_description_end_free_trial|Votre compte va être désactivé jusqu'à ce que vous souscriviez à un abonnement sur la plateforme Lengow. Toutes les diffusions en cours ainsi que les importations vont être momentanément stoppées.
 status.screen.third_description_end_free_trial|Votre compte d'essai sera supprimé 30 jours après expiration. Pour conserver l'intégralité des paramètres que vous avez défini, pensez à souscrire dès maintenant !
-status.screen.subtitle_bad_payer|Votre compte est temporairement fermé
-status.screen.first_description_bad_payer|Nous sommes désolé mais nous devons temporairement limiter l'accès à votre compte car le paiement automatique de votre abonnement n'a pu se faire.
-status.screen.second_description_bad_payer|La publication de vos catalogues est aussi suspendue. Nous vous recommandons de prendre contact avec nous rapidement par mail
-status.screen.phone_bad_payer|ou par téléphone au +33 (0)2 85 52 64 15
-status.screen.third_description_bad_payer|Nous espérons vous revoir très rapidement parmi nous.
-status.screen.facturation_button|Voir mes informations de facturation
 status.screen.upgrade_account_button|Je suis prêt à souscrire !
 status.screen.refresh_action|Actualiser mon compte
 product.screen.title|Exporter les produits 
@@ -65,7 +57,7 @@ product.table.publication|Publication
 order.screen.title|Commandes
 order.screen.button_import|Synchroniser les commandes
 order.screen.button_migrate|Ne plus afficher ce message
-order.screen.preprod_warning_message|Vous êtes en mode préproduction. Vous pouvez importer vos commandes mais les interactions avec Lengow ne sont pas possibles. <a href=%{url}>Retourner en mode production ?</a>
+order.screen.debug_warning_message|Vous êtes en Debug Mode. Vous pouvez importer vos commandes mais les interactions avec Lengow ne sont pas possibles. <a href=%{url}>Désactiver le Debug Mode ?</a>
 order.screen.nb_old_order_imported|Avec Lengow, vous avez déjà importé et traité %{nb_order} commandes
 order.screen.order_visible_in_page|%{nb_order} commandes attendent d'être envoyées et sont visibles sur cette page
 order.screen.where_see_old_order|Les autres commandes déjà traitées sont visibles sur l'écran de commandes Magento
@@ -285,8 +277,8 @@ lengow_setting.import_report_mail_address_comment|Email séparé par ;
 lengow_setting.import_ship_mp_enabled_title|Importez les commandes expédiées par les places de marché
 lengow_setting.import_stock_ship_mp_title|Je veux diminuer mon stock
 lengow_setting.import_stock_ship_mp_comment|Activez cette option pour prendre en compte les commandes des places de marché sur les stocks de votre backoffice Magento.
-lengow_setting.import_preprod_mode_enable_title|Mode préproduction
-lengow_setting.import_preprod_mode_enable_comment|Utilisez la pré-production pour tester et simuler des commandes fictives. Pour rappel, vous devez activer ces paramètres UNIQUEMENT sur votre serveur de préproduction.
+lengow_setting.import_debug_mode_enable_title|Activer le Debug Mode
+lengow_setting.import_debug_mode_enable_comment|Utilisez le Debug Mode pour tester et simuler des commandes fictives. Pour rappel, vous devez activer ce paramètre UNIQUEMENT sur votre serveur de préproduction
 lengow_setting.import_cron_enable_title|Autorisez le process Cron de Magento
 lengow_setting.import_cron_enable_comment|Si votre Cron est en place sur Magento, les commandes seront importées automatiquement toutes les 30 minutes
 lengow_log.error.nb_order_imported|%{nb_order} commande(s) importée(s)
@@ -309,9 +301,7 @@ lengow_log.error.no_country_for_billing_address|Erreur Lengow : l'adresse de fac
 lengow_log.exception.product_not_be_found|le produit %{product_id} ne peut être trouvé
 lengow_log.exception.product_is_a_parent|le produit %{product_id}  est un ID parent. Les déclinaisons du produit sont nécessaires
 lengow_log.exception.no_connection_webservice|la connexion ne se fait pas avec Lengow pour la boutique %{store_name} (%{store_id})
-lengow_log.exception.error_lengow_webservice|l'API Lengow : %{error_code} - %{error_message} pour la boutique %{store_name} (%{store_id})
-lengow_log.exception.timeout_api|l'API a été bloquée par un timeout
-lengow_log.exception.error_curl|Curl erreur %{error_code} - %{error_message}
+lengow_log.exception.error_lengow_webservice|l'API Lengow : %{error_code} - "%{error_message}" pour la boutique %{store_name} (%{store_id})
 lengow_log.exception.marketplace_not_present|Erreur Lengow : la place de marché %{marketplace_name} n’apparaît pas dans la liste des places de marché
 lengow_log.exception.order_failed_with_quote|service indisponible pour créer une commande basé sur une cotation donnée
 lengow_log.exception.order_is_empty|la commande ne peut être sauvegardée

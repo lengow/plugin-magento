@@ -20,9 +20,9 @@
 ?>
 
 <div class="lgw-box">
-    <?php if ((bool)$configHelper->get('preprod_mode_enable')) { ?>
+    <?php if ($configHelper->debugModeIsActive()) { ?>
         <p class="blue_frame" style="line-height: 20px;">
-            <?php echo $helper->__('order.screen.preprod_warning_message', array('url' => $reportMailLink)); ?>
+            <?php echo $helper->__('order.screen.debug_warning_message', array('url' => $reportMailLink)); ?>
         </p>
     <?php } ?>
     <?php if ($seeMigrateBlock && $orderNotMigrate > 0) { ?>

@@ -23,27 +23,67 @@
 class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
 {
     /**
-     * @var array cache time for catalog, statistic, account status, cms options and marketplace synchronisation
+     * @var string cms type
+     */
+    const CMS_TYPE = 'magento';
+
+    /**
+     * @var string sync catalog action
+     */
+    const SYNC_CATALOG = 'catalog';
+
+    /**
+     * @var string sync cms option action
+     */
+    const SYNC_CMS_OPTION = 'cms_option';
+
+    /**
+     * @var string sync status account action
+     */
+    const SYNC_STATUS_ACCOUNT = 'status_account';
+
+    /**
+     * @var string sync marketplace action
+     */
+    const SYNC_MARKETPLACE = 'marketplace';
+
+    /**
+     * @var string sync order action
+     */
+    const SYNC_ORDER = 'order';
+
+    /**
+     * @var string sync action action
+     */
+    const SYNC_ACTION = 'action';
+
+    /**
+     * @var string sync plugin version action
+     */
+    const SYNC_PLUGIN_DATA = 'plugin';
+
+    /**
+     * @var array cache time for catalog, account status, cms options and marketplace synchronisation
      */
     protected $_cacheTimes = array(
-        'catalog' => 21600,
-        'cms_option' => 86400,
-        'status_account' => 86400,
-        'statistic' => 86400,
-        'marketplace' => 43200,
+        self::SYNC_CATALOG => 21600,
+        self::SYNC_CMS_OPTION => 86400,
+        self::SYNC_STATUS_ACCOUNT => 86400,
+        self::SYNC_MARKETPLACE => 43200,
+        self::SYNC_PLUGIN_DATA => 86400,
     );
 
     /**
      * @var array valid sync actions
      */
     protected $_syncActions = array(
-        'order',
-        'cms_option',
-        'status_account',
-        'statistic',
-        'marketplace',
-        'action',
-        'catalog',
+        self::SYNC_ORDER,
+        self::SYNC_CMS_OPTION,
+        self::SYNC_STATUS_ACCOUNT,
+        self::SYNC_MARKETPLACE,
+        self::SYNC_ACTION,
+        self::SYNC_CATALOG,
+        self::SYNC_PLUGIN_DATA,
     );
 
     /**
@@ -87,9 +127,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
             return true;
         }
         $statusAccount = $this->getStatusAccount();
-        if (($statusAccount['type'] === 'free_trial' && $statusAccount['expired'])
-            || $statusAccount['type'] === 'bad_payer'
-        ) {
+        if (($statusAccount['type'] === 'free_trial' && $statusAccount['expired'])) {
             return true;
         }
         return false;
@@ -106,14 +144,14 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
         /** @var Lengow_Connector_Helper_Data $helper */
         $helper = Mage::helper('lengow_connector');
         $data = array(
-            'domain_name' => $_SERVER["SERVER_NAME"],
+            'domain_name' => $_SERVER['SERVER_NAME'],
             'token' => $this->_configHelper->getToken(),
-            'type' => 'magento',
+            'type' => self::CMS_TYPE,
             'version' => Mage::getVersion(),
             'plugin_version' => (string)Mage::getConfig()->getNode()->modules->Lengow_Connector->version,
             'email' => Mage::getStoreConfig('trans_email/ident_general/email'),
             'cron_url' => $helper->getCronUrl(),
-            'return_url' => 'http://' . $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"],
+            'return_url' => 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'],
             'shops' => array(),
         );
         foreach (Mage::app()->getWebsites() as $website) {
@@ -124,10 +162,10 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
                     /** @var Lengow_Connector_Model_Export $export */
                     $export = Mage::getModel('lengow/export', array('store_id' => $storeId));
                     $data['shops'][$storeId] = array(
-                        'token' =>  $this->_configHelper->getToken($storeId),
-                        'shop_name' =>  $store->getName(),
+                        'token' => $this->_configHelper->getToken($storeId),
+                        'shop_name' => $store->getName(),
                         'domain_url' => $store->getBaseUrl(),
-                        'feed_url' =>  $helper->getExportUrl($storeId),
+                        'feed_url' => $helper->getExportUrl($storeId),
                         'total_product_number' => $export->getTotalProduct(),
                         'exported_product_number' => $export->getTotalExportedProduct(),
                         'enabled' => $this->_configHelper->storeIsActive($storeId),
@@ -162,7 +200,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
             }
         }
         // save last update date for a specific settings (change synchronisation interval time)
-        $this->_configHelper->set('last_setting_update', date('Y-m-d H:i:s'));
+        $this->_configHelper->set('last_setting_update', time());
         // clean config cache to valid configuration
         Mage::app()->getCacheInstance()->cleanType('config');
     }
@@ -171,10 +209,11 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
      * Sync Lengow catalogs for order synchronisation
      *
      * @param boolean $force force cache update
+     * @param boolean $logOutput see log or not
      *
      * @return boolean
      */
-    public function syncCatalog($force = false)
+    public function syncCatalog($force = false, $logOutput = false)
     {
         $cleanCache = false;
         if ($this->_configHelper->isNewMerchant()) {
@@ -182,11 +221,17 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
         }
         if (!$force) {
             $updatedAt = $this->_configHelper->get('last_catalog_update');
-            if (!is_null($updatedAt) && (time() - strtotime($updatedAt)) < $this->_cacheTimes['catalog']) {
+            if ($updatedAt !== null && (time() - (int)$updatedAt) < $this->_cacheTimes[self::SYNC_CATALOG]) {
                 return false;
             }
         }
-        $result = Mage::getModel('lengow/connector')->queryApi('get', '/v3.1/cms');
+        $result = Mage::getModel('lengow/connector')->queryApi(
+            Lengow_Connector_Model_Connector::GET,
+            Lengow_Connector_Model_Connector::API_CMS,
+            array(),
+            '',
+            $logOutput
+        );
         if (isset($result->cms)) {
             $cmsToken = $this->_configHelper->getToken();
             foreach ($result->cms as $cms) {
@@ -211,10 +256,10 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
         // clean config cache to valid configuration
         if ($cleanCache) {
             // save last update date for a specific settings (change synchronisation interval time)
-            $this->_configHelper->set('last_setting_update', date('Y-m-d H:i:s'));
+            $this->_configHelper->set('last_setting_update', time());
             Mage::app()->getCacheInstance()->cleanType('config');
         }
-        $this->_configHelper->set('last_catalog_update', date('Y-m-d H:i:s'));
+        $this->_configHelper->set('last_catalog_update', time());
         return true;
     }
 
@@ -256,23 +301,30 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
      * Set CMS options
      *
      * @param boolean $force force cache update
+     * @param boolean $logOutput see log or not
      *
      * @return boolean
      */
-    public function setCmsOption($force = false)
+    public function setCmsOption($force = false, $logOutput = false)
     {
-        if ($this->_configHelper->isNewMerchant() || (bool)$this->_configHelper->get('preprod_mode_enable')) {
+        if ($this->_configHelper->isNewMerchant() || $this->_configHelper->debugModeIsActive()) {
             return false;
         }
         if (!$force) {
             $updatedAt = $this->_configHelper->get('last_option_cms_update');
-            if (!is_null($updatedAt) && (time() - strtotime($updatedAt)) < $this->_cacheTimes['cms_option']) {
+            if ($updatedAt !== null && (time() - (int)$updatedAt) < $this->_cacheTimes[self::SYNC_CMS_OPTION]) {
                 return false;
             }
         }
         $options = Mage::helper('core')->jsonEncode($this->getOptionData());
-        Mage::getModel('lengow/connector')->queryApi('put', '/v3.1/cms', array(), $options);
-        $this->_configHelper->set('last_option_cms_update', date('Y-m-d H:i:s'));
+        Mage::getModel('lengow/connector')->queryApi(
+            Lengow_Connector_Model_Connector::PUT,
+            Lengow_Connector_Model_Connector::API_CMS,
+            array(),
+            $options,
+            $logOutput
+        );
+        $this->_configHelper->set('last_option_cms_update', time());
         return true;
     }
 
@@ -280,21 +332,28 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
      * Get Status Account
      *
      * @param boolean $force force cache update
+     * @param boolean $logOutput see log or not
      *
      * @return array|false
      */
-    public function getStatusAccount($force = false)
+    public function getStatusAccount($force = false, $logOutput = false)
     {
         if ($this->_configHelper->isNewMerchant()) {
             return false;
         }
         if (!$force) {
             $updatedAt = $this->_configHelper->get('last_status_update');
-            if (!is_null($updatedAt) && (time() - strtotime($updatedAt)) < $this->_cacheTimes['status_account']) {
+            if ($updatedAt !== null && (time() - (int)$updatedAt) < $this->_cacheTimes[self::SYNC_STATUS_ACCOUNT]) {
                 return json_decode($this->_configHelper->get('account_status'), true);
             }
         }
-        $result = Mage::getModel('lengow/connector')->queryApi('get', '/v3.0/plans');
+        $result = Mage::getModel('lengow/connector')->queryApi(
+            Lengow_Connector_Model_Connector::GET,
+            Lengow_Connector_Model_Connector::API_PLAN,
+            array(),
+            '',
+            $logOutput
+        );
         if (isset($result->isFreeTrial)) {
             $status = array(
                 'type' => $result->isFreeTrial ? 'free_trial' : '',
@@ -303,7 +362,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
                 'legacy' => $result->accountVersion === 'v2' ? true : false,
             );
             $this->_configHelper->set('account_status', Mage::helper('core')->jsonEncode($status));
-            $this->_configHelper->set('last_status_update', date('Y-m-d H:i:s'));
+            $this->_configHelper->set('last_status_update', time());
             return $status;
         } else {
             if ($this->_configHelper->get('last_status_update')) {
@@ -314,84 +373,21 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Get Statistic for all stores
-     *
-     * @param boolean $force force cache update
-     *
-     * @return array
-     */
-    public function getStatistic($force = false)
-    {
-        if (!$force) {
-            $updatedAt = $this->_configHelper->get('last_statistic_update');
-            if (!is_null($updatedAt) && (time() - strtotime($updatedAt)) < $this->_cacheTimes['statistic']) {
-                return json_decode($this->_configHelper->get('order_statistic'), true);
-            }
-        }
-        $allCurrencyCodes = $this->_configHelper->getAllAvailableCurrencyCodes();
-        $result =  Mage::getModel('lengow/connector')->queryApi(
-            'get',
-            '/v3.0/stats',
-            array(
-                'date_from' => date('c', strtotime(date('Y-m-d') . ' -10 years')),
-                'date_to' => date('c'),
-                'metrics' => 'year',
-            )
-        );
-        if (isset($result->level0)) {
-            $stats = $result->level0[0];
-            $return = array(
-                'total_order' => $stats->revenue,
-                'nb_order' => (int)$stats->transactions,
-                'currency' => $result->currency->iso_a3,
-                'available' => false,
-            );
-        } else {
-            if ($this->_configHelper->get('last_statistic_update')) {
-                return json_decode($this->_configHelper->get('order_statistic'), true);
-            } else {
-                return array(
-                    'total_order' => 0,
-                    'nb_order' => 0,
-                    'currency' => '',
-                    'available' => false,
-                );
-            }
-        }
-        if ($return['total_order'] > 0 || $return['nb_order'] > 0) {
-            $return['available'] = true;
-        }
-        if ($return['currency'] && in_array($return['currency'], $allCurrencyCodes)) {
-            try {
-                $return['total_order'] = Mage::app()->getLocale()
-                    ->currency($return['currency'])
-                    ->toCurrency($return['total_order']);
-            } catch (\Exception $e) {
-                $return['total_order'] = number_format($return['total_order'], 2, ',', ' ');
-            }
-        } else {
-            $return['total_order'] = number_format($return['total_order'], 2, ',', ' ');
-        }
-        $this->_configHelper->set('order_statistic', Mage::helper('core')->jsonEncode($return));
-        $this->_configHelper->set('last_statistic_update', date('Y-m-d H:i:s'));
-        return $return;
-    }
-
-    /**
      * Get marketplace data
      *
      * @param boolean $force force cache update
+     * @param boolean $logOutput see log or not
      *
      * @return array|false
      */
-    public function getMarketplaces($force = false)
+    public function getMarketplaces($force = false, $logOutput = false)
     {
         $folderPath = Mage::getModuleDir('etc', 'Lengow_Connector');
         $filePath = $folderPath . DS . $this->_marketplaceJson;
         if (!$force) {
             $updatedAt = $this->_configHelper->get('last_marketplace_update');
-            if (!is_null($updatedAt)
-                && (time() - strtotime($updatedAt)) < $this->_cacheTimes['marketplace']
+            if ($updatedAt !== null
+                && (time() - (int)$updatedAt) < $this->_cacheTimes[self::SYNC_MARKETPLACE]
                 && file_exists($filePath)
             ) {
                 // recovering data with the marketplaces.json file
@@ -402,7 +398,13 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
             }
         }
         // recovering data with the API
-        $result = Mage::getModel('lengow/connector')->queryApi('get', '/v3.0/marketplaces');
+        $result = Mage::getModel('lengow/connector')->queryApi(
+            Lengow_Connector_Model_Connector::GET,
+            Lengow_Connector_Model_Connector::API_MARKETPLACE,
+            array(),
+            '',
+            $logOutput
+        );
         if ($result && is_object($result) && !isset($result->error)) {
             // updated marketplaces.json file
             try {
@@ -413,15 +415,16 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
                 $file->streamWrite(json_encode($result));
                 $file->streamUnlock();
                 $file->streamClose();
-                $this->_configHelper->set('last_marketplace_update', date('Y-m-d H:i:s'));
+                $this->_configHelper->set('last_marketplace_update', time());
             } catch (Exception $e) {
                 $helper = Mage::helper('lengow_connector/data');
                 $helper->log(
-                    'Import',
+                    Lengow_Connector_Helper_Data::CODE_IMPORT,
                     $helper->setLogMessage(
                         'log.import.marketplace_update_failed',
                         array('error_message' => $e->getMessage())
-                    )
+                    ),
+                    $logOutput
                 );
             }
             return $result;
@@ -432,6 +435,56 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
                 if ($marketplacesData) {
                     return json_decode($marketplacesData);
                 }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Get Lengow plugin data (last version and download link)
+     *
+     * @param boolean $force force cache update
+     * @param boolean $logOutput see log or not
+     *
+     * @return array|false
+     */
+    public function getPluginData($force = false, $logOutput = false)
+    {
+        if ($this->_configHelper->isNewMerchant()) {
+            return false;
+        }
+        if (!$force) {
+            $updatedAt = $this->_configHelper->get('last_plugin_data_update');
+            if ($updatedAt !== null && (time() - (int)$updatedAt) < $this->_cacheTimes[self::SYNC_PLUGIN_DATA]) {
+                return json_decode($this->_configHelper->get('plugin_data'), true);
+            }
+        }
+        $plugins = Mage::getModel('lengow/connector')->queryApi(
+            Lengow_Connector_Model_Connector::GET,
+            Lengow_Connector_Model_Connector::API_PLUGIN,
+            array(),
+            '',
+            $logOutput
+        );
+        if ($plugins) {
+            $pluginData = false;
+            foreach ($plugins as $plugin) {
+                if ($plugin->type === self::CMS_TYPE) {
+                    $pluginData = array(
+                        'version' => $plugin->version,
+                        'download_link' => $plugin->archive,
+                    );
+                    break;
+                }
+            }
+            if ($pluginData) {
+                $this->_configHelper->set('plugin_data', Mage::helper('core')->jsonEncode($pluginData));
+                $this->_configHelper->set('last_plugin_data_update', time());
+                return $pluginData;
+            }
+        } else {
+            if ($this->_configHelper->get('plugin_data')) {
+                return json_decode($this->_configHelper->get('plugin_data'), true);
             }
         }
         return false;

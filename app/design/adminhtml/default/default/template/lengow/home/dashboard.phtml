@@ -1,9 +1,6 @@
 <?php
     /** @var Lengow_Connector_Helper_Data $helper */
     $helper = Mage::helper('lengow_connector');
-    $stats = Mage::helper('lengow_connector/sync')->getStatistic();
-    $totalOrder = isset($stats['total_order']) ? $stats['total_order'] : 0;
-    $nbOrder = isset($stats['nb_order']) ? $stats['nb_order'] : 0;
     $orderToBeSent = Mage::getModel('lengow/import_order')->countOrderToBeSent();
 ?>
 
@@ -11,7 +8,7 @@
     <div class="lgw-box lgw-home-header text-center">
         <img src="<?php echo $this->getSkinUrl('lengow/images/') ?>lengow-white-big.png" alt="lengow">
         <h1><?php echo $helper->__('dashboard.screen.welcome_back'); ?></h1>
-        <a href="http://my.lengow.io/" class="lgw-btn" target="_blank" title="<?php echo $helper->__('dashboard.screen.go_to_lengow'); ?>">
+        <a href="//my.<?php echo Lengow_Connector_Model_Connector::LENGOW_URL; ?>" class="lgw-btn" target="_blank" title="<?php echo $helper->__('dashboard.screen.go_to_lengow'); ?>">
             <?php echo $helper->__('dashboard.screen.go_to_lengow'); ?>
         </a>
     </div>
@@ -49,28 +46,6 @@
             </a>
         </div>
     </div>
-    <?php if($stats['available']) { ?>
-    <div class="lgw-box text-center">
-        <img src="<?php echo $this->getSkinUrl('lengow/images/') ?>picto-stats.png" class="img-responsive">
-        <h2><?php echo $helper->__('dashboard.screen.partner_business'); ?></h2>
-        <div class="lgw-row lgw-home-stats">
-            <div class="lgw-col-4 lgw-col-offset-2">
-                <h5><?php echo $helper->__('dashboard.screen.stat_turnover'); ?></h5>
-                <span class="stats-big-value"><?php echo $totalOrder; ?></span>
-            </div>
-            <div class="lgw-col-4">
-                <h5><?php echo $helper->__('dashboard.screen.stat_nb_orders'); ?></h5>
-                <span class="stats-big-value"><?php echo $nbOrder; ?></span>
-            </div>
-        </div>
-        <p>
-            <a href="http://my.lengow.io/" target="_blank"
-                title="<?php echo $helper->__('dashboard.screen.stat_more_stats'); ?>" class="lgw-btn lgw-btn-white">
-                <?php echo $helper->__('dashboard.screen.stat_more_stats'); ?>
-            </a>
-        </p>
-    </div>
-    <?php } ?>
     <div class="lgw-box">
         <h2><?php echo $helper->__('dashboard.screen.some_help_title'); ?></h2>
         <p>

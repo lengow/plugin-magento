@@ -33,11 +33,81 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
     const STATE_FINISH = 1;
 
     /**
+     * @var string action type ship
+     */
+    const TYPE_SHIP = 'ship';
+
+    /**
+     * @var string action type cancel
+     */
+    const TYPE_CANCEL = 'cancel';
+
+    /**
+     * @var string action argument action type
+     */
+    const ARG_ACTION_TYPE = 'action_type';
+
+    /**
+     * @var string action argument line
+     */
+    const ARG_LINE = 'line';
+
+    /**
+     * @var string action argument carrier
+     */
+    const ARG_CARRIER = 'carrier';
+
+    /**
+     * @var string action argument carrier name
+     */
+    const ARG_CARRIER_NAME = 'carrier_name';
+
+    /**
+     * @var string action argument custom carrier
+     */
+    const ARG_CUSTOM_CARRIER = 'custom_carrier';
+
+    /**
+     * @var string action argument shipping method
+     */
+    const ARG_SHIPPING_METHOD = 'shipping_method';
+
+    /**
+     * @var string action argument tracking number
+     */
+    const ARG_TRACKING_NUMBER = 'tracking_number';
+
+    /**
+     * @var string action argument shipping price
+     */
+    const ARG_SHIPPING_PRICE = 'shipping_price';
+
+    /**
+     * @var string action argument shipping date
+     */
+    const ARG_SHIPPING_DATE = 'shipping_date';
+
+    /**
+     * @var string action argument delivery date
+     */
+    const ARG_DELIVERY_DATE = 'delivery_date';
+
+    /**
+     * @var integer max interval time for action synchronisation (3 days)
+     */
+    const MAX_INTERVAL_TIME = 259200;
+
+    /**
+     * @var integer security interval time for action synchronisation (2 hours)
+     */
+    const SECURITY_INTERVAL_TIME = 7200;
+
+    /**
      * @var array Parameters to delete for Get call
      */
     public static $getParamsToDelete = array(
-        'shipping_date',
-        'delivery_date',
+        self::ARG_SHIPPING_DATE,
+        self::ARG_DELIVERY_DATE,
     );
 
     /**
@@ -147,7 +217,7 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
         $results = $this->getCollection()
             ->addFieldToFilter('action_id', $actionId)
             ->getData();
-        if (count($results) > 0) {
+        if (!empty($results)) {
             return (int)$results[0]['id'];
         }
         return false;
@@ -166,11 +236,11 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
         $collection = $this->getCollection()
             ->addFieldToFilter('order_id', $orderId)
             ->addFieldToFilter('state', self::STATE_NEW);
-        if (!is_null($actionType)) {
+        if ($actionType !== null) {
             $collection->addFieldToFilter('action_type', $actionType);
         }
         $results = $collection->getData();
-        if (count($results) > 0) {
+        if (!empty($results)) {
             return $results;
         }
         return false;
@@ -189,7 +259,7 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
             ->addFieldToFilter('order_id', $orderId)
             ->addFieldToFilter('state', self::STATE_NEW)
             ->addFieldToSelect('action_type');
-        if (count($results) > 0) {
+        if (!empty($results)) {
             $lastAction = $results->getLastItem()->getData();
             return (string)$lastAction['action_type'];
         }
@@ -206,7 +276,7 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
         $results = $this->getCollection()
             ->addFieldToFilter('main_table.state', self::STATE_NEW)
             ->getData();
-        if (count($results) > 0) {
+        if (!empty($results)) {
             return $results;
         }
         return false;
@@ -233,7 +303,11 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
                 unset($getParams[$param]);
             }
         }
-        $result = Mage::getModel('lengow/connector')->queryApi('get', '/v3.0/orders/actions/', $getParams);
+        $result = Mage::getModel('lengow/connector')->queryApi(
+            Lengow_Connector_Model_Connector::GET,
+            Lengow_Connector_Model_Connector::API_ORDER_ACTION,
+            $getParams
+        );
         if (isset($result->error) && isset($result->error->message)) {
             throw new Lengow_Connector_Model_Exception($result->error->message);
         }
@@ -254,9 +328,11 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
                     $this->createAction(
                         array(
                             'order_id' => $order->getId(),
-                            'action_type' => $params['action_type'],
+                            'action_type' => $params[Lengow_Connector_Model_Import_Action::ARG_ACTION_TYPE],
                             'action_id' => $row->id,
-                            'order_line_sku' => isset($params['line']) ? $params['line'] : null,
+                            'order_line_sku' => isset($params[Lengow_Connector_Model_Import_Action::ARG_LINE])
+                                ? $params[Lengow_Connector_Model_Import_Action::ARG_LINE]
+                                : null,
                             'parameters' => Mage::helper('core')->jsonEncode($params),
                         )
                     );
@@ -279,15 +355,21 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
     {
         /** @var Lengow_Connector_Helper_Data $helper */
         $helper = Mage::helper('lengow_connector/data');
-        if (!(bool)Mage::helper('lengow_connector/config')->get('preprod_mode_enable')) {
-            $result = Mage::getModel('lengow/connector')->queryApi('post', '/v3.0/orders/actions/', $params);
+        if (!Mage::helper('lengow_connector/config')->debugModeIsActive()) {
+            $result = Mage::getModel('lengow/connector')->queryApi(
+                Lengow_Connector_Model_Connector::POST,
+                Lengow_Connector_Model_Connector::API_ORDER_ACTION,
+                $params
+            );
             if (isset($result->id)) {
                 $this->createAction(
                     array(
                         'order_id' => $order->getId(),
-                        'action_type' => $params['action_type'],
+                        'action_type' => $params[Lengow_Connector_Model_Import_Action::ARG_ACTION_TYPE],
                         'action_id' => $result->id,
-                        'order_line_sku' => isset($params['line']) ? $params['line'] : null,
+                        'order_line_sku' => isset($params[Lengow_Connector_Model_Import_Action::ARG_LINE])
+                            ? $params[Lengow_Connector_Model_Import_Action::ARG_LINE]
+                            : null,
                         'parameters' => Mage::helper('core')->jsonEncode($params),
                     )
                 );
@@ -310,7 +392,7 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
             $paramList .= !$paramList ? '"' . $param . '": ' . $value : ' -- "' . $param . '": ' . $value;
         }
         $helper->log(
-            'API-OrderAction',
+            Lengow_Connector_Helper_Data::CODE_ACTION,
             $helper->setLogMessage('log.order_action.call_tracking', array('parameters' => $paramList)),
             false,
             $order->getData('order_id_lengow')
@@ -331,11 +413,11 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
         $collection = $this->getCollection()
             ->addFieldToFilter('order_id', $orderId)
             ->addFieldToFilter('state', self::STATE_NEW);
-        if (!is_null($actionType)) {
+        if ($actionType !== null) {
             $collection->addFieldToFilter('action_type', $actionType);
         }
         $results = $collection->addFieldToSelect('id')->getData();
-        if (count($results) > 0) {
+        if (!empty($results)) {
             foreach ($results as $result) {
                 $action = Mage::getModel('lengow/import_action')->load($result['id']);
                 $action->updateAction(array('state' => self::STATE_FINISH));
@@ -349,34 +431,59 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
     /**
      * Check if active actions are finished
      *
+     * @param boolean $logOutput see log or not
+     *
      * @return boolean
      */
-    public function checkFinishAction()
+    public function checkFinishAction($logOutput = false)
     {
         /** @var Lengow_Connector_Helper_Data $helper */
         $helper = Mage::helper('lengow_connector/data');
-        if ((bool) Mage::helper('lengow_connector/config')->get('preprod_mode_enable')) {
+        /** @var Lengow_Connector_Helper_Config $configHelper */
+        $configHelper = Mage::helper('lengow_connector/config');
+        if ($configHelper->debugModeIsActive()) {
             return false;
         }
-        $helper->log('API-OrderAction', $helper->setLogMessage('log.order_action.check_completed_action'));
+        $helper->log(
+            Lengow_Connector_Helper_Data::CODE_ACTION,
+            $helper->setLogMessage('log.order_action.check_completed_action'),
+            $logOutput
+        );
         // get all active actions
         $activeActions = $this->getActiveActions();
         // if no active action, do nothing
         if (!$activeActions) {
             return true;
         }
-        // get all actions with API for 3 days
+        // get all actions with API (max 3 days)
         $page = 1;
         $apiActions = array();
+        $coreDate = Mage::getModel('core/date');
+        $intervalTime = $this->_getIntervalTime();
+        $dateFrom = time() - $intervalTime;
+        $dateTo = time();
+        $helper->log(
+            Lengow_Connector_Helper_Data::CODE_ACTION,
+            $helper->setLogMessage(
+                'log.order_action.connector_get_all_action',
+                array(
+                    'date_from' => $coreDate->date('Y-m-d H:i:s', $dateFrom),
+                    'date_to' => $coreDate->date('Y-m-d H:i:s', $dateTo),
+                )
+            ),
+            $logOutput
+        );
         do {
             $results = Mage::getModel('lengow/connector')->queryApi(
-                'get',
-                '/v3.0/orders/actions/',
+                Lengow_Connector_Model_Connector::GET,
+                Lengow_Connector_Model_Connector::API_ORDER_ACTION,
                 array(
-                    'updated_from' => date('c', strtotime(date('Y-m-d') . ' -3days')),
-                    'updated_to' => date('c'),
+                    'updated_from' => $coreDate->date('c', $dateFrom),
+                    'updated_to' => $coreDate->date('c', $dateTo),
                     'page' => $page,
-                )
+                ),
+                '',
+                $logOutput
             );
             if (!is_object($results) || isset($results->error)) {
                 break;
@@ -424,7 +531,9 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
                         if ((bool)$orderLengow->getData('is_in_error')) {
                             $orderLengow->updateOrder(array('is_in_error' => 0));
                         }
-                        $processStateFinish = $orderLengow->getOrderProcessState('closed');
+                        $processStateFinish = $orderLengow->getOrderProcessState(
+                            Lengow_Connector_Model_Import_Order::STATE_CLOSED
+                        );
                         if ((int)$orderLengow->getData('order_process_state') !== $processStateFinish) {
                             // if action is accepted -> close order and finish all order actions
                             if ($apiActions[$action['action_id']]->processed == true
@@ -443,12 +552,12 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
                                 );
                                 $orderLengow->updateOrder(array('is_in_error' => 1));
                                 $helper->log(
-                                    'API-OrderAction',
+                                    Lengow_Connector_Helper_Data::CODE_ACTION,
                                     $helper->setLogMessage(
                                         'log.order_action.call_action_failed',
                                         array('decoded_message' => $apiActions[$action['action_id']]->errors)
                                     ),
-                                    false,
+                                    $logOutput,
                                     $orderLengow->getData('marketplace_sku')
                                 );
                                 unset($orderError);
@@ -460,49 +569,44 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
                 }
             }
         }
+        $configHelper->set('last_action_sync', time());
         return true;
     }
 
     /**
      * Remove old actions > 3 days
      *
-     * @param string|null $actionType action type (null, ship or cancel)
+     * @param boolean $logOutput see log or not
      *
      * @return boolean
      */
-    public function checkOldAction($actionType = null)
+    public function checkOldAction($logOutput = false)
     {
         /** @var Lengow_Connector_Helper_Data $helper */
         $helper = Mage::helper('lengow_connector/data');
-        if ((bool)Mage::helper('lengow_connector/config')->get('preprod_mode_enable')) {
+        if (Mage::helper('lengow_connector/config')->debugModeIsActive()) {
             return false;
         }
-        $helper->log('API-OrderAction', $helper->setLogMessage('log.order_action.check_old_action'));
+        $helper->log(
+            Lengow_Connector_Helper_Data::CODE_ACTION,
+            $helper->setLogMessage('log.order_action.check_old_action'),
+            $logOutput
+        );
         // get all old order action (+ 3 days)
-        $collection = $this->getCollection()
-            ->addFieldToFilter('state', self::STATE_NEW)
-            ->addFieldToFilter(
-                'created_at',
-                array(
-                    'to' => strtotime('-3 days', time()),
-                    'datetime' => true,
-                )
-            );
-        if (!is_null($actionType)) {
-            $collection->addFieldToFilter('action_type', $actionType);
-        }
-        $results = $collection->getData();
-        if (count($results) > 0) {
-            foreach ($results as $result) {
+        $actions = $this->getOldActions();
+        if ($actions) {
+            foreach ($actions as $action) {
                 /** @var Lengow_Connector_Model_Import_Action $action */
-                $action = Mage::getModel('lengow/import_action')->load($result['id']);
+                $action = Mage::getModel('lengow/import_action')->load($action['id']);
                 $action->updateAction(array('state' => self::STATE_FINISH));
                 $orderLengowId = Mage::getModel('lengow/import_order')
-                    ->getLengowOrderIdWithOrderId($result['order_id']);
+                    ->getLengowOrderIdWithOrderId($action['order_id']);
                 if ($orderLengowId) {
                     /** @var Lengow_Connector_Model_Import_Order $orderLengow */
                     $orderLengow = Mage::getModel('lengow/import_order')->load($orderLengowId);
-                    $processStateFinish = $orderLengow->getOrderProcessState('closed');
+                    $processStateFinish = $orderLengow->getOrderProcessState(
+                        Lengow_Connector_Model_Import_Order::STATE_CLOSED
+                    );
                     if ((int)$orderLengow->getData('order_process_state') !== $processStateFinish
                         && !(bool)$orderLengow->getData('is_in_error')
                     ) {
@@ -518,14 +622,17 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
                             )
                         );
                         $orderLengow->updateOrder(array('is_in_error' => 1));
-                        $decodedMessage = $helper->decodeLogMessage($errorMessage, 'en_GB');
+                        $decodedMessage = $helper->decodeLogMessage(
+                            $errorMessage,
+                            Lengow_Connector_Helper_Translation::DEFAULT_ISO_CODE
+                        );
                         $helper->log(
-                            'API-OrderAction',
+                            Lengow_Connector_Helper_Data::CODE_ACTION,
                             $helper->setLogMessage(
                                 'log.order_action.call_action_failed',
                                 array('decoded_message' => $decodedMessage)
                             ),
-                            false,
+                            $logOutput,
                             $orderLengow->getData('marketplace_sku')
                         );
                         unset($orderError);
@@ -540,27 +647,72 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
     }
 
     /**
+     * Get old untreated actions of more than 3 days
+     *
+     * @return array|false
+     */
+    public function getOldActions()
+    {
+        $collection = $this->getCollection()
+            ->addFieldToFilter('state', self::STATE_NEW)
+            ->addFieldToFilter(
+                'created_at',
+                array(
+                    'to' => time() - self::MAX_INTERVAL_TIME,
+                    'datetime' => true,
+                )
+            );
+        $results = $collection->getData();
+        return !empty($results) ? $results : false;
+    }
+
+    /**
      * Check if actions are not sent
+     *
+     * @param boolean $logOutput see log or not
      *
      * @return boolean
      */
-    public function checkActionNotSent()
+    public function checkActionNotSent($logOutput = false)
     {
         /** @var Lengow_Connector_Helper_Data $helper */
         $helper = Mage::helper('lengow_connector/data');
-        if ((bool)Mage::helper('lengow_connector/config')->get('preprod_mode_enable')) {
+        if (Mage::helper('lengow_connector/config')->debugModeIsActive()) {
             return false;
         }
-        $helper->log('API-OrderAction', $helper->setLogMessage('log.order_action.check_action_not_sent'));
+        $helper->log(
+            Lengow_Connector_Helper_Data::CODE_ACTION,
+            $helper->setLogMessage('log.order_action.check_action_not_sent'),
+            $logOutput
+        );
         // get unsent orders
         $unsentOrders = Mage::getModel('lengow/import_order')->getUnsentOrders();
         if ($unsentOrders) {
             foreach ($unsentOrders as $unsentOrder) {
                 $order = Mage::getModel('sales/order')->load($unsentOrder['order_id']);
-                $shipment = $unsentOrder['action'] === 'ship' ? $order->getShipmentsCollection()->getFirstItem() : null;
+                $shipment = $unsentOrder['action'] === Lengow_Connector_Model_Import_Action::TYPE_SHIP
+                    ? $order->getShipmentsCollection()->getFirstItem()
+                    : null;
                 Mage::getModel('lengow/import_order')->callAction($unsentOrder['action'], $order, $shipment);
             }
         }
         return true;
+    }
+
+    /**
+     * Get interval time for action synchronisation
+     *
+     * @return integer
+     */
+    protected function _getIntervalTime()
+    {
+        $intervalTime = self::MAX_INTERVAL_TIME;
+        $lastActionSynchronisation = Mage::helper('lengow_connector/config')->get('last_action_sync');
+        if ($lastActionSynchronisation) {
+            $lastIntervalTime = time() - (int)$lastActionSynchronisation;
+            $lastIntervalTime = $lastIntervalTime + self::SECURITY_INTERVAL_TIME;
+            $intervalTime = $lastIntervalTime > $intervalTime ? $intervalTime : $lastIntervalTime;
+        }
+        return $intervalTime;
     }
 }

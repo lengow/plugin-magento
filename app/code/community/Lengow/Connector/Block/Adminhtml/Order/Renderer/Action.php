@@ -69,7 +69,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Renderer_Action
         } else {
             //check if order actions in progress
             $orderId = $row->getData('order_id');
-            if (!is_null($orderId) && $orderProcessState === 1) {
+            if ($orderId !== null && $orderProcessState === 1) {
                 $lastActionType = Mage::getModel('lengow/import_action')->getLastOrderActionType($orderId);
                 if ($lastActionType) {
                     return '<a class="lengow_action lengow_tooltip lgw-btn lgw-btn-white">'

@@ -33,7 +33,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Renderer_Country
     public function render(Varien_Object $row)
     {
         $isoCode = $row->getData($this->getColumn()->getIndex());
-        if (!is_null($isoCode) && strlen($isoCode) === 2) {
+        if ($isoCode !== null && strlen($isoCode) === 2) {
             $filename = $this->getSkinUrl('lengow/images/flag') . DS . strtoupper($isoCode) . '.png';
             $countryName = Mage::getModel('directory/country')->loadByCode($isoCode)->getName();
             return '<a class="lengow_tooltip" href="#"><img src="' . $filename . '" />

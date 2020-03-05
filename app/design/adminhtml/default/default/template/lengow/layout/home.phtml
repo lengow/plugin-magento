@@ -2,14 +2,13 @@
     $isNewMerchant = Mage::helper('lengow_connector/config')->isNewMerchant();
     $isSync = Mage::app()->getRequest()->getParam('isSync');
     $statusAccount = Mage::helper('lengow_connector/sync')->getStatusAccount();
-    $isoCode = strtolower(substr(Mage::app()->getLocale()->getLocaleCode(), 0, 2));
     if ($isNewMerchant || $isSync) {
+        $isoCode = strtolower(substr(Mage::app()->getLocale()->getLocaleCode(), 0, 2));
         echo $this->getChildHtml("lengow_new");
         echo '<input type="hidden" id="lengow_sync_link" value="' . $isSync . '">';
         echo '<input type="hidden" id="lengow_lang_iso" value="' . $isoCode . '">';
-    } elseif (($statusAccount['type'] === 'free_trial' && $statusAccount['expired'])
-        || ($statusAccount['type'] === 'bad_payer')
-    ) {
+        echo '<input type="hidden" id="lengow_url" value="' . Lengow_Connector_Model_Connector::LENGOW_URL . '">';
+    } elseif (($statusAccount['type'] === 'free_trial' && $statusAccount['expired'])) {
         echo $this->getChildHtml('lengow_status');
     } else {
         echo '<div class="lgw-container">';

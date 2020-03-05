@@ -35,12 +35,12 @@ class Lengow_Connector_Model_Config extends Mage_Core_Model_Config
      * @var array excludes attributes for export
      */
     protected $_excludeOptions = array(
+        'authorization_token',
+        'last_authorization_token_update',
         'import_in_progress',
         'last_import_manual',
         'last_import_cron',
         'export_last_export',
-        'last_statistic_update',
-        'order_statistic',
         'see_migrate_block',
         'last_status_update',
         'account_status',
@@ -49,6 +49,8 @@ class Lengow_Connector_Model_Config extends Mage_Core_Model_Config
         'last_marketplace_update',
         'last_catalog_update',
         'last_setting_update',
+        'plugin_data',
+        'last_plugin_data_update',
     );
 
     /**
@@ -125,10 +127,10 @@ class Lengow_Connector_Model_Config extends Mage_Core_Model_Config
                             )
                         );
                     }
-                    Mage::helper('lengow_connector')->log('Config', $message);
+                    Mage::helper('lengow_connector')->log(Lengow_Connector_Helper_Data::CODE_SETTING, $message);
                     // save last update date for a specific settings (change synchronisation interval time)
                     if (in_array($pathExplode[2], $this->_updatedSettings)) {
-                        Mage::helper('lengow_connector/config')->set('last_setting_update', date('Y-m-d H:i:s'));
+                        Mage::helper('lengow_connector/config')->set('last_setting_update', time());
                     }
                 }
             }

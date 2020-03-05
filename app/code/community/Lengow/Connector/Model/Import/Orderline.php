@@ -65,7 +65,7 @@ class Lengow_Connector_Model_Import_Orderline extends Mage_Core_Model_Abstract
             $helper = Mage::helper('lengow_connector/data');
             $errorMessage = 'Orm error: "' . $e->getMessage() . '" ' . $e->getFile() . ' line ' . $e->getLine();
             $helper->log(
-                'Orm',
+                Lengow_Connector_Helper_Data::CODE_ORM,
                 $helper->setLogMessage('log.orm.record_insert_failed', array('error_message' => $errorMessage))
             );
             return false;
@@ -85,7 +85,7 @@ class Lengow_Connector_Model_Import_Orderline extends Mage_Core_Model_Abstract
             ->addFieldToFilter('order_id', $orderId)
             ->addFieldToSelect('order_line_id')
             ->getData();
-        if (count($results) > 0) {
+        if (!empty($results)) {
             return $results;
         }
         return false;

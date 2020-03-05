@@ -99,7 +99,7 @@ class Lengow_Connector_Adminhtml_Lengow_ProductController extends Mage_Adminhtml
                 }
             }
             // need to set default value if not set
-            if (count($defaultStoreProductToUpdate) > 0) {
+            if (!empty($defaultStoreProductToUpdate)) {
                 $productAction->updateAttributes($defaultStoreProductToUpdate, array('lengow_product' => 0), 0);
             }
             if ($storeId !== 0) {

@@ -65,12 +65,10 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action
         $stream = $this->getRequest()->getParam('stream', null);
         $offset = $this->getRequest()->getParam('offset', null);
         $limit = $this->getRequest()->getParam('limit', null);
-        $selection = is_null($selection) ? $this->getRequest()->getParam('selection', null) : $selection;
-        $outOfStock = is_null($outOfStock) ? $this->getRequest()->getParam('out_of_stock', null) : $outOfStock;
-        $productIds = is_null($productIds) ? $this->getRequest()->getParam('product_ids', null) : $productIds;
-        $productTypes = is_null($productTypes)
-            ? $this->getRequest()->getParam('product_types', null)
-            : $productTypes;
+        $selection = $selection === null ? $this->getRequest()->getParam('selection', null) : $selection;
+        $outOfStock = $outOfStock === null ? $this->getRequest()->getParam('out_of_stock', null) : $outOfStock;
+        $productIds = $productIds === null ? $this->getRequest()->getParam('product_ids', null) : $productIds;
+        $productTypes = $productTypes === null ? $this->getRequest()->getParam('product_types', null) : $productTypes;
         $productStatus = $this->getRequest()->getParam('product_status', null);
         $legacyFields = $this->getRequest()->getParam('legacy_fields', null);
         $logOutput = $this->getRequest()->getParam('log_output', null);
@@ -134,7 +132,7 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action
             } catch (Exception $e) {
                 $errorMessage = '[Magento error] "' . $e->getMessage()
                     . '" ' . $e->getFile() . ' line ' . $e->getLine();
-                $helper->log('Export', $errorMessage);
+                $helper->log(Lengow_Connector_Helper_Data::CODE_EXPORT, $errorMessage);
                 $this->getResponse()->setHeader('HTTP/1.1', '500 Internal Server Error');
                 $this->getResponse()->setBody($errorMessage);
             }

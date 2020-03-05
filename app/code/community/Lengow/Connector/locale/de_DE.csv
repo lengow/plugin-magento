@@ -6,9 +6,11 @@ menu.help|Hilfe
 module.name|Lengow
 global.just_yes|Ja
 global.just_no|Nein
-header.preprod_active|Vorproduktionsmodus
+header.debug_active|Debug Mode
 header.counter|Testzeitraum: %{counter} Tag(e) verbleiben.
 header.upgrade_account|Jetzt anmelden!
+header.new_version_available|Eine neue Version %{version} ist verfügbar!
+header.download_plugin|Herunterladen
 footer.toolbox|Toolbox
 footer.legals|Rechtshinweise
 footer.plugin_lengow|Lengow Magento Plugin
@@ -21,10 +23,6 @@ dashboard.screen.orders_title|Bestellungen
 dashboard.screen.orders_text|Verwalten Sie Ihre Bestellungen direkt in Ihrem Magento-Dashboard
 dashboard.screen.settings_title|Einstellungen
 dashboard.screen.settings_text|Konfigurieren Sie Ihr Magento-Plugin 
-dashboard.screen.partner_business|Lengow, Ihr Geschäftspartner
-dashboard.screen.stat_turnover|Umsatz
-dashboard.screen.stat_nb_orders|Bestellungen
-dashboard.screen.stat_more_stats|Wünschen Sie mehr Statistiken?
 dashboard.screen.some_help_title|Benötigen Sie Hilfe?
 dashboard.screen.get_in_touch|Kontaktieren Sie Lengow
 dashboard.screen.visit_help_center|Schauen Sie im Help Center
@@ -34,12 +32,6 @@ status.screen.subtitle_end_free_trial|Ihr Testzeitraum ist nun abgelaufen
 status.screen.first_description_end_free_trial|Ihr 15-tägiger Testzeitraum ist nun abgelaufen. Wir wissen, dass es traurige Neuigkeiten sind, aber das Beste kommt erst noch. Wir hoffen aufrichtig, dass Lengow zu Ihrem Unternehmenserfolg beitragen konnte.
 status.screen.second_description_end_free_trial|Ihr Account wird gesperrt, bis Sie eine neue Lizenz erwerben. Dies gilt auch für bereits erstellte Verteilungen und Imports!
 status.screen.third_description_end_free_trial|Ihr Trial-Account wird 30 Tage nach dem Ende Ihres Test-Zeitraums automatisch gelöscht. Gehen Sie auf Nummer sicher und melden Sie sich an - nur so sichern Sie Ihre bereits geleistete Arbeit an Ihren Kanälen.
-status.screen.subtitle_bad_payer|Ihr Konto wurde vorläufig geschlossen
-status.screen.first_description_bad_payer|Wir informieren Sie, dass wir Ihren Zugang zu Ihrem Konto blockieren mussten, da die automatische Überweisung leider nicht bei uns eingegangen ist.
-status.screen.second_description_bad_payer|Die Publizierung Ihres Produktdatenfeeds wurde vorübergehend eingestellt. Wir empfehlen Ihnen dringend, mit uns in Kontakt zu treten über
-status.screen.phone_bad_payer|oder telefonisch unter: +49 (0)3222-17 41 093
-status.screen.third_description_bad_payer|Wir hoffen auf eine zeitnahe neue Zusammenarbeit.
-status.screen.facturation_button|Siehe meine Rechnungsinformation
 status.screen.upgrade_account_button|Ich bin bereit mich anzumelden!
 status.screen.refresh_action| Meinen Account aktualisieren
 product.screen.title|Produkt exportieren
@@ -65,7 +57,7 @@ product.table.publication|Eintrag
 order.screen.title|Bestellungen
 order.screen.button_import|Bestellungen synchronisieren
 order.screen.button_migrate|Diese Nachricht nicht mehr anzeigen
-order.screen.preprod_warning_message|Sie sind im Pre-Production-Modus. Sie können Bestellungen importieren, die Interaktion mit Lengow ist aber nicht möglich. <a  href=%{url}>Ändern Sie dies</a> 
+order.screen.debug_warning_message|Sie sind im Debug Mode. Sie können Bestellungen importieren, die Interaktion mit Lengow ist aber nicht möglich. <a href=%{url}>Ändern Sie dies</a>
 order.screen.nb_old_order_imported|Mit Lengow haben Sie bereits %{nb_order} Bestellungen importiert und abgewickelt
 order.screen.order_visible_in_page|%{nb_order} Bestellungen warten auf Ihren Versand und sind hier ersichtlich
 order.screen.where_see_old_order|Sie können die abgewickelten Bestellungen in der Magento-Bestellübersicht einsehen
@@ -285,8 +277,8 @@ lengow_setting.import_report_mail_address_comment|Email getrennt durch ;
 lengow_setting.import_ship_mp_enabled_title|Durch einen Marktplatz versandte Bestellungen importieren
 lengow_setting.import_stock_ship_mp_title|Ich möchte meinen Lagerbestand verringern
 lengow_setting.import_stock_ship_mp_comment| Verwenden Sie diese Option, damit Bestellungen auf Marktplätzen in Ihrem Magento-Backoffice einbezogen werden
-lengow_setting.import_preprod_mode_enable_title|Preprod-Modus
-lengow_setting.import_preprod_mode_enable_comment|Nur für Preprod-Modus: keine Synchronisierung mit Lengow, Bestellungen immer importiert
+lengow_setting.import_debug_mode_enable_title|Debug Mode aktivieren
+lengow_setting.import_debug_mode_enable_comment|Dieser Modus zur Prüfung und Auftragsimulation verwenden. Diese Einstellung NUR auf Ihrem Pre-Production Server aktivieren
 lengow_setting.import_cron_enable_title|Magentocron aktivieren
 lengow_setting.import_cron_enable_comment|Geplante Tasks aktivieren, um Ihre Bestellungen alle 30 Minuten zu importieren
 lengow_log.error.nb_order_imported| %{nb_order} Bestellung(en) importiert
@@ -309,9 +301,7 @@ lengow_log.error.no_country_for_billing_address|Fehler Lengow: Rechnungsadresse 
 lengow_log.exception.product_not_be_found|produkt %{product_id} konnte nicht gefunden werden
 lengow_log.exception.product_is_a_parent|produkt %{product_id} hat eine Vorgänger-ID. Produktvariation wird benötigt
 lengow_log.exception.no_connection_webservice|verbindung mit dem Lengow Webservice im Laden %{store_name} (%{store_id}) funktionierte nicht.
-lengow_log.exception.error_lengow_webservice|Lengow Webservice : %{error_code} - %{error_message} auf Lager %{store_name} (%{store_id})
-lengow_log.exception.timeout_api|API Anruf wegen Zeitüberschreitung blockiert
-lengow_log.exception.error_curl|fehler Curl %{error_code} - %{error_message}
+lengow_log.exception.error_lengow_webservice|Lengow Webservice : %{error_code} - "%{error_message}" auf Lager %{store_name} (%{store_id})
 lengow_log.exception.marketplace_not_present|Lengow Fehler: %{marketplace_name} erscheint nicht in der Marketplace-Liste
 lengow_log.exception.order_failed_with_quote|auf dem Angebot basierende Bestellung konnte nicht erstellt werden
 lengow_log.exception.order_is_empty|bestellung konnte nicht gespeichert werden

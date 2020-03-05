@@ -73,7 +73,7 @@ class Lengow_Connector_Model_System_Config_Source_Attribute extends Mage_Core_Mo
             $code = 'default';
             $storeId = 0;
         }
-        if (is_null(Mage::getStoreConfig('lengow_export_options/advanced/export_attribute', $storeId))) {
+        if (Mage::getStoreConfig('lengow_export_options/advanced/export_attribute', $storeId) === null) {
             $attributeList = '';
             foreach ($attributeArray as $attribute) {
                 if ($attribute['value'] !== 'none') {

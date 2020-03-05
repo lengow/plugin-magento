@@ -100,12 +100,14 @@ class Lengow_Connector_Model_Import_Quote extends Mage_Sales_Model_Quote
             // check whether the product is canceled
             if ($product->marketplace_status !== null) {
                 $stateProduct = $marketplace->getStateLengow((string)$product->marketplace_status);
-                if ($stateProduct === 'canceled' || $stateProduct === 'refused') {
-                    $productId = !is_null($product->merchant_product_id->id)
+                if ($stateProduct === Lengow_Connector_Model_Import_Order::STATE_CANCELED
+                    || $stateProduct === Lengow_Connector_Model_Import_Order::STATE_REFUSED
+                ) {
+                    $productId = $product->merchant_product_id->id !== null
                         ? (string)$product->merchant_product_id->id
                         : (string)$product->marketplace_product_id;
                     $helper->log(
-                        'Import',
+                        Lengow_Connector_Helper_Data::CODE_IMPORT,
                         $helper->setLogMessage(
                             'log.import.product_state_canceled',
                             array(
@@ -143,7 +145,7 @@ class Lengow_Connector_Model_Import_Quote extends Mage_Sales_Model_Quote
                             ->addAttributeToFilter($productField, $attributeValue)
                             ->setPage(1, 1)
                             ->getData();
-                        if (is_array($collection) && count($collection) > 0) {
+                        if (is_array($collection) && !empty($collection)) {
                             $magentoProduct = $productModel->load($collection[0]['entity_id']);
                         }
                     }
@@ -177,7 +179,7 @@ class Lengow_Connector_Model_Import_Quote extends Mage_Sales_Model_Quote
                         );
                     }
                     $helper->log(
-                        'Import',
+                        Lengow_Connector_Helper_Data::CODE_IMPORT,
                         $helper->setLogMessage(
                             'log.import.product_be_found',
                             array(
@@ -194,7 +196,7 @@ class Lengow_Connector_Model_Import_Quote extends Mage_Sales_Model_Quote
                 }
             }
             if (!$found) {
-                $productId = !is_null($product->merchant_product_id->id)
+                $productId = $product->merchant_product_id->id !== null
                     ? (string)$product->merchant_product_id->id
                     : (string)$product->marketplace_product_id;
                 throw new Lengow_Connector_Model_Exception(
@@ -224,7 +226,7 @@ class Lengow_Connector_Model_Import_Quote extends Mage_Sales_Model_Quote
      */
     public function getLengowProducts($productId = null)
     {
-        if (is_null($productId)) {
+        if ($productId === null) {
             return $this->_lengowProducts;
         } else {
             return $this->_lengowProducts[$productId];

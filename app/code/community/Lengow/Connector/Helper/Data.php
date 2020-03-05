@@ -28,6 +28,41 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
     const LOG_LIFE = 20;
 
     /**
+     * @var string setting log code
+     */
+    const CODE_SETTING = 'Setting';
+
+    /**
+     * @var string connector log code
+     */
+    const CODE_CONNECTOR = 'Connector';
+
+    /**
+     * @var string export log code
+     */
+    const CODE_EXPORT = 'Export';
+
+    /**
+     * @var string import log code
+     */
+    const CODE_IMPORT = 'Import';
+
+    /**
+     * @var string action log code
+     */
+    const CODE_ACTION = 'Action';
+
+    /**
+     * @var string mail report code
+     */
+    const CODE_MAIL_REPORT = 'Mail Report';
+
+    /**
+     * @var string orm code
+     */
+    const CODE_ORM = 'Orm';
+
+    /**
      * User another translation system (key based)
      *
      * @return string
@@ -67,7 +102,7 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
             '_nosid' => true,
             '_store_to_url' => false,
         );
-        if (count($additionalParams) > 0) {
+        if (!empty($additionalParams)) {
             $defaultParams = array_merge($defaultParams, $additionalParams);
         }
         return Mage::getModel('core/url')->setStore($storeId)->getUrl('lengow/feed', $defaultParams);
@@ -88,7 +123,7 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
             '_nosid' => true,
             '_store_to_url' => false,
         );
-        if (count($additionalParams) > 0) {
+        if (!empty($additionalParams)) {
             $defaultParams = array_merge($defaultParams, $additionalParams);
         }
         return Mage::getModel('core/url')->setStore($defaultStoreId)->getUrl('lengow/cron', $defaultParams);
@@ -109,12 +144,13 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
         if (strlen($message) === 0) {
             return false;
         }
-        $decodedMessage = $this->decodeLogMessage($message, 'en_GB');
+        $decodedMessage = $this->decodeLogMessage($message, Lengow_Connector_Helper_Translation::DEFAULT_ISO_CODE);
         $finalMessage = empty($category) ? '' : '[' . $category . '] ';
         $finalMessage .= '' . (empty($marketplaceSku) ? '' : 'order ' . $marketplaceSku . ' : ');
         $finalMessage .= $decodedMessage;
         if ($display) {
-            print_r($finalMessage . '<br />');
+            $date = Mage::getModel('core/date')->date('Y-m-d H:i:s');
+            print_r($date . ' - ' . $finalMessage . '<br />');
             flush();
         }
         return Mage::getModel('lengow/log')->createLog(array('message' => $finalMessage));
@@ -130,7 +166,7 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function setLogMessage($key, $params = null)
     {
-        if (is_null($params) || (is_array($params) && empty($params))) {
+        if ($params === null || (is_array($params) && empty($params))) {
             return $key;
         }
         $allParams = array();
@@ -138,8 +174,7 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
             $value = str_replace(array('|', '=='), array('', ''), $value);
             $allParams[] = $param . '==' . $value;
         }
-        $message = $key . '[' . join('|', $allParams) . ']';
-        return $message;
+        return $key . '[' . join('|', $allParams) . ']';
     }
 
     /**
@@ -156,7 +191,7 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
         if (preg_match('/^(([a-z\_]*\.){1,3}[a-z\_]*)(\[(.*)\]|)$/', $message, $result)) {
             if (isset($result[1])) {
                 $key = $result[1];
-                if (isset($result[4]) && is_null($params)) {
+                if (isset($result[4]) && $params === null) {
                     $strParam = $result[4];
                     $allParams = explode('|', $strParam);
                     foreach ($allParams as $param) {

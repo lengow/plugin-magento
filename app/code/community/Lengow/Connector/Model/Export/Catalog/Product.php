@@ -260,7 +260,7 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
             1,
             $productInstance->getId()
         );
-        if (count($promo)) {
+        if (!empty($promo)) {
             $from = isset($promo[0]['from_time']) ? $promo[0]['from_time'] : $promo[0]['from_date'];
             $from = !is_numeric($from) ? strtotime($from) : $from;
             $to = isset($promo[0]['to_time']) ? $promo[0]['to_time'] : $promo[0]['to_date'];
@@ -371,7 +371,7 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
     public function getImages($images, $parentImages = array())
     {
         $data = array();
-        if (count($parentImages) > 0 && isset($parentImages['images'])) {
+        if (!empty($parentImages) && isset($parentImages['images'])) {
             $images = array_merge($parentImages['images'], $images);
             $tempImages = array();
             $files = array();
