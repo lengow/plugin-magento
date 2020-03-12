@@ -374,7 +374,7 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
                     )
                 );
             } else {
-                if ($result !== null) {
+                if ($result && $result !== null) {
                     $message = $helper->setLogMessage(
                         'lengow_log.exception.action_not_created',
                         array('error_message' => Mage::helper('core')->jsonEncode($result))
