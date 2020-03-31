@@ -79,7 +79,9 @@ order.screen.carrier| Spediteur des Marktplatzes
 order.screen.carrier_method|Versandart des Marktplatzes
 order.screen.carrier_tracking|Sendungsverfolgungsnummer
 order.screen.carrier_id_relay|ID Abholstation
-order.screen.sent_marketplace|Versandt durch Marktplatz
+order.screen.is_express|Expresszustellung
+order.screen.is_delivered_by_marketplace|Wird vom Marktplatz
+order.screen.is_business|Business
 order.screen.imported_at|Importiert am
 order.screen.message|Nachricht
 order.screen.extra|JSON Format 
@@ -91,17 +93,17 @@ order.screen.synchronize_id|ID synchronisieren
 order.screen.resend_action| Aktion erneut senden
 order.screen.check_resend_action|Wollen Sie wirklich die Bestellung %{action}?
 order.table.lengow_action|Aktionen
-order.table.lengow_state|Lengow Status
+order.table.lengow_state|Status
+order.table.order_types|Typen
 order.table.marketplace_name|Marktplatz
 order.table.store|Shop
-order.table.marketplace_sku|Marktplatz-SKU
-order.table.magento_sku|Magento SKU 
-order.table.magento_status|Status Magento
-order.table.order_date|Bestelldatum
+order.table.marketplace_sku|Bestellungs ID
+order.table.magento_sku|Magento-Referenz
+order.table.magento_status|Magento-Status
+order.table.order_date|Datum
 order.table.customer_name|Kundenname
 order.table.country|Land
-order.table.items|Item
-order.table.total_paid| Insgesamt bezahlt
+order.table.total_paid|Menge
 order.table.action_success|Erfolg
 order.table.action_error|Fehler
 order.table.order_not_imported| Bestellung konnte in Magento nicht importiert werden
@@ -117,8 +119,11 @@ order.table.status_waiting_shipment|Warten auf Versand
 order.table.status_shipped|Versandt
 order.table.status_closed| Abgeschlossen
 order.table.status_refunded|Erstattet
-order.table.status_shipped_by_mkp|Durch Marktplatz versandt
 order.table.status_canceled|Abgebrochen
+order.table.type_express|Expresszustellung
+order.table.type_delivered_by_marketplace|Wird vom Marktplatz
+order.table.type_business|Business
+order.table.nb_product|%{nb} produkt(en)
 order.table.button_reimport_order|Bestellungen erneut importieren
 order.table.button_resend_order|Bestellungen erneut versenden
 log.screen.title|Lengow Logs

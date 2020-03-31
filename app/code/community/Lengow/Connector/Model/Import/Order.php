@@ -83,6 +83,31 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
     const STATE_REFUNDED = 'refunded';
 
     /**
+     * @var string order type prime
+     */
+    const TYPE_PRIME = 'is_prime';
+
+    /**
+     * @var string order type express
+     */
+    const TYPE_EXPRESS = 'is_express';
+
+    /**
+     * @var string order type business
+     */
+    const TYPE_BUSINESS = 'is_business';
+
+    /**
+     * @var string order type delivered by marketplace
+     */
+    const TYPE_DELIVERED_BY_MARKETPLACE = 'is_delivered_by_marketplace';
+
+    /**
+     * @var string label fulfillment for old orders without order type
+     */
+    const LABEL_FULFILLMENT = 'Fulfillment';
+
+    /**
      * @var array $_fieldList field list for the table lengow_order_line
      * required => Required fields when creating registration
      * update   => Fields allowed when updating registration
@@ -101,6 +126,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
         'order_process_state' => array('required' => false, 'updated' => true),
         'order_date' => array('required' => true, 'updated' => false),
         'order_item' => array('required' => false, 'updated' => true),
+        'order_types' => array('required' => true, 'updated' => false),
         'currency' => array('required' => false, 'updated' => true),
         'total_paid' => array('required' => false, 'updated' => true),
         'commission' => array('required' => false, 'updated' => true),
@@ -209,6 +235,53 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
             }
         }
         return $updatedFields;
+    }
+
+    /**
+     * Check if order is express
+     *
+     * @return boolean
+     */
+    public function isExpress()
+    {
+        $orderTypes = $this->getData('order_types');
+        $orderTypes = $orderTypes !== null ? json_decode($orderTypes, true) : array();
+        if (array_key_exists(self::TYPE_EXPRESS, $orderTypes) || array_key_exists(self::TYPE_PRIME, $orderTypes)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Check if order is B2B
+     *
+     * @return boolean
+     */
+    public function isBusiness()
+    {
+        $orderTypes = $this->getData('order_types');
+        $orderTypes = $orderTypes !== null ? json_decode($orderTypes, true) : array();
+        if (array_key_exists(self::TYPE_BUSINESS, $orderTypes)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Check if order is delivered by marketplace
+     *
+     * @return boolean
+     */
+    public function isDeliveredByMarketplace()
+    {
+        $orderTypes = $this->getData('order_types');
+        $orderTypes = $orderTypes !== null ? json_decode($orderTypes, true) : array();
+        if (array_key_exists(self::TYPE_DELIVERED_BY_MARKETPLACE, $orderTypes)
+            || (bool)$this->getData('sent_marketplace')
+        ) {
+            return true;
+        }
+        return false;
     }
 
     /**

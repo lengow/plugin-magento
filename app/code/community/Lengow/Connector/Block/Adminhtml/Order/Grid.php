@@ -81,6 +81,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Grid extends Mage_Adminhtml_Block_W
                 'index' => 'order_lengow_state',
                 'renderer' => 'Lengow_Connector_Block_Adminhtml_Order_Renderer_State',
                 'type' => 'options',
+                'column_css_class' => 'a-center',
                 'options' => array(
                     Lengow_Connector_Model_Import_Order::STATE_ACCEPTED => $helper->__('order.table.status_accepted'),
                     Lengow_Connector_Model_Import_Order::STATE_WAITING_SHIPMENT => $helper->__(
@@ -94,11 +95,35 @@ class Lengow_Connector_Block_Adminhtml_Order_Grid extends Mage_Adminhtml_Block_W
             )
         );
         $this->addColumn(
+            'order_types',
+            array(
+                'header' => $helper->__('order.table.order_types'),
+                'index' => 'order_types',
+                'renderer' => 'Lengow_Connector_Block_Adminhtml_Order_Renderer_Types',
+                'type' => 'options',
+                'width' => '70px',
+                'column_css_class' => 'a-center',
+                'options' => array(
+                    Lengow_Connector_Model_Import_Order::TYPE_EXPRESS => $helper->__('order.table.type_express'),
+                    Lengow_Connector_Model_Import_Order::TYPE_DELIVERED_BY_MARKETPLACE => $helper->__(
+                        'order.table.type_delivered_by_marketplace'
+                    ),
+                    Lengow_Connector_Model_Import_Order::TYPE_BUSINESS => $helper->__('order.table.type_business'),
+                ),
+            )
+        );
+        $this->addColumn(
+            'marketplace_sku',
+            array(
+                'header' => $helper->__('order.table.marketplace_sku'),
+                'index' => 'marketplace_sku',
+            )
+        );
+        $this->addColumn(
             'marketplace_label',
             array(
                 'header' => $helper->__('order.table.marketplace_name'),
                 'index' => 'marketplace_label',
-                'column_css_class' => 'lengow_table_center',
             )
         );
         if (!Mage::app()->isSingleStoreMode()) {
@@ -114,19 +139,10 @@ class Lengow_Connector_Block_Adminhtml_Order_Grid extends Mage_Adminhtml_Block_W
             );
         }
         $this->addColumn(
-            'marketplace_sku',
-            array(
-                'header' => $helper->__('order.table.marketplace_sku'),
-                'index' => 'marketplace_sku',
-                'column_css_class' => 'lengow_table_center',
-            )
-        );
-        $this->addColumn(
             'order_sku',
             array(
                 'header' => $helper->__('order.table.magento_sku'),
                 'index' => 'order_sku',
-                'column_css_class' => 'lengow_table_center',
             )
         );
         $this->addColumn(
@@ -134,20 +150,9 @@ class Lengow_Connector_Block_Adminhtml_Order_Grid extends Mage_Adminhtml_Block_W
             array(
                 'header' => $helper->__('order.table.magento_status'),
                 'index' => 'status',
-                'renderer' => 'Lengow_Connector_Block_Adminhtml_Order_Renderer_Magentostate',
                 'type' => 'options',
                 'width' => '150px',
                 'options' => Mage::getSingleton('sales/order_config')->getStatuses(),
-                'column_css_class' => 'lengow_table_center',
-            )
-        );
-        $this->addColumn(
-            'order_date',
-            array(
-                'header' => $helper->__('order.table.order_date'),
-                'index' => 'order_date',
-                'type' => 'datetime',
-                'column_css_class' => 'lengow_table_center',
             )
         );
         $this->addColumn(
@@ -155,7 +160,22 @@ class Lengow_Connector_Block_Adminhtml_Order_Grid extends Mage_Adminhtml_Block_W
             array(
                 'header' => $helper->__('order.table.customer_name'),
                 'index' => 'customer_name',
-                'column_css_class' => 'lengow_table_center',
+            )
+        );
+        $this->addColumn(
+            'order_date',
+            array(
+                'header' => $helper->__('order.table.order_date'),
+                'width' => '150px',
+                'index' => 'order_date',
+                'type' => 'datetime',
+            )
+        );
+        $this->addColumn(
+            'customer_name',
+            array(
+                'header' => $helper->__('order.table.customer_name'),
+                'index' => 'customer_name',
             )
         );
         $this->addColumn(
@@ -164,17 +184,8 @@ class Lengow_Connector_Block_Adminhtml_Order_Grid extends Mage_Adminhtml_Block_W
                 'header' => $helper->__('order.table.country'),
                 'index' => 'delivery_country_iso',
                 'renderer' => 'Lengow_Connector_Block_Adminhtml_Order_Renderer_Country',
+                'column_css_class' => 'a-center',
                 'width' => '50px',
-                'column_css_class' => 'lengow_table_center',
-            )
-        );
-        $this->addColumn(
-            'order_item',
-            array(
-                'header' => $helper->__('order.table.items'),
-                'index' => 'order_item',
-                'width' => '50px',
-                'column_css_class' => 'lengow_table_center',
             )
         );
         $this->addColumn(
@@ -184,11 +195,46 @@ class Lengow_Connector_Block_Adminhtml_Order_Grid extends Mage_Adminhtml_Block_W
                 'index' => 'total_paid',
                 'filter_index' => 'main_table.total_paid',
                 'renderer' => 'Lengow_Connector_Block_Adminhtml_Order_Renderer_Total',
-                'width' => '100px',
-                'column_css_class' => 'lengow_table_center',
+                'width' => '70px',
             )
         );
         return parent::_prepareColumns();
+    }
+
+    /**
+     *
+     */
+    protected function _addColumnFilterToCollection($column)
+    {
+        if ($this->getCollection()) {
+            $field = ( $column->getFilterIndex() ) ? $column->getFilterIndex() : $column->getIndex();
+            if ($column->getFilterConditionCallback()) {
+                call_user_func($column->getFilterConditionCallback(), $this->getCollection(), $column);
+            } else {
+                $cond = $column->getFilter()->getCondition();
+                if ($field && isset($cond)) {
+                    if ($field === 'order_types' && isset($cond['eq'])) {
+                        $value = $cond['eq'];
+                        if ($value === Lengow_Connector_Model_Import_Order::TYPE_EXPRESS) {
+                            $cond = array(
+                                array('like' => '%' . Lengow_Connector_Model_Import_Order::TYPE_EXPRESS . '%'),
+                                array('like' => '%' . Lengow_Connector_Model_Import_Order::TYPE_PRIME . '%'),
+                            );
+                        } elseif ($value === Lengow_Connector_Model_Import_Order::TYPE_DELIVERED_BY_MARKETPLACE) {
+                            $field = array('order_types', 'sent_marketplace');
+                            $cond = array(
+                                array('like' => '%' . Lengow_Connector_Model_Import_Order::TYPE_DELIVERED_BY_MARKETPLACE . '%'),
+                                array('eq' => '1'),
+                            );
+                        } else {
+                            $cond = array('like' => '%'.$cond['eq'].'%');
+                        }
+                    }
+                    $this->getCollection()->addFieldToFilter($field , $cond);
+                }
+            }
+        }
+        return $this;
     }
 
     /**

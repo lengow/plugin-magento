@@ -23,5 +23,31 @@ $configHelper = Mage::helper('lengow_connector/config');
 $installedVersion = $configHelper->get('installed_version');
 
 if (version_compare($installedVersion, $version, '<')) {
+
+    $installer = $this;
+    $installer->startSetup();
+    $tableName = $installer->getTable('lengow_order');
+    if ((bool)$installer->getConnection()->showTableStatus($tableName)) {
+        // add order_types attribute in table lengow_order
+        $columnName = 'order_types';
+        if (!(bool)$installer->getConnection()->tableColumnExists($tableName, $columnName)) {
+            $installer->getConnection()
+                ->addColumn(
+                    $tableName,
+                    $columnName,
+                    array(
+                        'type' => Mage::getVersion() < '1.6.0.0'
+                            ? Varien_Db_Ddl_Table::TYPE_LONGVARCHAR
+                            : Varien_Db_Ddl_Table::TYPE_TEXT,
+                        'nullable' => true,
+                        'default' => null,
+                        'after' => 'order_item',
+                        'comment' => 'Order Types'
+                    ));
+        }
+
+    }
+    $installer->endSetup();
+
     $configHelper->set('installed_version', $version);
 }
