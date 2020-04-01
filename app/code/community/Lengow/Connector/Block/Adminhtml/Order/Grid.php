@@ -172,13 +172,6 @@ class Lengow_Connector_Block_Adminhtml_Order_Grid extends Mage_Adminhtml_Block_W
             )
         );
         $this->addColumn(
-            'customer_name',
-            array(
-                'header' => $helper->__('order.table.customer_name'),
-                'index' => 'customer_name',
-            )
-        );
-        $this->addColumn(
             'delivery_country_iso',
             array(
                 'header' => $helper->__('order.table.country'),
