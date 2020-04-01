@@ -79,7 +79,9 @@ order.screen.carrier|Carrier from marketplace
 order.screen.carrier_method|Shipping method from marketplace
 order.screen.carrier_tracking|Tracking number
 order.screen.carrier_id_relay|ID relay
-order.screen.sent_marketplace|Shipped by marketplace
+order.screen.is_express|Express delivery
+order.screen.is_delivered_by_marketplace|Shipped by Marketplace
+order.screen.is_business|Business
 order.screen.imported_at|Imported at
 order.screen.message|Message
 order.screen.extra|JSON format
@@ -91,17 +93,17 @@ order.screen.synchronize_id|Synchronize ID
 order.screen.resend_action|Resend Action
 order.screen.check_resend_action|Do you really want to %{action} the order?
 order.table.lengow_action|Actions
-order.table.lengow_state|Lengow status
+order.table.lengow_state|Status
+order.table.order_types|Types
 order.table.marketplace_name|Marketplace
 order.table.store|Store
-order.table.marketplace_sku|Marketplace SKU
-order.table.magento_sku|Magento SKU
+order.table.marketplace_sku|Order ID
+order.table.magento_sku|Magento reference
 order.table.magento_status|Magento status
-order.table.order_date|Order Date
-order.table.customer_name|Customer name
+order.table.order_date|Date
+order.table.customer_name|Customer Name
 order.table.country|Country
-order.table.items|Items
-order.table.total_paid|Total Paid
+order.table.total_paid|Amount
 order.table.action_success|Success
 order.table.action_error|Error
 order.table.order_not_imported|Order hasn't been imported into Magento
@@ -117,8 +119,11 @@ order.table.status_waiting_shipment|Awaiting shipment
 order.table.status_shipped|Shipped
 order.table.status_closed|Closed
 order.table.status_refunded|Refunded
-order.table.status_shipped_by_mkp|Shipped by Marketplace
 order.table.status_canceled|Canceled
+order.table.type_express|Express delivery
+order.table.type_delivered_by_marketplace|Shipped by Marketplace
+order.table.type_business|Business
+order.table.nb_product|%{nb} product(s)
 order.table.button_reimport_order|Re-import orders
 order.table.button_resend_order|Resend orders
 log.screen.title|Lengow logs

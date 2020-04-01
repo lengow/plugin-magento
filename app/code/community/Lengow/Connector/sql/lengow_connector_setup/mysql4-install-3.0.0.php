@@ -355,6 +355,16 @@ if (!(bool)$installer->getConnection()->showTableStatus($tableName)) {
             ),
             'Order Item'
         )
+	    ->addColumn(
+		    'order_types',
+		    $typeText,
+		    null,
+		    array(
+			    'nullable' => true,
+			    'default' => null,
+		    ),
+		    'Order Types'
+	    )
         ->addColumn(
             'currency',
             Varien_Db_Ddl_Table::TYPE_VARCHAR,

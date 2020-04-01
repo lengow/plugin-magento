@@ -38,6 +38,16 @@ class Lengow_Connector_Block_Adminhtml_Order_Renderer_Total
         } else {
             $currencySymbol = '';
         }
-        return $value . ' ' . $currencySymbol;
+        $nbProduct = $this->helper('lengow_connector')->decodeLogMessage(
+            'order.table.nb_product',
+            null,
+            array('nb' => $row->getData('order_item'))
+        );
+        return '
+            <div class="lengow_tooltip">'
+                . $value . ' ' . $currencySymbol .
+                '<span class="lengow_order_amount">' . $nbProduct . '</span>
+            </div>
+        ';
     }
 }
