@@ -246,7 +246,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
     {
         $orderTypes = (string)$this->getData('order_types');
         $orderTypes = $orderTypes !== '' ? json_decode($orderTypes, true) : array();
-        if (array_key_exists(self::TYPE_EXPRESS, $orderTypes) || array_key_exists(self::TYPE_PRIME, $orderTypes)) {
+        if (isset($orderTypes[self::TYPE_EXPRESS]) || isset($orderTypes[self::TYPE_PRIME])) {
             return true;
         }
         return false;
@@ -261,7 +261,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
     {
         $orderTypes = (string)$this->getData('order_types');
         $orderTypes = $orderTypes !== '' ? json_decode($orderTypes, true) : array();
-        if (array_key_exists(self::TYPE_BUSINESS, $orderTypes)) {
+        if (isset($orderTypes[self::TYPE_BUSINESS])) {
             return true;
         }
         return false;
@@ -276,9 +276,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
     {
         $orderTypes = (string)$this->getData('order_types');
         $orderTypes = $orderTypes !== '' ? json_decode($orderTypes, true) : array();
-        if (array_key_exists(self::TYPE_DELIVERED_BY_MARKETPLACE, $orderTypes)
-            || (bool)$this->getData('sent_marketplace')
-        ) {
+        if (isset($orderTypes[self::TYPE_DELIVERED_BY_MARKETPLACE]) || (bool)$this->getData('sent_marketplace')) {
             return true;
         }
         return false;

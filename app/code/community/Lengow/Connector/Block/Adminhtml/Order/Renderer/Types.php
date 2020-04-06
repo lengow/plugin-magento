@@ -35,15 +35,15 @@ class Lengow_Connector_Block_Adminhtml_Order_Renderer_Types
         $value = $row->getData($this->getColumn()->getIndex());
         $return = '<div>';
         $orderTypes = $value !== null ? json_decode($value, true) : array();
-        if (array_key_exists(Lengow_Connector_Model_Import_Order::TYPE_EXPRESS, $orderTypes)
-            || array_key_exists(Lengow_Connector_Model_Import_Order::TYPE_PRIME, $orderTypes)
+        if (isset($orderTypes[Lengow_Connector_Model_Import_Order::TYPE_EXPRESS])
+            || isset($orderTypes[Lengow_Connector_Model_Import_Order::TYPE_PRIME])
         ) {
             $iconLabel = isset($orderTypes[Lengow_Connector_Model_Import_Order::TYPE_PRIME])
                 ? $orderTypes[Lengow_Connector_Model_Import_Order::TYPE_PRIME]
                 : $orderTypes[Lengow_Connector_Model_Import_Order::TYPE_EXPRESS];
             $return .= $this->_generateOrderTypeIcon($iconLabel, 'orange-light', 'mod-chrono');
         }
-        if (array_key_exists(Lengow_Connector_Model_Import_Order::TYPE_DELIVERED_BY_MARKETPLACE, $orderTypes)
+        if (isset($orderTypes[Lengow_Connector_Model_Import_Order::TYPE_DELIVERED_BY_MARKETPLACE])
             || (bool)$row->getData('sent_marketplace')
         ) {
             $iconLabel = isset($orderTypes[Lengow_Connector_Model_Import_Order::TYPE_DELIVERED_BY_MARKETPLACE])
@@ -51,7 +51,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Renderer_Types
                 : Lengow_Connector_Model_Import_Order::LABEL_FULFILLMENT;
             $return .= $this->_generateOrderTypeIcon($iconLabel, 'green-light', 'mod-delivery');
         }
-        if (array_key_exists(Lengow_Connector_Model_Import_Order::TYPE_BUSINESS, $orderTypes)) {
+        if (isset($orderTypes[Lengow_Connector_Model_Import_Order::TYPE_BUSINESS])) {
             $iconLabel = $orderTypes[Lengow_Connector_Model_Import_Order::TYPE_BUSINESS];
             $return .= $this->_generateOrderTypeIcon($iconLabel, 'blue-light', 'mod-pro');
         }
