@@ -91,14 +91,14 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
             $marketplaceSku
         );
         // create or load customer if not exist
-        $customer = $this->getOrCreateCustomer($customerEmail, $storeId, $orderData->billing_address);
+        $customer = $this->_getOrCreateCustomer($customerEmail, $storeId, $orderData->billing_address);
         // create or load default billing address if not exist
-        $billingAddress = $this->getOrCreateAddress($customer, $orderData->billing_address);
+        $billingAddress = $this->_getOrCreateAddress($customer, $orderData->billing_address);
         if (!$billingAddress->getId()) {
             $customer->addAddress($billingAddress);
         }
         // create or load default shipping address if not exist
-        $shippingAddress = $this->getOrCreateAddress($customer, $shippingAddress, true);
+        $shippingAddress = $this->_getOrCreateAddress($customer, $shippingAddress, true);
         if (!$shippingAddress->getId()) {
             $customer->addAddress($shippingAddress);
         }
@@ -117,7 +117,7 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
      *
      * @return Mage_Customer_Model_Customer
      */
-    private function getOrCreateCustomer($customerEmail, $storeId, $billingData)
+    private function _getOrCreateCustomer($customerEmail, $storeId, $billingData)
     {
         $websiteId = Mage::getModel('core/store')->load($storeId)->getWebsiteId();
         // first get by email
@@ -153,7 +153,7 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
      *
      * @return Mage_Customer_Model_Address
      */
-    private function getOrCreateAddress($customer, $addressData, $isShippingAddress = false)
+    private function _getOrCreateAddress($customer, $addressData, $isShippingAddress = false)
     {
         $names = $this->_getNames($addressData);
         $street = $this->_getAddressStreet($addressData, $isShippingAddress);
@@ -162,7 +162,7 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
         $defaultAddress = $isShippingAddress
             ? $customer->getDefaultShippingAddress()
             : $customer->getDefaultBillingAddress();
-        if (!$defaultAddress || !$this->addressIsAlreadyCreated($defaultAddress, $names, $street, $postcode, $city)) {
+        if (!$defaultAddress || !$this->_addressIsAlreadyCreated($defaultAddress, $names, $street, $postcode, $city)) {
             /** @var Mage_Customer_Model_Address $address */
             $address = Mage::getModel('customer/address');
             $address->setId(null);
@@ -201,7 +201,7 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
      *
      * @return boolean
      */
-    private function addressIsAlreadyCreated($defaultAddress, $names, $street, $postcode, $city)
+    private function _addressIsAlreadyCreated($defaultAddress, $names, $street, $postcode, $city)
     {
         $firstName = isset($names['firstName']) ? $names['firstName'] : '';
         $lastName = isset($names['lastName']) ? $names['lastName'] : '';
