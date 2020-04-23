@@ -2,7 +2,7 @@
 /app/design/frontend/base/default/layout/lengow.xml|3d4469660888812d4f5d18c57e256a9d
 /app/etc/modules/Lengow_Connector.xml|25c38a521ca21e42fab671340f2e4cee
 /app/code/community/Lengow/Connector/etc/adminhtml.xml|9ad154a5e1f7e8ec95aaba5426b1bb72
-/app/code/community/Lengow/Connector/etc/config.xml|15b2ee6d1fe3396b42af796d76eef78c
+/app/code/community/Lengow/Connector/etc/config.xml|4a027e86d14c749870091ea09dd2378a
 /app/code/community/Lengow/Connector/etc/system.xml|db8e306de4caaa5f8b28b062393634f0
 /app/code/community/Lengow/Connector/Block/Payment/Info/Purchaseorder.php|ab166ba499ff7bd11e696a6384ef73a7
 /app/code/community/Lengow/Connector/Block/Tracker.php|a106da4323b6d827fcbe4bd068780113
@@ -65,13 +65,13 @@
 /app/code/community/Lengow/Connector/Model/Resource/Import/Orderline/Collection.php|2a481cc827e980d11b9d570535d44a77
 /app/code/community/Lengow/Connector/Model/Resource/Import/Ordererror/Collection.php|fede74e0ae102b339da9453059456d7e
 /app/code/community/Lengow/Connector/Model/Import/Orderline.php|367dbb5149971f9c2ce2b570d91e0119
-/app/code/community/Lengow/Connector/Model/Import/Importorder.php|fe6b615c619b04ea57403bf4cef42c80
+/app/code/community/Lengow/Connector/Model/Import/Importorder.php|2b8c45270af9296c8a9f1c4cd3ddace2
 /app/code/community/Lengow/Connector/Model/Import/Order.php|176f595de5c71a3eadd6fb4193ec43bc
 /app/code/community/Lengow/Connector/Model/Import/Action.php|54389cf8fbb2930f7c59998c503d9a86
 /app/code/community/Lengow/Connector/Model/Import/Quote/Item.php|1f06706d466ce2e0172d3cf412f2ebf3
 /app/code/community/Lengow/Connector/Model/Import/Ordererror.php|efccd0c882c67869b01b439c82322d98
-/app/code/community/Lengow/Connector/Model/Import/Customer.php|ccb92e617b42f4949b00db60f8dd1f87
-/app/code/community/Lengow/Connector/Model/Import/Quote.php|27b1e756d40b49c6f0d45a78441c087d
+/app/code/community/Lengow/Connector/Model/Import/Customer.php|849e9a87a8fd8bbfbeaf8555831b41fb
+/app/code/community/Lengow/Connector/Model/Import/Quote.php|e9f9b94d1b70bc3f3af383ac82d4933b
 /app/code/community/Lengow/Connector/Model/Import/Marketplace.php|dc34e4f3524e303129a574357291c674
 /app/code/community/Lengow/Connector/Model/Exception.php|09c961db2fc982057f9a2f5c008a796e
 /app/code/community/Lengow/Connector/controllers/FeedController.php|f23be32b926e8497c650ae0464b7ce56
