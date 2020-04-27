@@ -141,50 +141,6 @@
                 <class>Lengow_Connector_Helper</class>
             </lengow_connector>
         </helpers>
-        <fieldsets>
-            <lengow_convert_address>
-                <company>
-                    <to_customer>company</to_customer>
-                    <to_billing_address>company</to_billing_address>
-                    <to_shipping_address>company</to_shipping_address>
-                </company>
-                <last_name>
-                    <to_customer>lastname</to_customer>
-                    <to_billing_address>lastname</to_billing_address>
-                    <to_shipping_address>lastname</to_shipping_address>
-                </last_name>
-                <first_name>
-                    <to_customer>firstname</to_customer>
-                    <to_billing_address>firstname</to_billing_address>
-                    <to_shipping_address>firstname</to_shipping_address>
-                </first_name>
-                <email>
-                    <to_customer>email</to_customer>
-                    <to_billing_address>email</to_billing_address>
-                    <to_shipping_address>email</to_shipping_address>
-                </email>
-                <phone_home>
-                    <to_billing_address>telephone</to_billing_address>
-                    <to_shipping_address>telephone</to_shipping_address>
-                </phone_home>
-                <address>
-                    <to_billing_address>street_full</to_billing_address>
-                    <to_shipping_address>street_full</to_shipping_address>
-                </address>
-                <zipcode>
-                    <to_billing_address>postcode</to_billing_address>
-                    <to_shipping_address>postcode</to_shipping_address>
-                </zipcode>
-                <city>
-                    <to_billing_address>city</to_billing_address>
-                    <to_shipping_address>city</to_shipping_address>
-                </city>
-                <common_country_iso_a2>
-                    <to_billing_address>country_id</to_billing_address>
-                    <to_shipping_address>country_id</to_shipping_address>
-                </common_country_iso_a2>
-            </lengow_convert_address>
-        </fieldsets>
     </global>
     <adminhtml>
         <acl>

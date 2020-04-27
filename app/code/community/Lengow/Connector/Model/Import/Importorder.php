@@ -430,10 +430,10 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
                     return false;
                 }
             }
+            // get products from Api
+            $products = $this->_getProducts();
             // Create or Update customer with addresses
-            /** @var Lengow_Connector_Model_Import_Customer $customer */
-            $customer = Mage::getModel('lengow/import_customer');
-            $customer->createCustomer(
+            $customer = Mage::getModel('lengow/import_customer')->createCustomer(
                 $this->_orderData,
                 $this->_packageData->delivery,
                 $this->_storeId,
@@ -441,13 +441,13 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
                 $this->_logOutput
             );
             // Create Magento Quote
-            $quote = $this->_createQuote($customer);
+            $quote = $this->_createQuote($customer, $products);
             // Create Magento order
             $order = $this->_makeOrder($quote, $orderLengow);
             // If order is successfully imported
             if ($order) {
                 // Save order line id in lengow_order_line table
-                $orderLineSaved = $this->_saveLengowOrderLine($order, $quote);
+                $orderLineSaved = $this->_saveLengowOrderLine($order, $products);
                 $this->_helper->log(
                     Lengow_Connector_Helper_Data::CODE_IMPORT,
                     $this->_helper->setLogMessage(
@@ -505,7 +505,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
                     $this->_logOutput,
                     $this->_marketplaceSku
                 );
-                $this->_addQuantityBack($quote);
+                $this->_addQuantityBack($products);
             }
             // Inactivate quote (Test)
             $quote->setIsActive(false)->save();
@@ -807,15 +807,153 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
     }
 
     /**
+     * Find product in Magento based on API data
+     *
+     * @throws Lengow_Connector_Model_Exception
+     *
+     * @return array
+     */
+    protected function _getProducts()
+    {
+        $lengowProducts = array();
+        /** @var Lengow_Connector_Helper_Data $helper */
+        $helper = Mage::helper('lengow_connector/data');
+        foreach ($this->_packageData->cart as $product) {
+            $found = false;
+            $magentoProduct = false;
+            $productModel = Mage::getModel('catalog/product');
+            $orderLineId = (string)$product->marketplace_order_line_id;
+            // check whether the product is canceled
+            if ($product->marketplace_status !== null) {
+                $stateProduct = $this->_marketplace->getStateLengow((string)$product->marketplace_status);
+                if ($stateProduct === Lengow_Connector_Model_Import_Order::STATE_CANCELED
+                    || $stateProduct === Lengow_Connector_Model_Import_Order::STATE_REFUSED
+                ) {
+                    $productId = $product->merchant_product_id->id !== null
+                        ? (string)$product->merchant_product_id->id
+                        : (string)$product->marketplace_product_id;
+                    $helper->log(
+                        Lengow_Connector_Helper_Data::CODE_IMPORT,
+                        $helper->setLogMessage(
+                            'log.import.product_state_canceled',
+                            array(
+                                'product_id' => $productId,
+                                'state_product' => $stateProduct,
+                            )
+                        ),
+                        $this->_logOutput,
+                        $this->_marketplaceSku
+                    );
+                    continue;
+                }
+            }
+            $productIds = array(
+                'merchant_product_id' => $product->merchant_product_id->id,
+                'marketplace_product_id' => $product->marketplace_product_id,
+            );
+            $productField = $product->merchant_product_id->field !== null
+                ? strtolower((string)$product->merchant_product_id->field)
+                : false;
+            // search product foreach value
+            foreach ($productIds as $attributeName => $attributeValue) {
+                // remove _FBA from product id
+                $attributeValue = preg_replace('/_FBA$/', '', $attributeValue);
+                if (empty($attributeValue)) {
+                    continue;
+                }
+                // search by field if exists
+                if ($productField) {
+                    $attributeModel = Mage::getSingleton('eav/config')->getAttribute('catalog_product', $productField);
+                    if ($attributeModel->getAttributeId()) {
+                        $collection = Mage::getResourceModel('catalog/product_collection')
+                            ->setStoreId($this->_storeId)
+                            ->addAttributeToSelect($productField)
+                            ->addAttributeToFilter($productField, $attributeValue)
+                            ->setPage(1, 1)
+                            ->getData();
+                        if (is_array($collection) && !empty($collection)) {
+                            $magentoProduct = $productModel->load($collection[0]['entity_id']);
+                        }
+                    }
+                }
+                // search by id or sku
+                if (!$magentoProduct || !$magentoProduct->getId()) {
+                    if (preg_match('/^[0-9]*$/', $attributeValue)) {
+                        $magentoProduct = $productModel->load((integer)$attributeValue);
+                    }
+                    if (!$magentoProduct || !$magentoProduct->getId()) {
+                        $attributeValue = str_replace('\_', '_', $attributeValue);
+                        $magentoProduct = $productModel->load($productModel->getIdBySku($attributeValue));
+                    }
+                }
+                if ($magentoProduct && $magentoProduct->getId()) {
+                    $magentoProductId = $magentoProduct->getId();
+                    // save total row Lengow for each product
+                    if (array_key_exists($magentoProductId, $lengowProducts)) {
+                        $lengowProducts[$magentoProductId]['quantity'] += (int)$product->quantity;
+                        $lengowProducts[$magentoProductId]['amount'] += (float)$product->amount;
+                        $lengowProducts[$magentoProductId]['order_line_ids'][] = $orderLineId;
+                    } else {
+                        $lengowProducts[$magentoProductId] = array(
+                            'magento_product' => $magentoProduct,
+                            'sku' => (string)$magentoProduct->getSku(),
+                            'title' => (string)$product->title,
+                            'amount' => (float)$product->amount,
+                            'price_unit' => (float)($product->amount / $product->quantity),
+                            'quantity' => (int)$product->quantity,
+                            'order_line_ids' => array($orderLineId),
+                        );
+                    }
+                    $helper->log(
+                        Lengow_Connector_Helper_Data::CODE_IMPORT,
+                        $helper->setLogMessage(
+                            'log.import.product_be_found',
+                            array(
+                                'product_id' => $magentoProduct->getId(),
+                                'attribute_name' => $attributeName,
+                                'attribute_value' => $attributeValue,
+                            )
+                        ),
+                        $this->_logOutput,
+                        $this->_marketplaceSku
+                    );
+                    $found = true;
+                    break;
+                }
+            }
+            if (!$found) {
+                $productId = $product->merchant_product_id->id !== null
+                    ? (string)$product->merchant_product_id->id
+                    : (string)$product->marketplace_product_id;
+                throw new Lengow_Connector_Model_Exception(
+                    $helper->setLogMessage(
+                        'lengow_log.exception.product_not_be_found',
+                        array('product_id' => $productId)
+                    )
+                );
+            } elseif ($magentoProduct->getTypeId() === Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE) {
+                throw new Lengow_Connector_Model_Exception(
+                    $helper->setLogMessage(
+                        'lengow_log.exception.product_is_a_parent',
+                        array('product_id' => $magentoProduct->getId())
+                    )
+                );
+            }
+        }
+        return $lengowProducts;
+    }
+
+    /**
      * Create quote
      *
-     * @param Lengow_Connector_Model_Import_Customer $customer Lengow customer instance
+     * @param Mage_Customer_Model_Customer $customer Lengow customer instance
+     * @param array $products Lengow products from Api
      *
      * @throws Exception
      *
      * @return Lengow_Connector_Model_Import_Quote
      */
-    protected function _createQuote(Lengow_Connector_Model_Import_Customer $customer)
+    protected function _createQuote($customer, $products)
     {
         /** @var Lengow_Connector_Model_Import_Quote $quote */
         $quote = Mage::getModel('lengow/import_quote')
@@ -841,13 +979,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
         $priceIncludeTax = Mage::helper('tax')->priceIncludesTax($quote->getStore());
         $shippingIncludeTax = Mage::helper('tax')->shippingPriceIncludesTax($quote->getStore());
         // add product in quote
-        $quote->addLengowProducts(
-            $this->_packageData->cart,
-            $this->_marketplace,
-            $this->_marketplaceSku,
-            $this->_logOutput,
-            $priceIncludeTax
-        );
+        $quote->addLengowProducts($products, $priceIncludeTax);
         // get shipping cost with tax
         $shippingCost = $this->_processingFee + $this->_shippingCost;
         // if shipping cost not include tax -> get shipping cost without tax
@@ -888,7 +1020,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
             if ($quote->getGrandTotal() != $this->_orderAmount) {
                 $quoteItems = $quote->getAllItems();
                 foreach ($quoteItems as $item) {
-                    $lengowProduct = $quote->getLengowProducts((string)$item->getProduct()->getId());
+                    $lengowProduct = $products[(string)$item->getProduct()->getId()];
                     if ($lengowProduct['amount'] != $item->getRowTotalInclTax()) {
                         $diff = $lengowProduct['amount'] - $item->getRowTotalInclTax();
                         $item->setPriceInclTax($item->getPriceInclTax() + ($diff / $item->getQty()));
@@ -968,14 +1100,13 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
     /**
      * Add quantity back to stock
      *
-     * @param Lengow_Connector_Model_Import_Quote $quote Lengow quote instance
+     * @param array $products Lengow products from Api
      *
      * @return Lengow_Connector_Model_Import_Importorder
      */
-    protected function _addQuantityBack($quote)
+    protected function _addQuantityBack($products)
     {
-        $lengowProducts = $quote->getLengowProducts();
-        foreach ($lengowProducts as $productId => $product) {
+        foreach ($products as $productId => $product) {
             Mage::getModel('cataloginventory/stock')->backItemQty($productId, $product['quantity']);
         }
         return $this;
@@ -1007,6 +1138,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
         );
         $service = Mage::getModel('sales/service_quote', $quote);
         $service->setOrderData($additionalDatas);
+        /** @var Mage_Sales_Model_Order $order */
         if (method_exists($service, 'submitAll')) {
             $service->submitAll();
             $order = $service->getOrder();
@@ -1139,15 +1271,14 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
      * Save order line in lengow orders line table
      *
      * @param Mage_Sales_Model_Order $order Magento order instance
-     * @param Lengow_Connector_Model_Import_Quote $quote Lengow quote instance
+     * @param array $products Lengow products from Api
      *
      * @return string
      */
-    protected function _saveLengowOrderLine($order, $quote)
+    protected function _saveLengowOrderLine($order, $products)
     {
         $orderLineSaved = false;
-        $lengowProducts = $quote->getLengowProducts();
-        foreach ($lengowProducts as $product) {
+        foreach ($products as $product) {
             foreach ($product['order_line_ids'] as $idOrderLine) {
                 Mage::getModel('lengow/import_orderline')->createOrderLine(
                     array(
