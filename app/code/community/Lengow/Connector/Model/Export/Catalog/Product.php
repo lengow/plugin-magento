@@ -88,7 +88,7 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
             $result = $methodModel->collectRates(
                 $this->_getShippingRateRequest($productInstance, $countryCode)
             );
-            if ($result !== null) {
+            if ($result !== null && $result !== false) {
                 if ($result->getError()) {
                     Mage::logException(new Exception($result->getError()));
                 } else {
