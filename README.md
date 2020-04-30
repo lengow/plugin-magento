@@ -1,132 +1,106 @@
-# Installation Magento #
+# Lengow for Magento
 
-## Installation du module ##
+- **Requires at least:** 1.5
+- **Tested up to:** 1.9
+- **Requires PHP:** 5.4
+- **Stable tag:** 3.2.1
+- **License:** OSL-3.0
+- **License URI:** https://opensource.org/licenses/OSL-3.0
 
-### Cloner le repository de Bitbucket dans votre espace de travail ###
+## Overview
 
-Cloner le repo dans votre espace de travail :
+![Lengow logo](https://my.lengow.io/images/pages/launching/channels.gif)
 
-    cd ~/Documents/modules_lengow/magento/
-    git clone git@bitbucket.org:lengow-dev/magento-v3.git Lengow_Export
-    chmod 777 -R ~/Documents/modules_lengow/magento/Lengow_Export
+Lengow is the e-commerce automation solution that helps brands and distributors improve their performance, automate their business processes, and grow internationally. The Lengow platform is the key to strong profitability and visibility for products sold by online retailers around the world on all distribution channels: marketplaces, comparison shopping engines, affiliate platforms and display/retargeting platforms. Since 2009, Lengow has integrated more than 1,600 partners into its solution to provide a powerful platform to its 4,600 retailers and brands in 42 countries around the world.
 
-### Installation dans Magento ###
+Major features in Lengow include:
 
-Exécuter le script suivant :
+- Easily import your product data from your cms
+- Use Lengow to target and exclude the right products for the right channels and tools (marketplaces, price comparison engines, product ads, retargeting, affiliation) and automate the process of product diffusion.
+- Manipulate your feeds (categories, titles, descriptions, rules…) - no need for technical knowledge.
+- Lengow takes care of the centralisation of orders received from marketplaces and synchronises inventory data with your backoffice. Track your demands accurately and set inventory rules to avoid running out of stock.
+- Monitor and control your ecommerce activity using detailed, yet easy to understand graphs and statistics. Track clicks, sales, CTR, ROI and tweak your campaigns with automatic rules according to your cost of sales / profitability targets.
+- Thanks to our API, Lengow is compatible with many applications so you can access the functionality of all your ecommerce tools on a single platform. There are already more than 40 available applications: marketing platform, translation, customer review, email, merchandise, price watch, web-to-store, product recommendation and many more
 
-    cd ~/Documents/modules_lengow/magento/Lengow_Export/tools/
-    mkdir ~/Documents/sites/magento19/magento/var/connect
-    sh install.sh ~/Documents/docker_images/magento19/magento
+The Lengow plugin is free to download and it enables you to export your product catalogs and manage your orders. It is compatible only with the new version of our platform.
+A Lengow account is created during the extension installation and you will have free access to our platform for 15 days. To benefit from all the functionalities of Lengow, this requires you to pay for an account on the Lengow platform.
 
-Le script va créer des liens symboliques vers les sources du module, vous devez ensuite activer l'option 'symlinks' dans la configuration Magento 
+## Plugin installation
 
-Configuration => Advanced => Developer => Template Settings Allow Simlinks => Yes
-System => Cache management => Désactiver le cache pour toutes les entrées
-Se déconnecter, puis se reconnecter sur l'admin magento.
+Follow the instruction below if you want to install Lengow for Magento using Git.
 
-## Traduction ##
+1.) Clone the git repository to the desired location using:
 
-Pour traduire le projet il faut modifier les fichier *.yml dans le répertoire : Documents/modules_lengow/magento/lengow/Lengow_Export/app/code/community/Lengow/Connector/locale/yml
+    git clone git@github.com:lengow/plugin-magento.git Lengow_Export
 
-### Installation de Yaml Parser ###
+In case you wish to contribute to the plugin, fork the `dev` branch rather than cloning it, and create a pull request via Github. For further information please read the section "Become a contributor" of this document.
+
+2.) Set the correct directory permissions:
+
+    chmod -R 755 Lengow_Export
+
+Depending on your server configuration, it might be necessary to set whole write permissions (777) to the files and folders above.
+You can also start testing with lower permissions due to security reasons (644 for example) as long as your php process can write to those files.
+
+3.) Run the install script in `tools` folder to creates symbolic links to the sources of the plugin:
+    
+    sh install.sh magento_install_path
+    
+`magento_install_path` represents the path to the root folder of your Magento installation (folder containing the app, skin, var ... folders).
+
+4.) Activate the option 'symlinks' in the Magento configuration (Configuration > Advanced > Developer > Template Settings Allow Simlinks => Yes).
+
+Warning ! On the latest 1.9 versions of Magento, this option was removed for security reasons. Connect to your database and play the following SQL query:
+
+    INSERT INTO core_config_data (config_id, scope, scope_id, path, value) VALUES (NULL , 'default', '0', 'dev/template/allow_symlink', '1');
+
+5.) Go to "System" > "Cache Management" and click both the "Flush Magento Cache" as well as the "Flush Cache Storage" button.
+
+6.) Log out, then log back in on the Magento back-office.
+
+4.) Log in with your Lengow credentials and configure the plugin.
+
+## Frequently Asked Questions
+
+### Where can I find Lengow documentation and user guides?
+
+For help setting up and configuring Lengow plugin please refer to our [user guide](https://support.lengow.com/hc/en-us/articles/360011978332-Magento-1-For-new-Lengow-platform-users)
+
+### Where can I get support?
+
+To make a support request to Lengow, use [our helpdesk](https://support.lengow.com/hc/en-us/requests/new).
+
+
+## Become a contributor
+
+Lengow for Magento is available under license (OSL-3.0). If you want to contribute code (features or bugfixes), you have to create a pull request via Github and include valid license information.
+
+The `master` branch contains the latest stable version of the plugin. The `dev` branch contains the version under development.
+All Pull requests must be made on the `dev` branch and must be validated by reviewers working at Lengow.
+
+By default the plugin is made to work on our pre-production environment (my.lengow.net).
+To change this environment, you must modify the two constants present in the file `app/code/communtity/Lengow/Connector/Model/Connector.php`
+
+    const LENGOW_URL = 'lengow.net';
+    const LENGOW_API_URL = 'https://api.lengow.net';
+
+### Translation
+
+Translations in the plugin are managed via a key system and associated yaml files
+
+Start by installing Yaml Parser:
 
     sudo apt-get install php5-dev libyaml-dev
     sudo pecl install yaml
+    
+To translate the project, use specific key in php code and modify the *.yml files in the directory: `app/code/communtity/Lengow/Connector/locale/yml/`
 
-### Mise à jour des traductions ###
+Once the translations are finished, just run the translation update script in `tools` folder
 
-Une fois les traductions terminées, il suffit de lancer le script de mise à jour de traduction :
-
-    cd ~/Documents/modules_lengow/magento/Lengow_Export/tools/
     php translate.php
+    
+The plugin is translated into English, French and German.
 
-## Mise à jour du fichier d'intégrité des données ##
+## Changelog
 
-    cd ~/Documents/modules_lengow/magento/Lengow_Export/tools/
-    php checkmd5.php
-
-Le fichier checkmd5.csv sera directement créé dans le dossier /app/code/community/Lengow/Connector/etc
-
-## Compiler le module ##
-
-La compilation du module se fait directement à partir de Magento :
-
-1 - Se rendre dans System => Magento Connect => Package Extensions
-2 - Dans l'onglet Load Local Package et cliquer sur Lengow_Magento
-3 - Dans l'onglet Release Info changer la version x.x.x
-4 - Cliquer sur "Save Data and Create Package" pour créer le package.
-5 - Récupérer l'archive Lengow_Export-x.x.x.tgz dans le dossier /var/connect de votre Magento
-
-
-## Versionning GIT ##
-
-1 - Prendre un ticket sur JIRA et cliquer sur Créer une branche dans le bloc développement à droite
-
-2 - Sélectionner en "Repository" lengow-dev/magento-v3, pour "Branch from" prendre dev et laisser le nom du ticket pour "Branch name"
-
-3 - Créer la nouvelle branche
-
-4 - Exécuter le script suivant pour changer de branche 
-
-    cd ~/Documents/modules_lengow/magento/Lengow_Export/
-    git fetch
-    git checkout "Branch name"
-
-5 - Faire le développement spécifique
-
-6 - Lorsque que le développement est terminé, faire un push sur la branche du ticket
-
-    git add .
-    git commit -m 'My ticket is finished'
-    git pull origin "Branch name"
-    git push origin "Branch name"
-
-7 - Dans Bitbucket, dans l'onglet Pull Requests créer une pull request
-
-8 - Sélectionner la branche du tiket et l'envoyer sur la branche de dev de lengow-dev/magento-v3
-
-9 - Bien nommer la pull request et mettre toutes les informations nécessaires à la vérification
-
-10 - Reprendre la liste du Definition of done (dod.md) et vérifier chaques critère et l'insérer dans la description
-
-11 - Mettre tous les Reviewers nécessaires à la vérification et créer la pull request
-
-12 - Lorsque la pull request est validée, elle sera mergée sur la branche de dev
-
-## Bugs connus ##
-
-Après installation, si vous obtenez une erreur 'Wrong type' lors de l'affichage des réglages du module, vous devez vous rendre dans les réglages des transporteurs et enregistrer la configuration.
-
-### Installation avec Magento <= 1.6 + php >= 5.5 ###
-
-    Error :
-        CONNECT ERROR: Unsupported resource type
-    Solution :
-        Edit file downloader/lib/Mage/Archive/Tar.php
-        Change the line :
-            const FORMAT_PARSE_HEADER = 'a100name/a8mode/a8uid/a8gid/a12size/a12mtime/a8checksum/a1type/a100symlink/a6magic/a2version/a32uname/a32gname/a8devmajor/a8devminor/a155prefix/a12closer';
-        must be replaced by:
-            const FORMAT_PARSE_HEADER = 'Z100name/Z8mode/Z8uid/Z8gid/Z12size/Z12mtime/Z8checksum/Z1type/Z100symlink/Z6magic/Z2version/Z32uname/Z32gname/Z8devmajor/Z8devminor/Z155prefix/Z12closer';
-            
-### Installation avec With Magento <= 1.5 ###
-
-    Error :
-        CONNECT ERROR: The 'community' channel is not installed.
-    Solution :
-        chmod 777 mage
-        ./mage mage-setup
-        
-### Installation avec Magento = 1.7 ###
-
-    Error :
-        During installation : PHP Extensions "0" must be loaded.
-    Solution
-        Edit file app/code/core/Mage/Install/etc/config.xml
-        Change the line :
-            <extensions>
-                <pdo_mysql/>
-            </extensions>
-        must be replaced by :
-            <extensions>
-                <pdo_mysql>1</pdo_mysql>
-            </extensions>
+The changelog and all available commits are located under [CHANGELOG](CHANGELOG).
