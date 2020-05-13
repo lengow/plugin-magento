@@ -731,6 +731,7 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
                 $regionCodeCleaned = $this->_cleanString($region['code']);
                 if ($stateRegionCleaned === $regionCodeCleaned) {
                     $regionId = $region['region_id'];
+                    break;
                 }
             }
             // approximate search on the default region name
