@@ -115,6 +115,11 @@ class Lengow_Connector_Model_Connector
     const CODE_201 = 201;
 
     /**
+     * @var string unauthorized access code
+     */
+    const CODE_401 = 401;
+
+    /**
      * @var string forbidden access code
      */
     const CODE_403 = 403;
@@ -135,6 +140,14 @@ class Lengow_Connector_Model_Connector
     protected $_successCodes = array(
         self::CODE_200,
         self::CODE_201,
+    );
+
+    /**
+     * @var array authorization HTTP codes for request
+     */
+    protected $_authorizationCodes = array(
+        self::CODE_401,
+        self::CODE_403,
     );
 
     /**
@@ -425,7 +438,7 @@ class Lengow_Connector_Model_Connector
             $this->connect();
             $data = $this->_callAction($api, $args, $type, $format, $body, $logOutput);
         } catch (Lengow_Connector_Model_Exception $e) {
-            if ($e->getCode() === self::CODE_403) {
+            if (in_array($e->getCode(), $this->_authorizationCodes)) {
                 $this->_helper->log(
                     Lengow_Connector_Helper_Data::CODE_CONNECTOR,
                     $this->_helper->setLogMessage('log.connector.retry_get_token'),
@@ -471,6 +484,8 @@ class Lengow_Connector_Model_Connector
      */
     private function _getAuthorizationToken($logOutput)
     {
+        // reset temporary token for the new authorization
+        $this->_token = null;
         $data = $this->_callAction(
             self::API_ACCESS_TOKEN,
             array(
