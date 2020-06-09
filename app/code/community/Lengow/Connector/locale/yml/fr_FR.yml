@@ -282,6 +282,8 @@ fr:
     export_advanced_setting: "Paramètres avancés d'export"
     export_attribute_label: "Sélectionnez les attributs à exporter"
     export_parent_image_label: "Fusionnez les images avec les produits parents"
+    export_parent_attribute_label: "Sélectionnez les attributs à exporter depuis les produits parents pour les produits enfants"
+    export_parent_attribute_comment: "Sélectionnez les attributs des produits parent qui devrait être assignés aux produits enfant"
     export_default_shipping_country_label: "Pays d'expédition"
     export_default_shipping_country_comment: "Pays à appliquer par défaut pour les frais d'expédition"
     export_default_shipping_method_label: "Mode d'expédition"

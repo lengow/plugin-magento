@@ -185,6 +185,11 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
             'global' => true,
             'no_cache' => false,
         ),
+        'parent_attribute' => [
+            'path' => 'lengow_export_options/advanced/export_parent_attribute',
+            'store' => true,
+            'no_cache' => false,
+        ],
         'export_cron_enable' => array(
             'path' => 'lengow_export_options/advanced/export_cron_enable',
             'store' => true,
@@ -462,6 +467,27 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
             }
         }
         return $attributeSelected;
+    }
+
+    /**
+     * Get parent selected attributes to export instead of child data
+     *
+     * @param integer $storeId Magento store id
+     *
+     * @return array
+     */
+
+    public function getParentSelectedAttributes($storeId = 0)
+    {
+        $selectedAttributes = [];
+        $attributes = $this->get('parent_attribute', $storeId);
+        if ($attributes !== null) {
+            $attributes = explode(',', $attributes);
+            foreach ($attributes as $attribute) {
+                $selectedAttributes[] = $attribute;
+            }
+        }
+        return $selectedAttributes;
     }
 
     /**

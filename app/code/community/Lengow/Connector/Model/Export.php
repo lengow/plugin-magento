@@ -616,12 +616,30 @@ class Lengow_Connector_Model_Export extends Varien_Object
                 $productDatas[$key] = $datas[$value];
             }
             unset($datas);
+            $parentFieldToExport = $this->_configHelper->getParentSelectedAttributes($this->_storeId);
             // selected attributes to export with Frond End value of current store
             if (!empty($attributesToExport)) {
             	// load category_ids attribute
             	$product->getCategoryIds();
                 foreach ($attributesToExport as $field => $attr) {
                     if (!in_array($field, $this->_excludes) && !isset($productDatas[$field]) && $field !== '') {
+                        // Case attribute have to be retrieve from parent
+                        if ($parentInstance && in_array($field, $parentFieldToExport, true)) {
+                            $value = $parentInstance->getData($field);
+                            if (!$value) {
+                                $productDatas[$attr] = '';
+                            } else if (is_array($value)) {
+                                $productDatas[$attr] = implode(',', $value);
+                            } else {
+                                $productDatas[$attr] = $this->_helper->cleanData(
+                                    $parentInstance->getResource()
+                                                   ->getAttribute($field)
+                                                   ->getFrontend()
+                                                   ->getValue($parentInstance)
+                                );
+                            }
+                            continue;
+                        }
                         if ($product->getData($field) === null) {
                             $productDatas[$attr] = '';
                         } else {
