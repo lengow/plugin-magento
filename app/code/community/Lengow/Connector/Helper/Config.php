@@ -476,7 +476,6 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
      *
      * @return array
      */
-
     public function getParentSelectedAttributes($storeId = 0)
     {
         $selectedAttributes = array();
