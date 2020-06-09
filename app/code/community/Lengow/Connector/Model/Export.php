@@ -405,6 +405,8 @@ class Lengow_Connector_Model_Export extends Varien_Object
         $this->_setLegacyFields();
         // get attributes to export
         $attributesToExport = $this->_configHelper->getSelectedAttributes($this->_storeId);
+        // get attribute to export from parent instead of child
+        $parentFieldToExport = $this->_configHelper->getParentSelectedAttributes($this->_storeId);
         // set feed format
         /** @var Lengow_Connector_Model_Export_Feed_Abstract $feed */
         $feed = Mage::getModel('Lengow_Connector_Model_Export_Feed_' . ucfirst($this->_fileFormat));
@@ -616,40 +618,30 @@ class Lengow_Connector_Model_Export extends Varien_Object
                 $productDatas[$key] = $datas[$value];
             }
             unset($datas);
-            $parentFieldToExport = $this->_configHelper->getParentSelectedAttributes($this->_storeId);
             // selected attributes to export with Frond End value of current store
             if (!empty($attributesToExport)) {
             	// load category_ids attribute
             	$product->getCategoryIds();
                 foreach ($attributesToExport as $field => $attr) {
-                    if (!in_array($field, $this->_excludes) && !isset($productDatas[$field]) && $field !== '') {
-                        // Case attribute have to be retrieve from parent
+                    if ( ! in_array($field, $this->_excludes) && ! isset($productDatas[$field]) && $field !== '') {
+                        // case attribute have to be retrieve from parent
                         if ($parentInstance && in_array($field, $parentFieldToExport, true)) {
-                            $value = $parentInstance->getData($field);
-                            if (!$value) {
-                                $productDatas[$attr] = '';
-                            } else if (is_array($value)) {
-                                $productDatas[$attr] = implode(',', $value);
-                            } else {
-                                $productDatas[$attr] = $this->_helper->cleanData(
-                                    $parentInstance->getResource()
-                                                   ->getAttribute($field)
-                                                   ->getFrontend()
-                                                   ->getValue($parentInstance)
-                                );
-                            }
-                            continue;
-                        }
-                        if ($product->getData($field) === null) {
-                            $productDatas[$attr] = '';
+                            $productRef = $parentInstance;
                         } else {
-                            if (is_array($product->getData($field))) {
-                                $productDatas[$attr] = implode(',', $product->getData($field));
-                            } else {
-                                $productDatas[$attr] = $this->_helper->cleanData(
-                                    $product->getResource()->getAttribute($field)->getFrontend()->getValue($product)
-                                );
-                            }
+                            $productRef = $product;
+                        }
+                        $value = $productRef->getData($field);
+                        if ( ! $value) {
+                            $productDatas[$attr] = '';
+                        } elseif (is_array($value)) {
+                            $productDatas[$attr] = implode(',', $value);
+                        } else {
+                            $productDatas[$attr] = $this->_helper->cleanData(
+                                $productRef->getResource()
+                                           ->getAttribute($field)
+                                           ->getFrontend()
+                                           ->getValue($productRef)
+                            );
                         }
                     }
                 }

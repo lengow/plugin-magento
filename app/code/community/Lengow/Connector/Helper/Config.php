@@ -479,7 +479,7 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
 
     public function getParentSelectedAttributes($storeId = 0)
     {
-        $selectedAttributes = [];
+        $selectedAttributes = array();
         $attributes = $this->get('parent_attribute', $storeId);
         if ($attributes !== null) {
             $attributes = explode(',', $attributes);
