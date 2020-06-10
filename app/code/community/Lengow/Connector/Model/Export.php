@@ -623,7 +623,7 @@ class Lengow_Connector_Model_Export extends Varien_Object
             	// load category_ids attribute
             	$product->getCategoryIds();
                 foreach ($attributesToExport as $field => $attr) {
-                    if ( ! in_array($field, $this->_excludes) && ! isset($productDatas[$field]) && $field !== '') {
+                    if (!in_array($field, $this->_excludes) && !isset($productDatas[$field]) && $field !== '') {
                         // case attribute have to be retrieve from parent
                         if ($parentInstance && in_array($field, $parentFieldToExport, true)) {
                             $productRef = $parentInstance;
