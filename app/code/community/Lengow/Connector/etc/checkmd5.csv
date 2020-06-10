@@ -3,7 +3,7 @@
 /app/etc/modules/Lengow_Connector.xml|25c38a521ca21e42fab671340f2e4cee
 /app/code/community/Lengow/Connector/etc/adminhtml.xml|9ad154a5e1f7e8ec95aaba5426b1bb72
 /app/code/community/Lengow/Connector/etc/config.xml|4a027e86d14c749870091ea09dd2378a
-/app/code/community/Lengow/Connector/etc/system.xml|00d78faa6ebbfec85b118e9cc9426f80
+/app/code/community/Lengow/Connector/etc/system.xml|fa0be2459edbeb181aff0ca86bc566c1
 /app/code/community/Lengow/Connector/Block/Payment/Info/Purchaseorder.php|ab166ba499ff7bd11e696a6384ef73a7
 /app/code/community/Lengow/Connector/Block/Adminhtml/System/Config/Edit.php|7c04eb1b59ce518d00d38bc225ff1c25
 /app/code/community/Lengow/Connector/Block/Adminhtml/System/Config/Check.php|c5d1e04f4a2e47825a0795fd75752603
