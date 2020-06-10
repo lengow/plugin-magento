@@ -82,7 +82,7 @@ order.screen.carrier_id_relay|ID  du point relais
 order.screen.is_express|Livraison Express
 order.screen.is_delivered_by_marketplace|Expédié par la marketplace
 order.screen.is_business|Business
-order.screen.imported_at|Importée à
+order.screen.imported_at|Importée à 
 order.screen.message|Message
 order.screen.extra|Format JSON
 order.screen.not_lengow_order|Cette commandes ne provient pas de Lengow
@@ -111,7 +111,7 @@ order.table.action_sent|L'action %{action_type} envoyée
 order.table.not_imported|pas importée
 order.table.not_sent|pas envoyée
 order.table.action_waiting_return|Action envoyée, en attente d'une réponse.
-order.table.action_sent_not_work|L'action envoyée à la marketplace ne fonctionne pas
+order.table.action_sent_not_work|L'action envoyée à la marketplace ne fonctionne pas 
 order.table.no_error_message|Erreur non identifiée, merci de contacter le support Lengow pour plus d'informations
 order.table.status_not_synchronized|Non synchronisé
 order.table.status_accepted|Accepté
@@ -255,6 +255,8 @@ lengow_setting.export_product_status_label|Statut des produit à exporter
 lengow_setting.export_advanced_setting|Paramètres avancés d'export
 lengow_setting.export_attribute_label|Sélectionnez les attributs à exporter
 lengow_setting.export_parent_image_label|Fusionnez les images avec les produits parents
+lengow_setting.export_parent_attribute_label|Sélectionnez les attributs à exporter depuis les produits parents pour les produits enfants
+lengow_setting.export_parent_attribute_comment|Sélectionnez les attributs des produits parent qui devrait être assignés aux produits enfant
 lengow_setting.export_default_shipping_country_label|Pays d'expédition
 lengow_setting.export_default_shipping_country_comment|Pays à appliquer par défaut pour les frais d'expédition
 lengow_setting.export_default_shipping_method_label|Mode d'expédition

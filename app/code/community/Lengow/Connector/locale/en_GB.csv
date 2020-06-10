@@ -80,7 +80,7 @@ order.screen.carrier_method|Shipping method from marketplace
 order.screen.carrier_tracking|Tracking number
 order.screen.carrier_id_relay|ID relay
 order.screen.is_express|Express delivery
-order.screen.is_delivered_by_marketplace|Shipped by Marketplace
+order.screen.is_delivered_by_marketplace|Shipped by marketplace
 order.screen.is_business|Business
 order.screen.imported_at|Imported at
 order.screen.message|Message
@@ -255,6 +255,8 @@ lengow_setting.export_product_status_label|Status of product to export
 lengow_setting.export_advanced_setting|Advanced export settings
 lengow_setting.export_attribute_label|Select attributes to export
 lengow_setting.export_parent_image_label|Merge images with parent products if available
+lengow_setting.export_parent_attribute_label|Select attributes to export from parent for the child product
+lengow_setting.export_parent_attribute_comment|Select attributes from parent product that should be assigned to child product
 lengow_setting.export_default_shipping_country_label|Country shipping
 lengow_setting.export_default_shipping_country_comment|Default country for shipping cost
 lengow_setting.export_default_shipping_method_label|Shipping method
