@@ -36,7 +36,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Renderer_State
         if (empty($value)) {
             $value = 'not_synchronized';
         }
-        return '<span class="lgw-label lgw-label-' . $value . '">'
+        return '<span class="lgw-label lgw-label-' . $value . ' lgw-order-status">'
             . Mage::helper('lengow_connector')->__('order.table.status_' . $value) . '</span>';
     }
 }

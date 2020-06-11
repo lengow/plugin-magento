@@ -1,4 +1,15 @@
 =============================================================
+Version 3.2.2
+=============================================================
+
+    - Feature: [import] Addition of order types in the order management screen
+    - Feature: [import] Integration of the region code in the delivery and billing addresses
+    - Feature: [export] Add option to select which field should be taken from parent products
+    - Bugfix: [import] Refactoring of the creation of delivery and billing addresses
+	- Bugfix: [export] Fix an if statement in getShippingPrice to check all posibilities
+	- Bugfix: Update of the access token when recovering an http 401 code
+
+=============================================================
 Version 3.2.1
 =============================================================
 
@@ -144,7 +155,7 @@ Version 2.2.4
 =============================================================
 
 	- Feature: Add new root for synchronise order with Lengow
-	- Feature: Add new logs to send actions 
+	- Feature: Add new logs to send actions
 
 =============================================================
 Version 2.2.3

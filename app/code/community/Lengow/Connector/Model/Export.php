@@ -405,6 +405,8 @@ class Lengow_Connector_Model_Export extends Varien_Object
         $this->_setLegacyFields();
         // get attributes to export
         $attributesToExport = $this->_configHelper->getSelectedAttributes($this->_storeId);
+        // get attribute to export from parent instead of child
+        $parentFieldToExport = $this->_configHelper->getParentSelectedAttributes($this->_storeId);
         // set feed format
         /** @var Lengow_Connector_Model_Export_Feed_Abstract $feed */
         $feed = Mage::getModel('Lengow_Connector_Model_Export_Feed_' . ucfirst($this->_fileFormat));
@@ -622,16 +624,24 @@ class Lengow_Connector_Model_Export extends Varien_Object
             	$product->getCategoryIds();
                 foreach ($attributesToExport as $field => $attr) {
                     if (!in_array($field, $this->_excludes) && !isset($productDatas[$field]) && $field !== '') {
-                        if ($product->getData($field) === null) {
-                            $productDatas[$attr] = '';
+                        // case attribute have to be retrieve from parent
+                        if ($parentInstance && in_array($field, $parentFieldToExport, true)) {
+                            $productRef = $parentInstance;
                         } else {
-                            if (is_array($product->getData($field))) {
-                                $productDatas[$attr] = implode(',', $product->getData($field));
-                            } else {
-                                $productDatas[$attr] = $this->_helper->cleanData(
-                                    $product->getResource()->getAttribute($field)->getFrontend()->getValue($product)
-                                );
-                            }
+                            $productRef = $product;
+                        }
+                        $value = $productRef->getData($field);
+                        if ( ! $value) {
+                            $productDatas[$attr] = '';
+                        } elseif (is_array($value)) {
+                            $productDatas[$attr] = implode(',', $value);
+                        } else {
+                            $productDatas[$attr] = $this->_helper->cleanData(
+                                $productRef->getResource()
+                                           ->getAttribute($field)
+                                           ->getFrontend()
+                                           ->getValue($productRef)
+                            );
                         }
                     }
                 }

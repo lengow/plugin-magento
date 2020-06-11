@@ -112,7 +112,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Tab
             $orderLengow = $orderLengow->load($orderLengowId);
             $marketplaceSku = $orderLengow->getData('marketplace_sku');
             $marketplaceLabel = $orderLengow->getData('marketplace_label');
-            $feedId = $orderLengow->getData('feed_id');
+            $feedId = (int)$orderLengow->getData('feed_id');
             $deliveryAddressId = $orderLengow->getData('delivery_address_id');
             $currency = $orderLengow->getData('currency');
             $totalPaid = $orderLengow->getData('total_paid');
@@ -123,14 +123,16 @@ class Lengow_Connector_Block_Adminhtml_Order_Tab
             $carrierMethod = $orderLengow->getData('carrier_method');
             $carrierTracking = $orderLengow->getData('carrier_tracking');
             $carrierIdRelay = $orderLengow->getData('carrier_id_relay');
-            $sentMarketplace = (bool)$orderLengow->getData('sent_marketplace');
+            $isExpress = $orderLengow->isExpress();
+            $isDeliveredByMarketplace = $orderLengow->isDeliveredByMarketplace();
+            $isBusiness = $orderLengow->isBusiness();
             $importedAt = $helper->getDateInCorrectFormat(strtotime($orderLengow->getData('created_at')));
             $message = $orderLengow->getData('message');
             $extra = $orderLengow->getData('extra');
         } else {
             $marketplaceSku = $order->getData('order_id_lengow');
             $marketplaceLabel = $order->getData('marketplace_lengow');
-            $feedId = $order->getData('feed_id_lengow');
+            $feedId = (int)$order->getData('feed_id_lengow');
             $deliveryAddressId = $order->getData('delivery_address_id_lengow');
             $currency = $order->getData('base_currency_code');
             $totalPaid = $order->getData('total_paid_lengow');
@@ -141,12 +143,13 @@ class Lengow_Connector_Block_Adminhtml_Order_Tab
             $carrierMethod = $order->getData('carrier_method_lengow');
             $carrierTracking = $order->getData('carrier_tracking_lengow');
             $carrierIdRelay = $order->getData('carrier_id_relay_lengow');
-            $sentMarketplace = false;
+            $isExpress = false;
+            $isDeliveredByMarketplace = false;
+            $isBusiness = false;
             $importedAt = $helper->getDateInCorrectFormat(strtotime($order->getData('carrier_id_relay_lengow')));
             $message = $order->getData('created_at');
             $extra = $order->getData('xml_node_lengow');
         }
-        $sentMarketplace = $sentMarketplace ? $helper->__('global.just_yes') : $helper->__('global.just_no');
         // construct fields list
         $fields[] = array('label' => $helper->__('order.table.marketplace_sku'), 'value' => $marketplaceSku);
         $fields[] = array('label' => $helper->__('order.table.marketplace_name'), 'value' => $marketplaceLabel);
@@ -167,7 +170,18 @@ class Lengow_Connector_Block_Adminhtml_Order_Tab
         $fields[] = array('label' => $helper->__('order.screen.carrier_method'), 'value' => $carrierMethod);
         $fields[] = array('label' => $helper->__('order.screen.carrier_tracking'), 'value' => $carrierTracking);
         $fields[] = array('label' => $helper->__('order.screen.carrier_id_relay'), 'value' => $carrierIdRelay);
-        $fields[] = array('label' => $helper->__('order.screen.sent_marketplace'), 'value' => $sentMarketplace);
+        $fields[] = array(
+            'label' => $helper->__('order.screen.is_express'),
+            'value' => $isExpress ? $helper->__('global.just_yes') : $helper->__('global.just_no'),
+        );
+        $fields[] = array(
+            'label' => $helper->__('order.screen.is_delivered_by_marketplace'),
+            'value' => $isDeliveredByMarketplace ? $helper->__('global.just_yes') : $helper->__('global.just_no'),
+        );
+        $fields[] = array(
+            'label' => $helper->__('order.screen.is_business'),
+            'value' => $isBusiness ? $helper->__('global.just_yes') : $helper->__('global.just_no'),
+        );
         $fields[] = array('label' => $helper->__('order.screen.message'), 'value' => $message);
         $fields[] = array('label' => $helper->__('order.screen.imported_at'), 'value' => $importedAt);
         $fields[] = array(

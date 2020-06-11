@@ -75,11 +75,13 @@ order.screen.delivery_address_id|ID d'adresse de livraison
 order.screen.currency|Devise
 order.screen.commission|Commission
 order.screen.customer_email|Email client
-order.screen.carrier|Transporteur des places de marché
-order.screen.carrier_method|Mode d'expédition des places de marché
+order.screen.carrier|Transporteur de la marketplace
+order.screen.carrier_method|Mode d'expédition de la marketplace
 order.screen.carrier_tracking|Numéro de tracking
 order.screen.carrier_id_relay|ID  du point relais
-order.screen.sent_marketplace|Expédié par la place de marché
+order.screen.is_express|Livraison Express
+order.screen.is_delivered_by_marketplace|Expédié par la marketplace
+order.screen.is_business|Business
 order.screen.imported_at|Importée à 
 order.screen.message|Message
 order.screen.extra|Format JSON
@@ -91,17 +93,17 @@ order.screen.synchronize_id|Synchronisez l'ID
 order.screen.resend_action|Renvoyer l'action
 order.screen.check_resend_action|Vous voulez vous vraiment %{action} la commande ?
 order.table.lengow_action|Actions
-order.table.lengow_state|Statut Lengow
-order.table.marketplace_name|Place de marché 
+order.table.lengow_state|Statut
+order.table.order_types|Types
+order.table.marketplace_name|Marketplace
 order.table.store|Boutique 
-order.table.marketplace_sku|ID Commande
-order.table.magento_sku|Magento Sku
+order.table.marketplace_sku|N° de commande
+order.table.magento_sku|Référence Magento
 order.table.magento_status|Statut Magento
-order.table.order_date|Date de la commande
+order.table.order_date|Date
 order.table.customer_name|Nom du client
 order.table.country|Pays
-order.table.items|Quantité
-order.table.total_paid|Prix total 
+order.table.total_paid|Montant
 order.table.action_success|Succès
 order.table.action_error|Erreur
 order.table.order_not_imported|Votre commande n'a pas été importée dans Magento
@@ -109,7 +111,7 @@ order.table.action_sent|L'action %{action_type} envoyée
 order.table.not_imported|pas importée
 order.table.not_sent|pas envoyée
 order.table.action_waiting_return|Action envoyée, en attente d'une réponse.
-order.table.action_sent_not_work|L'action envoyée à la place de marché ne fonctionne pas 
+order.table.action_sent_not_work|L'action envoyée à la marketplace ne fonctionne pas 
 order.table.no_error_message|Erreur non identifiée, merci de contacter le support Lengow pour plus d'informations
 order.table.status_not_synchronized|Non synchronisé
 order.table.status_accepted|Accepté
@@ -117,8 +119,11 @@ order.table.status_waiting_shipment|En attente d'expédition
 order.table.status_shipped|Expédié
 order.table.status_closed|Fermé
 order.table.status_refunded|Remboursé
-order.table.status_shipped_by_mkp|Expédié par la place de marché
 order.table.status_canceled|Annulé
+order.table.type_express|Livraison Express
+order.table.type_delivered_by_marketplace|Expédié par la marketplace
+order.table.type_business|Business
+order.table.nb_product|%{nb} produit(s)
 order.table.button_reimport_order|Réimporter les commandes
 order.table.button_resend_order|Renvoyer mes commandes
 log.screen.title|Logs Lengow
@@ -250,6 +255,8 @@ lengow_setting.export_product_status_label|Statut des produit à exporter
 lengow_setting.export_advanced_setting|Paramètres avancés d'export
 lengow_setting.export_attribute_label|Sélectionnez les attributs à exporter
 lengow_setting.export_parent_image_label|Fusionnez les images avec les produits parents
+lengow_setting.export_parent_attribute_label|Sélectionnez les attributs à exporter depuis les produits parents pour les produits enfants
+lengow_setting.export_parent_attribute_comment|Sélectionnez les attributs des produits parent qui devrait être assignés aux produits enfant
 lengow_setting.export_default_shipping_country_label|Pays d'expédition
 lengow_setting.export_default_shipping_country_comment|Pays à appliquer par défaut pour les frais d'expédition
 lengow_setting.export_default_shipping_method_label|Mode d'expédition
@@ -268,15 +275,15 @@ lengow_setting.import_days_comment|Choisissez le nombre de jours (Max 10 jours)
 lengow_setting.import_customer_group_title|Groupe client
 lengow_setting.import_customer_group_comment|Attribuez un groupe client aux clients Lengow
 lengow_setting.import_default_shipping_method_title|Mode d'expédition
-lengow_setting.import_default_shipping_method_comment|Choisissez un mode d'expédition pour les commandes expédiées par les places de marché
+lengow_setting.import_default_shipping_method_comment|Choisissez un mode d'expédition pour les commandes expédiées par les marketplaces
 lengow_setting.import_currency_conversion_enable_title|Convertir la devise de votre commande
 lengow_setting.import_currency_conversion_enable_comment|Toutes les commandes importées dans Magento seront automatiquement converties dans la devise sélectionnée dans Lengow
 lengow_setting.import_report_mail_enable_title|Je veux être notifié en cas de problème lors de l'importation de mes commandes
 lengow_setting.import_report_mail_address_title|Email à utiliser pour l'envoi des emails de rapport
 lengow_setting.import_report_mail_address_comment|Email séparé par ;
-lengow_setting.import_ship_mp_enabled_title|Importez les commandes expédiées par les places de marché
+lengow_setting.import_ship_mp_enabled_title|Importez les commandes expédiées par les marketplaces
 lengow_setting.import_stock_ship_mp_title|Je veux diminuer mon stock
-lengow_setting.import_stock_ship_mp_comment|Activez cette option pour prendre en compte les commandes des places de marché sur les stocks de votre backoffice Magento.
+lengow_setting.import_stock_ship_mp_comment|Activez cette option pour prendre en compte les commandes des marketplaces sur les stocks de votre backoffice Magento.
 lengow_setting.import_debug_mode_enable_title|Activer le Debug Mode
 lengow_setting.import_debug_mode_enable_comment|Utilisez le Debug Mode pour tester et simuler des commandes fictives. Pour rappel, vous devez activer ce paramètre UNIQUEMENT sur votre serveur de préproduction
 lengow_setting.import_cron_enable_title|Autorisez le process Cron de Magento
@@ -302,15 +309,15 @@ lengow_log.exception.product_not_be_found|le produit %{product_id} ne peut être
 lengow_log.exception.product_is_a_parent|le produit %{product_id}  est un ID parent. Les déclinaisons du produit sont nécessaires
 lengow_log.exception.no_connection_webservice|la connexion ne se fait pas avec Lengow pour la boutique %{store_name} (%{store_id})
 lengow_log.exception.error_lengow_webservice|l'API Lengow : %{error_code} - "%{error_message}" pour la boutique %{store_name} (%{store_id})
-lengow_log.exception.marketplace_not_present|Erreur Lengow : la place de marché %{marketplace_name} n’apparaît pas dans la liste des places de marché
+lengow_log.exception.marketplace_not_present|Erreur Lengow : la marketplace %{marketplace_name} n’apparaît pas dans la liste des marketplaces
 lengow_log.exception.order_failed_with_quote|service indisponible pour créer une commande basé sur une cotation donnée
 lengow_log.exception.order_is_empty|la commande ne peut être sauvegardée
 lengow_log.exception.order_line_required|numéro de la ligne de commande requis, non trouvé dans la commande
 lengow_log.exception.action_not_valid|l'action %{action} n'est pas valide
-lengow_log.exception.marketplace_action_not_present|l'action %{action} n'est pas présente pour cette place de marché
+lengow_log.exception.marketplace_action_not_present|l'action %{action} n'est pas présente pour cette marketplace
 lengow_log.exception.store_id_require|l'ID de la boutique est requis
 lengow_log.exception.marketplace_sku_require|la référence commande marketplace est requise
-lengow_log.exception.marketplace_name_require|le nom de la place de marché est requis
+lengow_log.exception.marketplace_name_require|le nom de la marketplace est requis
 lengow_log.exception.arg_is_required|envoi d'action impossible : %{arg_name} est requis
 lengow_log.exception.action_not_created|création d'action impossible : %{error_message}
 lengow_log.exception.action_not_created_api|création d'action impossible car l'API Lengow n'est pas disponible. Réessayez de nouveau
