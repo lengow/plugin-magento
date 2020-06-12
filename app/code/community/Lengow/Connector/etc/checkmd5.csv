@@ -2,7 +2,7 @@
 /app/design/frontend/base/default/layout/lengow.xml|3d4469660888812d4f5d18c57e256a9d
 /app/etc/modules/Lengow_Connector.xml|25c38a521ca21e42fab671340f2e4cee
 /app/code/community/Lengow/Connector/etc/adminhtml.xml|9ad154a5e1f7e8ec95aaba5426b1bb72
-/app/code/community/Lengow/Connector/etc/config.xml|4a027e86d14c749870091ea09dd2378a
+/app/code/community/Lengow/Connector/etc/config.xml|9bab3df96a5ce7714318c0cbe4b21b66
 /app/code/community/Lengow/Connector/etc/system.xml|fa0be2459edbeb181aff0ca86bc566c1
 /app/code/community/Lengow/Connector/Block/Payment/Info/Purchaseorder.php|ab166ba499ff7bd11e696a6384ef73a7
 /app/code/community/Lengow/Connector/Block/Tracker.php|a106da4323b6d827fcbe4bd068780113
@@ -94,6 +94,7 @@
 /app/code/community/Lengow/Connector/sql/lengow_connector_setup/mysql4-upgrade-3.1.3-3.2.0.php|8c0f7bcc4b933a7d60b6f31e4bd2dfd0
 /app/code/community/Lengow/Connector/sql/lengow_connector_setup/mysql4-install-3.0.0.php|1fbd767df7960a3b59ad0cb92a6c7b5a
 /app/code/community/Lengow/Connector/sql/lengow_connector_setup/mysql4-upgrade-3.0.1-3.0.2.php|1d7b76d3ec89f58b64c3e487f70629ac
+/app/code/community/Lengow/Connector/sql/lengow_connector_setup/mysql4-upgrade-3.2.2-3.2.3.php|8448e2942ad901b0eccea95bc3f26705
 /app/code/community/Lengow/Connector/sql/lengow_connector_setup/mysql4-upgrade-3.0.0-3.0.1.php|d1b8ece02f3db68586867bed082c44e2
 /app/code/community/Lengow/Connector/sql/lengow_connector_setup/mysql4-upgrade-3.1.0-3.1.1.php|a3f35f37a6a87eaeb4349528dbdb9b3e
 /app/code/community/Lengow/Connector/sql/lengow_connector_setup/mysql4-upgrade-3.2.0-3.2.1.php|7184cb1c79d9343227f9db638b10b875
