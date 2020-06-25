@@ -19,7 +19,7 @@
 /app/code/community/Lengow/Connector/Block/Adminhtml/Order/Renderer/Action.php|351e8f07b8ca62bc52809ad5822bdaeb
 /app/code/community/Lengow/Connector/Block/Adminhtml/Order/Renderer/Types.php|4766136f47420028efe1621938a6ad9b
 /app/code/community/Lengow/Connector/Block/Adminhtml/Order/Grid.php|4e0684a04cd68d90e1aa6cbcfbeebcba
-/app/code/community/Lengow/Connector/Block/Adminhtml/Order/Tab.php|b40ab0483834085cb8f0dec261ab54fe
+/app/code/community/Lengow/Connector/Block/Adminhtml/Order/Tab.php|946ac8438f33be73bf17e0f4f7c86c5e
 /app/code/community/Lengow/Connector/Block/Adminhtml/Log.php|33a00453473dd17d601ccefa7cfe9769
 /app/code/community/Lengow/Connector/Block/Adminhtml/Log/Grid.php|0906bcd5a37d2a1efa9bc5ce51debe21
 /app/code/community/Lengow/Connector/Block/Adminhtml/Action.php|5c872975886f7bf6c87316193d6fecf8
@@ -27,7 +27,7 @@
 /app/code/community/Lengow/Connector/Block/Adminhtml/Product/Grid.php|fbbd87b086e7995d0215b05bde587a6b
 /app/code/community/Lengow/Connector/Block/Tag/Simple.php|e4b9d17b9320fe949d64e617016e0881
 /app/code/community/Lengow/Connector/Block/Tracker.php|a106da4323b6d827fcbe4bd068780113
-/app/code/community/Lengow/Connector/Helper/Config.php|63c05fced3d3e88a73bdf1905e5912bd
+/app/code/community/Lengow/Connector/Helper/Config.php|e2e12a408f2e5e1a51aa96a7a4641dc1
 /app/code/community/Lengow/Connector/Helper/Toolbox.php|39c8e76d67702e82ceb1ea48cee01f12
 /app/code/community/Lengow/Connector/Helper/Data.php|83ae8366798ae4be560b9c89db00bcdd
 /app/code/community/Lengow/Connector/Helper/Sync.php|c573359cb4d687c39bf9a2421fde28eb
@@ -63,11 +63,11 @@
 /app/code/community/Lengow/Connector/Model/Tracker.php|72bf53ddfd4f813e05600c52ee8c4828
 /app/code/community/Lengow/Connector/Model/Log.php|176869e796ee307614683f60949cde30
 /app/code/community/Lengow/Connector/Model/Import.php|113511b723727c9fb8ba0759c4bc3f5e
-/app/code/community/Lengow/Connector/Model/Observer.php|980236e68ed04eed92d25e41d7845e2a
+/app/code/community/Lengow/Connector/Model/Observer.php|986d3dbb51edf9e831440968db820a35
 /app/code/community/Lengow/Connector/Model/Import/Marketplace.php|dc34e4f3524e303129a574357291c674
 /app/code/community/Lengow/Connector/Model/Import/Order.php|176f595de5c71a3eadd6fb4193ec43bc
 /app/code/community/Lengow/Connector/Model/Import/Orderline.php|367dbb5149971f9c2ce2b570d91e0119
-/app/code/community/Lengow/Connector/Model/Import/Importorder.php|523d5d96d023ceeecc7c08e82f852eda
+/app/code/community/Lengow/Connector/Model/Import/Importorder.php|abf47ed3cf997d3cc4952e7b4cfa1b63
 /app/code/community/Lengow/Connector/Model/Import/Ordererror.php|efccd0c882c67869b01b439c82322d98
 /app/code/community/Lengow/Connector/Model/Import/Customer.php|975647b6164a947a7b2f5859a91e7b97
 /app/code/community/Lengow/Connector/Model/Import/Action.php|54389cf8fbb2930f7c59998c503d9a86
@@ -87,10 +87,10 @@
 /app/code/community/Lengow/Connector/locale/fr_FR.csv|f6df7648d5cd4c804eaa91e927d05198
 /app/code/community/Lengow/Connector/locale/en_GB.csv|a0a7366025a9c7f4d256bfebc41345de
 /app/code/community/Lengow/Connector/locale/yml/log.yml|f63dc43f4e9b9f5adde83a1db19467af
-/app/code/community/Lengow/Connector/locale/yml/fr_FR.yml|24f313820525c21b6f5352af6e10ac0e
-/app/code/community/Lengow/Connector/locale/yml/de_DE.yml|bf3060c2ef1b7d3bf44f61b082f063c9
-/app/code/community/Lengow/Connector/locale/yml/en_GB.yml|fa9b3964442b0aaa7ad8d853a2a9f0a8
-/app/code/community/Lengow/Connector/sql/lengow_connector_setup/mysql4-install-3.0.0.php|f677ef4f45a566a8106fe3674b4c3f9d
+/app/code/community/Lengow/Connector/locale/yml/fr_FR.yml|69fa92624b920e87f245e23a80830d57
+/app/code/community/Lengow/Connector/locale/yml/de_DE.yml|21ae1c5e6870f6891b736c7f3e23430f
+/app/code/community/Lengow/Connector/locale/yml/en_GB.yml|b51ee2bcf9c6e216f489b6bcc20f5227
+/app/code/community/Lengow/Connector/sql/lengow_connector_setup/mysql4-install-3.0.0.php|929b76b7d88d0cda7923046c60dcddf5
 /app/code/community/Lengow/Connector/sql/lengow_connector_setup/mysql4-upgrade-3.1.3-3.2.0.php|8c0f7bcc4b933a7d60b6f31e4bd2dfd0
 /app/code/community/Lengow/Connector/sql/lengow_connector_setup/mysql4-upgrade-3.1.1-3.1.2.php|6139e3228c3d21a667cb9995a4691233
 /app/code/community/Lengow/Connector/sql/lengow_connector_setup/mysql4-upgrade-3.1.0-3.1.1.php|a3f35f37a6a87eaeb4349528dbdb9b3e
