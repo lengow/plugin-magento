@@ -194,8 +194,9 @@ class Lengow_Connector_Model_Observer
         $coreSession = Mage::getSingleton('core/session');
         $isLengowB2b = (bool)$coreSession->getIsLengowB2b();
         // if the order is fromm lengow and b2b without tax is enabled
+        $quote = $observer->getEvent()->getQuote();
         if ($isLengowB2b) {
-            $items = $observer->getEvent()->getQuote()->getAllVisibleItems();
+            $items = $quote->getAllVisibleItems();
             foreach ($items as $item) {
                 $item->getProduct()->setTaxClassId(0);
             }

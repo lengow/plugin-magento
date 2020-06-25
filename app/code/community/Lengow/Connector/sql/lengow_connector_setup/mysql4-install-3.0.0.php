@@ -391,7 +391,7 @@ if (!(bool)$installer->getConnection()->showTableStatus($tableName)) {
         )
         ->addColumn(
             'customer_vat_number',
-            Varien_Db_Ddl_Table::TYPE_VARCHAR,
+            $typeText,
             null,
             array(
                 'nullable' => true,

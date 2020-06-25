@@ -107,6 +107,7 @@ en:
       synchronize_id: "Synchronize ID"
       resend_action: "Resend Action"
       check_resend_action: "Do you really want to %{action} the order?"
+      vat_number: 'Vat number'
     table:
       lengow_action: "Actions"
       lengow_state: "Status"

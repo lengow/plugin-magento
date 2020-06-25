@@ -107,6 +107,7 @@ de:
       synchronize_id: "ID synchronisieren"
       resend_action: " Aktion erneut senden"
       check_resend_action: "Wollen Sie wirklich die Bestellung %{action}?"
+      vat_number: 'Vat number'
     table:
       lengow_action: "Aktionen"
       lengow_state: "Status"

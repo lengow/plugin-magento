@@ -240,6 +240,11 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
             'global' => true,
             'no_cache' => false,
         ),
+        'import_b2b_without_tax' => [
+            'path' => 'lengow_import_options/advanced/import_b2b_without_tax',
+            'global' => true,
+            'no_cache' => false,
+        ],
         'debug_mode_enable' => array(
             'path' => 'lengow_import_options/advanced/import_debug_mode_enable',
             'global' => true,
@@ -265,11 +270,6 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
             'global' => true,
             'no_cache' => true,
         ),
-        'import_b2b_without_tax' => [
-            'path' => 'lengow_import_options/advanced/import_b2b_without_tax',
-            'global' => true,
-            'no_cache' => false,
-        ],
         'last_action_sync' => array(
             'path' => 'lengow_import_options/advanced/last_action_sync',
             'global' => true,

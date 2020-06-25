@@ -184,7 +184,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Tab
             'label' => $helper->__('order.screen.is_business'),
             'value' => $isBusiness ? $helper->__('global.just_yes') : $helper->__('global.just_no'),
         );
-        $fields[] = array('label' => 'Vat number', 'value' => $vatNumber);
+        $fields[] = array('label' => $helper->__('order.screen.vat_number'), 'value' => $vatNumber);
         $fields[] = array('label' => $helper->__('order.screen.message'), 'value' => $message);
         $fields[] = array('label' => $helper->__('order.screen.imported_at'), 'value' => $importedAt);
         $fields[] = array(

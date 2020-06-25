@@ -442,7 +442,8 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
             );
             // if the order is B2B, activate B2bTaxesApplicator
             if ((bool)$this->_configHelper->get('import_b2b_without_tax')
-                && $orderLengow->isBusiness()) {
+                && $orderLengow->isBusiness()
+            ) {
                 // set backend session b2b attribute
                 Mage::getSingleton('core/session')->setIsLengowB2b(1);
             }
@@ -474,7 +475,8 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
                 );
                 // Update state to shipped
                 if ($this->_orderStateLengow === Lengow_Connector_Model_Import_Order::STATE_SHIPPED
-                    || $this->_orderStateLengow === Lengow_Connector_Model_Import_Order::STATE_CLOSED) {
+                    || $this->_orderStateLengow === Lengow_Connector_Model_Import_Order::STATE_CLOSED
+                ) {
                     $this->_modelOrder->toShip(
                         $order,
                         $this->_carrierName,
