@@ -19,7 +19,7 @@
 /app/code/community/Lengow/Connector/Block/Adminhtml/Order/Renderer/Action.php|351e8f07b8ca62bc52809ad5822bdaeb
 /app/code/community/Lengow/Connector/Block/Adminhtml/Order/Renderer/Types.php|4766136f47420028efe1621938a6ad9b
 /app/code/community/Lengow/Connector/Block/Adminhtml/Order/Grid.php|4e0684a04cd68d90e1aa6cbcfbeebcba
-/app/code/community/Lengow/Connector/Block/Adminhtml/Order/Tab.php|946ac8438f33be73bf17e0f4f7c86c5e
+/app/code/community/Lengow/Connector/Block/Adminhtml/Order/Tab.php|e409619221f0c7c5df1183e5a9475837
 /app/code/community/Lengow/Connector/Block/Adminhtml/Log.php|33a00453473dd17d601ccefa7cfe9769
 /app/code/community/Lengow/Connector/Block/Adminhtml/Log/Grid.php|0906bcd5a37d2a1efa9bc5ce51debe21
 /app/code/community/Lengow/Connector/Block/Adminhtml/Action.php|5c872975886f7bf6c87316193d6fecf8
@@ -63,7 +63,7 @@
 /app/code/community/Lengow/Connector/Model/Tracker.php|72bf53ddfd4f813e05600c52ee8c4828
 /app/code/community/Lengow/Connector/Model/Log.php|176869e796ee307614683f60949cde30
 /app/code/community/Lengow/Connector/Model/Import.php|113511b723727c9fb8ba0759c4bc3f5e
-/app/code/community/Lengow/Connector/Model/Observer.php|986d3dbb51edf9e831440968db820a35
+/app/code/community/Lengow/Connector/Model/Observer.php|98b9c30438f529fbd006354797fb6181
 /app/code/community/Lengow/Connector/Model/Import/Marketplace.php|dc34e4f3524e303129a574357291c674
 /app/code/community/Lengow/Connector/Model/Import/Order.php|176f595de5c71a3eadd6fb4193ec43bc
 /app/code/community/Lengow/Connector/Model/Import/Orderline.php|367dbb5149971f9c2ce2b570d91e0119
@@ -83,9 +83,9 @@
 /app/code/community/Lengow/Connector/controllers/Adminhtml/Lengow/HomeController.php|60ed86de652c56d6942d42405d681a53
 /app/code/community/Lengow/Connector/controllers/Adminhtml/Lengow/LegalController.php|a3d4cbfa4f0d9e08e8712045dbb935d3
 /app/code/community/Lengow/Connector/controllers/Adminhtml/Lengow/ProductController.php|913b15da282b1492139a03286b43d31d
-/app/code/community/Lengow/Connector/locale/de_DE.csv|8d988f8f47a67d2d506008eebf3cc5ce
-/app/code/community/Lengow/Connector/locale/fr_FR.csv|f6df7648d5cd4c804eaa91e927d05198
-/app/code/community/Lengow/Connector/locale/en_GB.csv|a0a7366025a9c7f4d256bfebc41345de
+/app/code/community/Lengow/Connector/locale/de_DE.csv|720c07366ad34d938c3a804e41e062c0
+/app/code/community/Lengow/Connector/locale/fr_FR.csv|2cfdfd14916573e9dcd622e4ec5ab26d
+/app/code/community/Lengow/Connector/locale/en_GB.csv|ad33f42f36ed3d250bc72f95a8df39dc
 /app/code/community/Lengow/Connector/locale/yml/log.yml|f63dc43f4e9b9f5adde83a1db19467af
 /app/code/community/Lengow/Connector/locale/yml/fr_FR.yml|69fa92624b920e87f245e23a80830d57
 /app/code/community/Lengow/Connector/locale/yml/de_DE.yml|21ae1c5e6870f6891b736c7f3e23430f
