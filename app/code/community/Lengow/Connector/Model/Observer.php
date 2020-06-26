@@ -182,4 +182,26 @@ class Lengow_Connector_Model_Observer
         }
         return $this;
     }
+
+    /**
+     * change tax class of lengow's b2b order
+     *
+     * @param Varien_Event_Observer $observer Magento varien event observer instance
+     * @return void
+     */
+    public function salesQuoteCollectTotalsBefore(Varien_Event_Observer $observer) {
+        // get Core session instance
+        $coreSession = Mage::getSingleton('core/session');
+        $isLengowB2b = $coreSession->getIsLengowB2b();
+        $isFromLengow = $coreSession->getIsFromlengow();
+        // if the order is fromm lengow and b2b without tax is enabled
+        $quote = $observer->getEvent()->getQuote();
+        if ($isLengowB2b && $isFromLengow) {
+            $items = $quote->getAllVisibleItems();
+            foreach ($items as $item) {
+                $item->getProduct()->setTaxClassId(0);
+            }
+            $coreSession->setIsLengowB2b(0);
+        }
+    }
 }

@@ -440,6 +440,13 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
                 $this->_marketplaceSku,
                 $this->_logOutput
             );
+            // if the order is B2B, activate B2bTaxesApplicator
+            if ((bool)$this->_configHelper->get('import_b2b_without_tax')
+                && $orderLengow->isBusiness()
+            ) {
+                // set backend session b2b attribute
+                Mage::getSingleton('core/session')->setIsLengowB2b(1);
+            }
             // Create Magento Quote
             $quote = $this->_createQuote($customer, $products);
             // Create Magento order
@@ -468,7 +475,8 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
                 );
                 // Update state to shipped
                 if ($this->_orderStateLengow === Lengow_Connector_Model_Import_Order::STATE_SHIPPED
-                    || $this->_orderStateLengow === Lengow_Connector_Model_Import_Order::STATE_CLOSED) {
+                    || $this->_orderStateLengow === Lengow_Connector_Model_Import_Order::STATE_CLOSED
+                ) {
                     $this->_modelOrder->toShip(
                         $order,
                         $this->_carrierName,
@@ -978,6 +986,10 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
         // check if store include tax (Product and shipping cost)
         $priceIncludeTax = Mage::helper('tax')->priceIncludesTax($quote->getStore());
         $shippingIncludeTax = Mage::helper('tax')->shippingPriceIncludesTax($quote->getStore());
+        // If order is B2B, set priceIncludeTax to true
+        if ((bool)Mage::getSingleton('core/session')->getIsLengowB2b()) {
+            $priceIncludeTax = true;
+        }
         // add product in quote
         $quote->addLengowProducts($products, $priceIncludeTax);
         // get shipping cost with tax
@@ -1249,6 +1261,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
             'delivery_address_id' => (int)$this->_deliveryAddressId,
             'order_lengow_state' => $this->_orderStateLengow,
             'order_types' => Mage::helper('core')->jsonEncode($this->_orderTypes),
+            'customer_vat_number' => $this->getVatNumberFromOrderData(),
             'order_date' => $coreDate->gmtDate('Y-m-d H:i:s', $coreDate->timestamp($orderDate)),
             'message' => $message,
             'is_in_error' => 1,
@@ -1265,6 +1278,20 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
             return false;
         }
         return true;
+    }
+
+    /**
+     * Get vat_number from lengow order data
+     *
+     * @return string|null
+     */
+    protected function getVatNumberFromOrderData() {
+        if (isset($this->_orderData->billing_address->vat_number)) {
+            return $this->_orderData->billing_address->vat_number;
+        } else if (isset($this->_packageData->delivery->vat_number)) {
+            return $this->_packageData->delivery->vat_number;
+        }
+        return null;
     }
 
     /**

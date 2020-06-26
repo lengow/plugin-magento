@@ -758,6 +758,8 @@ class Lengow_Connector_Model_Import extends Varien_Object
                     $errorMessage = '[Magento error]: "' . $e->getMessage()
                         . '" ' . $e->getFile() . ' line ' . $e->getLine();
                 }
+                // reset backend session b2b attribute
+                Mage::getSingleton('core/session')->setIsLengowB2b(0);
                 if (isset($errorMessage)) {
                     $decodedMessage = $this->_helper->decodeLogMessage(
                         $errorMessage,

@@ -92,6 +92,7 @@ order.screen.check_cancel_and_reimport|Wollen Sie wirklich die Bestellung erneut
 order.screen.synchronize_id|ID synchronisieren
 order.screen.resend_action| Aktion erneut senden
 order.screen.check_resend_action|Wollen Sie wirklich die Bestellung %{action}?
+order.screen.vat_number|Vat number
 order.table.lengow_action|Aktionen
 order.table.lengow_state|Status
 order.table.order_types|Typen
@@ -288,6 +289,8 @@ lengow_setting.import_debug_mode_enable_title|Debug Mode aktivieren
 lengow_setting.import_debug_mode_enable_comment|Dieser Modus zur Prüfung und Auftragsimulation verwenden. Diese Einstellung NUR auf Ihrem Pre-Production Server aktivieren
 lengow_setting.import_cron_enable_title|Magentocron aktivieren
 lengow_setting.import_cron_enable_comment|Geplante Tasks aktivieren, um Ihre Bestellungen alle 30 Minuten zu importieren
+lengow_setting.import_b2b_without_tax_label|Import von B2B-Bestellungen ohne Steuern ermöglichen
+lengow_setting.import_b2b_without_tax_comment|Aktivieren Sie diese Option, um B2B-Bestellungen ohne Steuer zu importieren
 lengow_log.error.nb_order_imported| %{nb_order} Bestellung(en) importiert
 lengow_log.error.nb_order_updated|%{nb_order} Bestellung(en) aktualisiert
 lengow_log.error.nb_order_with_error|%{nb_order} Bestellung(en) mit Fehlern
