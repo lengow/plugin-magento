@@ -92,6 +92,7 @@ order.screen.check_cancel_and_reimport|Vous voulez vous vraiment réimporter la 
 order.screen.synchronize_id|Synchronisez l'ID
 order.screen.resend_action|Renvoyer l'action
 order.screen.check_resend_action|Vous voulez vous vraiment %{action} la commande ?
+order.screen.vat_number|Numéro de TVA
 order.table.lengow_action|Actions
 order.table.lengow_state|Statut
 order.table.order_types|Types

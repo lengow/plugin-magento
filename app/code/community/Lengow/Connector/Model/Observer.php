@@ -192,10 +192,11 @@ class Lengow_Connector_Model_Observer
     public function salesQuoteCollectTotalsBefore(Varien_Event_Observer $observer) {
         // get Core session instance
         $coreSession = Mage::getSingleton('core/session');
-        $isLengowB2b = (bool)$coreSession->getIsLengowB2b();
+        $isLengowB2b = $coreSession->getIsLengowB2b();
+        $isFromLengow = $coreSession->getIsFromlengow();
         // if the order is fromm lengow and b2b without tax is enabled
         $quote = $observer->getEvent()->getQuote();
-        if ($isLengowB2b) {
+        if ($isLengowB2b && $isFromLengow) {
             $items = $quote->getAllVisibleItems();
             foreach ($items as $item) {
                 $item->getProduct()->setTaxClassId(0);

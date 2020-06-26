@@ -150,7 +150,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Tab
             $importedAt = $helper->getDateInCorrectFormat(strtotime($order->getData('carrier_id_relay_lengow')));
             $message = $order->getData('created_at');
             $extra = $order->getData('xml_node_lengow');
-            $vatNumber = $orderLengow->getData('customer_vat_number_lengow');
+            $vatNumber = null;
         }
         // construct fields list
         $fields[] = array('label' => $helper->__('order.table.marketplace_sku'), 'value' => $marketplaceSku);
