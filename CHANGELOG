@@ -4,6 +4,7 @@ Version 3.2.3
 
     - Feature: Adding new links to the Lengow Help Center and Support
     - Feature: B2B orders can now be imported without taxes (optionnal)
+    - Bugfix: [import] Adding timezone in the order recovery date
 
 =============================================================
 Version 3.2.2
