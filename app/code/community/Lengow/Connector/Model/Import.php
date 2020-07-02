@@ -596,15 +596,15 @@ class Lengow_Connector_Model_Import extends Varien_Object
                     );
                 } else {
                     if ($this->_createdFrom && $this->_createdTo) {
-                        $timeParams = [
+                        $timeParams = array(
                             'marketplace_order_date_from' => $coreDate->date('c', $this->_createdFrom),
                             'marketplace_order_date_to' => $coreDate->date('c', $this->_createdTo),
-                        ];
+                        );
                     } else {
-                        $timeParams = [
-                            'updated_from' =>  $coreDate->date('c', $this->_updatedFrom),
-                            'updated_to' => $coreDate->date('c', $this->_updatedTo),
-                        ];
+                        $timeParams = array(
+                            'updated_from' => Mage::app()->getLocale()->date($this->_updatedFrom)->toString('c'),
+                            'updated_to' => Mage::app()->getLocale()->date($this->_updatedTo)->toString('c'),
+                        );
                     }
                     $results = $this->_connector->get(
                         Lengow_Connector_Model_Connector::API_ORDER,
