@@ -875,10 +875,6 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
                 'merchant_product_id' => $product->merchant_product_id->id,
                 'marketplace_product_id' => $product->marketplace_product_id,
             );
-            $productIds = array(
-                'merchant_product_id' => 1,
-                'marketplace_product_id' => 1,
-            );
             $productField = $product->merchant_product_id->field !== null
                 ? strtolower((string)$product->merchant_product_id->field)
                 : false;
