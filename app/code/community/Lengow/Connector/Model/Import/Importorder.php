@@ -183,6 +183,11 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
     protected $_relayId = null;
 
     /**
+     * @var int shipping tax amount
+     */
+    protected $shippingTaxAmount = 0;
+
+    /**
      * Construct the import order manager
      *
      * @param array $params optional options
@@ -441,32 +446,18 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
                 $this->_logOutput
             );
             // if the order is B2B, activate B2bTaxesApplicator
+            $noTax = false;
             if ((bool)$this->_configHelper->get('import_b2b_without_tax')
                 && $orderLengow->isBusiness()
             ) {
                 // set backend session b2b attribute
                 Mage::getSingleton('core/session')->setIsLengowB2b(1);
+                $noTax = true;
             }
             // Create Magento Quote
-            $quote = $this->_createQuote($customer, $products);
-            $shippingTaxAmount = 0;
-            if ((bool)$this->_configHelper->get('import_b2b_without_tax')
-                && $orderLengow->isBusiness()
-            ) {
-                $shippingTaxAmount = $quote->getShippingAddress()->getShippingTaxAmount();
-                $quote->getShippingAddress()
-                      ->setAppliedTaxes(array())
-                      ->setTaxAmount(0)
-                      ->setBaseTaxAmount(0)
-                      ->setShippingTaxAmount(0)
-                      ->setBaseShippingTaxAmount(0)
-                      ->save();
-            }
+            $quote = $this->_createQuote($customer, $products, $noTax);
             // Create Magento order
             $order = $this->_makeOrder($quote, $orderLengow);
-            // if order is B2B, remove shipping tax amount from grand total
-            $order->setGrandTotal($order->getGrandTotal() - $shippingTaxAmount);
-            $order->save();
             // If order is successfully imported
             if ($order) {
                 // Save order line id in lengow_order_line table
@@ -972,12 +963,13 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
      *
      * @param Mage_Customer_Model_Customer $customer Lengow customer instance
      * @param array $products Lengow products from Api
+     * @param bool $noTax Should apply shipping tax
      *
      * @throws Exception
      *
      * @return Lengow_Connector_Model_Import_Quote
      */
-    protected function _createQuote($customer, $products)
+    protected function _createQuote($customer, $products, $noTax = false)
     {
         /** @var Lengow_Connector_Model_Import_Quote $quote */
         $quote = Mage::getModel('lengow/import_quote')
@@ -1079,6 +1071,15 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
                 'marketplace' => (string)$this->_orderData->marketplace . $paymentInfo,
             )
         );
+        if ($noTax) {
+            $this->shippingTaxAmount = $quote->getShippingAddress()->getShippingTaxAmount();
+            $quote->getShippingAddress()
+                  ->setAppliedTaxes(array())
+                  ->setTaxAmount(0)
+                  ->setBaseTaxAmount(0)
+                  ->setShippingTaxAmount(0)
+                  ->setBaseShippingTaxAmount(0);
+        }
         $quote->save();
         return $quote;
     }
@@ -1250,6 +1251,9 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
         $order->setShippingDescription(
             $order->getShippingDescription() . ' [marketplace shipping method : ' . $carrierName . ']'
         );
+        // if order is B2B, remove shipping tax amount from grand total
+        $order->setGrandTotal($order->getGrandTotal() - $this->shippingTaxAmount);
+        $this->shippingTaxAmount = 0;
         $order->save();
         return $order;
     }
