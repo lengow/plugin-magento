@@ -449,8 +449,24 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
             }
             // Create Magento Quote
             $quote = $this->_createQuote($customer, $products);
+            $shippingTaxAmount = 0;
+            if ((bool)$this->_configHelper->get('import_b2b_without_tax')
+                && $orderLengow->isBusiness()
+            ) {
+                $shippingTaxAmount = $quote->getShippingAddress()->getShippingTaxAmount();
+                $quote->getShippingAddress()
+                      ->setAppliedTaxes(array())
+                      ->setTaxAmount(0)
+                      ->setBaseTaxAmount(0)
+                      ->setShippingTaxAmount(0)
+                      ->setBaseShippingTaxAmount(0)
+                      ->save();
+            }
             // Create Magento order
             $order = $this->_makeOrder($quote, $orderLengow);
+            // if order is B2B, remove shipping tax amount from grand total
+            $order->setGrandTotal($order->getGrandTotal() - $shippingTaxAmount);
+            $order->save();
             // If order is successfully imported
             if ($order) {
                 // Save order line id in lengow_order_line table
@@ -859,6 +875,10 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
                 'merchant_product_id' => $product->merchant_product_id->id,
                 'marketplace_product_id' => $product->marketplace_product_id,
             );
+            $productIds = array(
+                'merchant_product_id' => 1,
+                'marketplace_product_id' => 1,
+            );
             $productField = $product->merchant_product_id->field !== null
                 ? strtolower((string)$product->merchant_product_id->field)
                 : false;
@@ -986,7 +1006,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
         // check if store include tax (Product and shipping cost)
         $priceIncludeTax = Mage::helper('tax')->priceIncludesTax($quote->getStore());
         $shippingIncludeTax = Mage::helper('tax')->shippingPriceIncludesTax($quote->getStore());
-        // If order is B2B, set priceIncludeTax to true
+        // If order is B2B, set $priceIncludeTax to true
         if ((bool)Mage::getSingleton('core/session')->getIsLengowB2b()) {
             $priceIncludeTax = true;
         }
