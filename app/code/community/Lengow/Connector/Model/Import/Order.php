@@ -129,6 +129,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
         'order_types' => array('required' => true, 'updated' => false),
         'currency' => array('required' => false, 'updated' => true),
         'total_paid' => array('required' => false, 'updated' => true),
+        'customer_vat_number' => array('required' => false, 'updated' => false),
         'commission' => array('required' => false, 'updated' => true),
         'customer_name' => array('required' => false, 'updated' => true),
         'customer_email' => array('required' => false, 'updated' => true),
