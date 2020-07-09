@@ -457,7 +457,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
             // Create Magento Quote
             $quote = $this->_createQuote($customer, $products, $noTax);
             // Create Magento order
-            $order = $this->_makeOrder($quote, $orderLengow);
+            $order = $this->_makeOrder($quote, $orderLengow, $noTax);
             // If order is successfully imported
             if ($order) {
                 // Save order line id in lengow_order_line table
@@ -997,6 +997,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
         // If order is B2B, set $priceIncludeTax to true
         if ((bool)Mage::getSingleton('core/session')->getIsLengowB2b()) {
             $priceIncludeTax = true;
+            $shippingIncludeTax = true;
         }
         // add product in quote
         $quote->addLengowProducts($products, $priceIncludeTax);
@@ -1146,12 +1147,13 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
      *
      * @param Lengow_Connector_Model_Import_Quote $quote Lengow quote instance
      * @param Lengow_Connector_Model_Import_Order $orderLengow Lengow order instance
+     * @param bool $noTax Should apply shipping tax
      *
      * @throws Lengow_Connector_Model_Exception order failed with quote
      *
      * @return Mage_Sales_Model_Order
      */
-    protected function _makeOrder(Lengow_Connector_Model_Import_Quote $quote, $orderLengow)
+    protected function _makeOrder(Lengow_Connector_Model_Import_Quote $quote, $orderLengow, $noTax = false)
     {
         $additionalDatas = array(
             'from_lengow' => true,
@@ -1210,7 +1212,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
         // conversion Tax Include > Tax Exclude > Tax Include maybe make 0.01 amount error
         $priceIncludeTax = Mage::helper('tax')->priceIncludesTax($quote->getStore());
         $shippingIncludeTax = Mage::helper('tax')->shippingPriceIncludesTax($quote->getStore());
-        if (!$priceIncludeTax || !$shippingIncludeTax) {
+        if ((!$priceIncludeTax || !$shippingIncludeTax) && !$noTax) {
             if ($order->getGrandTotal() != $this->_orderAmount) {
                 // check Grand Total
                 $diff = $this->_orderAmount - $order->getGrandTotal();
