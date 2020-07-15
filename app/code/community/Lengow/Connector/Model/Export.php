@@ -612,6 +612,13 @@ class Lengow_Connector_Model_Export extends Varien_Object
                 : '';
             $datas['child_name'] = $this->_helper->cleanData($product->getName());
             $datas['language'] = Mage::app()->getLocale()->getLocaleCode();
+
+            // Dispatch an event so other modules can update $datas
+            $datasObject = new Varien_Object();
+            $datasObject->setData($datas);
+            Mage::dispatchEvent('lengow_export_products_datas', ['datas' => $datasObject]);
+            $datas = $datasObject->getData();
+
             // get correct feed
             $productDatas = array();
             foreach ($this->_defaultFields as $key => $value) {
