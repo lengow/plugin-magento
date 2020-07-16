@@ -798,7 +798,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
             ) {
                 // if order is new -> generate invoice
                 if ($order->getState() === $this->getOrderState(self::STATE_NEW)) {
-                    $this->toInvoice();
+                    $this->toInvoice($order);
                 }
                 if (!empty($trackings)) {
                     $tracking = $trackings[0];
