@@ -792,6 +792,13 @@ class Lengow_Connector_Model_Export extends Varien_Object
             }
         }
         $this->_defaultFields = $this->_legacy ? $this->_legacyFields : $this->_newFields;
+
+        $defaultFields = new Varien_Object();
+        $defaultFields->setData($this->_defaultFields);
+
+        Mage::dispatchEvent('lengow_export_products_defaultFields', ['default_fields' => $defaultFields]);
+        
+        $this->_defaultFields = $defaultFields->getData();
     }
 
     /**
