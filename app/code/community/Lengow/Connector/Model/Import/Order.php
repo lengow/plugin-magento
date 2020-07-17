@@ -966,10 +966,10 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
         if (isset($results->error)) {
             return false;
         }
-        foreach ($results->results as $order) {
-            if ($order->getData('marketplace_lengow') !== (string)$order->marketplace) {
+        foreach ($results->results as $lengowOrder) {
+            if ($order->getData('marketplace_lengow') !== (string)$lengowOrder->marketplace) {
                 try {
-                    $order->setData('marketplace_lengow', (string)$order->marketplace);
+                    $order->setData('marketplace_lengow', (string)$lengowOrder->marketplace);
                     $order->save();
                 } catch (Exception $e) {
                     continue;
