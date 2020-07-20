@@ -7,6 +7,7 @@ Version 3.2.3
     - Bugfix: [import] Adding timezone in the order recovery date
     - BugFix: [import] Handling of b2b order shipping tax
     - BugFix: [import] Add missing param to 'toInvoice()' method call
+    - BugFix: Correction of Customer::getName behavior
 
 =============================================================
 Version 3.2.2
