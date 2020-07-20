@@ -1148,6 +1148,14 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
             'store_currency_code' => (string)$this->_orderData->currency->iso_a3,
             'order_currency_code' => (string)$this->_orderData->currency->iso_a3,
         );
+
+        $additionalDatasObject = new Varien_Object();
+        $additionalDatasObject->setData($additionalDatas);
+
+        Mage::dispatchEvent('lengow_import_order_additionalDatas', ['additional_datas' => $additionalDatasObject]);
+
+        $additionalDatas = $additionalDatasObject->getData();
+
         $service = Mage::getModel('sales/service_quote', $quote);
         $service->setOrderData($additionalDatas);
         /** @var Mage_Sales_Model_Order $order */
