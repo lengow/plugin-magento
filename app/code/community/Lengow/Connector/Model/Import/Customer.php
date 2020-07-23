@@ -495,9 +495,9 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
         if (empty($names['lastName']) && empty($names['firstName'])) {
             $names = $this->_splitNames($names['fullName']);
         } else {
-            if (empty($names['lastName'])) {
+            if (empty($names['firstName'])) {
                 $names = $this->_splitNames($names['lastName']);
-            } elseif (empty($names['firstName'])) {
+            } elseif (empty($names['lastName'])) {
                 $names = $this->_splitNames($names['firstName']);
             }
         }
