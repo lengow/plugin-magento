@@ -9,6 +9,7 @@ Version 3.2.3
     - BugFix: [import] Add missing param to 'toInvoice()' method call
     - BugFix: Correction of Customer::getName behavior
     - BugFix: [import] Changing variable name into checkAndChangeMarketplaceName() function
+    - BugFix: Always load iframe over HTTPS
 
 =============================================================
 Version 3.2.2
