@@ -478,8 +478,8 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
                 Lengow_Connector_Model_Connector::GET,
                 Lengow_Connector_Model_Connector::API_ORDER_ACTION,
                 array(
-                    'updated_from' => $coreDate->date('c', $dateFrom),
-                    'updated_to' => $coreDate->date('c', $dateTo),
+                    'updated_from' => Mage::app()->getLocale()->date($dateFrom)->toString('c'),
+                    'updated_to' => Mage::app()->getLocale()->date($dateTo)->toString('c'),
                     'page' => $page,
                 ),
                 '',

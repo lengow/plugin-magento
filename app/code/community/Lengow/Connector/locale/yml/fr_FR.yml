@@ -107,6 +107,7 @@ fr:
       synchronize_id: "Synchronisez l'ID"
       resend_action: "Renvoyer l'action"
       check_resend_action: "Vous voulez vous vraiment %{action} la commande ?"
+      vat_number: 'Numéro de TVA'
     table:
       lengow_action: "Actions"
       lengow_state: "Statut"
@@ -154,12 +155,12 @@ fr:
       title: "Demandez de l'aide à notre équipe Support !"
       contain_text_support: "Des questions, un feedback sur Lengow... transmettez vos demandes au"
       title_lengow_support: "support Lengow."
-      link_lengow_support: "https://supportlengow.zendesk.com/hc/fr/requests/new"
+      link_lengow_support: "https://www.lengow.com/fr/support/"
       need_some_help: "Besoin d'aide ?"
       contain_text_support_hour: "Nous ferons notre maximum pour revenir vers vous au plus vite (Notre équipe Support est disponible du lundi au vendredi, de 9h à 18h)."
       find_answer: "Vous pouvez aussi consulter"
       link_magento_guide: "notre guide dédié à Magento"
-      knowledge_link_url: "https://supportlengow.zendesk.com/hc/fr/articles/360011978332"
+      knowledge_link_url: "https://support.lengow.com/kb/guide/fr/ClPhE37tgf"
   legals:
     screen:
       simplified_company: "Société par actions simplifiés"
@@ -315,6 +316,8 @@ fr:
     import_debug_mode_enable_comment: "Utilisez le Debug Mode pour tester et simuler des commandes fictives. Pour rappel, vous devez activer ce paramètre UNIQUEMENT sur votre serveur de préproduction"
     import_cron_enable_title: "Autorisez le process Cron de Magento"
     import_cron_enable_comment: "Si votre Cron est en place sur Magento, les commandes seront importées automatiquement toutes les 30 minutes"
+    import_b2b_without_tax_label: "Activer l'import des commandes B2B sans taxes"
+    import_b2b_without_tax_comment: "Activer cette option pour importer les commandes B2B sans taxes"
   lengow_log:
     error:
       nb_order_imported: "%{nb_order} commande(s) importée(s)"
@@ -355,4 +358,4 @@ fr:
     mail_report:
       subject_report_mail: "Erreur de l'import Lengow"
       order: "commande %{marketplace_sku}"
-      no_error_in_report_mail: "Pas de message d'erreur, contacter le support via https://supportlengow.zendesk.com/agent/"
+      no_error_in_report_mail: "Pas de message d'erreur, contacter le support via https://www.lengow.com/fr/support/"

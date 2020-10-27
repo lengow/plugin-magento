@@ -390,6 +390,16 @@ if (!(bool)$installer->getConnection()->showTableStatus($tableName)) {
             'Total Paid'
         )
         ->addColumn(
+            'customer_vat_number',
+            $typeText,
+            null,
+            array(
+                'nullable' => true,
+                'default' => null,
+            ),
+            'Customer Vat Number'
+        )
+        ->addColumn(
             'commission',
             Varien_Db_Ddl_Table::TYPE_DECIMAL,
             null,

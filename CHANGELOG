@@ -1,4 +1,17 @@
 =============================================================
+Version 3.2.3
+=============================================================
+
+    - Feature: Adding new links to the Lengow Help Center and Support
+    - Feature: B2B orders can now be imported without taxes (optional)
+    - Bugfix: [import] Adding timezone in the order recovery date
+    - BugFix: [import] Handling of b2b order shipping tax
+    - BugFix: [import] Add missing param to 'toInvoice()' method call
+    - BugFix: Correction of Customer::getName behavior
+    - BugFix: [import] Changing variable name into checkAndChangeMarketplaceName() function
+    - BugFix: Always load iframe over HTTPS
+
+=============================================================
 Version 3.2.2
 =============================================================
 

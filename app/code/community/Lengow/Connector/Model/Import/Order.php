@@ -129,6 +129,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
         'order_types' => array('required' => true, 'updated' => false),
         'currency' => array('required' => false, 'updated' => true),
         'total_paid' => array('required' => false, 'updated' => true),
+        'customer_vat_number' => array('required' => false, 'updated' => false),
         'commission' => array('required' => false, 'updated' => true),
         'customer_name' => array('required' => false, 'updated' => true),
         'customer_email' => array('required' => false, 'updated' => true),
@@ -797,7 +798,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
             ) {
                 // if order is new -> generate invoice
                 if ($order->getState() === $this->getOrderState(self::STATE_NEW)) {
-                    $this->toInvoice();
+                    $this->toInvoice($order);
                 }
                 if (!empty($trackings)) {
                     $tracking = $trackings[0];
@@ -966,10 +967,10 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
         if (isset($results->error)) {
             return false;
         }
-        foreach ($results->results as $order) {
-            if ($order->getData('marketplace_lengow') !== (string)$order->marketplace) {
+        foreach ($results->results as $result) {
+            if ($order->getData('marketplace_lengow') !== (string)$result->marketplace) {
                 try {
-                    $order->setData('marketplace_lengow', (string)$order->marketplace);
+                    $order->setData('marketplace_lengow', (string)$result->marketplace);
                     $order->save();
                 } catch (Exception $e) {
                     continue;

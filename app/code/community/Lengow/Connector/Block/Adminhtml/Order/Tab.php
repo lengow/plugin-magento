@@ -129,6 +129,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Tab
             $importedAt = $helper->getDateInCorrectFormat(strtotime($orderLengow->getData('created_at')));
             $message = $orderLengow->getData('message');
             $extra = $orderLengow->getData('extra');
+            $vatNumber = $orderLengow->getData('customer_vat_number');
         } else {
             $marketplaceSku = $order->getData('order_id_lengow');
             $marketplaceLabel = $order->getData('marketplace_lengow');
@@ -149,6 +150,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Tab
             $importedAt = $helper->getDateInCorrectFormat(strtotime($order->getData('carrier_id_relay_lengow')));
             $message = $order->getData('created_at');
             $extra = $order->getData('xml_node_lengow');
+            $vatNumber = null;
         }
         // construct fields list
         $fields[] = array('label' => $helper->__('order.table.marketplace_sku'), 'value' => $marketplaceSku);
@@ -182,6 +184,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Tab
             'label' => $helper->__('order.screen.is_business'),
             'value' => $isBusiness ? $helper->__('global.just_yes') : $helper->__('global.just_no'),
         );
+        $fields[] = array('label' => $helper->__('order.screen.vat_number'), 'value' => $vatNumber);
         $fields[] = array('label' => $helper->__('order.screen.message'), 'value' => $message);
         $fields[] = array('label' => $helper->__('order.screen.imported_at'), 'value' => $importedAt);
         $fields[] = array(

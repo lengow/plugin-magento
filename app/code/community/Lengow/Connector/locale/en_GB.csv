@@ -92,6 +92,7 @@ order.screen.check_cancel_and_reimport|Do you really want to re-import the order
 order.screen.synchronize_id|Synchronize ID
 order.screen.resend_action|Resend Action
 order.screen.check_resend_action|Do you really want to %{action} the order?
+order.screen.vat_number|Vat number
 order.table.lengow_action|Actions
 order.table.lengow_state|Status
 order.table.order_types|Types
@@ -133,12 +134,12 @@ log.table.message|Message
 help.screen.title|Get a little help from your support team!
 help.screen.contain_text_support|Ask us anything about Lengow or share your feedback with
 help.screen.title_lengow_support|Lengow Support.
-help.screen.link_lengow_support|https://supportlengow.zendesk.com/hc/en-us/requests/new
+help.screen.link_lengow_support|https://www.lengow.com/support/
 help.screen.need_some_help|Need some help?
 help.screen.contain_text_support_hour|We’ll do our best to get back to you during regular business hours (Monday to Friday – 9am to 6pm GMT+1).
 help.screen.find_answer|You can also find answers in our
 help.screen.link_magento_guide|Magento dedicated guide
-help.screen.knowledge_link_url|https://supportlengow.zendesk.com/hc/en-us/articles/360011978332
+help.screen.knowledge_link_url|https://support.lengow.com/kb/guide/en/ClPhE37tgf
 legals.screen.simplified_company|Simplified limited liability company
 legals.screen.social_capital|Social capital:
 legals.screen.cnil_declaration|CNIL declaration:
@@ -288,6 +289,8 @@ lengow_setting.import_debug_mode_enable_title|Activate Debug Mode
 lengow_setting.import_debug_mode_enable_comment|Use Debug Mode for testing and to simulate fictitious orders. Please note that you have to activate this setting on your pre-production server ONLY
 lengow_setting.import_cron_enable_title|Enable Magento cron
 lengow_setting.import_cron_enable_comment|Enable the scheduled task to import your order every 30 minutes
+lengow_setting.import_b2b_without_tax_label|Enable import of B2B orders without tax
+lengow_setting.import_b2b_without_tax_comment|Activate this option to import B2B orders without tax
 lengow_log.error.nb_order_imported|%{nb_order} order(s) imported
 lengow_log.error.nb_order_updated|%{nb_order} order(s) updated
 lengow_log.error.nb_order_with_error|%{nb_order} order(s) with errors
@@ -324,7 +327,7 @@ lengow_log.exception.action_not_created_api|can't create action because Lengow A
 lengow_log.exception.action_is_too_old|order action is too old. Please retry
 lengow_log.mail_report.subject_report_mail|Lengow imports errors
 lengow_log.mail_report.order|Order %{marketplace_sku}
-lengow_log.mail_report.no_error_in_report_mail|no error message, contact support via https://supportlengow.zendesk.com/agent/
+lengow_log.mail_report.no_error_in_report_mail|no error message, contact support via https://www.lengow.com/support/
 log.export.start|## start %{type} export ##
 log.export.end|## end %{type} export ##
 log.export.start_for_store|start export in store %{store_name} (%{store_id})

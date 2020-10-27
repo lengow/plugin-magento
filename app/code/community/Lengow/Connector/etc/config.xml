@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Lengow_Connector>
-            <version>3.2.2</version>
+            <version>3.2.3</version>
         </Lengow_Connector>
     </modules>
     <frontend>
@@ -125,6 +125,14 @@
                     </lengow_payment_cancel>
                 </observers>
             </sales_order_payment_cancel>
+            <sales_quote_collect_totals_before>
+                <observers>
+                    <lengow_b2b_tax_applicator>
+                        <class>Lengow_Connector_Model_Observer</class>
+                        <method>salesQuoteCollectTotalsBefore</method>
+                    </lengow_b2b_tax_applicator>
+                </observers>
+            </sales_quote_collect_totals_before>
         </events>
         <blocks>
             <lengow>
@@ -245,6 +253,7 @@
                 <import_stock_ship_mp>0</import_stock_ship_mp>
                 <import_debug_mode_enable>0</import_debug_mode_enable>
                 <import_cron_enable>0</import_cron_enable>
+                <import_b2b_without_tax>0</import_b2b_without_tax>
             </advanced>
         </lengow_import_options>
         <payment>
