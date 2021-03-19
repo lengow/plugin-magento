@@ -15,6 +15,49 @@ footer.toolbox|Toolbox
 footer.legals|Legal notices
 footer.plugin_lengow|Lengow Magento Plugin
 footer.lengow_link_url|http://www.lengow.com/
+connection.home.description_first|Lengow helps you optimize your business worldwide!
+connection.home.description_second|Through the platform, you can automatically publish your product catalogue on marketplaces, comparison websites, affiliate network, and retargeting campaigns.
+connection.home.description_third|Explore your opportunities for international growth with 1,600 sales channels in 42 different countries.
+connection.home.description_fourth|Just one more step to go to install your Lengow plugin for Magento
+connection.home.button|Connect my Magento with Lengow
+connection.home.no_account|You don't have a Lengow account?
+connection.home.no_account_sign_up|Sign up for free
+connection.cms.credentials_title|Please enter your API Lengow credentials
+connection.cms.credentials_description|Find these credentials in your account settings, section "A.P.I"
+connection.cms.credentials_help|Need help?
+connection.cms.credentials_help_center|Check out our Help Center
+connection.cms.credentials_help_center_url|https://support.lengow.com/kb/en
+connection.cms.credentials_button|Connect to Lengow
+connection.cms.credentials_button_loading|Connecting...
+connection.cms.credentials_placeholder_access_token|Enter your access token
+connection.cms.credentials_placeholder_secret|Enter your secret
+connection.cms.success_title|Well done! Lengow is now connected with your Magento
+connection.cms.success_description_first|You can now use the plugin, configure your products and view your marketplace orders.
+connection.cms.success_description_second|To import your catalogue and configure your channels,
+connection.cms.success_description_second_go_to_lengow|go to Lengow.
+connection.cms.success_button|Go to dashboard
+connection.cms.success_description_first_catalog|One last step to complete the installation:
+connection.cms.success_description_second_catalog|Link your Lengow catalogs to your Magento stores.
+connection.cms.success_button_catalog|Link catalogues
+connection.cms.failed_title|Ooops! Unable to connect Lengow to your Magento
+connection.cms.failed_description|We were unable to make the connection between your Magento and Lengow.
+connection.cms.failed_description_first_credentials|Unable to connect with credentials provided.
+connection.cms.failed_description_second_credentials_prod|Please verify that these credentials match Lengow's production environment.
+connection.cms.failed_description_second_credentials_preprod|Please verify that these credentials match Lengow's pre-production environment.
+connection.cms.failed_help|If the problem persists, you can take a look at
+connection.cms.failed_help_center|"Magento guide"
+connection.cms.failed_help_or|or contact our
+connection.cms.failed_help_customer_success_team|"Customer Success Team"
+connection.cms.failed_button|Retry
+connection.catalog.link_title|Link your stores with Lengow
+connection.catalog.link_description|To retrieve all your existing configuration (orders, products...) directly link the following Magento stores with your Lengow catalogue(s).
+connection.catalog.link_catalog_avalaible|catalogues are available and not linked to a cms in Lengow.
+connection.catalog.link_button|Save and go to the dashboard
+connection.catalog.link_button_loading|Saving...
+connection.catalog.link_placeholder_catalog|Select a catalogue
+connection.catalog.failed_title|Ooops! Unable to link your catalogues in Lengow
+connection.catalog.failed_description_first|We were unable to link your catalogues to Lengow.
+connection.catalog.failed_description_second|You can try again or fill in the catalogues IDs directly in the plugin settings.
 dashboard.screen.welcome_back|Hi! Welcome back!
 dashboard.screen.go_to_lengow|Go to Lengow
 dashboard.screen.products_title|Products
@@ -134,12 +177,12 @@ log.table.message|Message
 help.screen.title|Get a little help from your support team!
 help.screen.contain_text_support|Ask us anything about Lengow or share your feedback with
 help.screen.title_lengow_support|Lengow Support.
-help.screen.link_lengow_support|https://www.lengow.com/support/
+help.screen.link_lengow_support|https://supportlengow.zendesk.com/hc/en-us/requests/new
 help.screen.need_some_help|Need some help?
 help.screen.contain_text_support_hour|We’ll do our best to get back to you during regular business hours (Monday to Friday – 9am to 6pm GMT+1).
 help.screen.find_answer|You can also find answers in our
 help.screen.link_magento_guide|Magento dedicated guide
-help.screen.knowledge_link_url|https://support.lengow.com/kb/guide/en/ClPhE37tgf
+help.screen.knowledge_link_url|https://support.lengow.com/kb/guide/en/magento-ClPhE37tgf/Steps/25858
 legals.screen.simplified_company|Simplified limited liability company
 legals.screen.social_capital|Social capital:
 legals.screen.cnil_declaration|CNIL declaration:
@@ -327,7 +370,11 @@ lengow_log.exception.action_not_created_api|can't create action because Lengow A
 lengow_log.exception.action_is_too_old|order action is too old. Please retry
 lengow_log.mail_report.subject_report_mail|Lengow imports errors
 lengow_log.mail_report.order|Order %{marketplace_sku}
-lengow_log.mail_report.no_error_in_report_mail|no error message, contact support via https://www.lengow.com/support/
+lengow_log.mail_report.no_error_in_report_mail|no error message, contact support via https://supportlengow.zendesk.com/hc/en-us/requests/new
+lengow_log.connection.status_draft|Draft
+lengow_log.connection.status_active|Active
+lengow_log.connection.catalog|Catalogue %{catalog_id}
+lengow_log.connection.catalog_label|%{catalog_id} - %{catalog_name} - %{nb_products} products - %{catalog_status}
 log.export.start|## start %{type} export ##
 log.export.end|## end %{type} export ##
 log.export.start_for_store|start export in store %{store_name} (%{store_id})
@@ -384,6 +431,12 @@ log.import.quantity_back_reimported_order|adding quantity back to stock count (o
 log.import.quantity_back_shipped_by_marketplace|adding quantity back to stock count (order shipped by marketplace)
 log.import.anonymized_order|Order is anonymized and has not been imported
 log.import.old_order|Order is older than 3 months and has not been imported
+log.connection.cms_creation_success|CMS successfully created with Lengow webservice (CMS token %{cms_token})
+log.connection.cms_creation_failed|WARNING! CMS could NOT be created with Lengow webservice (CMS token %{cms_token})
+log.connection.cms_already_exist|CMS already created in Lengow (CMS token %{cms_token})
+log.connection.try_link_catalog|try to associate catalogue IDs %{catalog_ids} to the shop (SHOP token %{shop_token}) for the Magento store ID %{store_id}
+log.connection.link_catalog_success|catalogues successfully linked with Lengow webservice
+log.connection.link_catalog_failed|WARNING! catalogues could NOT be linked with Lengow webservice
 log.mail_report.send_mail_to|report email sent to %{email}
 log.mail_report.unable_send_mail_to|unable to send report email to %{email}
 log.order_action.check_completed_action|check completed actions

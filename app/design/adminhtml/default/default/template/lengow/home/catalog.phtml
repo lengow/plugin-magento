@@ -1,0 +1,61 @@
+<?php
+/**
+ * @var $this Lengow_Connector_Block_Adminhtml_Home_Content
+ * @see Lengow_Connector_Block_Adminhtml_Home_Content
+ */
+?>
+
+<?php
+    $catalogList = $this->getCatalogList();
+?>
+
+<div class="lgw-content-section">
+    <h2><?php echo $this->_helper->__('connection.catalog.link_title'); ?></h2>
+    <p><?php echo $this->_helper->__('connection.catalog.link_description'); ?></p>
+    <p>
+        <span><?php echo count($catalogList); ?></span>
+        <?php echo $this->_helper->__('connection.catalog.link_catalog_avalaible'); ?>
+    </p>
+</div>
+<div>
+    <?php
+    foreach (Mage::app()->getWebsites() as $website) {
+        foreach ($website->getGroups() as $group) {
+            $stores = $group->getStores();
+            foreach ($stores as $store) {
+                ?>
+                <div class="lgw-catalog-select">
+                    <label class="control-label" for="select_catalog_<?php echo $store->getId(); ?>">
+                        <?php echo $store->getName(); ?>
+                    </label>
+                    <select class="form-control lengow_select js-catalog-linked"
+                            id="select_catalog_<?php echo $store->getId(); ?>"
+                            name="<?php echo $store->getId(); ?>"
+                            multiple="multiple"
+                            data-placeholder="<?php echo $this->_helper->__('connection.catalog.link_placeholder_catalog'); ?>"
+                            data-allow-clear="true">
+                        <?php foreach ($catalogList as $catalog) { ?>
+                            <option value="<?php echo $catalog['value']; ?>">
+                                <?php echo $catalog['label']; ?>
+                            </option>
+                        <?php } ?>
+                    </select>
+                </div>
+                <?php
+            }
+        }
+    }
+    ?>
+</div>
+<div>
+    <button class="lgw-btn lgw-btn-green lgw-btn-progression js-link-catalog">
+        <div class="btn-inner">
+            <div class="btn-step default">
+                <?php echo $this->_helper->__('connection.catalog.link_button'); ?>
+            </div>
+            <div class="btn-step loading">
+                <?php echo $this->_helper->__('connection.catalog.link_button_loading'); ?>
+            </div>
+        </div>
+    </button>
+</div>

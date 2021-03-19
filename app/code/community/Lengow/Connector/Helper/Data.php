@@ -28,6 +28,11 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
     const LOG_LIFE = 20;
 
     /**
+     * @var string connection log code
+     */
+    const CODE_CONNECTION = 'Connection';
+
+    /**
      * @var string setting log code
      */
     const CODE_SETTING = 'Setting';

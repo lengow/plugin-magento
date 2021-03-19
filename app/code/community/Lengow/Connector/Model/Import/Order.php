@@ -596,7 +596,12 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
                 $order->save();
                 return (int)$result['order_id'];
             }
-            $order->addData(array('is_reimported_lengow' => 0));
+            $order->addData(
+                array(
+                    'is_reimported_lengow' => 0,
+                    'follow_by_lengow' => 1,
+                )
+            );
             $order->save();
         } catch (\Exception $e) {
             return false;
@@ -614,7 +619,12 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
     public function isReimported($order)
     {
         try {
-            $order->addData(array('is_reimported_lengow' => 1));
+            $order->addData(
+                array(
+                    'is_reimported_lengow' => 1,
+                    'follow_by_lengow' => 0,
+                )
+            );
             $order->save();
         } catch (\Exception $e) {
             return false;
@@ -863,17 +873,18 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
             if ($order->getData('feed_id_lengow') != 0) {
                 $this->checkAndChangeMarketplaceName($order, $connector, $logOutput);
             }
+            $body = array(
+                'account_id' => $accountId,
+                'marketplace_order_id' => $order->getData('order_id_lengow'),
+                'marketplace' => $order->getData('marketplace_lengow'),
+                'merchant_order_id' => $magentoIds,
+            );
             try {
                 $result = $connector->patch(
                     Lengow_Connector_Model_Connector::API_ORDER_MOI,
-                    array(
-                        'account_id' => $accountId,
-                        'marketplace_order_id' => $order->getData('order_id_lengow'),
-                        'marketplace' => $order->getData('marketplace_lengow'),
-                        'merchant_order_id' => $magentoIds,
-                    ),
+                    array(),
                     Lengow_Connector_Model_Connector::FORMAT_JSON,
-                    '',
+                    Mage::helper('core')->jsonEncode($body),
                     $logOutput
                 );
             } catch (Exception $e) {

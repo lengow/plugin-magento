@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2017 Lengow SAS
+ * Copyright 2021 Lengow SAS
  *
  * NOTICE OF LICENSE
  *
@@ -13,19 +13,19 @@
  * @package     Lengow_Connector
  * @subpackage  controllers
  * @author      Team module <team-module@lengow.com>
- * @copyright   2017 Lengow SAS
+ * @copyright   2021 Lengow SAS
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
 /**
- * Adminhtml lengow helpController
+ * Adminhtml lengow dashboardController
  */
-class Lengow_Connector_Adminhtml_Lengow_HelpController extends Mage_Adminhtml_Controller_Action
+class Lengow_Connector_Adminhtml_Lengow_DashboardController extends Mage_Adminhtml_Controller_Action
 {
     /**
      * Init action
      *
-     * @return Lengow_Connector_Adminhtml_Lengow_HelpController
+     * @return Lengow_Connector_Adminhtml_Lengow_DashboardController
      */
     protected function _initAction()
     {
@@ -38,7 +38,11 @@ class Lengow_Connector_Adminhtml_Lengow_HelpController extends Mage_Adminhtml_Co
      */
     public function indexAction()
     {
-        $this->_initAction()->renderLayout();
+        if (Mage::helper('lengow_connector/config')->isNewMerchant()) {
+            $this->_redirect('adminhtml/lengow_home/index');
+        } else {
+            $this->_initAction()->renderLayout();
+        }
     }
 
     /**
@@ -48,6 +52,15 @@ class Lengow_Connector_Adminhtml_Lengow_HelpController extends Mage_Adminhtml_Co
      */
     protected function _isAllowed()
     {
-        return Mage::getSingleton('admin/session')->isAllowed('lengowtab/help');
+        return Mage::getSingleton('admin/session')->isAllowed('lengowtab/home');
+    }
+
+    /**
+     * Refresh account status
+     */
+    public function refreshAction()
+    {
+        Mage::helper('lengow_connector/sync')->getStatusAccount(true);
+        Mage::app()->getResponse()->setRedirect(Mage::helper('adminhtml')->getUrl('adminhtml/lengow_home'));
     }
 }
