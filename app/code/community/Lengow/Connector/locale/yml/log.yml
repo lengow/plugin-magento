@@ -58,6 +58,13 @@ en:
       quantity_back_shipped_by_marketplace: "adding quantity back to stock count (order shipped by marketplace)"
       anonymized_order: "Order is anonymized and has not been imported"
       old_order: "Order is older than 3 months and has not been imported"
+    connection:
+      cms_creation_success: "CMS successfully created with Lengow webservice (CMS token %{cms_token})"
+      cms_creation_failed: "WARNING! CMS could NOT be created with Lengow webservice (CMS token %{cms_token})"
+      cms_already_exist: "CMS already created in Lengow (CMS token %{cms_token})"
+      try_link_catalog: "try to associate catalogue IDs %{catalog_ids} to the shop (SHOP token %{shop_token}) for the Magento store ID %{store_id}"
+      link_catalog_success: "catalogues successfully linked with Lengow webservice"
+      link_catalog_failed: "WARNING! catalogues could NOT be linked with Lengow webservice"
     mail_report:
       send_mail_to: "report email sent to %{email}"
       unable_send_mail_to: "unable to send report email to %{email}"

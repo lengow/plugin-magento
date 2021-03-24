@@ -113,7 +113,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
      */
     public function isSyncAction($action)
     {
-        return in_array($action, $this->_syncActions);
+        return in_array($action, $this->_syncActions, true);
     }
 
     /**
@@ -127,10 +127,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
             return true;
         }
         $statusAccount = $this->getStatusAccount();
-        if (($statusAccount['type'] === 'free_trial' && $statusAccount['expired'])) {
-            return true;
-        }
-        return false;
+        return $statusAccount['type'] === 'free_trial' && $statusAccount['expired'];
     }
 
 
@@ -151,7 +148,6 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
             'plugin_version' => (string)Mage::getConfig()->getNode()->modules->Lengow_Connector->version,
             'email' => Mage::getStoreConfig('trans_email/ident_general/email'),
             'cron_url' => $helper->getCronUrl(),
-            'return_url' => 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'],
             'shops' => array(),
         );
         foreach (Mage::app()->getWebsites() as $website) {
@@ -161,7 +157,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
                     $storeId = (int)$store->getId();
                     /** @var Lengow_Connector_Model_Export $export */
                     $export = Mage::getModel('lengow/export', array('store_id' => $storeId));
-                    $data['shops'][$storeId] = array(
+                    $data['shops'][] = array(
                         'token' => $this->_configHelper->getToken($storeId),
                         'shop_name' => $store->getName(),
                         'domain_url' => $store->getBaseUrl(),
@@ -177,35 +173,6 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Set store configuration key from Lengow
-     *
-     * @param array $params Lengow API credentials
-     */
-    public function sync($params)
-    {
-        $this->_configHelper->setAccessIds(
-            array(
-                'account_id' => $params['account_id'],
-                'access_token' => $params['access_token'],
-                'secret_token' => $params['secret_token'],
-            )
-        );
-        if (isset($params['shops'])) {
-            foreach ($params['shops'] as $storeToken => $storeCatalogIds) {
-                $store = $this->_configHelper->getStoreByToken($storeToken);
-                if ($store) {
-                    $this->_configHelper->setCatalogIds($storeCatalogIds['catalog_ids'], (int)$store->getId());
-                    $this->_configHelper->setActiveStore((int)$store->getId());
-                }
-            }
-        }
-        // save last update date for a specific settings (change synchronisation interval time)
-        $this->_configHelper->set('last_setting_update', time());
-        // clean config cache to valid configuration
-        Mage::app()->getCacheInstance()->cleanType('config');
-    }
-
-    /**
      * Sync Lengow catalogs for order synchronisation
      *
      * @param boolean $force force cache update
@@ -215,14 +182,15 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
      */
     public function syncCatalog($force = false, $logOutput = false)
     {
+        $success = false;
         $cleanCache = false;
         if ($this->_configHelper->isNewMerchant()) {
-            return false;
+            return $success;
         }
         if (!$force) {
             $updatedAt = $this->_configHelper->get('last_catalog_update');
             if ($updatedAt !== null && (time() - (int)$updatedAt) < $this->_cacheTimes[self::SYNC_CATALOG]) {
-                return false;
+                return $success;
             }
         }
         $result = Mage::getModel('lengow/connector')->queryApi(
@@ -249,6 +217,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
                             }
                         }
                     }
+                    $success = true;
                     break;
                 }
             }
@@ -260,7 +229,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
             Mage::app()->getCacheInstance()->cleanType('config');
         }
         $this->_configHelper->set('last_catalog_update', time());
-        return true;
+        return $success;
     }
 
     /**

@@ -1,0 +1,98 @@
+<?php
+/**
+ * @var $this Lengow_Connector_Block_Adminhtml_Home_Content
+ * @see Lengow_Connector_Block_Adminhtml_Home_Content
+ */
+?>
+
+<div id="lgw-connection-cms-result">
+    <?php if($this->getCmsConnected()) { ?>
+        <div class="lgw-content-section">
+            <h2><?php echo $this->_helper->__('connection.cms.success_title'); ?></h2>
+        </div>
+        <div class="lgw-module-illu mod-connected">
+            <img src="<?php echo $this->getSkinUrl('lengow/images/') ?>connected-magento.png"
+                 class="lgw-module-illu-module mod-connected"
+                 alt="magento">
+            <img src="<?php echo $this->getSkinUrl('lengow/images/') ?>connected-lengow.png"
+                 class="lgw-module-illu-lengow mod-connected"
+                 alt="lengow">
+            <img src="<?php echo $this->getSkinUrl('lengow/images/') ?>connection-module.png"
+                 class="lgw-module-illu-plug mod-connected"
+                 alt="connection">
+        </div>
+        <?php if($this->getHasCataloToLink()) { ?>
+            <div class="lgw-content-section">
+                <p><?php echo $this->_helper->__('connection.cms.success_description_first_catalog'); ?></p>
+                <p><?php echo $this->_helper->__('connection.cms.success_description_second_catalog'); ?></p>
+            </div>
+            <div>
+                <button class="lgw-btn lgw-btn-green js-go-to-catalog" data-retry="false">
+                    <?php echo $this->_helper->__('connection.cms.success_button_catalog'); ?>
+                </button>
+            </div>
+        <?php } else { ?>
+            <div class="lgw-content-section">
+                <p><?php echo $this->_helper->__('connection.cms.success_description_first'); ?></p>
+                <p>
+                    <?php echo $this->_helper->__('connection.cms.success_description_second'); ?>
+                    <a href=" <?php echo $this->getLengowSolutionUrl(); ?>" target="_blank">
+                        <?php echo $this->_helper->__('connection.cms.success_description_second_go_to_lengow'); ?>
+                    </a>
+                </p>
+            </div>
+            <div>
+                <a href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_dashboard/'); ?>"
+                   class="lgw-btn lgw-btn-green">
+                    <?php echo $this->_helper->__('connection.cms.success_button'); ?>
+                </a>
+            </div>
+        <?php } ?>
+    <?php } else { ?>
+        <div class="lgw-content-section">
+            <h2><?php echo $this->_helper->__('connection.cms.failed_title'); ?></h2>
+        </div>
+        <div class="lgw-module-illu mod-disconnected">
+            <img src="<?php echo $this->getSkinUrl('lengow/images/') ?>connected-magento.png"
+                 class="lgw-module-illu-module mod-disconnected"
+                 alt="magento">
+            <img src="<?php echo $this->getSkinUrl('lengow/images/') ?>connected-lengow.png"
+                 class="lgw-module-illu-lengow mod-disconnected"
+                 alt="lengow">
+            <img src="<?php echo $this->getSkinUrl('lengow/images/') ?>unplugged.png"
+                 class="lgw-module-illu-plug mod-disconnected"
+                 alt="unplugged">
+        </div>
+        <div class="lgw-content-section">
+            <?php if($this->getCredentialsValid()) { ?>
+                <p><?php echo $this->_helper->__('connection.cms.failed_description'); ?></p>
+            <?php } else { ?>
+                <p><?php echo $this->_helper->__('connection.cms.failed_description_first_credentials'); ?></p>
+                <p>
+                    <?php
+                    if ($this->isPreprodPlugin()) {
+                        echo $this->_helper->__('connection.cms.failed_description_second_credentials_preprod');
+                    } else {
+                        echo $this->_helper->__('connection.cms.failed_description_second_credentials_prod');
+                    }
+                    ?>
+                </p>
+            <?php } ?>
+            <p>
+                <?php echo $this->_helper->__('connection.cms.failed_help'); ?>
+                <a href="<?php echo $this->_helper->__('help.screen.knowledge_link_url'); ?>" target="_blank">
+                    <?php echo $this->_helper->__('connection.cms.failed_help_center'); ?>
+                </a>
+                <?php echo $this->_helper->__('connection.cms.failed_help_or'); ?>
+                <a href="<?php echo $this->_helper->__('help.screen.link_lengow_support'); ?>" target="_blank">
+                    <?php echo $this->_helper->__('connection.cms.failed_help_customer_success_team'); ?>
+                </a>
+            </p>
+        </div>
+        <div>
+            <button class="lgw-btn lgw-btn-green js-go-to-credentials">
+                <?php echo $this->_helper->__('connection.cms.failed_button'); ?>
+            </button>
+        </div>
+    <?php } ?>
+</div>

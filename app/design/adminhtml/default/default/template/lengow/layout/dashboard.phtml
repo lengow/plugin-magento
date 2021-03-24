@@ -1,0 +1,11 @@
+<?php
+    $statusAccount = Mage::helper('lengow_connector/sync')->getStatusAccount();
+    if (($statusAccount['type'] === 'free_trial' && $statusAccount['expired'])) {
+        echo $this->getChildHtml('lengow_status');
+    } else {
+        echo '<div class="lgw-container">';
+        echo $this->getChildHtml('lengow_header');
+        echo '</div>';
+        echo $this->getChildHtml('lengow_content');
+    }
+    echo $this->getChildHtml('lengow_footer');

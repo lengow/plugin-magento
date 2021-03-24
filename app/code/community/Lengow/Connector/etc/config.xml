@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Lengow_Connector>
-            <version>3.2.3</version>
+            <version>3.3.0</version>
         </Lengow_Connector>
     </modules>
     <frontend>

@@ -15,6 +15,49 @@ footer.toolbox|Toolbox
 footer.legals|Rechtshinweise
 footer.plugin_lengow|Lengow Magento Plugin
 footer.lengow_link_url|http://www.lengow.com/de
+connection.home.description_first|Lengow hilft Ihnen, Ihr Online-Business weltweit zu optimieren!
+connection.home.description_second|Über die Plattform können Sie Ihren Produktkatalog automatisch auf Marktplätzen, Preisvergleichsportalen, Affiliate-Netzwerken, Retargeting-Kampagnen und Social Media veröffentlichen.
+connection.home.description_third|Testen Sie Ihre Möglichkeiten für internationales Wachstum mit 1.600 Vertriebskanälen in 42 verschiedenen Ländern.
+connection.home.description_fourth|Nur noch ein Schritt bis zur Installation Ihres Lengow-Plugins für Magento
+connection.home.button|Verbinden Sie meinen Magento mit Lengow
+connection.home.no_account|Sie haben noch kein Lengow-Konto?
+connection.home.no_account_sign_up|Dann registrieren Sie sich kostenlos
+connection.cms.credentials_title|Bitte geben Sie Ihre API Lengow-Zugangsdaten ein
+connection.cms.credentials_description|Sie finden diese Zugangsdaten in Ihren Kontoeinstellungen, Abschnitt "A.P.I"
+connection.cms.credentials_help|Brauchen Sie Hilfe?
+connection.cms.credentials_help_center|Besuchen Sie unser Help-Center
+connection.cms.credentials_help_center_url|https://support.lengow.com/kb/de
+connection.cms.credentials_button|Mit Lengow verbinden
+connection.cms.credentials_button_loading|Verbinden...
+connection.cms.credentials_placeholder_access_token|Geben Sie Ihr API-Key ein
+connection.cms.credentials_placeholder_secret|Geben Sie Ihr Geheim ein
+connection.cms.success_title|Gut gemacht! Lengow ist nun mit Ihrem Magento verbunden
+connection.cms.success_description_first|Sie können jetzt das Plugin nutzen, Ihre Produkte konfigurieren und Ihre Marktplatz-Bestellungen einsehen.
+connection.cms.success_description_second|Um Ihren Katalog zu importieren und Ihre Kanäle zu konfigurieren,
+connection.cms.success_description_second_go_to_lengow|melden Sie sich bei Lengow an.
+connection.cms.success_button|Zum Dashboard
+connection.cms.success_description_first_catalog|Ein letzter Schritt, um die Installation abzuschließen:
+connection.cms.success_description_second_catalog|Verknüpfen Sie Ihre Lengow-Kataloge mit Ihren Magento-Shops.
+connection.cms.success_button_catalog|Kataloge verknüpfen
+connection.cms.failed_title|Ooops! Die Verbindung zwischen Ihrem Magento und Lengow konnte nicht hergestellt werden
+connection.cms.failed_description|Wir waren nicht in der Lage, die Verbindung zwischen Ihrem xxx und Lengow herzustellen.
+connection.cms.failed_description_first_credentials|Die Verbindung kann nicht mit den angegebenen Anmeldeinformationen hergestellt werden.
+connection.cms.failed_description_second_credentials_prod|Bitte überprüfen Sie, ob diese Anmeldedaten mit der Produktionsumgebung von Lengow übereinstimmen.
+connection.cms.failed_description_second_credentials_preprod|Bitte überprüfen Sie, ob diese Anmeldedaten mit der Vorproduktionsumgebung von Lengow übereinstimmen.
+connection.cms.failed_help|Wenn das Problem weiterhin besteht, schauen Sie doch einmal in den
+connection.cms.failed_help_center|"Magento guide"
+connection.cms.failed_help_or|oder kontaktieren Sie unser
+connection.cms.failed_help_customer_success_team|"Customer Success Team"
+connection.cms.failed_button|Wiederholen
+connection.catalog.link_title|Verknüpfen Sie Ihre Filialen mit Lengow
+connection.catalog.link_description|Um alle Ihre bestehenden Konfigurationen (Bestellungen, Produkte etc.) abzurufen, verknüpfen Sie die folgenden Magento-Shops direkt mit Ihrem(n) Lengow-Katalog(en).
+connection.catalog.link_catalog_avalaible|Kataloge sind vorhanden und nicht mit einem cms in Lengow verknüpft.
+connection.catalog.link_button|Speichern Sie und gehen Sie zum Dashboard
+connection.catalog.link_button_loading|Speichern in Arbeit...
+connection.catalog.link_placeholder_catalog|Wählen Sie einen Katalog aus
+connection.catalog.failed_title|Ooops! Ihre Kataloge konnten nicht in Lengow verlinkt werden
+connection.catalog.failed_description_first|Wir konnten Ihre Kataloge nicht mit Lengow verknüpfen.
+connection.catalog.failed_description_second|Sie können es erneut versuchen oder die IDs der Kataloge direkt in den Plugin-Einstellungen eingeben.
 dashboard.screen.welcome_back| Hallo und herzlich willkommen!
 dashboard.screen.go_to_lengow| Zu Lengow wechseln
 dashboard.screen.products_title|Produkte
@@ -134,12 +177,12 @@ log.table.message|Nachricht
 help.screen.title|Lassen Sie sich etwas von Ihrem Support-Team unterstützen
 help.screen.contain_text_support|Kontaktieren Sie uns bei Fragen und teilen Sie uns Ihr Feedback mit über den
 help.screen.title_lengow_support|Lengow Support.
-help.screen.link_lengow_support|https://www.lengow.com/support/
+help.screen.link_lengow_support|https://supportlengow.zendesk.com/hc/en-us/requests/new
 help.screen.need_some_help|Brauchen Sie Hilfe?
 help.screen.contain_text_support_hour|Wir werden alles tun, um Sie während der normalen Geschäftszeiten (Montag - Freitag von 09:00 - 18:00 (MEZ+1)) zurückzurufen.
 help.screen.find_answer|Sie können Antworten auch in unserem... finden
 help.screen.link_magento_guide|Magentos Begleithandbuch
-help.screen.knowledge_link_url|https://support.lengow.com/kb/guide/en/ClPhE37tgf
+help.screen.knowledge_link_url|https://support.lengow.com/kb/guide/en/magento-ClPhE37tgf/Steps/25858
 legals.screen.simplified_company|Gesellschaft mit einfacher Haftungsbeschränkung
 legals.screen.social_capital|Soziales Kapital:
 legals.screen.cnil_declaration|CNIL Erklärung:
@@ -327,4 +370,8 @@ lengow_log.exception.action_not_created_api|Aktion kann nicht erstellt werden, d
 lengow_log.exception.action_is_too_old|bestellungsaktion ist zu alt. Bitte erneut versuchen
 lengow_log.mail_report.subject_report_mail|Lengow Importfehler
 lengow_log.mail_report.order|Bestellung %{marketplace_sku}
-lengow_log.mail_report.no_error_in_report_mail|Keine Fehlermeldung, kontaktieren Sie den Support auf https://www.lengow.com/support/
+lengow_log.mail_report.no_error_in_report_mail|Keine Fehlermeldung, kontaktieren Sie den Support auf https://supportlengow.zendesk.com/hc/en-us/requests/new
+lengow_log.connection.status_draft|Vorlage
+lengow_log.connection.status_active|Aktiv
+lengow_log.connection.catalog|Katalog %{catalog_id}
+lengow_log.connection.catalog_label|%{catalog_id} - %{catalog_name} - %{nb_products} produkte - %{catalog_status}

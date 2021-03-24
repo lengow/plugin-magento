@@ -354,16 +354,35 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
      * Set Valid Account id / Access token / Secret token
      *
      * @param array $accessIds Account id / Access token / Secret token
+     *
+     * @return boolean
      */
     public function setAccessIds($accessIds)
     {
+        $count = 0;
         $listKey = array('account_id', 'access_token', 'secret_token');
         foreach ($accessIds as $key => $value) {
-            if (!in_array($key, array_keys($listKey))) {
+            if (!in_array($key, $listKey, true)) {
                 continue;
             }
-            if (strlen($value) > 0) {
+            if ($value !== '') {
+                $count++;
                 $this->set($key, $value);
+            }
+        }
+        return $count === count($listKey);
+    }
+
+    /**
+     * Reset access ids for old customer
+     */
+    public function resetAccessIds()
+    {
+        $accessIds = array('account_id', 'access_token', 'secret_token');
+        foreach ($accessIds as $accessId) {
+            $value = $this->get($accessId);
+            if ($value !== '') {
+                $this->set($accessId, '');
             }
         }
     }
@@ -402,15 +421,27 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
     public function setCatalogIds($catalogIds, $storeId)
     {
         $valueChange = false;
-        $storeCatalogIds = self::getCatalogIds($storeId);
+        $storeCatalogIds = $this->getCatalogIds($storeId);
         foreach ($catalogIds as $catalogId) {
-            if (!in_array($catalogId, $storeCatalogIds) && is_numeric($catalogId) && $catalogId > 0) {
+            if ($catalogId > 0 && is_numeric($catalogId) && !in_array($catalogId, $storeCatalogIds, true)) {
                 $storeCatalogIds[] = (int)$catalogId;
                 $valueChange = true;
             }
         }
         $this->set('catalog_id', implode(';', $storeCatalogIds), $storeId);
         return $valueChange;
+    }
+
+    /**
+     * Reset all catalog ids
+     */
+    public function resetCatalogIds()
+    {
+        $lengowActiveStores = $this->getLengowActiveStores();
+        foreach ($lengowActiveStores as $store) {
+            $this->set('catalog_id', '', $store->getId());
+            $this->set('store_enable', false, $store->getId());
+        }
     }
 
     /**
@@ -435,10 +466,10 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
     public function setActiveStore($storeId)
     {
         $storeIsActive = $this->storeIsActive($storeId);
-        $catalogIds = self::getCatalogIds($storeId);
+        $catalogIds = $this->getCatalogIds($storeId);
         $storeHasCatalog = !empty($catalogIds);
         $this->set('store_enable', $storeHasCatalog, $storeId);
-        return $storeIsActive !== $storeHasCatalog ? true : false;
+        return $storeIsActive !== $storeHasCatalog;
     }
 
     /**
@@ -579,7 +610,7 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
                 $storeCurrencies = Mage::app()->getStore($store->getId())->getAvailableCurrencyCodes();
                 if (is_array($storeCurrencies)) {
                     foreach ($storeCurrencies as $currency) {
-                        if (!in_array($currency, $allCurrencies)) {
+                        if (!in_array($currency, $allCurrencies, true)) {
                             $allCurrencies[] = $currency;
                         }
                     }
@@ -589,6 +620,24 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
             }
         }
         return $allCurrencies;
+    }
+
+    /**
+     * Get list of Magento stores that have been activated in Lengow
+     *
+     * @return array
+     */
+    public function getLengowActiveStores()
+    {
+        $lengowActiveStores = array();
+        $storeCollection = Mage::getResourceModel('core/store_collection')->addFieldToFilter('is_active', 1);
+        foreach ($storeCollection as $store) {
+            // get Lengow config for this store
+            if ($this->storeIsActive((int)$store->getId())) {
+                $lengowActiveStores[] = $store;
+            }
+        }
+        return $lengowActiveStores;
     }
 
     /**

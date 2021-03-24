@@ -1,19 +1,15 @@
-<?php
-    $isNewMerchant = Mage::helper('lengow_connector/config')->isNewMerchant();
-    $isSync = Mage::app()->getRequest()->getParam('isSync');
-    $statusAccount = Mage::helper('lengow_connector/sync')->getStatusAccount();
-    if ($isNewMerchant || $isSync) {
-        $isoCode = strtolower(substr(Mage::app()->getLocale()->getLocaleCode(), 0, 2));
-        echo $this->getChildHtml("lengow_new");
-        echo '<input type="hidden" id="lengow_sync_link" value="' . $isSync . '">';
-        echo '<input type="hidden" id="lengow_lang_iso" value="' . $isoCode . '">';
-        echo '<input type="hidden" id="lengow_url" value="' . Lengow_Connector_Model_Connector::LENGOW_URL . '">';
-    } elseif (($statusAccount['type'] === 'free_trial' && $statusAccount['expired'])) {
-        echo $this->getChildHtml('lengow_status');
-    } else {
-        echo '<div class="lgw-container">';
-        echo $this->getChildHtml('lengow_header');
-        echo '</div>';
-        echo $this->getChildHtml('lengow_dashboard');
-    }
-    echo $this->getChildHtml('lengow_footer');
+<div class="lgw-container lgw-connection text-center">
+    <div class="lgw-content-section">
+        <div class="lgw-logo">
+            <img src="<?php echo $this->getSkinUrl('lengow/images/') ?>lengow-blue.png" alt="lengow">
+        </div>
+    </div>
+    <div id="lgw-connection-content">
+        <?php echo $this->getChildHtml('lengow_home'); ?>
+    </div>
+</div>
+<input type="hidden"
+       id="lengow_ajax_link"
+       value="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_home/'); ?>?isAjax=true"
+>
+<?php echo $this->getChildHtml('lengow_footer'); ?>

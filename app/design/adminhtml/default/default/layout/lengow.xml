@@ -16,18 +16,36 @@
             <action method="addBodyClass"><classname>lengow_connector</classname></action>
         </reference>
         <reference name="head">
+            <action method="addCss"><stylesheet>lengow/css/select2.css</stylesheet></action>
             <action method="addItem"><type>skin_js</type><name>lengow/js/home.js</name></action>
+            <action method="addItem"><type>skin_js</type><name>lengow/js/select2.js</name></action>
         </reference>
         <reference name="content">
-              <block type="page/html" name="lengow_layout" template="lengow/layout/home.phtml" >
-                    <block type="page/html" name="lengow_header" template="lengow/header.phtml" />
-                    <block type="page/html" name="lengow_dashboard" template="lengow/home/dashboard.phtml" />
-                    <block type="page/html" name="lengow_new" template="lengow/home/new.phtml" />
-                    <block type="page/html" name="lengow_status" template="lengow/home/status.phtml" />
-                    <block type="page/html" name="lengow_footer" template="lengow/footer.phtml" />
-              </block>
+            <block type="page/html" name="lengow_layout" template="lengow/layout/home.phtml" >
+                <block type="page/html" name="lengow_header" template="lengow/header.phtml" />
+                <block type="lengow/adminhtml_home_content" name="lengow_home" template="lengow/home/index.phtml" />
+                <block type="lengow/adminhtml_home_content" name="lengow_cms" template="lengow/home/cms.phtml" />
+                <block type="lengow/adminhtml_home_content" name="lengow_cms_result" template="lengow/home/cms_result.phtml" />
+                <block type="lengow/adminhtml_home_content" name="lengow_catalog" template="lengow/home/catalog.phtml" />
+                <block type="lengow/adminhtml_home_content" name="lengow_catalog_failed" template="lengow/home/catalog_failed.phtml" />
+                <block type="page/html" name="lengow_footer" template="lengow/footer.phtml" />
+            </block>
         </reference>
     </adminhtml_lengow_home_index>
+    <adminhtml_lengow_dashboard_index>
+        <update handle="lengow_script" />
+        <reference name="root">
+            <action method="addBodyClass"><classname>lengow_connector</classname></action>
+        </reference>
+        <reference name="content">
+            <block type="page/html" name="lengow_layout" template="lengow/layout/dashboard.phtml" >
+                <block type="page/html" name="lengow_header" template="lengow/header.phtml" />
+                <block type="page/html" name="lengow_content" template="lengow/dashboard/index.phtml" />
+                <block type="page/html" name="lengow_status" template="lengow/dashboard/status.phtml" />
+                <block type="page/html" name="lengow_footer" template="lengow/footer.phtml" />
+            </block>
+        </reference>
+    </adminhtml_lengow_dashboard_index>
     <adminhtml_lengow_product_index>
         <update handle="lengow_script" />
         <reference name="root">
