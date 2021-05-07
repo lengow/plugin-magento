@@ -26,7 +26,7 @@ class Lengow_Connector_Block_Adminhtml_Action_Renderer_Parameter
     /**
      * Decorate parameters values
      *
-     * @param Varien_Object $row Magento varian object instance
+     * @param Varien_Object $row Magento Varien object instance
      *
      * @return string
      */

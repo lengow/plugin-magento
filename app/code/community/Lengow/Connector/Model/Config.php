@@ -32,44 +32,6 @@ class Lengow_Connector_Model_Config extends Mage_Core_Model_Config
     );
 
     /**
-     * @var array excludes attributes for export
-     */
-    protected $_excludeOptions = array(
-        'authorization_token',
-        'last_authorization_token_update',
-        'import_in_progress',
-        'last_import_manual',
-        'last_import_cron',
-        'export_last_export',
-        'see_migrate_block',
-        'last_status_update',
-        'account_status',
-        'last_option_cms_update',
-        'installed_version',
-        'last_marketplace_update',
-        'last_catalog_update',
-        'last_setting_update',
-        'plugin_data',
-        'last_plugin_data_update',
-    );
-
-    /**
-     * @var array Secret settings list to hide
-     */
-    protected $_secretSettings = array(
-        'global_access_token',
-        'global_secret_token',
-    );
-
-    /**
-     * @var array list of settings for the date of the last update
-     */
-    protected $_updatedSettings = array(
-        'global_catalog_id',
-        'import_days',
-    );
-
-    /**
      * Override Save config to store lengow changes
      *
      * @param string $path configuration path
@@ -97,42 +59,56 @@ class Lengow_Connector_Model_Config extends Mage_Core_Model_Config
     public function checkAndLog($path, $value, $scope = 'default', $scopeId = 0)
     {
         $pathExplode = explode('/', $path);
-        if (isset($pathExplode[0]) && in_array($pathExplode[0], $this->_lengowOptions)) {
-            if ($scope === 'default' || $scope === 'stores') {
-                $oldValue = Mage::getStoreConfig($path, $scopeId);
-                if ($oldValue != $value && !in_array($pathExplode[2], $this->_excludeOptions)) {
-                    if (in_array($pathExplode[2], $this->_secretSettings)) {
-                        $newValue = preg_replace("/[a-zA-Z0-9]/", '*', $value);
-                        $oldValue = preg_replace("/[a-zA-Z0-9]/", '*', $oldValue);
-                    } else {
-                        $newValue = $value;
-                    }
-                    if ($scope === 'stores') {
-                        $message = Mage::helper('lengow_connector/translation')->t(
-                            'log.setting.setting_change_for_store',
-                            array(
-                                'key' => $path,
-                                'old_value' => $oldValue,
-                                'value' => $newValue,
-                                'store_id' => $scopeId,
-                            )
-                        );
-                    } else {
-                        $message = Mage::helper('lengow_connector/translation')->t(
-                            'log.setting.setting_change',
-                            array(
-                                'key' => $path,
-                                'old_value' => $oldValue,
-                                'value' => $newValue,
-                            )
-                        );
-                    }
-                    Mage::helper('lengow_connector')->log(Lengow_Connector_Helper_Data::CODE_SETTING, $message);
-                    // save last update date for a specific settings (change synchronisation interval time)
-                    if (in_array($pathExplode[2], $this->_updatedSettings)) {
-                        Mage::helper('lengow_connector/config')->set('last_setting_update', time());
-                    }
-                }
+        if (!isset($pathExplode[0]) || !in_array($pathExplode[0], $this->_lengowOptions, true)) {
+            return;
+        }
+        $key = $pathExplode[2];
+        if (!array_key_exists($key, Lengow_Connector_Helper_Config::$lengowSettings)
+            || !in_array($scope, array('default', 'stores'))
+        ) {
+            return;
+        }
+        $keyParams = Lengow_Connector_Helper_Config::$lengowSettings[$key];
+        if (isset($keyParams[Lengow_Connector_Helper_Config::PARAM_LOG])
+            && !$keyParams[Lengow_Connector_Helper_Config::PARAM_LOG]
+        ) {
+            return;
+        }
+        $configHelper = Mage::helper('lengow_connector/config');
+        $oldValue = $configHelper->get($key, $scopeId);
+        if ($oldValue != $value) {
+            if (isset($keyParams[Lengow_Connector_Helper_Config::PARAM_SECRET])
+                && $keyParams[Lengow_Connector_Helper_Config::PARAM_SECRET]
+            ) {
+                $value = preg_replace("/[a-zA-Z0-9]/", '*', $value);
+                $oldValue = preg_replace("/[a-zA-Z0-9]/", '*', $oldValue);
+            }
+            if ($scope === 'stores') {
+                $message = Mage::helper('lengow_connector/translation')->t(
+                    'log.setting.setting_change_for_store',
+                    array(
+                        'key' => Lengow_Connector_Helper_Config::$genericParamKeys[$key],
+                        'old_value' => $oldValue,
+                        'value' => $value,
+                        'store_id' => $scopeId,
+                    )
+                );
+            } else {
+                $message = Mage::helper('lengow_connector/translation')->t(
+                    'log.setting.setting_change',
+                    array(
+                        'key' => Lengow_Connector_Helper_Config::$genericParamKeys[$key],
+                        'old_value' => $oldValue,
+                        'value' => $value,
+                    )
+                );
+            }
+            Mage::helper('lengow_connector')->log(Lengow_Connector_Helper_Data::CODE_SETTING, $message);
+            // save last update date for a specific settings (change synchronisation interval time)
+            if (isset($keyParams[Lengow_Connector_Helper_Config::PARAM_UPDATE])
+                && $keyParams[Lengow_Connector_Helper_Config::PARAM_UPDATE]
+            ) {
+                $configHelper->set(Lengow_Connector_Helper_Config::LAST_UPDATE_SETTING, time());
             }
         }
     }

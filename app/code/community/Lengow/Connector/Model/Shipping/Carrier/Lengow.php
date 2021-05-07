@@ -90,7 +90,7 @@ class Lengow_Connector_Model_Shipping_Carrier_Lengow
      */
     public function isActive()
     {
-        return (bool)Mage::getSingleton('core/session')->getIsFromlengow();
+        return (bool) Mage::getSingleton('core/session')->getIsFromlengow();
     }
 
     /**

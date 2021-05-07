@@ -20,8 +20,8 @@
 $version = '3.0.2';
 /** @var Lengow_Connector_Helper_Config $configHelper */
 $configHelper = Mage::helper('lengow_connector/config');
-$installedVersion = $configHelper->get('installed_version');
+$installedVersion = $configHelper->get(Lengow_Connector_Helper_Config::PLUGIN_VERSION);
 
 if (version_compare($installedVersion, $version, '<')) {
-    $configHelper->set('installed_version', $version);
+    $configHelper->set(Lengow_Connector_Helper_Config::PLUGIN_VERSION, $version);
 }

@@ -28,8 +28,8 @@ class Lengow_Connector_Block_Adminhtml_System_Config_Edit extends Mage_Adminhtml
     public function __construct()
     {
         parent::__construct();
-        if ((string)$this->_section->attributes()->module === "lengow_connector") {
-            $this->setTitle(Mage::helper('lengow_connector/translation')->t((string)$this->_section->label));
+        if ((string) $this->_section->attributes()->module === 'lengow_connector') {
+            $this->setTitle(Mage::helper('lengow_connector/translation')->t((string) $this->_section->label));
         }
     }
 }

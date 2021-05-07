@@ -20,8 +20,22 @@
 $version = '3.3.1';
 /** @var Lengow_Connector_Helper_Config $configHelper */
 $configHelper = Mage::helper('lengow_connector/config');
-$installedVersion = $configHelper->get('installed_version');
+$installedVersion = $configHelper->get(Lengow_Connector_Helper_Config::PLUGIN_VERSION);
 
 if (version_compare($installedVersion, $version, '<')) {
-    $configHelper->set('installed_version', $version);
+
+    // **************************************************************
+    // Delete product status configuration for versions 3.0.0 - 3.3.0
+    // **************************************************************
+
+    // get Store collection
+    $storeCollection = Mage::getResourceModel('core/store_collection')->addFieldToFilter('is_active', 1);
+    // delete settings
+    $settingPath = 'lengow_export_options/simple/export_product_status';
+    foreach ($storeCollection as $store) {
+        Mage::getModel('core/config')->deleteConfig($settingPath, 'store', $store->getId());
+    }
+    Mage::getModel('core/config')->deleteConfig($settingPath);
+
+    $configHelper->set(Lengow_Connector_Helper_Config::PLUGIN_VERSION, $version);
 }

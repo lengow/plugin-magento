@@ -373,22 +373,26 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
     private function _getOrCreateCustomer($customerEmail, $storeId, $billingData)
     {
         $websiteId = Mage::getModel('core/store')->load($storeId)->getWebsiteId();
+        $customerGroupId = Mage::helper('lengow_connector/config')->get(
+            Lengow_Connector_Helper_Config::SYNCHRONISATION_CUSTOMER_GROUP,
+            $storeId
+        );
         // first get by email
         /** @var Mage_Customer_Model_Customer $customer */
         $customer = Mage::getModel('customer/customer');
         $customer->setWebsiteId($websiteId);
-        $customer->setGroupId(Mage::helper('lengow_connector/config')->get('customer_group', $storeId));
+        $customer->setGroupId($customerGroupId);
         $customer->loadByEmail($customerEmail);
         // create new subscriber without send a confirmation email
         if (!$customer->getId()) {
             $customerNames = $this->_getNames($billingData);
             $customer->setImportMode(true);
             $customer->setWebsiteId($websiteId);
-            $customer->setCompany((string)$billingData->company);
+            $customer->setCompany((string) $billingData->company);
             $customer->setLastname($customerNames['lastName']);
             $customer->setFirstname($customerNames['firstName']);
             $customer->setEmail($customerEmail);
-            $customer->setTaxvat((string)$billingData->vat_number);
+            $customer->setTaxvat((string) $billingData->vat_number);
             $customer->setConfirmation(null);
             $customer->setForceConfirmed(true);
             $customer->setPasswordHash($this->hashPassword($this->generatePassword(8)));
@@ -410,7 +414,7 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
     {
         $names = $this->_getNames($addressData);
         $street = $this->_getAddressStreet($addressData, $isShippingAddress);
-        $postcode = (string)$addressData->zipcode;
+        $postcode = (string) $addressData->zipcode;
         $city = ucfirst(strtolower(preg_replace('/[!<>?=+@{}_$%]/sim', '', $addressData->city)));
         $defaultAddress = $isShippingAddress
             ? $customer->getDefaultShippingAddress()
@@ -422,20 +426,20 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
             $address->setCustomer($customer);
             $address->setIsDefaultBilling(!$isShippingAddress);
             $address->setIsDefaultShipping($isShippingAddress);
-            $address->setCompany((string)$addressData->company);
+            $address->setCompany((string) $addressData->company);
             $address->setFirstname($names['firstName']);
             $address->setLastname($names['lastName']);
             $address->setStreet($street);
             $address->setPostcode($postcode);
             $address->setCity($city);
-            $address->setCountryId((string)$addressData->common_country_iso_a2);
+            $address->setCountryId((string) $addressData->common_country_iso_a2);
             $phoneNumbers = $this->_getPhoneNumbers($addressData);
             $address->setTelephone($phoneNumbers['phone']);
             $address->setFax($phoneNumbers['secondPhone']);
-            $address->setVatId((string)$addressData->vat_number);
+            $address->setVatId((string) $addressData->vat_number);
             // get region id by postcode or state region
             $regionId = false;
-            if (in_array($address->getCountry(), array(self::ISO_A2_FR, self::ISO_A2_ES, self::ISO_A2_IT))) {
+            if (in_array($address->getCountry(), array(self::ISO_A2_FR, self::ISO_A2_ES, self::ISO_A2_IT), true)) {
                 $regionId = $this->_searchRegionIdByPostcode($address->getCountry(), $postcode);
             } elseif ($addressData->state_region !== null) {
                 $regionId = $this->_searchRegionIdByStateRegion($address->getCountry(), $addressData->state_region);
@@ -467,9 +471,9 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
         $defaultAddressStreet = is_array($defaultAddress->getStreet())
             ? implode("\n", $defaultAddress->getStreet())
             : $defaultAddress->getStreet();
-        if ($defaultAddress->getFirstname() === $firstName
+        if ($defaultAddressStreet === $street
+            && $defaultAddress->getFirstname() === $firstName
             && $defaultAddress->getLastname() === $lastName
-            && $defaultAddressStreet === $street
             && $defaultAddress->getPostcode() === $postcode
             && $defaultAddress->getCity() === $city
         ) {
@@ -517,11 +521,12 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
     private function _cleanFullName($fullName)
     {
         $split = explode(' ', $fullName);
-        if ($split && !empty($split)) {
-            $fullName = (in_array($split[0], $this->_currentMale) || in_array($split[0], $this->_currentFemale))
-                ? ''
-                : $split[0];
-            for ($i = 1; $i < count($split); $i++) {
+        if (!empty($split)) {
+            $fullName = (in_array($split[0], $this->_currentMale, true)
+                || in_array($split[0], $this->_currentFemale, true)
+            ) ? '' : $split[0];
+            $countSplit = count($split);
+            for ($i = 1; $i < $countSplit; $i++) {
                 if (!empty($fullName)) {
                     $fullName .= ' ';
                 }
@@ -541,10 +546,11 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
     private function _splitNames($fullName)
     {
         $split = explode(' ', $fullName);
-        if ($split && !empty($split)) {
+        if (!empty($split)) {
             $names['firstName'] = $split[0];
             $names['lastName'] = '';
-            for ($i = 1; $i < count($split); $i++) {
+            $countSplit = count($split);
+            for ($i = 1; $i < $countSplit; $i++) {
                 if (!empty($names['lastName'])) {
                     $names['lastName'] .= ' ';
                 }
@@ -611,7 +617,7 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
         if (empty($phoneHome)) {
             if (!empty($phoneMobile)) {
                 $phoneHome = $phoneMobile;
-                $phoneMobile = $phoneOffice ? $phoneOffice : '';
+                $phoneMobile = $phoneOffice ?: '';
             } elseif (!empty($phoneOffice)) {
                 $phoneHome = $phoneOffice;
             }
@@ -670,7 +676,7 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
                     ? $this->_regionCodes[$countryIsoA2][$postcodeSubstr]
                     : false;
                 if ($regionCode && is_array($regionCode) && !empty($regionCode)) {
-                    $regionCode = $this->_getRegionCodeFromIntervalPostcodes((int)$postcode, $regionCode);
+                    $regionCode = $this->_getRegionCodeFromIntervalPostcodes((int) $postcode, $regionCode);
                 }
                 break;
             default:
@@ -700,8 +706,8 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
         foreach ($intervalPostcodes as $intervalPostcode => $regionCode) {
             $intervalPostcodes = explode('-', $intervalPostcode);
             if (!empty($intervalPostcodes) && count($intervalPostcodes) === 2) {
-                $minPostcode = is_numeric($intervalPostcodes[0]) ? (int)$intervalPostcodes[0] : false;
-                $maxPostcode = is_numeric($intervalPostcodes[1]) ? (int)$intervalPostcodes[1] : false;
+                $minPostcode = is_numeric($intervalPostcodes[0]) ? (int) $intervalPostcodes[0] : false;
+                $maxPostcode = is_numeric($intervalPostcodes[1]) ? (int) $intervalPostcodes[1] : false;
                 if (($minPostcode && $maxPostcode) && ($postcode >= $minPostcode && $postcode <= $maxPostcode)) {
                     return $regionCode;
                 }
@@ -741,7 +747,7 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
                     $nameCleaned = $this->_cleanString($region['default_name']);
                     similar_text($stateRegionCleaned, $nameCleaned, $percent);
                     if ($percent > 70) {
-                        $results[(int)$percent] = $region['region_id'];
+                        $results[(int) $percent] = $region['region_id'];
                     }
                 }
                 if (!empty($results)) {
@@ -763,7 +769,6 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
     private function _cleanString($string)
     {
         $string = strtolower(str_replace(array(' ', '-', '_', '.'), '', trim($string)));
-        $string = Mage::helper('lengow_connector')->replaceAccentedChars(html_entity_decode($string));
-        return $string;
+        return Mage::helper('lengow_connector')->replaceAccentedChars(html_entity_decode($string));
     }
 }

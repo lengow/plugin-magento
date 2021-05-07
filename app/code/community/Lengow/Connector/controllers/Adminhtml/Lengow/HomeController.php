@@ -42,7 +42,7 @@ class Lengow_Connector_Adminhtml_Lengow_HomeController extends Mage_Adminhtml_Co
     {
         $isAjax = Mage::app()->getRequest()->isAjax();
         if ($isAjax) {
-            $action = (string)$this->getRequest()->getParam('action');
+            $action = (string) $this->getRequest()->getParam('action');
             if ($action !== '') {
                 switch ($action) {
                     case 'go_to_credentials':
@@ -140,9 +140,9 @@ class Lengow_Connector_Adminhtml_Lengow_HomeController extends Mage_Adminhtml_Co
         if ($accountId) {
             $accessIdsSaved = Mage::helper('lengow_connector/config')->setAccessIds(
                 array(
-                    'account_id' => $accountId,
-                    'access_token' => $accessToken,
-                    'secret_token' => $secret,
+                    Lengow_Connector_Helper_Config::ACCOUNT_ID => $accountId,
+                    Lengow_Connector_Helper_Config::ACCESS_TOKEN => $accessToken,
+                    Lengow_Connector_Helper_Config::SECRET => $secret,
                 )
             );
         }
@@ -244,7 +244,7 @@ class Lengow_Connector_Adminhtml_Lengow_HomeController extends Mage_Adminhtml_Co
                 $configHelper->setActiveStore($storeId);
             }
             // save last update date for a specific settings (change synchronisation interval time)
-            $configHelper->set('last_setting_update', time());
+            $configHelper->set(Lengow_Connector_Helper_Config::LAST_UPDATE_SETTING, time());
             // link all catalogs selected by API
             $catalogsLinked = Mage::getModel('lengow/catalog')->linkCatalogs($catalogsByStores);
             /** @var Lengow_Connector_Helper_Data $helper */

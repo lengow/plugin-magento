@@ -192,7 +192,22 @@ legals.screen.address|Address
 legals.screen.contact|Contact
 legals.screen.hosting|Hosting
 toolbox.screen.title|Lengow Toolbox
-toolbox.screen.gobal_information|Global information
+toolbox.screen.global_information|Global information
+toolbox.screen.checklist_information|Checklist
+toolbox.screen.curl_message|Lengow needs the CURL PHP extension
+toolbox.screen.curl_help|The CURL extension is not installed or enabled in your PHP installation. Check the manual to get more information on how to install or enable CURL on your system
+toolbox.screen.curl_help_link|http://www.php.net/manual/en/curl.setup.php
+toolbox.screen.curl_help_label|Go to Curl PHP extension manual
+toolbox.screen.simple_xml_message|Lengow needs the SimpleXML PHP extension
+toolbox.screen.simple_xml_help|The SimpleXML extension is not installed or enabled in your PHP installation. Check the manual to get more information on how to install or enable SimpleXML on your system
+toolbox.screen.simple_xml_help_link|http://www.php.net/manual/en/book.simplexml.php
+toolbox.screen.simple_xml_help_label|Go to SimpleXML PHP extension manual
+toolbox.screen.json_php_message|Lengow needs the JSON PHP extension
+toolbox.screen.json_php_help|The JSON extension is not installed or enabled in your PHP installation
+toolbox.screen.json_php_help_link|http://www.php.net/manual/fr/book.json.php
+toolbox.screen.json_php_help_label|Go to JSON PHP extension manual
+toolbox.screen.checksum_message|Plugin files check
+toolbox.screen.checksum_help|Some files have been changed by the customer
 toolbox.screen.plugin_information|Plugin information
 toolbox.screen.server_ip|Server IP
 toolbox.screen.authorized_ip_enable|Authorisation by IP enabled
@@ -200,8 +215,9 @@ toolbox.screen.authorized_ip|Authorised IP
 toolbox.screen.legacy_enable|Legacy fields enabled
 toolbox.screen.export_on_a_file|Export in a file enabled
 toolbox.screen.export_cron_enable|Magento cron job enabled for export
-toolbox.screen.pre_production_enable|Pre-production mode disabled
-toolbox.screen.write_permission|Write permission from media folder
+toolbox.screen.debug_disabled|Debug mode disabled
+toolbox.screen.write_permission|Write permission for media folder
+toolbox.screen.toolbox_url|Toolbox URL
 toolbox.screen.import_information|Import information
 toolbox.screen.global_token|Import token
 toolbox.screen.url_import|Import URL
@@ -295,7 +311,7 @@ lengow_setting.export_simple_setting|Simple export settings
 lengow_setting.export_selection_enable_label|Export selected products only
 lengow_setting.export_out_stock_label|Export out of stock products
 lengow_setting.export_product_type_label|Product type to export
-lengow_setting.export_product_status_label|Status of product to export
+lengow_setting.export_inactive_enable_label|Export disabled products
 lengow_setting.export_advanced_setting|Advanced export settings
 lengow_setting.export_attribute_label|Select attributes to export
 lengow_setting.export_parent_image_label|Merge images with parent products if available

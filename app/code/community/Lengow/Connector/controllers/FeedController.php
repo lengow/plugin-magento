@@ -52,48 +52,72 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action
          */
         set_time_limit(0);
         ini_set('memory_limit', '1G');
-        // compatibility old versions
-        $selection = $this->getRequest()->getParam('selected_products', null);
-        $outOfStock = $this->getRequest()->getParam('product_out_of_stock', null);
-        $productIds = $this->getRequest()->getParam('ids_product', null);
-        $productTypes = $this->getRequest()->getParam('product_type', null);
-        // get params data
-        $mode = $this->getRequest()->getParam('mode');
-        $token = $this->getRequest()->getParam('token');
-        $getParams = $this->getRequest()->getParam('get_params');
-        $format = $this->getRequest()->getParam('format', null);
-        $stream = $this->getRequest()->getParam('stream', null);
-        $offset = $this->getRequest()->getParam('offset', null);
-        $limit = $this->getRequest()->getParam('limit', null);
-        $selection = $selection === null ? $this->getRequest()->getParam('selection', null) : $selection;
-        $outOfStock = $outOfStock === null ? $this->getRequest()->getParam('out_of_stock', null) : $outOfStock;
-        $productIds = $productIds === null ? $this->getRequest()->getParam('product_ids', null) : $productIds;
-        $productTypes = $productTypes === null ? $this->getRequest()->getParam('product_types', null) : $productTypes;
-        $productStatus = $this->getRequest()->getParam('product_status', null);
-        $legacyFields = $this->getRequest()->getParam('legacy_fields', null);
-        $logOutput = $this->getRequest()->getParam('log_output', null);
-        $currency = $this->getRequest()->getParam('currency', null);
-        $updateExportDate = $this->getRequest()->getParam('update_export_date', null);
+        $token = $this->getRequest()->getParam(Lengow_Connector_Model_Export::PARAM_TOKEN);
         // get store data
-        $storeCode = $this->getRequest()->getParam('code', null);
+        $storeCode = $this->getRequest()->getParam(Lengow_Connector_Model_Export::PARAM_CODE, null);
         if ($storeCode) {
-            $storeId = (int)Mage::getModel('core/store')->load($storeCode, 'code')->getId();
+            $storeId = (int) Mage::getModel('core/store')->load($storeCode, 'code')->getId();
         } else {
-            $storeId = (int)$this->getRequest()->getParam('store', Mage::app()->getStore()->getId());
-        }
-        if ($locale = $this->getRequest()->getParam('locale', null)) {
-            // changing locale works!
-            Mage::app()->getLocale()->setLocale($locale);
-            // needed to add this
-            Mage::app()->getTranslator()->setLocale($locale);
-            // translation now works
-            Mage::app()->getTranslator()->init('frontend', true);
+            $storeId = (int) $this->getRequest()->getParam(
+                Lengow_Connector_Model_Export::PARAM_STORE,
+                Mage::app()->getStore()->getId()
+            );
         }
         /** @var Lengow_Connector_Helper_Data $helper */
         $helper = Mage::helper('lengow_connector');
         /** @var Lengow_Connector_Helper_Security $securityHelper */
         $securityHelper = Mage::helper('lengow_connector/security');
         if ($securityHelper->checkWebserviceAccess($token, $storeId)) {
+            // compatibility old versions
+            $selection = $this->getRequest()->getParam(Lengow_Connector_Model_Export::PARAM_LEGACY_SELECTION, null);
+            $outOfStock = $this->getRequest()->getParam(Lengow_Connector_Model_Export::PARAM_LEGACY_OUT_OF_STOCK, null);
+            $productIds = $this->getRequest()->getParam(Lengow_Connector_Model_Export::PARAM_LEGACY_PRODUCT_IDS, null);
+            $productTypes = $this->getRequest()->getParam(
+                Lengow_Connector_Model_Export::PARAM_LEGACY_PRODUCT_TYPES,
+                null
+            );
+            $inactive = $this->getRequest()->getParam(Lengow_Connector_Model_Export::PARAM_LEGACY_INACTIVE, null);
+            $language = $this->getRequest()->getParam(Lengow_Connector_Model_Export::PARAM_LEGACY_LANGUAGE, null);
+            // get params data
+            $mode = $this->getRequest()->getParam(Lengow_Connector_Model_Export::PARAM_MODE);
+            $getParams = $this->getRequest()->getParam(Lengow_Connector_Model_Export::PARAM_GET_PARAMS);
+            $format = $this->getRequest()->getParam(Lengow_Connector_Model_Export::PARAM_FORMAT, null);
+            $stream = $this->getRequest()->getParam(Lengow_Connector_Model_Export::PARAM_STREAM, null);
+            $offset = $this->getRequest()->getParam(Lengow_Connector_Model_Export::PARAM_OFFSET, null);
+            $limit = $this->getRequest()->getParam(Lengow_Connector_Model_Export::PARAM_LIMIT, null);
+            $selection = $selection === null
+                ? $this->getRequest()->getParam(Lengow_Connector_Model_Export::PARAM_SELECTION, null)
+                : $selection;
+            $outOfStock = $outOfStock === null
+                ? $this->getRequest()->getParam(Lengow_Connector_Model_Export::PARAM_OUT_OF_STOCK, null)
+                : $outOfStock;
+            $productIds = $productIds === null
+                ? $this->getRequest()->getParam(Lengow_Connector_Model_Export::PARAM_PRODUCT_IDS, null)
+                : $productIds;
+            $productTypes = $productTypes === null
+                ? $this->getRequest()->getParam(Lengow_Connector_Model_Export::PARAM_PRODUCT_TYPES, null)
+                : $productTypes;
+            $inactive = $inactive === null
+                ? $this->getRequest()->getParam(Lengow_Connector_Model_Export::PARAM_INACTIVE, null)
+                : strpos($inactive, (string) Mage_Catalog_Model_Product_Status::STATUS_DISABLED) !== false;
+            $legacyFields = $this->getRequest()->getParam(Lengow_Connector_Model_Export::PARAM_LEGACY_FIELDS, null);
+            $logOutput = $this->getRequest()->getParam(Lengow_Connector_Model_Export::PARAM_LOG_OUTPUT, null);
+            $currency = $this->getRequest()->getParam(Lengow_Connector_Model_Export::PARAM_CURRENCY, null);
+            $updateExportDate = $this->getRequest()->getParam(
+                Lengow_Connector_Model_Export::PARAM_UPDATE_EXPORT_DATE,
+                null
+            );
+            $language = $language === null
+                ? $this->getRequest()->getParam(Lengow_Connector_Model_Export::PARAM_LANGUAGE, null)
+                : $language;
+            if ($language) {
+                // changing locale works!
+                Mage::app()->getLocale()->setLocale($language);
+                // needed to add this
+                Mage::app()->getTranslator()->setLocale($language);
+                // translation now works
+                Mage::app()->getTranslator()->init('frontend', true);
+            }
             try {
                 // config store
                 Mage::app()->getStore()->setCurrentStore($storeId);
@@ -102,48 +126,47 @@ class Lengow_Connector_FeedController extends Mage_Core_Controller_Front_Action
                 $export = Mage::getModel(
                     'lengow/export',
                     array(
-                        'store_id' => $storeId,
-                        'format' => $format,
-                        'mode' => $mode,
-                        'product_types' => $productTypes,
-                        'product_status' => $productStatus,
-                        'out_of_stock' => $outOfStock,
-                        'selection' => $selection,
-                        'stream' => $stream,
-                        'limit' => $limit,
-                        'offset' => $offset,
-                        'product_ids' => $productIds,
-                        'currency' => $currency,
-                        'legacy_fields' => $legacyFields,
-                        'update_export_date' => $updateExportDate,
-                        'log_output' => $logOutput,
+                        Lengow_Connector_Model_Export::PARAM_STORE_ID => $storeId,
+                        Lengow_Connector_Model_Export::PARAM_FORMAT => $format,
+                        Lengow_Connector_Model_Export::PARAM_PRODUCT_TYPES => $productTypes,
+                        Lengow_Connector_Model_Export::PARAM_INACTIVE => $inactive,
+                        Lengow_Connector_Model_Export::PARAM_OUT_OF_STOCK => $outOfStock,
+                        Lengow_Connector_Model_Export::PARAM_SELECTION => $selection,
+                        Lengow_Connector_Model_Export::PARAM_STREAM => $stream,
+                        Lengow_Connector_Model_Export::PARAM_LIMIT => $limit,
+                        Lengow_Connector_Model_Export::PARAM_OFFSET => $offset,
+                        Lengow_Connector_Model_Export::PARAM_PRODUCT_IDS => $productIds,
+                        Lengow_Connector_Model_Export::PARAM_CURRENCY => $currency,
+                        Lengow_Connector_Model_Export::PARAM_LEGACY_FIELDS => $legacyFields,
+                        Lengow_Connector_Model_Export::PARAM_UPDATE_EXPORT_DATE => $updateExportDate,
+                        Lengow_Connector_Model_Export::PARAM_LOG_OUTPUT => $logOutput,
                     )
                 );
                 $export->setOriginalCurrency(Mage::app()->getStore($storeId)->getCurrentCurrencyCode());
                 if ($getParams) {
                     $this->getResponse()->setBody($export->getExportParams());
                 } elseif ($mode === 'size') {
-                    $this->getResponse()->setBody((string)$export->getTotalExportedProduct());
+                    $this->getResponse()->setBody((string) $export->getTotalExportProduct());
                 } elseif ($mode === 'total') {
-                    $this->getResponse()->setBody((string)$export->getTotalProduct());
+                    $this->getResponse()->setBody((string) $export->getTotalProduct());
                 } else {
                     $export->exec();
                 }
             } catch (Exception $e) {
-                $errorMessage = '[Magento error] "' . $e->getMessage()
-                    . '" ' . $e->getFile() . ' line ' . $e->getLine();
+                $errorMessage = '[Magento error] "' . $e->getMessage() . '" '
+                    . $e->getFile() . ' line ' . $e->getLine();
                 $helper->log(Lengow_Connector_Helper_Data::CODE_EXPORT, $errorMessage);
                 $this->getResponse()->setHeader('HTTP/1.1', '500 Internal Server Error');
                 $this->getResponse()->setBody($errorMessage);
             }
         } else {
-            if ((bool)Mage::helper('lengow_connector/config')->get('ip_enable')) {
+            if (Mage::helper('lengow_connector/config')->get(Lengow_Connector_Helper_Config::AUTHORIZED_IP_ENABLED)) {
                 $errorMessage = $helper->__(
                     'log.export.unauthorised_ip',
                     array('ip' => $securityHelper->getRemoteIp())
                 );
             } else {
-                $errorMessage =  strlen($token) > 0
+                $errorMessage =  $token !== ''
                     ? $helper->__('log.export.unauthorised_token', array('token' => $token))
                     : $helper->__('log.export.empty_token');
             }

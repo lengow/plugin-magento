@@ -172,12 +172,12 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
         if (!$this->id) {
             return false;
         }
-        if ((int)$this->getData('state') !== self::STATE_NEW) {
+        if ((int) $this->getData('state') !== self::STATE_NEW) {
             return false;
         }
         $updatedFields = $this->getUpdatedFields();
         foreach ($params as $key => $value) {
-            if (in_array($key, $updatedFields)) {
+            if (in_array($key, $updatedFields, true)) {
                 $this->setData($key, $value);
             }
         }
@@ -218,7 +218,7 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
             ->addFieldToFilter('action_id', $actionId)
             ->getData();
         if (!empty($results)) {
-            return (int)$results[0]['id'];
+            return (int) $results[0]['id'];
         }
         return false;
     }
@@ -261,7 +261,7 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
             ->addFieldToSelect('action_type');
         if (!empty($results)) {
             $lastAction = $results->getLastItem()->getData();
-            return (string)$lastAction['action_type'];
+            return (string) $lastAction['action_type'];
         }
         return false;
     }
@@ -308,7 +308,7 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
             Lengow_Connector_Model_Connector::API_ORDER_ACTION,
             $getParams
         );
-        if (isset($result->error) && isset($result->error->message)) {
+        if (isset($result->error, $result->error->message)) {
             throw new Lengow_Connector_Model_Exception($result->error->message);
         }
         if (isset($result->count) && $result->count > 0) {
@@ -317,8 +317,8 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
                 if ($actionId) {
                     /** @var Lengow_Connector_Model_Import_Action $action */
                     $action = Mage::getModel('lengow/import_action')->load($actionId);
-                    if ((int)$action->getData('state') === 0) {
-                        $retry = (int)$action->getData('retry') + 1;
+                    if ((int) $action->getData('state') === 0) {
+                        $retry = (int) $action->getData('retry') + 1;
                         $action->updateAction(array('retry' => $retry));
                         $sendAction = false;
                     }
@@ -328,11 +328,9 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
                     $this->createAction(
                         array(
                             'order_id' => $order->getId(),
-                            'action_type' => $params[Lengow_Connector_Model_Import_Action::ARG_ACTION_TYPE],
+                            'action_type' => $params[self::ARG_ACTION_TYPE],
                             'action_id' => $row->id,
-                            'order_line_sku' => isset($params[Lengow_Connector_Model_Import_Action::ARG_LINE])
-                                ? $params[Lengow_Connector_Model_Import_Action::ARG_LINE]
-                                : null,
+                            'order_line_sku' => isset($params[self::ARG_LINE]) ? $params[self::ARG_LINE] : null,
                             'parameters' => Mage::helper('core')->jsonEncode($params),
                         )
                     );
@@ -365,16 +363,14 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
                 $this->createAction(
                     array(
                         'order_id' => $order->getId(),
-                        'action_type' => $params[Lengow_Connector_Model_Import_Action::ARG_ACTION_TYPE],
+                        'action_type' => $params[self::ARG_ACTION_TYPE],
                         'action_id' => $result->id,
-                        'order_line_sku' => isset($params[Lengow_Connector_Model_Import_Action::ARG_LINE])
-                            ? $params[Lengow_Connector_Model_Import_Action::ARG_LINE]
-                            : null,
+                        'order_line_sku' => isset($params[self::ARG_LINE]) ? $params[self::ARG_LINE] : null,
                         'parameters' => Mage::helper('core')->jsonEncode($params),
                     )
                 );
             } else {
-                if ($result && $result !== null) {
+                if ($result) {
                     $message = $helper->setLogMessage(
                         'lengow_log.exception.action_not_created',
                         array('error_message' => Mage::helper('core')->jsonEncode($result))
@@ -495,7 +491,7 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
                 }
             }
             $page++;
-        } while ($results->next != null);
+        } while ($results->next !== null);
         if (empty($apiActions)) {
             return false;
         }
@@ -528,13 +524,13 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
                         $orderError->finishOrderErrors($orderLengowId, 'send');
                         /** @var Lengow_Connector_Model_Import_Order $orderLengow */
                         $orderLengow = Mage::getModel('lengow/import_order')->load($orderLengowId);
-                        if ((bool)$orderLengow->getData('is_in_error')) {
+                        if ((bool) $orderLengow->getData('is_in_error')) {
                             $orderLengow->updateOrder(array('is_in_error' => 0));
                         }
                         $processStateFinish = $orderLengow->getOrderProcessState(
                             Lengow_Connector_Model_Import_Order::STATE_CLOSED
                         );
-                        if ((int)$orderLengow->getData('order_process_state') !== $processStateFinish) {
+                        if ((int) $orderLengow->getData('order_process_state') !== $processStateFinish) {
                             // if action is accepted -> close order and finish all order actions
                             if ($apiActions[$action['action_id']]->processed == true
                                 && empty($apiActions[$action['action_id']]->errors)
@@ -569,7 +565,7 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
                 }
             }
         }
-        $configHelper->set('last_action_sync', time());
+        $configHelper->set(Lengow_Connector_Helper_Config::LAST_UPDATE_ACTION_SYNCHRONIZATION, time());
         return true;
     }
 
@@ -607,8 +603,8 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
                     $processStateFinish = $orderLengow->getOrderProcessState(
                         Lengow_Connector_Model_Import_Order::STATE_CLOSED
                     );
-                    if ((int)$orderLengow->getData('order_process_state') !== $processStateFinish
-                        && !(bool)$orderLengow->getData('is_in_error')
+                    if ((int) $orderLengow->getData('order_process_state') !== $processStateFinish
+                        && !(bool) $orderLengow->getData('is_in_error')
                     ) {
                         // if action is denied -> create order error
                         $errorMessage = $helper->setLogMessage('lengow_log.exception.action_is_too_old');
@@ -690,7 +686,7 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
         if ($unsentOrders) {
             foreach ($unsentOrders as $unsentOrder) {
                 $order = Mage::getModel('sales/order')->load($unsentOrder['order_id']);
-                $shipment = $unsentOrder['action'] === Lengow_Connector_Model_Import_Action::TYPE_SHIP
+                $shipment = $unsentOrder['action'] === self::TYPE_SHIP
                     ? $order->getShipmentsCollection()->getFirstItem()
                     : null;
                 Mage::getModel('lengow/import_order')->callAction($unsentOrder['action'], $order, $shipment);
@@ -707,10 +703,12 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
     protected function _getIntervalTime()
     {
         $intervalTime = self::MAX_INTERVAL_TIME;
-        $lastActionSynchronisation = Mage::helper('lengow_connector/config')->get('last_action_sync');
+        $lastActionSynchronisation = Mage::helper('lengow_connector/config')->get(
+            Lengow_Connector_Helper_Config::LAST_UPDATE_ACTION_SYNCHRONIZATION
+        );
         if ($lastActionSynchronisation) {
-            $lastIntervalTime = time() - (int)$lastActionSynchronisation;
-            $lastIntervalTime = $lastIntervalTime + self::SECURITY_INTERVAL_TIME;
+            $lastIntervalTime = time() - (int) $lastActionSynchronisation;
+            $lastIntervalTime += self::SECURITY_INTERVAL_TIME;
             $intervalTime = $lastIntervalTime > $intervalTime ? $intervalTime : $lastIntervalTime;
         }
         return $intervalTime;

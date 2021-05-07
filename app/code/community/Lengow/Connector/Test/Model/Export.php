@@ -24,13 +24,13 @@ class Lengow_Connector_Test_Model_Export extends EcomDev_PHPUnit_Test_Case
     }
 
     /**
-     * Test getTotalExportedProduct
+     * Test getTotalExportProduct
      *
      * @test
      * @loadFixture
      * @doNotIndexAll
      */
-    public function getTotalExportedProduct()
+    public function getTotalExportProduct()
     {
         /** @var Lengow_Connector_Model_Export $export */
         $export = Mage::getModel(
@@ -43,7 +43,7 @@ class Lengow_Connector_Test_Model_Export extends EcomDev_PHPUnit_Test_Case
                 'status' => '',
             )
         );
-        $this->assertEquals(7, $export->getTotalExportedProduct(), 'Test All Products');
+        $this->assertEquals(7, $export->getTotalExportProduct(), 'Test All Products');
         /** @var Lengow_Connector_Model_Export $export */
         $export = Mage::getModel(
             'lengow/export',
@@ -55,7 +55,7 @@ class Lengow_Connector_Test_Model_Export extends EcomDev_PHPUnit_Test_Case
                 'status' => '',
             )
         );
-        $this->assertEquals(5, $export->getTotalExportedProduct(), 'Test Out of Stock Products');
+        $this->assertEquals(5, $export->getTotalExportProduct(), 'Test Out of Stock Products');
         /** @var Lengow_Connector_Model_Export $export */
         $export = Mage::getModel(
             'lengow/export',
@@ -67,7 +67,7 @@ class Lengow_Connector_Test_Model_Export extends EcomDev_PHPUnit_Test_Case
                 'status' => '1',
             )
         );
-        $this->assertEquals(4, $export->getTotalExportedProduct(), 'Test Active Products');
+        $this->assertEquals(4, $export->getTotalExportProduct(), 'Test Active Products');
         /** @var Lengow_Connector_Model_Export $export */
         $export = Mage::getModel(
             'lengow/export',
@@ -79,7 +79,7 @@ class Lengow_Connector_Test_Model_Export extends EcomDev_PHPUnit_Test_Case
                 'status' => '2',
             )
         );
-        $this->assertEquals(3, $export->getTotalExportedProduct(), 'Test Inactive Products');
+        $this->assertEquals(3, $export->getTotalExportProduct(), 'Test Inactive Products');
         /** @var Lengow_Connector_Model_Export $export */
         $export = Mage::getModel(
             'lengow/export',
@@ -91,6 +91,6 @@ class Lengow_Connector_Test_Model_Export extends EcomDev_PHPUnit_Test_Case
                 'status' => '1,2',
             )
         );
-        $this->assertEquals(7, $export->getTotalExportedProduct(), 'Test Inactive And Active Products');
+        $this->assertEquals(7, $export->getTotalExportProduct(), 'Test Inactive And Active Products');
     }
 }

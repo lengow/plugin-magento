@@ -268,7 +268,7 @@ class Lengow_Connector_Model_Connector
             return false;
         }
         list($accountId, $accessToken, $secret) = $this->_configHelper->getAccessIds();
-        if ($accountId === null || (int)$accountId === 0 || !is_numeric($accountId)) {
+        if ($accountId === null) {
             return false;
         }
         try {
@@ -392,8 +392,8 @@ class Lengow_Connector_Model_Connector
      */
     public function connect($force = false, $logOutput = false)
     {
-        $token = $this->_configHelper->get('authorization_token');
-        $updatedAt = $this->_configHelper->get('last_authorization_token_update');
+        $token = $this->_configHelper->get(Lengow_Connector_Helper_Config::AUTHORIZATION_TOKEN);
+        $updatedAt = $this->_configHelper->get(Lengow_Connector_Helper_Config::LAST_UPDATE_AUTHORIZATION_TOKEN);
         if (!$force
             && $token !== null
             && $updatedAt !== null
@@ -403,8 +403,8 @@ class Lengow_Connector_Model_Connector
             $authorizationToken = $token;
         } else {
             $authorizationToken = $this->_getAuthorizationToken($logOutput);
-            $this->_configHelper->set('authorization_token', $authorizationToken);
-            $this->_configHelper->set('last_authorization_token_update', time());
+            $this->_configHelper->set(Lengow_Connector_Helper_Config::AUTHORIZATION_TOKEN, $authorizationToken);
+            $this->_configHelper->set(Lengow_Connector_Helper_Config::LAST_UPDATE_AUTHORIZATION_TOKEN, time());
         }
         $this->_token = $authorizationToken;
     }
@@ -567,7 +567,7 @@ class Lengow_Connector_Model_Connector
                 self::CODE_500
             );
         }
-        if (strlen($data['token']) === 0) {
+        if ($data['token'] === '') {
             throw new Lengow_Connector_Model_Exception(
                 $this->_helper->setLogMessage('log.connector.token_is_empty'),
                 self::CODE_500

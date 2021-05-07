@@ -26,7 +26,7 @@ class Lengow_Connector_Block_Adminhtml_Action_Renderer_Status
     /**
      * Decorate status values
      *
-     * @param Varien_Object $row Magento varian object instance
+     * @param Varien_Object $row Magento Varien object instance
      *
      * @return string
      */
@@ -34,11 +34,10 @@ class Lengow_Connector_Block_Adminhtml_Action_Renderer_Status
     {
         /** @var Lengow_Connector_Helper_Data $helper */
         $helper = $this->helper('lengow_connector');
-        $status = (int)$row->getData($this->getColumn()->getIndex());
+        $status = (int) $row->getData($this->getColumn()->getIndex());
         if ($status === 0) {
             return '<span class="lgw-label orange">' . $helper->__('toolbox.table.state_processing') . '</span>';
-        } else {
-            return '<span class="lgw-label">' . $helper->__('toolbox.table.state_complete') . '</span>';
         }
+        return '<span class="lgw-label">' . $helper->__('toolbox.table.state_complete') . '</span>';
     }
 }

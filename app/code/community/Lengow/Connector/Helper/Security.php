@@ -79,7 +79,9 @@ class Lengow_Connector_Helper_Security extends Mage_Core_Helper_Abstract
      */
     public function checkWebserviceAccess($token, $storeId = 0)
     {
-        if (!(bool)$this->_configHelper->get('ip_enable') && $this->checkToken($token, $storeId)) {
+        if (!(bool) $this->_configHelper->get(Lengow_Connector_Helper_Config::AUTHORIZED_IP_ENABLED)
+            && $this->checkToken($token, $storeId)
+        ) {
             return true;
         }
         if ($this->checkIp()) {
@@ -98,11 +100,7 @@ class Lengow_Connector_Helper_Security extends Mage_Core_Helper_Abstract
      */
     public function checkToken($token, $storeId = 0)
     {
-        $storeToken = $this->_configHelper->getToken($storeId);
-        if ($token === $storeToken) {
-            return true;
-        }
-        return false;
+        return $token === $this->_configHelper->getToken($storeId);
     }
 
     /**
@@ -112,31 +110,9 @@ class Lengow_Connector_Helper_Security extends Mage_Core_Helper_Abstract
      */
     public function checkIp()
     {
-        $authorizedIps = $this->getAuthorizedIps();
-        $hostnameIp = $this->getRemoteIp();
-        if (in_array($hostnameIp, $authorizedIps)) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Get authorized IPS
-     *
-     * @return array
-     */
-    public function getAuthorizedIps()
-    {
-        $ips = $this->_configHelper->get('authorized_ip');
-        if ($ips !== null && (bool)$this->_configHelper->get('ip_enable')) {
-            $ips = trim(str_replace(array("\r\n", ',', '-', '|', ' '), ';', $ips), ';');
-            $ips = explode(';', $ips);
-            $authorizedIps = array_merge($ips, $this->_ipsLengow);
-        } else {
-            $authorizedIps = $this->_ipsLengow;
-        }
+        $authorizedIps = array_merge($this->_configHelper->getAuthorizedIps(), $this->_ipsLengow);
         $authorizedIps[] = $this->getServerIp();
-        return $authorizedIps;
+        return in_array($this->getRemoteIp(), $authorizedIps, true);
     }
 
     /**
@@ -166,7 +142,7 @@ class Lengow_Connector_Helper_Security extends Mage_Core_Helper_Abstract
      */
     public function getPluginVersion()
     {
-        return (string)Mage::getConfig()->getNode()->modules->Lengow_Connector->version;
+        return (string) Mage::getConfig()->getNode()->modules->Lengow_Connector->version;
     }
 
     /**

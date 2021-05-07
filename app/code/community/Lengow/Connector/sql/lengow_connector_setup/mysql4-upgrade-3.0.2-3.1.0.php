@@ -20,7 +20,7 @@
 $version = '3.1.0';
 /** @var Lengow_Connector_Helper_Config $configHelper */
 $configHelper = Mage::helper('lengow_connector/config');
-$installedVersion = $configHelper->get('installed_version');
+$installedVersion = $configHelper->get(Lengow_Connector_Helper_Config::PLUGIN_VERSION);
 
 if (version_compare($installedVersion, $version, '<')) {
 
@@ -28,11 +28,11 @@ if (version_compare($installedVersion, $version, '<')) {
     //    Active Lengow tracker for versions 3.0.0 - 3.0.2
     // *********************************************************
 
-    $trackingEnable = (bool)$configHelper->get('tracking_enable');
-    if (!$configHelper->isNewMerchant() && !$trackingEnable) {
-        $configHelper->set('tracking_enable', 1);
+    $trackingEnable = (bool) $configHelper->get(Lengow_Connector_Helper_Config::TRACKING_ENABLED);
+    if (!$trackingEnable && !$configHelper->isNewMerchant()) {
+        $configHelper->set(Lengow_Connector_Helper_Config::TRACKING_ENABLED, 1);
         Mage::app()->getCacheInstance()->cleanType('config');
     }
 
-    $configHelper->set('installed_version', $version);
+    $configHelper->set(Lengow_Connector_Helper_Config::PLUGIN_VERSION, $version);
 }

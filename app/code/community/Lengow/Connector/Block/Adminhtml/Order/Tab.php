@@ -112,7 +112,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Tab
             $orderLengow = $orderLengow->load($orderLengowId);
             $marketplaceSku = $orderLengow->getData('marketplace_sku');
             $marketplaceLabel = $orderLengow->getData('marketplace_label');
-            $feedId = (int)$orderLengow->getData('feed_id');
+            $feedId = (int) $orderLengow->getData('feed_id');
             $deliveryAddressId = $orderLengow->getData('delivery_address_id');
             $currency = $orderLengow->getData('currency');
             $totalPaid = $orderLengow->getData('total_paid');
@@ -133,7 +133,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Tab
         } else {
             $marketplaceSku = $order->getData('order_id_lengow');
             $marketplaceLabel = $order->getData('marketplace_lengow');
-            $feedId = (int)$order->getData('feed_id_lengow');
+            $feedId = (int) $order->getData('feed_id_lengow');
             $deliveryAddressId = $order->getData('delivery_address_id_lengow');
             $currency = $order->getData('base_currency_code');
             $totalPaid = $order->getData('total_paid_lengow');
@@ -202,7 +202,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Tab
      */
     public function isLengowOrder()
     {
-        return (bool)$this->getOrder()->getData('from_lengow');
+        return (bool) $this->getOrder()->getData('from_lengow');
     }
 
     /**
@@ -212,7 +212,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Tab
      */
     public function isFollowByLengow()
     {
-        return (bool)$this->getOrder()->getData('follow_by_lengow');
+        return (bool) $this->getOrder()->getData('follow_by_lengow');
     }
 
     /**
@@ -236,7 +236,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Tab
                 $orderProcessStateClosed = $orderLengow->getOrderProcessState(
                     Lengow_Connector_Model_Import_Order::STATE_CLOSED
                 );
-                if ((int)$orderLengow->getData('order_process_state') !== $orderProcessStateClosed) {
+                if ((int) $orderLengow->getData('order_process_state') !== $orderProcessStateClosed) {
                     return true;
                 }
             } else {

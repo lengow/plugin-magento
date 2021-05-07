@@ -20,7 +20,7 @@
 $version = '3.2.0';
 /** @var Lengow_Connector_Helper_Config $configHelper */
 $configHelper = Mage::helper('lengow_connector/config');
-$installedVersion = $configHelper->get('installed_version');
+$installedVersion = $configHelper->get(Lengow_Connector_Helper_Config::PLUGIN_VERSION);
 
 if (version_compare($installedVersion, $version, '<')) {
 
@@ -37,5 +37,5 @@ if (version_compare($installedVersion, $version, '<')) {
 
     Mage::getModel('core/config')->deleteConfig('lengow_import_options/advanced/import_preprod_mode_enable');
 
-    $configHelper->set('installed_version', $version);
+    $configHelper->set(Lengow_Connector_Helper_Config::PLUGIN_VERSION, $version);
 }

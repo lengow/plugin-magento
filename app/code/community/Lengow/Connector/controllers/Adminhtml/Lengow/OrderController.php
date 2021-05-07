@@ -46,19 +46,21 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
                 if ($action) {
                     switch ($action) {
                         case 'import_all':
-                            $params = array('type' => Lengow_Connector_Model_Import::TYPE_MANUAL);
+                            $params = array(
+                                Lengow_Connector_Model_Import::PARAM_TYPE => Lengow_Connector_Model_Import::TYPE_MANUAL,
+                            );
                             $results = Mage::getModel('lengow/import', $params)->exec();
-                            $informations = $this->getInformations();
-                            $informations['messages'] = $this->getMessages($results);
-                            $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($informations));
+                            $information = $this->getInformation();
+                            $information['messages'] = $this->getMessages($results);
+                            $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($information));
                             break;
                         case 're_import':
                             $orderLengowId = Mage::app()->getRequest()->getParam('order_lengow_id');
                             if ($orderLengowId !== null) {
-                                $result = Mage::getModel('lengow/import_order')->reImportOrder((int)$orderLengowId);
-                                $informations = $this->getInformations();
-                                $informations['import_order'] = $result;
-                                $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($informations));
+                                $result = Mage::getModel('lengow/import_order')->reImportOrder((int) $orderLengowId);
+                                $information = $this->getInformation();
+                                $information['import_order'] = $result;
+                                $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($information));
                             }
                             break;
                         case 're_send':
@@ -69,11 +71,14 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
                             }
                             break;
                         case 'migrate_button_fade':
-                            Mage::helper('lengow_connector/config')->set('see_migrate_block', 0);
+                            Mage::helper('lengow_connector/config')->set(
+                                Lengow_Connector_Helper_Config::MIGRATE_BLOCK_ENABLED,
+                                0
+                            );
                             break;
                         case 'load_information':
-                            $informations = $this->getInformations();
-                            $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($informations));
+                            $information = $this->getInformation();
+                            $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($information));
                             break;
                     }
                 }
@@ -163,7 +168,7 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
             /** @var Lengow_Connector_Model_Import_Order $orderLengow */
             $orderLengow = Mage::getModel('lengow/import_order');
             foreach ($orderLengowIds as $orderLengowId) {
-                $orderLengow->reImportOrder((int)$orderLengowId);
+                $orderLengow->reImportOrder((int) $orderLengowId);
             }
         }
     }
@@ -178,7 +183,7 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
             /** @var Lengow_Connector_Model_Import_Order $orderLengow */
             $orderLengow = Mage::getModel('lengow/import_order');
             foreach ($orderLengowIds as $orderLengowId) {
-                $orderLengow->reSendOrder((int)$orderLengowId);
+                $orderLengow->reSendOrder((int) $orderLengowId);
             }
         }
     }
@@ -243,7 +248,7 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
         }
         if (isset($results['error'])) {
             foreach ($results['error'] as $storeId => $values) {
-                if ((int)$storeId > 0) {
+                if ((int) $storeId > 0) {
                     $store = Mage::getModel('core/store')->load($storeId);
                     $storeName = $store->getName() . ' (' . $store->getId() . ') : ';
                     $messages[] = $storeName . $helper->decodeLogMessage($values);
@@ -254,35 +259,35 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
     }
 
     /**
-     * Get all order informations
+     * Get all order information
      *
      * @return array
      */
-    public function getInformations()
+    public function getInformation()
     {
-        $informations = array();
+        $information = array();
         /** @var Lengow_Connector_Helper_Data $helper */
         $helper = Mage::helper('lengow_connector');
         $lastImport = Mage::helper('lengow_connector/import')->getLastImport();
         $lastImportDate = $helper->getDateInCorrectFormat(time());
         /** @var Lengow_Connector_Model_Import_Order $order */
         $order = Mage::getModel('lengow/import_order');
-        $informations['order_with_error'] = $helper->__(
+        $information['order_with_error'] = $helper->__(
             'order.screen.order_with_error',
             array('nb_order' => $order->countOrderWithError())
         );
-        $informations['order_to_be_sent'] = $helper->__(
+        $information['order_to_be_sent'] = $helper->__(
             'order.screen.order_to_be_sent',
             array('nb_order' => $order->countOrderToBeSent())
         );
-        if ($lastImport['type'] != 'none') {
-            $informations['last_importation'] = $helper->__(
+        if ($lastImport['type'] !== 'none') {
+            $information['last_importation'] = $helper->__(
                 'order.screen.last_order_importation',
                 array('last_importation' => '<b>' . $lastImportDate . '</b>')
             );
         } else {
-            $informations['last_importation'] = $helper->__('order.screen.no_order_importation');
+            $information['last_importation'] = $helper->__('order.screen.no_order_importation');
         }
-        return $informations;
+        return $information;
     }
 }

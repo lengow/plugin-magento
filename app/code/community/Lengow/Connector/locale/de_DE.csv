@@ -192,7 +192,22 @@ legals.screen.address|Adresse
 legals.screen.contact|Vertrag
 legals.screen.hosting|Hosting
 toolbox.screen.title|Lengow Toolbox
-toolbox.screen.gobal_information|Globale Information
+toolbox.screen.global_information|Globale Information
+toolbox.screen.checklist_information|Checkliste
+toolbox.screen.curl_message|Lengow benötigt die CURL-PHP-Erweiterung
+toolbox.screen.curl_help|Die CURL-Erweiterung ist in Ihrer PHP-Installation nicht installiert oder aktiviert
+toolbox.screen.curl_help_link|http://www.php.net/manual/en/curl.setup.php
+toolbox.screen.curl_help_label|Gehen Sie zum Handbuch zur Curl PHP-Erweiterung
+toolbox.screen.simple_xml_message|Lengow benötigt die SimpleXML-PHP-Erweiterung
+toolbox.screen.simple_xml_help|Die SimpleXML-Erweiterung ist in Ihrer PHP-Installation nicht installiert oder aktiviert
+toolbox.screen.simple_xml_help_link|http://www.php.net/manual/en/book.simplexml.php
+toolbox.screen.simple_xml_help_label|Gehen Sie zum SimpleXML PHP-Erweiterungshandbuch
+toolbox.screen.json_php_message|Lengow benötigt die JSON-PHP-Erweiterung
+toolbox.screen.json_php_help|Die JSON-Erweiterung ist in Ihrer PHP-Installation nicht installiert oder aktiviert
+toolbox.screen.json_php_help_link|http://www.php.net/manual/fr/book.json.php
+toolbox.screen.json_php_help_label|Gehen Sie zum Handbuch zur JSON PHP-Erweiterung
+toolbox.screen.checksum_message|Prüfung von Plugin-Dateien
+toolbox.screen.checksum_help|Einige Dateien wurden vom Kunden geändert
 toolbox.screen.plugin_information|Information zum Plugin
 toolbox.screen.server_ip|Server IP
 toolbox.screen.authorized_ip_enable|Autorisierung über IP aktiviert
@@ -200,11 +215,12 @@ toolbox.screen.authorized_ip|Autorisierte IP
 toolbox.screen.legacy_enable| Rechtliche Felder aktiviert
 toolbox.screen.export_on_a_file|Export auf Datei aktiviert
 toolbox.screen.export_cron_enable| Magento-cronjob für Export aktiviert
-toolbox.screen.pre_production_enable|Vorproduktionsmodus ist deaktiviert
+toolbox.screen.debug_disabled|Debug Mode ist deaktiviert
 toolbox.screen.write_permission|Genehmigung vom Mediumordner schreiben
+toolbox.screen.toolbox_url|Toolbox-URL
 toolbox.screen.import_information|Import information
 toolbox.screen.global_token|Import Token
-toolbox.screen.url_import|Import URL
+toolbox.screen.url_import|Import-URL
 toolbox.screen.import_cron_enable|Magento Cron-Job für Export aktiviert
 toolbox.screen.nb_order_imported|Bestellungen importiert durch Lengow
 toolbox.screen.nb_order_to_be_sent|Bestellungen die auf den Versand warten.
@@ -225,7 +241,7 @@ toolbox.screen.store_export_token|Export Token
 toolbox.screen.store_last_export|Letzter Export
 toolbox.screen.store_product_total|Produkt im Shop verfügbar
 toolbox.screen.store_product_exported|Produkte in den Shop exportiert
-toolbox.screen.url_export|Export URL für diesen Shop
+toolbox.screen.url_export|Export-URL für diesen Shop
 toolbox.screen.content_folder_media|Contentordner Medien
 toolbox.screen.folder_path|Ordnerpfad
 toolbox.screen.file_list|Dateiliste
@@ -295,7 +311,7 @@ lengow_setting.export_simple_setting|Einfache Exporteinstellungen
 lengow_setting.export_selection_enable_label|Nur ausgewählte Produkte exportieren
 lengow_setting.export_out_stock_label|Nicht lieferbare Produkte exportieren
 lengow_setting.export_product_type_label|Produkttyp für den Export
-lengow_setting.export_product_status_label|Status des Produktes für den Export
+lengow_setting.export_inactive_enable_label|Deaktivierte Produkte exportieren
 lengow_setting.export_advanced_setting|Erweiterte Exporteinstellungen
 lengow_setting.export_attribute_label|Attribute für den Export auswählen
 lengow_setting.export_parent_image_label|Images mit Parentprodukten zusammenführen

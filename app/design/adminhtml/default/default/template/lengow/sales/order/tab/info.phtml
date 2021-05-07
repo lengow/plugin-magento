@@ -10,7 +10,7 @@
     $fields = $this->getFields();
     $order = $this->getOrder()->getData();
     $defaultStore = Mage::app()->getWebsite(true)->getDefaultGroup()->getDefaultStoreId();
-    $currentStore = (int)$this->getRequest()->getParam('store', Mage::app()->getStore()->getId());
+    $currentStore = (int) $this->getRequest()->getParam('store', Mage::app()->getStore()->getId());
     $storeId = $currentStore === 0 ? $defaultStore : $currentStore;
 ?>
 
