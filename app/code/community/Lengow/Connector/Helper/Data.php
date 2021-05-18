@@ -200,7 +200,7 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
      *
      * @param integer $nbDays number of days for deletion
      */
-    public function cleanLog($nbDays = 20)
+    public function cleanLog($nbDays = Lengow_Connector_Model_Log::LOG_LIFE)
     {
         if ($nbDays <= 0) {
             $nbDays = Lengow_Connector_Model_Log::LOG_LIFE;

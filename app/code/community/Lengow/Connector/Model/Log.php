@@ -110,7 +110,7 @@ class Lengow_Connector_Model_Log extends Mage_Core_Model_Abstract
             ->from($resource->getTableName('lengow/log'), 'COUNT(*)')
             ->where('date >=?', date('Y-m-d' . ' 00:00:00', strtotime($date)))
             ->where('date <=?', date('Y-m-d' . ' 23:59:59', strtotime($date)));
-        $result = $write->fetchOne($select);
+        $result = (int) $write->fetchOne($select);
         return $result > 0;
     }
 
@@ -133,28 +133,6 @@ class Lengow_Connector_Model_Log extends Mage_Core_Model_Abstract
     }
 
     /**
-     * Get log files path for toolbox
-     *
-     * @return array
-     */
-    public function getPaths()
-    {
-        $logs = array();
-        $logDates = $this->getAvailableLogDates();
-        foreach ($logDates as $date) {
-            $logs[] = array(
-                self::LOG_DATE => $date,
-                self::LOG_LINK => Mage::helper('lengow_connector')->getToolboxUrl()
-                    . Lengow_Connector_Helper_Toolbox::PARAM_TOOLBOX_ACTION
-                    . '/' . Lengow_Connector_Helper_Toolbox::ACTION_LOG
-                    . '/' . Lengow_Connector_Helper_Toolbox::PARAM_DATE
-                    . '/' . urlencode($date),
-            );
-        }
-        return $logs;
-    }
-
-    /**
      * Download log file individually or globally
      *
      * @param string|null $date date for a specific log file
@@ -170,7 +148,7 @@ class Lengow_Connector_Model_Log extends Mage_Core_Model_Abstract
             }
         } else {
             $fileName = 'logs.txt';
-            $logDates = $this->getAvailableLogDates();
+            $logDates = array_reverse($this->getAvailableLogDates());
             foreach ($logDates as $logDate) {
                 $logs = $this->getLogsByDate($logDate);
                 foreach ($logs as $log) {

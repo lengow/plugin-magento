@@ -196,15 +196,15 @@ toolbox.screen.global_information|Globale Information
 toolbox.screen.checklist_information|Checkliste
 toolbox.screen.curl_message|Lengow benötigt die CURL-PHP-Erweiterung
 toolbox.screen.curl_help|Die CURL-Erweiterung ist in Ihrer PHP-Installation nicht installiert oder aktiviert
-toolbox.screen.curl_help_link|http://www.php.net/manual/en/curl.setup.php
+toolbox.screen.curl_help_link|https://www.php.net/manual/de/curl.setup.php
 toolbox.screen.curl_help_label|Gehen Sie zum Handbuch zur Curl PHP-Erweiterung
 toolbox.screen.simple_xml_message|Lengow benötigt die SimpleXML-PHP-Erweiterung
 toolbox.screen.simple_xml_help|Die SimpleXML-Erweiterung ist in Ihrer PHP-Installation nicht installiert oder aktiviert
-toolbox.screen.simple_xml_help_link|http://www.php.net/manual/en/book.simplexml.php
+toolbox.screen.simple_xml_help_link|https://www.php.net/manual/de/book.simplexml.php
 toolbox.screen.simple_xml_help_label|Gehen Sie zum SimpleXML PHP-Erweiterungshandbuch
 toolbox.screen.json_php_message|Lengow benötigt die JSON-PHP-Erweiterung
 toolbox.screen.json_php_help|Die JSON-Erweiterung ist in Ihrer PHP-Installation nicht installiert oder aktiviert
-toolbox.screen.json_php_help_link|http://www.php.net/manual/fr/book.json.php
+toolbox.screen.json_php_help_link|https://www.php.net/manual/de/book.json.php
 toolbox.screen.json_php_help_label|Gehen Sie zum Handbuch zur JSON PHP-Erweiterung
 toolbox.screen.checksum_message|Prüfung von Plugin-Dateien
 toolbox.screen.checksum_help|Einige Dateien wurden vom Kunden geändert

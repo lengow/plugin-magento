@@ -398,12 +398,27 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
      */
     private function getLogData()
     {
-        $logs = Mage::getModel('lengow/log')->getPaths();
-        if (!empty($logs)) {
+        $logs = array();
+        $logDates = Mage::getModel('lengow/log')->getAvailableLogDates();
+        if (!empty($logDates)) {
+            foreach ($logDates as $date) {
+                $logs[] = array(
+                    Lengow_Connector_Model_Log::LOG_DATE => $date,
+                    Lengow_Connector_Model_Log::LOG_LINK => $this->_helper->getToolboxUrl(
+                        array(
+                            self::PARAM_TOOLBOX_ACTION => self::ACTION_LOG,
+                            self::PARAM_DATE => urlencode($date),
+                        )
+                    ),
+                );
+            }
             $logs[] = array(
                 Lengow_Connector_Model_Log::LOG_DATE => null,
-                Lengow_Connector_Model_Log::LOG_LINK => $this->_helper->getToolboxUrl()
-                    . self::PARAM_TOOLBOX_ACTION . '/' . self::ACTION_LOG,
+                Lengow_Connector_Model_Log::LOG_LINK => $this->_helper->getToolboxUrl(
+                    array(
+                        self::PARAM_TOOLBOX_ACTION => self::ACTION_LOG,
+                    )
+                ),
             );
         }
         return $logs;

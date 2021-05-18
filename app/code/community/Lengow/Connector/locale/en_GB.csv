@@ -196,15 +196,15 @@ toolbox.screen.global_information|Global information
 toolbox.screen.checklist_information|Checklist
 toolbox.screen.curl_message|Lengow needs the CURL PHP extension
 toolbox.screen.curl_help|The CURL extension is not installed or enabled in your PHP installation. Check the manual to get more information on how to install or enable CURL on your system
-toolbox.screen.curl_help_link|http://www.php.net/manual/en/curl.setup.php
+toolbox.screen.curl_help_link|https://www.php.net/manual/en/curl.setup.php
 toolbox.screen.curl_help_label|Go to Curl PHP extension manual
 toolbox.screen.simple_xml_message|Lengow needs the SimpleXML PHP extension
 toolbox.screen.simple_xml_help|The SimpleXML extension is not installed or enabled in your PHP installation. Check the manual to get more information on how to install or enable SimpleXML on your system
-toolbox.screen.simple_xml_help_link|http://www.php.net/manual/en/book.simplexml.php
+toolbox.screen.simple_xml_help_link|https://www.php.net/manual/en/book.simplexml.php
 toolbox.screen.simple_xml_help_label|Go to SimpleXML PHP extension manual
 toolbox.screen.json_php_message|Lengow needs the JSON PHP extension
 toolbox.screen.json_php_help|The JSON extension is not installed or enabled in your PHP installation
-toolbox.screen.json_php_help_link|http://www.php.net/manual/fr/book.json.php
+toolbox.screen.json_php_help_link|https://www.php.net/manual/en/book.json.php
 toolbox.screen.json_php_help_label|Go to JSON PHP extension manual
 toolbox.screen.checksum_message|Plugin files check
 toolbox.screen.checksum_help|Some files have been changed by the customer

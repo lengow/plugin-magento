@@ -329,8 +329,7 @@ class Lengow_Connector_Helper_Toolboxelement extends Mage_Core_Helper_Abstract
         foreach ($stores as $store) {
             $folderPath = $lengowMediaPath . $sep . $store->getCode() . $sep;
             $folderUrl = $lengowMediaUrl . $sep . $store->getCode() . $sep;
-            $folderFiles = scandir($folderPath);
-            $files = !empty($folderFiles) ? array_diff($folderFiles, array('..', '.')) : array();
+            $files = file_exists($folderPath) ? array_diff(scandir($folderPath), array('..', '.')) : array();
             $checklist = array();
             try {
                 $checklist[] = array(

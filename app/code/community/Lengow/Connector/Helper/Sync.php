@@ -127,7 +127,7 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
             return true;
         }
         $statusAccount = $this->getStatusAccount();
-        return $statusAccount['type'] === 'free_trial' && $statusAccount['expired'];
+        return $statusAccount && ($statusAccount['type'] === 'free_trial' && $statusAccount['expired']);
     }
 
 
