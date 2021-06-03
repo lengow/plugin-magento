@@ -27,45 +27,36 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
      */
     const CMS_TYPE = 'magento';
 
-    /**
-     * @var string sync catalog action
-     */
+    /* Sync actions */
     const SYNC_CATALOG = 'catalog';
-
-    /**
-     * @var string sync cms option action
-     */
     const SYNC_CMS_OPTION = 'cms_option';
-
-    /**
-     * @var string sync status account action
-     */
     const SYNC_STATUS_ACCOUNT = 'status_account';
-
-    /**
-     * @var string sync marketplace action
-     */
     const SYNC_MARKETPLACE = 'marketplace';
-
-    /**
-     * @var string sync order action
-     */
     const SYNC_ORDER = 'order';
-
-    /**
-     * @var string sync action action
-     */
     const SYNC_ACTION = 'action';
-
-    /**
-     * @var string sync plugin version action
-     */
     const SYNC_PLUGIN_DATA = 'plugin';
 
     /**
      * @var string marketplace file name
      */
     const MARKETPLACE_FILE = 'marketplaces.json';
+
+    /* Plugin link types */
+    const LINK_TYPE_HELP_CENTER = 'help_center';
+    const LINK_TYPE_CHANGELOG = 'changelog';
+    const LINK_TYPE_UPDATE_GUIDE = 'update_guide';
+    const LINK_TYPE_SUPPORT = 'support';
+
+    /* Default plugin links */
+    const LINK_HELP_CENTER = 'https://support.lengow.com/kb/guide/en/magento-ClPhE37tgf/Steps/25858';
+    const LINK_CHANGELOG = 'https://support.lengow.com/kb/guide/en/magento-ClPhE37tgf/Steps/25858,113704,261735';
+    const LINK_UPDATE_GUIDE = 'https://support.lengow.com/kb/guide/en/magento-ClPhE37tgf/Steps/25858,117750';
+    const LINK_SUPPORT = 'https://help-support.lengow.com/hc/en-us/requests/new';
+
+    /* Api iso codes */
+    const API_ISO_CODE_EN = 'en';
+    const API_ISO_CODE_FR = 'fr';
+    const API_ISO_CODE_DE = 'de';
 
     /**
      * @var array cache time for catalog, account status, cms options and marketplace synchronisation
@@ -89,6 +80,25 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
         self::SYNC_ACTION,
         self::SYNC_CATALOG,
         self::SYNC_PLUGIN_DATA,
+    );
+
+    /**
+     * @var array iso code correspondence for plugin links
+     */
+    protected $_genericIsoCodes = array(
+        self::API_ISO_CODE_EN => Lengow_Connector_Helper_Translation::ISO_CODE_EN,
+        self::API_ISO_CODE_FR => Lengow_Connector_Helper_Translation::ISO_CODE_FR,
+        self::API_ISO_CODE_DE => Lengow_Connector_Helper_Translation::ISO_CODE_DE,
+    );
+
+    /**
+     * @var array default plugin links when the API is not available
+     */
+    protected $_defaultPluginLinks = array(
+        self::LINK_TYPE_HELP_CENTER => self::LINK_HELP_CENTER,
+        self::LINK_TYPE_CHANGELOG => self::LINK_CHANGELOG,
+        self::LINK_TYPE_UPDATE_GUIDE => self::LINK_UPDATE_GUIDE,
+        self::LINK_TYPE_SUPPORT => self::LINK_SUPPORT,
     );
 
     /**
@@ -431,9 +441,6 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
      */
     public function getPluginData($force = false, $logOutput = false)
     {
-        if ($this->_configHelper->isNewMerchant()) {
-            return false;
-        }
         if (!$force) {
             $updatedAt = $this->_configHelper->get(Lengow_Connector_Helper_Config::LAST_UPDATE_PLUGIN_DATA);
             if ($updatedAt !== null && (time() - (int) $updatedAt) < $this->_cacheTimes[self::SYNC_PLUGIN_DATA]) {
@@ -451,9 +458,22 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
             $pluginData = false;
             foreach ($plugins as $plugin) {
                 if ($plugin->type === self::CMS_TYPE) {
+                    $pluginLinks = array();
+                    if (!empty($plugin->links)) {
+                        foreach ($plugin->links as $link) {
+                            if (array_key_exists($link->language->iso_a2, $this->_genericIsoCodes)) {
+                                $genericIsoCode = $this->_genericIsoCodes[$link->language->iso_a2];
+                                $pluginLinks[$genericIsoCode][$link->link_type] = $link->link;
+                            }
+                        }
+                    }
                     $pluginData = array(
                         'version' => $plugin->version,
                         'download_link' => $plugin->archive,
+                        'cms_min_version' => '1.5',
+                        'cms_max_version' => '1.9',
+                        'links' => $pluginLinks,
+                        'extensions' => $plugin->extensions,
                     );
                     break;
                 }
@@ -472,5 +492,39 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
             }
         }
         return false;
+    }
+
+    /**
+     * Get an array of plugin links for a specific iso code
+     *
+     * @param string|null $isoCode
+     *
+     * @return array
+     */
+    public function getPluginLinks($isoCode = null)
+    {
+        $pluginData = $this->getPluginData();
+        if (!$pluginData) {
+            return $this->_defaultPluginLinks;
+        }
+        // check if the links are available in the locale
+        $isoCode = $isoCode ?: Lengow_Connector_Helper_Translation::DEFAULT_ISO_CODE;
+        $localeLinks = isset($pluginData['links'][$isoCode]) ? $pluginData['links'][$isoCode] : false;
+        $defaultLocaleLinks = isset($pluginData['links'][Lengow_Connector_Helper_Translation::DEFAULT_ISO_CODE])
+            ? $pluginData['links'][Lengow_Connector_Helper_Translation::DEFAULT_ISO_CODE]
+            : false;
+        // for each type of link, we check if the link is translated
+        $pluginLinks = array();
+        foreach ($this->_defaultPluginLinks as $linkType => $defaultLink) {
+            if ($localeLinks && isset($localeLinks[$linkType])) {
+                $link = $localeLinks[$linkType];
+            } elseif ($defaultLocaleLinks && isset($defaultLocaleLinks[$linkType])) {
+                $link = $defaultLocaleLinks[$linkType];
+            } else {
+                $link = $defaultLink;
+            }
+            $pluginLinks[$linkType] = $link;
+        }
+        return $pluginLinks;
     }
 }

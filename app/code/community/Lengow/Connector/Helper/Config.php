@@ -74,6 +74,7 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
     const LAST_UPDATE_SETTING = 'last_setting_update';
     const LAST_UPDATE_PLUGIN_DATA = 'last_plugin_data_update';
     const LAST_UPDATE_AUTHORIZATION_TOKEN = 'last_authorization_token_update';
+    const LAST_UPDATE_PLUGIN_MODAL = 'last_plugin_modal_update';
 
     /* Configuration parameters */
     const PARAM_EXPORT = 'export';
@@ -148,6 +149,7 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
         self::LAST_UPDATE_SETTING => 'last_update_setting',
         self::LAST_UPDATE_PLUGIN_DATA => 'last_update_plugin_data',
         self::LAST_UPDATE_AUTHORIZATION_TOKEN => 'last_update_authorization_token',
+        self::LAST_UPDATE_PLUGIN_MODAL => 'last_update_plugin_modal',
     );
 
     /**
@@ -472,6 +474,13 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
         ),
         self::LAST_UPDATE_AUTHORIZATION_TOKEN => array(
             self::PARAM_PATH => 'lengow_global_options/store_credential/last_authorization_token_update',
+            self::PARAM_GLOBAL => true,
+            self::PARAM_NO_CACHE => true,
+            self::PARAM_RETURN => self::RETURN_TYPE_INTEGER,
+            self::PARAM_LOG => false,
+        ),
+        self::LAST_UPDATE_PLUGIN_MODAL => array(
+            self::PARAM_PATH => 'lengow_global_options/store_credential/last_plugin_modal_update',
             self::PARAM_GLOBAL => true,
             self::PARAM_NO_CACHE => true,
             self::PARAM_RETURN => self::RETURN_TYPE_INTEGER,

@@ -198,7 +198,12 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
             /** @var Lengow_Connector_Helper_Data $helper */
             $helper = Mage::helper('lengow_connector');
             $subject = $helper->decodeLogMessage('lengow_log.mail_report.subject_report_mail');
-            $support = $helper->decodeLogMessage('lengow_log.mail_report.no_error_in_report_mail');
+            $pluginLinks = Mage::helper('lengow_connector/sync')->getPluginLinks();
+            $support = $helper->decodeLogMessage(
+                'lengow_log.mail_report.no_error_in_report_mail',
+                null,
+                array('support_link' => $pluginLinks[Lengow_Connector_Helper_Sync::LINK_TYPE_SUPPORT])
+            );
             $mailBody = '<h2>' . $subject . '</h2><p><ul>';
             foreach ($errors as $error) {
                 $order = $helper->decodeLogMessage(

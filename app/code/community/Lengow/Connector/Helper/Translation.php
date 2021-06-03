@@ -22,25 +22,30 @@
  */
 class Lengow_Connector_Helper_Translation extends Mage_Core_Helper_Abstract
 {
+    /* Plugin translation iso codes */
+    const ISO_CODE_EN = 'en_GB';
+    const ISO_CODE_FR = 'fr_FR';
+    const ISO_CODE_DE = 'de_DE';
+
     /**
      * @var string default iso code
      */
-    const DEFAULT_ISO_CODE = 'en_GB';
+    const DEFAULT_ISO_CODE = self::ISO_CODE_EN;
 
     /**
      * @var array all translations
      */
-    protected static $_translation = null;
+    protected static $_translation;
 
     /**
      * @var string|null iso code
      */
-    protected $_isoCode = null;
+    protected $_isoCode;
 
     /**
      * @var string|null force iso code for log
      */
-    public static $forceIsoCode = null;
+    public static $forceIsoCode;
 
     /**
      * Construct
@@ -55,7 +60,7 @@ class Lengow_Connector_Helper_Translation extends Mage_Core_Helper_Abstract
      *
      * @param string $message localization key
      * @param array $args replace word in string
-     * @param array|null $isoCode iso code
+     * @param string|null $isoCode iso code
      *
      * @return string
      */
@@ -72,16 +77,14 @@ class Lengow_Connector_Helper_Translation extends Mage_Core_Helper_Abstract
         }
         if (isset(self::$_translation[$isoCode][$message])) {
             return $this->translateFinal(self::$_translation[$isoCode][$message], $args);
-        } else {
-            if (!isset(self::$_translation[self::DEFAULT_ISO_CODE])) {
-                $this->loadFile(self::DEFAULT_ISO_CODE);
-            }
-            if (isset(self::$_translation[self::DEFAULT_ISO_CODE][$message])) {
-                return $this->translateFinal(self::$_translation[self::DEFAULT_ISO_CODE][$message], $args);
-            } else {
-                return 'Missing Translation [' . $message . ']';
-            }
         }
+        if (!isset(self::$_translation[self::DEFAULT_ISO_CODE])) {
+            $this->loadFile(self::DEFAULT_ISO_CODE);
+        }
+        if (isset(self::$_translation[self::DEFAULT_ISO_CODE][$message])) {
+            return $this->translateFinal(self::$_translation[self::DEFAULT_ISO_CODE][$message], $args);
+        }
+        return 'Missing Translation [' . $message . ']';
     }
 
     /**
@@ -102,9 +105,8 @@ class Lengow_Connector_Helper_Translation extends Mage_Core_Helper_Abstract
                 $values[] = $value;
             }
             return str_replace($params, $values, $text);
-        } else {
-            return $text;
         }
+        return $text;
     }
 
     /**
@@ -118,7 +120,7 @@ class Lengow_Connector_Helper_Translation extends Mage_Core_Helper_Abstract
     public function loadFile($isoCode, $filename = null)
     {
         if (!$filename) {
-            $filename = Mage::getModuleDir('locale', 'Lengow_Connector') . DS . $isoCode . '.csv';
+            $filename = Mage::getModuleDir('locale', 'Lengow_Connector') . DIRECTORY_SEPARATOR . $isoCode . '.csv';
         }
         $translation = array();
         if (file_exists($filename)) {

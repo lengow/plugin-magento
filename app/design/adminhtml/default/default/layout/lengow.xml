@@ -8,6 +8,7 @@
             <action method="addCss"><stylesheet>lengow/css/font-awesome.css</stylesheet></action>
             <action method="addItem"><type>skin_js</type><name>lengow/js/jquery-2.2.2.js</name></action>
             <action method="addItem"><type>skin_js</type><name>lengow/js/noconflict.js</name></action>
+            <action method="addItem"><type>skin_js</type><name>lengow/js/admin.js</name></action>
         </reference>
     </lengow_script>
     <adminhtml_lengow_home_index>
@@ -22,13 +23,13 @@
         </reference>
         <reference name="content">
             <block type="page/html" name="lengow_layout" template="lengow/layout/home.phtml" >
-                <block type="page/html" name="lengow_header" template="lengow/header.phtml" />
-                <block type="lengow/adminhtml_home_content" name="lengow_home" template="lengow/home/index.phtml" />
-                <block type="lengow/adminhtml_home_content" name="lengow_cms" template="lengow/home/cms.phtml" />
-                <block type="lengow/adminhtml_home_content" name="lengow_cms_result" template="lengow/home/cms_result.phtml" />
-                <block type="lengow/adminhtml_home_content" name="lengow_catalog" template="lengow/home/catalog.phtml" />
-                <block type="lengow/adminhtml_home_content" name="lengow_catalog_failed" template="lengow/home/catalog_failed.phtml" />
-                <block type="page/html" name="lengow_footer" template="lengow/footer.phtml" />
+                <block type="lengow/adminhtml_main" name="lengow_header" template="lengow/header.phtml" />
+                <block type="lengow/adminhtml_main" name="lengow_home" template="lengow/home/index.phtml" />
+                <block type="lengow/adminhtml_main" name="lengow_cms" template="lengow/home/cms.phtml" />
+                <block type="lengow/adminhtml_main" name="lengow_cms_result" template="lengow/home/cms_result.phtml" />
+                <block type="lengow/adminhtml_main" name="lengow_catalog" template="lengow/home/catalog.phtml" />
+                <block type="lengow/adminhtml_main" name="lengow_catalog_failed" template="lengow/home/catalog_failed.phtml" />
+                <block type="lengow/adminhtml_main" name="lengow_footer" template="lengow/footer.phtml" />
             </block>
         </reference>
     </adminhtml_lengow_home_index>
@@ -39,10 +40,10 @@
         </reference>
         <reference name="content">
             <block type="page/html" name="lengow_layout" template="lengow/layout/dashboard.phtml" >
-                <block type="page/html" name="lengow_header" template="lengow/header.phtml" />
-                <block type="page/html" name="lengow_content" template="lengow/dashboard/index.phtml" />
-                <block type="page/html" name="lengow_status" template="lengow/dashboard/status.phtml" />
-                <block type="page/html" name="lengow_footer" template="lengow/footer.phtml" />
+                <block type="lengow/adminhtml_main" name="lengow_header" template="lengow/header.phtml" />
+                <block type="lengow/adminhtml_main" name="lengow_content" template="lengow/dashboard/index.phtml" />
+                <block type="lengow/adminhtml_main" name="lengow_status" template="lengow/dashboard/status.phtml" />
+                <block type="lengow/adminhtml_main" name="lengow_footer" template="lengow/footer.phtml" />
             </block>
         </reference>
     </adminhtml_lengow_dashboard_index>
@@ -56,7 +57,7 @@
         </reference>
         <reference name="content">
             <block type="page/html" name="lengow_layout" template="lengow/layout/product.phtml" >
-                <block type="page/html" name="lengow_header" template="lengow/header.phtml" />
+                <block type="lengow/adminhtml_main" name="lengow_header" template="lengow/header.phtml" />
                 <block type="page/html" name="lengow_product" template="lengow/product/index.phtml" >
                     <block type="adminhtml/store_switcher" name="store_switcher" as="store_switcher">
                         <action method="setUseConfirm"><params>0</params></action>
@@ -64,7 +65,7 @@
                     </block>
                 </block>
                 <block type="lengow/adminhtml_product" name="lengow_content" />
-                <block type="page/html" name="lengow_footer" template="lengow/footer.phtml" />
+                <block type="lengow/adminhtml_main" name="lengow_footer" template="lengow/footer.phtml" />
             </block>
         </reference>
     </adminhtml_lengow_product_index>
@@ -79,10 +80,10 @@
         <reference name="content">
             <update handle="formkey"/>
             <block type="page/html" name="lengow_layout" template="lengow/layout/order.phtml" >
-                <block type="page/html" name="lengow_header" template="lengow/header.phtml" />
+                <block type="lengow/adminhtml_main" name="lengow_header" template="lengow/header.phtml" />
                 <block type="page/html" name="lengow_order" template="lengow/order/index.phtml" />
                 <block type="lengow/adminhtml_order" name="lengow_content" />
-                <block type="page/html" name="lengow_footer" template="lengow/footer.phtml" />
+                <block type="lengow/adminhtml_main" name="lengow_footer" template="lengow/footer.phtml" />
             </block>
         </reference>
     </adminhtml_lengow_order_index>
@@ -93,9 +94,9 @@
         </reference>
         <reference name="content">
             <block type="page/html" name="lengow_layout" template="lengow/layout/help.phtml" >
-                <block type="page/html" name="lengow_header" template="lengow/header.phtml" />
-                <block type="page/html" name="lengow_content" template="lengow/help/index.phtml" />
-                <block type="page/html" name="lengow_footer" template="lengow/footer.phtml" />
+                <block type="lengow/adminhtml_main" name="lengow_header" template="lengow/header.phtml" />
+                <block type="lengow/adminhtml_main" name="lengow_content" template="lengow/help/index.phtml" />
+                <block type="lengow/adminhtml_main" name="lengow_footer" template="lengow/footer.phtml" />
             </block>
         </reference>
     </adminhtml_lengow_help_index>
@@ -106,9 +107,9 @@
         </reference>
         <reference name="content">
             <block type="page/html" name="lengow_layout" template="lengow/layout/log.phtml" >
-                <block type="page/html" name="lengow_header" template="lengow/header.phtml" />
+                <block type="lengow/adminhtml_main" name="lengow_header" template="lengow/header.phtml" />
                 <block type="lengow/adminhtml_log" name="lengow_content" />
-                <block type="page/html" name="lengow_footer" template="lengow/footer.phtml" />
+                <block type="lengow/adminhtml_main" name="lengow_footer" template="lengow/footer.phtml" />
             </block>
         </reference>
     </adminhtml_lengow_log_index>
@@ -119,9 +120,9 @@
         </reference>
         <reference name="content">
             <block type="page/html" name="lengow_layout" template="lengow/layout/legal.phtml" >
-                <block type="page/html" name="lengow_header" template="lengow/header.phtml" />
-                <block type="page/html" name="lengow_content" template="lengow/legal/index.phtml" />
-                <block type="page/html" name="lengow_footer" template="lengow/footer.phtml" />
+                <block type="lengow/adminhtml_main" name="lengow_header" template="lengow/header.phtml" />
+                <block type="lengow/adminhtml_main" name="lengow_content" template="lengow/legal/index.phtml" />
+                <block type="lengow/adminhtml_main" name="lengow_footer" template="lengow/footer.phtml" />
             </block>
         </reference>
     </adminhtml_lengow_legal_index>
@@ -135,10 +136,10 @@
         </reference>
         <reference name="content">
             <block type="page/html" name="lengow_layout" template="lengow/layout/toolbox.phtml" >
-                <block type="page/html" name="lengow_header" template="lengow/header.phtml" />
+                <block type="lengow/adminhtml_main" name="lengow_header" template="lengow/header.phtml" />
                 <block type="page/html" name="lengow_toolbox" template="lengow/toolbox/index.phtml" />
                 <block type="lengow/adminhtml_action" name="lengow_action" />
-                <block type="page/html" name="lengow_footer" template="lengow/footer.phtml" />
+                <block type="lengow/adminhtml_main" name="lengow_footer" template="lengow/footer.phtml" />
             </block>
         </reference>
     </adminhtml_lengow_toolbox_index>

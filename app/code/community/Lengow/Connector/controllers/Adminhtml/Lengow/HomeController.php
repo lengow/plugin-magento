@@ -47,7 +47,7 @@ class Lengow_Connector_Adminhtml_Lengow_HomeController extends Mage_Adminhtml_Co
                 switch ($action) {
                     case 'go_to_credentials':
                         $displayContent = $this->getLayout()
-                            ->createBlock('lengow/adminhtml_home_content')
+                            ->createBlock('lengow/adminhtml_main')
                             ->setTemplate('lengow/home/cms.phtml');
                         $data = array('content' => $displayContent->toHtml());
                         $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($data));
@@ -65,7 +65,7 @@ class Lengow_Connector_Adminhtml_Lengow_HomeController extends Mage_Adminhtml_Co
                             }
                         }
                         $displayContent = $this->getLayout()
-                            ->createBlock('lengow/adminhtml_home_content')
+                            ->createBlock('lengow/adminhtml_main')
                             ->setTemplate('lengow/home/cms_result.phtml')
                             ->setCredentialsValid($credentialsValid)
                             ->setCmsConnected($cmsConnected)
@@ -80,7 +80,7 @@ class Lengow_Connector_Adminhtml_Lengow_HomeController extends Mage_Adminhtml_Co
                         }
                         $catalogList = $this->_getCatalogList();
                         $displayContent = $this->getLayout()
-                            ->createBlock('lengow/adminhtml_home_content')
+                            ->createBlock('lengow/adminhtml_main')
                             ->setTemplate('lengow/home/catalog.phtml')
                             ->setCatalogList($catalogList);
                         $data = array('content' => $displayContent->toHtml());
@@ -95,7 +95,7 @@ class Lengow_Connector_Adminhtml_Lengow_HomeController extends Mage_Adminhtml_Co
                             $catalogsLinked = $this->_saveCatalogsLinked($catalogSelected);
                         }
                         $displayContent = $this->getLayout()
-                            ->createBlock('lengow/adminhtml_home_content')
+                            ->createBlock('lengow/adminhtml_main')
                             ->setTemplate('lengow/home/catalog_failed.phtml');
                         $data = array(
                             'success' => $catalogsLinked,
