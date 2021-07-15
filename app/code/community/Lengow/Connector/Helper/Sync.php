@@ -458,7 +458,19 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
             $pluginData = false;
             foreach ($plugins as $plugin) {
                 if ($plugin->type === self::CMS_TYPE) {
+                    $cmsMinVersion = '';
+                    $cmsMaxVersion = '';
                     $pluginLinks = array();
+                    $currentVersion = $plugin->version;
+                    if (!empty($plugin->versions)) {
+                        foreach ($plugin->versions as $version) {
+                            if ($version->version === $currentVersion) {
+                                $cmsMinVersion = $version->cms_min_version;
+                                $cmsMaxVersion = $version->cms_max_version;
+                                break;
+                            }
+                        }
+                    }
                     if (!empty($plugin->links)) {
                         foreach ($plugin->links as $link) {
                             if (array_key_exists($link->language->iso_a2, $this->_genericIsoCodes)) {
@@ -468,10 +480,10 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
                         }
                     }
                     $pluginData = array(
-                        'version' => $plugin->version,
+                        'version' => $currentVersion,
                         'download_link' => $plugin->archive,
-                        'cms_min_version' => '1.5',
-                        'cms_max_version' => '1.9',
+                        'cms_min_version' => $cmsMinVersion,
+                        'cms_max_version' => $cmsMaxVersion,
                         'links' => $pluginLinks,
                         'extensions' => $plugin->extensions,
                     );
