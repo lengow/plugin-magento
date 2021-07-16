@@ -4,12 +4,18 @@
     /** @var Lengow_Connector_Helper_Config $config */
     $config = Mage::helper('lengow_connector/config');
     $defaultStore = Mage::app()->getWebsite(true)->getDefaultGroup()->getDefaultStoreId();
-    $currentStore = (int)$this->getRequest()->getParam('store', Mage::app()->getStore()->getId());
+    $currentStore = (int) $this->getRequest()->getParam('store', Mage::app()->getStore()->getId());
     $storeId = $currentStore === 0 ? $defaultStore : $currentStore;
     $store = Mage::app()->getStore($storeId);
     /** @var Lengow_Connector_Model_Export $export */
-    $export = Mage::getModel('lengow/export', array('store_id' => $storeId));
-    $exportUrl = $helper->getExportUrl($storeId, array('stream' => 1, 'update_export_date' => 0));
+    $export = Mage::getModel('lengow/export', array(Lengow_Connector_Model_Export::PARAM_STORE_ID => $storeId));
+    $exportUrl = $helper->getExportUrl(
+        $storeId,
+        array(
+            Lengow_Connector_Model_Export::PARAM_STREAM => 1,
+            Lengow_Connector_Model_Export::PARAM_UPDATE_EXPORT_DATE => 0
+        )
+    );
 ?> 
 
 <div class="lgw-box">
@@ -37,7 +43,7 @@
         <div class="products-exported">
             <div id="parent_exported_products">
                 <span id="exported_products" class="lengow_exported stats-big-value">
-                    <?php echo $export->getTotalExportedProduct(); ?>
+                    <?php echo $export->getTotalExportProduct(); ?>
                 </span>
                 <span> <?php echo $helper->__('product.screen.nb_exported'); ?></span>
             </div>
@@ -53,7 +59,7 @@
         <br>
         <br>
         <hr>
-        <div class="lgw-switch <?php if ((bool)$config->get('selection_enable', $storeId)): ?> checked <?php endif; ?>">
+        <div class="lgw-switch <?php if ((bool) $config->get(Lengow_Connector_Helper_Config::SELECTION_ENABLED, $storeId)): ?> checked <?php endif; ?>">
             <label>
                 <div><span></span>
                     <input
@@ -63,8 +69,10 @@
                         data-href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_product/'); ?>?isAjax=true"
                         data-action="change_option_selected"
                         data-id_store="<?php echo $storeId; ?>"
-                        value="1" <?php if ((bool)$config->get('selection_enable', $storeId)): ?>
-                        checked="checked" <?php endif; ?>>
+                        value="1"
+                        <?php if ((bool) $config->get(Lengow_Connector_Helper_Config::SELECTION_ENABLED, $storeId)): ?>
+                            checked="checked"
+                        <?php endif; ?>>
                 </div> <?php echo $helper->__('product.screen.include_specific_product'); ?>
             </label>
         </div>

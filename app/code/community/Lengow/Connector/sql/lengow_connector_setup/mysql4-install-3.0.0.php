@@ -205,7 +205,7 @@ $typeText = Mage::getVersion() < '1.6.0.0' ? Varien_Db_Ddl_Table::TYPE_LONGVARCH
 
 // create table lengow_order
 $tableName = $installer->getTable('lengow_order');
-if (!(bool)$installer->getConnection()->showTableStatus($tableName)) {
+if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
     $table = $installer->getConnection()
         ->newTable($installer->getTable('lengow_order'))
         ->addColumn(
@@ -548,7 +548,7 @@ if (!(bool)$installer->getConnection()->showTableStatus($tableName)) {
 
 // create table lengow_order_line
 $tableName = $installer->getTable('lengow_order_line');
-if (!(bool)$installer->getConnection()->showTableStatus($tableName)) {
+if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
     $table = $installer->getConnection()
         ->newTable($installer->getTable('lengow_order_line'))
         ->addColumn(
@@ -604,7 +604,7 @@ if (!(bool)$installer->getConnection()->showTableStatus($tableName)) {
 
 // create table lengow_order_error
 $tableName = $installer->getTable('lengow_order_error');
-if (!(bool)$installer->getConnection()->showTableStatus($tableName)) {
+if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
     $table = $installer->getConnection()
         ->newTable($installer->getTable('lengow_order_error'))
         ->addColumn(
@@ -697,7 +697,7 @@ if (!(bool)$installer->getConnection()->showTableStatus($tableName)) {
 
 // create table lengow_action
 $tableName = $installer->getTable('lengow_action');
-if (!(bool)$installer->getConnection()->showTableStatus($tableName)) {
+if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
     $table = $installer->getConnection()
         ->newTable($installer->getTable('lengow_action'))
         ->addColumn(
@@ -811,7 +811,7 @@ if (!(bool)$installer->getConnection()->showTableStatus($tableName)) {
 
 // create table lengow_log
 $tableName = $installer->getTable('lengow_log');
-if (!(bool)$installer->getConnection()->showTableStatus($tableName)) {
+if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
     $table = $installer->getConnection()
         ->newTable($installer->getTable('lengow_log'))
         ->addColumn(
@@ -931,11 +931,6 @@ $newSettings = array(
         'store' => true,
     ),
     array(
-        'old_path' => 'lenexport/global/productstatus',
-        'new_path' => 'lengow_export_options/simple/export_product_status',
-        'store' => true,
-    ),
-    array(
         'old_path' => 'lenexport/data/parentsimages',
         'new_path' => 'lengow_export_options/advanced/export_parent_image',
         'store' => true,
@@ -1010,6 +1005,7 @@ $deleteSettings = array(
     'lentracker/hidden/last_synchro',
     'lentracker/hidden/last_synchro_v3',
     'lenexport/global/active_store',
+    'lenexport/global/productstatus',
     'lenexport/global/autoexport_newproduct',
     'lenexport/data/format',
     'lenexport/data/count_images',
@@ -1078,7 +1074,7 @@ $configHelper = Mage::helper('lengow_connector/config');
 // *********************************************************
 
 if ($authorisedIp !== null && strlen($authorisedIp) > 0) {
-    $configHelper->set('ip_enable', 1);
+    $configHelper->set(Lengow_Connector_Helper_Config::AUTHORIZED_IP_ENABLED, 1);
 }
 
 // *********************************************************
@@ -1086,7 +1082,7 @@ if ($authorisedIp !== null && strlen($authorisedIp) > 0) {
 // *********************************************************
 
 if ($trackerType !== null && in_array($trackerType, array('simpletag', 'tagcapsule'))) {
-    $configHelper->set('tracking_enable', 1);
+    $configHelper->set(Lengow_Connector_Helper_Config::TRACKING_ENABLED, 1);
 }
 
 // *********************************************************
@@ -1094,15 +1090,15 @@ if ($trackerType !== null && in_array($trackerType, array('simpletag', 'tagcapsu
 // *********************************************************
 
 Mage::getModel('lengow/import_order')->migrateOldOrder();
-$seeMigrateBlock =  $configHelper->get('see_migrate_block');
+$seeMigrateBlock =  $configHelper->get(Lengow_Connector_Helper_Config::MIGRATE_BLOCK_ENABLED);
 if ($seeMigrateBlock === null) {
-    $configHelper->set('see_migrate_block', 1);
+    $configHelper->set(Lengow_Connector_Helper_Config::MIGRATE_BLOCK_ENABLED, 1);
 }
 
 $version = '3.0.0';
-$installedVersion = $configHelper->get('installed_version');
+$installedVersion = $configHelper->get(Lengow_Connector_Helper_Config::PLUGIN_VERSION);
 if (version_compare($installedVersion, $version, '<')) {
-    $configHelper->set('installed_version', $version);
+    $configHelper->set(Lengow_Connector_Helper_Config::PLUGIN_VERSION, $version);
 }
 
 // *********************************************************

@@ -1,7 +1,7 @@
 <?php
 /**
- * @var $this Lengow_Connector_Block_Adminhtml_Home_Content
- * @see Lengow_Connector_Block_Adminhtml_Home_Content
+ * @var $this Lengow_Connector_Block_Adminhtml_Main
+ * @see Lengow_Connector_Block_Adminhtml_Main
  */
 ?>
 
@@ -24,11 +24,11 @@
     <p><?php echo $this->_helper->__('connection.catalog.failed_description_second'); ?></p>
     <p>
         <?php echo $this->_helper->__('connection.cms.failed_help'); ?>
-        <a href="<?php echo $this->_helper->__('help.screen.knowledge_link_url'); ?>" target="_blank">
+        <a href="<?php echo $this->_pluginLinks[Lengow_Connector_Helper_Sync::LINK_TYPE_HELP_CENTER]; ?>" target="_blank">
             <?php echo $this->_helper->__('connection.cms.failed_help_center'); ?>
         </a>
         <?php echo $this->_helper->__('connection.cms.failed_help_or'); ?>
-        <a href="<?php echo $this->_helper->__('help.screen.link_lengow_support'); ?>" target="_blank">
+        <a href="<?php echo $this->getSupportLink(); ?>" target="_blank">
             <?php echo $this->_helper->__('connection.cms.failed_help_customer_success_team'); ?>
         </a>
     </p>

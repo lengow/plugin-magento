@@ -26,7 +26,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Renderer_Types
     /**
      * Decorate types values
      *
-     * @param Varien_Object $row Magento varian object instance
+     * @param Varien_Object $row Magento Varien object instance
      *
      * @return string
      */
@@ -44,7 +44,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Renderer_Types
             $return .= $this->_generateOrderTypeIcon($iconLabel, 'orange-light', 'mod-chrono');
         }
         if (isset($orderTypes[Lengow_Connector_Model_Import_Order::TYPE_DELIVERED_BY_MARKETPLACE])
-            || (bool)$row->getData('sent_marketplace')
+            || (bool) $row->getData('sent_marketplace')
         ) {
             $iconLabel = isset($orderTypes[Lengow_Connector_Model_Import_Order::TYPE_DELIVERED_BY_MARKETPLACE])
                 ? $orderTypes[Lengow_Connector_Model_Import_Order::TYPE_DELIVERED_BY_MARKETPLACE]

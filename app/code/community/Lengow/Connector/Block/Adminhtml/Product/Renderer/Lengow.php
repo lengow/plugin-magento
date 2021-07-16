@@ -26,7 +26,7 @@ class Lengow_Connector_Block_Adminhtml_Product_Renderer_Lengow
     /**
      * Decorate lengow publication values
      *
-     * @param Varien_Object $row Magento varian object instance
+     * @param Varien_Object $row Magento Varien object instance
      *
      * @return string
      */
@@ -34,7 +34,7 @@ class Lengow_Connector_Block_Adminhtml_Product_Renderer_Lengow
     {
         /** @var Lengow_Connector_Helper_Data $helper */
         $helper = $this->helper('lengow_connector');
-        $value = (int)$row->getData($this->getColumn()->getIndex());
+        $value = (int) $row->getData($this->getColumn()->getIndex());
         if ($value === 1) {
             $value = $helper->__('global.just_yes');
             $class = 'lgw-btn-green';

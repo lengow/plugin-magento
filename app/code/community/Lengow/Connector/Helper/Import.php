@@ -23,9 +23,9 @@
 class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
 {
     /**
-     * @var Lengow_Connector_Helper_Config|null Lengow config helper instance
+     * @var Lengow_Connector_Helper_Config Lengow config helper instance
      */
-    protected $_configHelper = null;
+    protected $_configHelper;
 
     /**
      * @var array marketplaces collection
@@ -71,7 +71,7 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
      */
     public function importIsInProcess()
     {
-        $timestamp = $this->_configHelper->get('import_in_progress');
+        $timestamp = $this->_configHelper->get(Lengow_Connector_Helper_Config::SYNCHRONIZATION_IN_PROGRESS);
         if ($timestamp > 0) {
             // security check : if last import is more than 60 seconds old => authorize new import to be launched
             if (($timestamp + (60 * 1)) < time()) {
@@ -90,7 +90,7 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
      */
     public function restTimeToImport()
     {
-        $timestamp = $this->_configHelper->get('import_in_progress');
+        $timestamp = $this->_configHelper->get(Lengow_Connector_Helper_Config::SYNCHRONIZATION_IN_PROGRESS);
         if ($timestamp > 0) {
             return $timestamp + (60 * 1) - time();
         }
@@ -104,7 +104,7 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
      */
     public function setImportInProcess()
     {
-        return $this->_configHelper->set('import_in_progress', time());
+        return $this->_configHelper->set(Lengow_Connector_Helper_Config::SYNCHRONIZATION_IN_PROGRESS, time());
     }
 
     /**
@@ -114,7 +114,7 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
      */
     public function setImportEnd()
     {
-        return $this->_configHelper->set('import_in_progress', -1);
+        return $this->_configHelper->set(Lengow_Connector_Helper_Config::SYNCHRONIZATION_IN_PROGRESS, -1);
     }
 
     /**
@@ -130,7 +130,7 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
         if (empty($orderStateMarketplace)) {
             return false;
         }
-        if (!in_array($marketplace->getStateLengow($orderStateMarketplace), $this->_lengowStates)) {
+        if (!in_array($marketplace->getStateLengow($orderStateMarketplace), $this->_lengowStates, true)) {
             return false;
         }
         return true;
@@ -146,9 +146,15 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
         if ($type === Lengow_Connector_Model_Import::TYPE_CRON
             || $type === Lengow_Connector_Model_Import::TYPE_MAGENTO_CRON
         ) {
-            $this->_configHelper->set('last_import_cron', Mage::getModel('core/date')->gmtTimestamp());
+            $this->_configHelper->set(
+                Lengow_Connector_Helper_Config::LAST_UPDATE_CRON_SYNCHRONIZATION,
+                Mage::getModel('core/date')->gmtTimestamp()
+            );
         } else {
-            $this->_configHelper->set('last_import_manual', Mage::getModel('core/date')->gmtTimestamp());
+            $this->_configHelper->set(
+                Lengow_Connector_Helper_Config::LAST_UPDATE_MANUAL_SYNCHRONIZATION,
+                Mage::getModel('core/date')->gmtTimestamp()
+            );
         }
     }
 
@@ -159,27 +165,24 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
      */
     public function getLastImport()
     {
-        $timestampCron = $this->_configHelper->get('last_import_cron');
-        $timestampManual = $this->_configHelper->get('last_import_manual');
-
+        $timestampCron = $this->_configHelper->get(
+            Lengow_Connector_Helper_Config::LAST_UPDATE_CRON_SYNCHRONIZATION
+        );
+        $timestampManual = $this->_configHelper->get(
+            Lengow_Connector_Helper_Config::LAST_UPDATE_MANUAL_SYNCHRONIZATION
+        );
         if ($timestampCron && $timestampManual) {
-            if ((int)$timestampCron > (int)$timestampManual) {
-                return array(
-                    'type' => Lengow_Connector_Model_Import::TYPE_CRON,
-                    'timestamp' => (int)$timestampCron,
-                );
-            } else {
-                return array(
-                    'type' => Lengow_Connector_Model_Import::TYPE_MANUAL,
-                    'timestamp' => (int)$timestampManual,
-                );
+            if ((int) $timestampCron > (int) $timestampManual) {
+                return array('type' => Lengow_Connector_Model_Import::TYPE_CRON, 'timestamp' => (int) $timestampCron);
             }
-        } elseif ($timestampCron && !$timestampManual) {
-            return array('type' => Lengow_Connector_Model_Import::TYPE_CRON, 'timestamp' => (int)$timestampCron);
-        } elseif ($timestampManual && !$timestampCron) {
-            return array('type' =>  Lengow_Connector_Model_Import::TYPE_MANUAL, 'timestamp' => (int)$timestampManual);
+            return array('type' => Lengow_Connector_Model_Import::TYPE_MANUAL, 'timestamp' => (int) $timestampManual);
         }
-
+        if ($timestampCron && !$timestampManual) {
+            return array('type' => Lengow_Connector_Model_Import::TYPE_CRON, 'timestamp' => (int) $timestampCron);
+        }
+        if ($timestampManual && !$timestampCron) {
+            return array('type' =>  Lengow_Connector_Model_Import::TYPE_MANUAL, 'timestamp' => (int) $timestampManual);
+        }
         return array('type' => 'none', 'timestamp' => 'none');
     }
 
@@ -195,7 +198,12 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
             /** @var Lengow_Connector_Helper_Data $helper */
             $helper = Mage::helper('lengow_connector');
             $subject = $helper->decodeLogMessage('lengow_log.mail_report.subject_report_mail');
-            $support = $helper->decodeLogMessage('lengow_log.mail_report.no_error_in_report_mail');
+            $pluginLinks = Mage::helper('lengow_connector/sync')->getPluginLinks();
+            $support = $helper->decodeLogMessage(
+                'lengow_log.mail_report.no_error_in_report_mail',
+                null,
+                array('support_link' => $pluginLinks[Lengow_Connector_Helper_Sync::LINK_TYPE_SUPPORT])
+            );
             $mailBody = '<h2>' . $subject . '</h2><p><ul>';
             foreach ($errors as $error) {
                 $order = $helper->decodeLogMessage(
@@ -212,7 +220,7 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
             $mailBody .= '</ul></p>';
             $emails = Mage::helper('lengow_connector/config')->getReportEmailAddress();
             foreach ($emails as $email) {
-                if (strlen($email) > 0) {
+                if ($email !== '') {
                     $mail = Mage::getModel('core/email');
                     $mail->setToEmail($email);
                     $mail->setBody($mailBody);

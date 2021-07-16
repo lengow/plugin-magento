@@ -45,9 +45,9 @@ class Lengow_Connector_Model_Import_Quote extends Mage_Sales_Model_Quote
                     $taxRequest->setCountryId($countryId)
                         ->setCustomerClassId($this->getCustomer()->getTaxClassId())
                         ->setProductClassId($magentoProduct->getTaxClassId());
-                    $taxRate = (float)$taxCalculator->getRate($taxRequest);
-                    $tax = (float)$taxCalculator->calcTaxAmount($price, $taxRate, true);
-                    $price = $price - $tax;
+                    $taxRate = (float) $taxCalculator->getRate($taxRequest);
+                    $tax = (float) $taxCalculator->calcTaxAmount($price, $taxRate, true);
+                    $price -= $tax;
                 }
                 $magentoProduct->setPrice($price);
                 $magentoProduct->setSpecialPrice($price);

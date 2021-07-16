@@ -50,22 +50,29 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
      */
     public function getShippingInfo($productInstance, $storeId)
     {
-        $datas = array();
-        $datas['shipping_method'] = '';
-        $datas['shipping_cost'] = '';
-        $carrier = $this->_configHelper->get('shipping_method', $storeId);
+        $data = array(
+            'shipping_method' => '',
+            'shipping_cost' => '',
+        );
+        $carrier = $this->_configHelper->get(Lengow_Connector_Helper_Config::DEFAULT_EXPORT_CARRIER_ID, $storeId);
         if (empty($carrier)) {
-            return $datas;
+            return $data;
         }
         $carrierTab = explode('_', $carrier);
-        $datas['shipping_method'] = ucfirst($carrierTab[1]);
-        $countryCode = $this->_configHelper->get('shipping_country', $storeId);
+        $data['shipping_method'] = ucfirst($carrierTab[1]);
+        $countryCode = $this->_configHelper->get(
+            Lengow_Connector_Helper_Config::DEFAULT_EXPORT_SHIPPING_COUNTRY,
+            $storeId
+        );
         $shippingPrice = $this->_getShippingPrice($productInstance, $carrier, $countryCode);
         if (!$shippingPrice) {
-            $shippingPrice = $this->_configHelper->get('shipping_price', $storeId);
+            $shippingPrice = $this->_configHelper->get(
+                Lengow_Connector_Helper_Config::DEFAULT_EXPORT_SHIPPING_PRICE,
+                $storeId
+            );
         }
-        $datas['shipping_cost'] = $shippingPrice;
-        return $datas;
+        $data['shipping_cost'] = $shippingPrice;
+        return $data;
     }
 
     /**
@@ -166,9 +173,9 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
         if ($productInstance->getTypeId() === 'grouped') {
             $price = 0;
             $finalPrice = 0;
-            $childs = Mage::getModel('catalog/product_type_grouped')->getChildrenIds($productInstance->getId());
-            $childs = $childs[Mage_Catalog_Model_Product_Link::LINK_TYPE_GROUPED];
-            foreach ($childs as $value) {
+            $children = Mage::getModel('catalog/product_type_grouped')->getChildrenIds($productInstance->getId());
+            $children = $children[Mage_Catalog_Model_Product_Link::LINK_TYPE_GROUPED];
+            foreach ($children as $value) {
                 $product = Mage::getModel('lengow/export_catalog_product')->load($value);
                 $price += $product->getPrice();
                 $finalPrice += $product->getFinalPrice();
@@ -194,15 +201,15 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
         } else {
             $toCurrency = Mage::getModel('directory/currency')->load($this->getCurrentCurrencyCode());
         }
-        $datas = array();
-        $datas['currency'] = $toCurrency->getCode();
+        $data = array();
+        $data['currency'] = $toCurrency->getCode();
         // get prices with or without conversion
         if ($this->getOriginalCurrency() === $toCurrency->getCode()) {
             $discountAmount = $priceIncludingTax - $finalPriceIncludingTax;
-            $datas['price_excl_tax'] = round($finalPriceExcludingTax, 2);
-            $datas['price_incl_tax'] = round($finalPriceIncludingTax, 2);
-            $datas['price_before_discount_excl_tax'] = round($priceExcludingTax, 2);
-            $datas['price_before_discount_incl_tax'] = round($priceIncludingTax, 2);
+            $data['price_excl_tax'] = round($finalPriceExcludingTax, 2);
+            $data['price_incl_tax'] = round($finalPriceIncludingTax, 2);
+            $data['price_before_discount_excl_tax'] = round($priceExcludingTax, 2);
+            $data['price_before_discount_incl_tax'] = round($priceIncludingTax, 2);
         } else {
             $discountAmount = Mage::helper('directory')->currencyConvert(
                     $priceIncludingTax,
@@ -213,7 +220,7 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
                     $this->getOriginalCurrency(),
                     $this->getCurrentCurrencyCode()
                 );
-            $datas['price_excl_tax'] = round(
+            $data['price_excl_tax'] = round(
                 Mage::helper('directory')->currencyConvert(
                     $finalPriceExcludingTax,
                     $this->getOriginalCurrency(),
@@ -221,7 +228,7 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
                 ),
                 2
             );
-            $datas['price_incl_tax'] = round(
+            $data['price_incl_tax'] = round(
                 Mage::helper('directory')->currencyConvert(
                     $finalPriceIncludingTax,
                     $this->getOriginalCurrency(),
@@ -229,7 +236,7 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
                 ),
                 2
             );
-            $datas['price_before_discount_excl_tax'] = round(
+            $data['price_before_discount_excl_tax'] = round(
                 Mage::helper('directory')->currencyConvert(
                     $priceExcludingTax,
                     $this->getOriginalCurrency(),
@@ -237,7 +244,7 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
                 ),
                 2
             );
-            $datas['price_before_discount_incl_tax'] = round(
+            $data['price_before_discount_incl_tax'] = round(
                 Mage::helper('directory')->currencyConvert(
                     $priceIncludingTax,
                     $this->getOriginalCurrency(),
@@ -246,16 +253,16 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
                 2
             );
         }
-        $datas['discount_amount'] = $discountAmount > 0 ? round($discountAmount, 2) : '0';
-        $datas['discount_percent'] = $discountAmount > 0
+        $data['discount_amount'] = $discountAmount > 0 ? round($discountAmount, 2) : '0';
+        $data['discount_percent'] = $discountAmount > 0
             ? round(($discountAmount * 100) / $priceIncludingTax, 0)
             : '0';
-        $datas['discount_start_date'] = $productInstance->getSpecialFromDate();
-        $datas['discount_end_date'] = $productInstance->getSpecialToDate();
+        $data['discount_start_date'] = $productInstance->getSpecialFromDate();
+        $data['discount_end_date'] = $productInstance->getSpecialToDate();
         // retrieving promotions
         $dateTs = Mage::app()->getLocale()->storeTimeStamp($productInstance->getStoreId());
         $promo = Mage::getResourceModel('catalogrule/rule')->getRulesFromProduct(
-            (int)$dateTs,
+            (int) $dateTs,
             $store->getWebsiteId(),
             1,
             $productInstance->getId()
@@ -265,10 +272,10 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
             $from = !is_numeric($from) ? strtotime($from) : $from;
             $to = isset($promo[0]['to_time']) ? $promo[0]['to_time'] : $promo[0]['to_date'];
             $to = !is_numeric($to) ? strtotime($to) : $to;
-            $datas['discount_start_date'] = $from ? date('Y-m-d H:i:s', $from) : '';
-            $datas['discount_end_date'] = $to ? date('Y-m-d H:i:s', $to) : '';
+            $data['discount_start_date'] = $from ? date('Y-m-d H:i:s', $from) : '';
+            $data['discount_end_date'] = $to ? date('Y-m-d H:i:s', $to) : '';
         }
-        return $datas;
+        return $data;
     }
 
     /**
@@ -286,8 +293,8 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
     public function getCategories($productInstance, $parentInstance, $storeId, &$categoryCache = array())
     {
         $idRootCategory = Mage::app()->getStore($storeId)->getRootCategoryId();
-        if ((int)$productInstance->getVisibility() === Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE
-            && isset($parentInstance)
+        if (isset($parentInstance)
+            && (int) $productInstance->getVisibility() === Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE
         ) {
             $categories = $parentInstance->getCategoryCollection()
                 ->addPathsFilter('1/' . $idRootCategory . '/')
@@ -321,12 +328,13 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
         } else {
             $categories = array();
         }
-        $datas = array();
-        $datas['category'] = '';
-        $datas['category_url'] = '';
+        $data = array(
+            'category' => '',
+            'category_url' => '',
+        );
         for ($i = 1; $i <= $maxLevel; $i++) {
-            $datas['category_sub_' . ($i)] = '';
-            $datas['category_url_sub_' . ($i)] = '';
+            $data['category_sub_' . ($i)] = '';
+            $data['category_url_sub_' . ($i)] = '';
         }
         $i = 0;
         $ariane = array();
@@ -334,16 +342,16 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
             $c = Mage::getModel('catalog/category')
                 ->setStoreId($storeId)
                 ->load($cid);
-            if ((int)$c->getId() !== 1) {
+            if ((int) $c->getId() !== 1) {
                 // no root category
                 if ($i === 0) {
-                    $datas['category'] = $c->getName();
-                    $datas['category_url'] = $c->getUrl();
+                    $data['category'] = $c->getName();
+                    $data['category_url'] = $c->getUrl();
                     $ariane[] = $c->getName();
                 } elseif ($i <= $maxLevel) {
                     $ariane[] = $c->getName();
-                    $datas['category_sub_' . $i] = $c->getName();
-                    $datas['category_url_sub_' . $i] = $c->getUrl();
+                    $data['category_sub_' . $i] = $c->getName();
+                    $data['category_url_sub_' . $i] = $c->getUrl();
                 }
                 $i++;
             }
@@ -351,13 +359,13 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
                 $c->clearInstance();
             }
         }
-        $datas['category_breadcrumb'] = implode(' > ', $ariane);
+        $data['category_breadcrumb'] = implode(' > ', $ariane);
         $maxDimension = count($categories) - 1;
         if ($maxDimension >= 0) {
-            $categoryCache[$categories[count($categories) - 1]] = $datas;
+            $categoryCache[$categories[count($categories) - 1]] = $data;
         }
         unset($categories, $category, $ariane);
-        return $datas;
+        return $data;
     }
 
     /**
@@ -376,7 +384,7 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
             $tempImages = array();
             $files = array();
             foreach ($images as $image) {
-                if (array_key_exists('value_id', $image) && !in_array($image['file'], $files)) {
+                if (array_key_exists('value_id', $image) && !in_array($image['file'], $files, true)) {
                     $files[] = $image['file'];
                     $tempImages[]['file'] = $image['file'];
                 }

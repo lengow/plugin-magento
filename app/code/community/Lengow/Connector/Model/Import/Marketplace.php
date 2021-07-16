@@ -111,36 +111,36 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
             $this->labelName = $this->marketplace->name;
             foreach ($this->marketplace->orders->status as $key => $state) {
                 foreach ($state as $value) {
-                    $this->statesLengow[(string)$value] = (string)$key;
-                    $this->states[(string)$key][(string)$value] = (string)$value;
+                    $this->statesLengow[(string) $value] = (string) $key;
+                    $this->states[(string) $key][(string) $value] = (string) $value;
                 }
             }
             foreach ($this->marketplace->orders->actions as $key => $action) {
                 foreach ($action->status as $state) {
-                    $this->actions[(string)$key]['status'][(string)$state] = (string)$state;
+                    $this->actions[(string) $key]['status'][(string) $state] = (string) $state;
                 }
                 foreach ($action->args as $arg) {
-                    $this->actions[(string)$key]['args'][(string)$arg] = (string)$arg;
+                    $this->actions[(string) $key]['args'][(string) $arg] = (string) $arg;
                 }
                 foreach ($action->optional_args as $optional_arg) {
-                    $this->actions[(string)$key]['optional_args'][(string)$optional_arg] = $optional_arg;
+                    $this->actions[(string) $key]['optional_args'][(string) $optional_arg] = $optional_arg;
                 }
                 foreach ($action->args_description as $argKey => $argDescription) {
                     $validValues = array();
                     if (isset($argDescription->valid_values)) {
                         foreach ($argDescription->valid_values as $code => $validValue) {
-                            $validValues[(string)$code] = isset($validValue->label)
-                                ? (string)$validValue->label
-                                : (string)$validValue;
+                            $validValues[(string) $code] = isset($validValue->label)
+                                ? (string) $validValue->label
+                                : (string) $validValue;
                         }
                     }
                     $defaultValue = isset($argDescription->default_value)
-                        ? (string)$argDescription->default_value
+                        ? (string) $argDescription->default_value
                         : '';
                     $acceptFreeValue = isset($argDescription->accept_free_values)
-                        ? (bool)$argDescription->accept_free_values
+                        ? (bool) $argDescription->accept_free_values
                         : true;
-                    $this->argValues[(string)$argKey] = array(
+                    $this->argValues[(string) $argKey] = array(
                         'default_value' => $defaultValue,
                         'accept_free_values' => $acceptFreeValue,
                         'valid_values' => $validValues,
@@ -149,7 +149,7 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
             }
             if (isset($this->marketplace->orders->carriers)) {
                 foreach ($this->marketplace->orders->carriers as $key => $carrier) {
-                    $this->carriers[(string)$key] = (string)$carrier->label;
+                    $this->carriers[(string) $key] = (string) $carrier->label;
                 }
             }
             $this->isLoaded = true;
@@ -235,15 +235,17 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
     {
         if (isset($this->actions[$action])) {
             $actions = $this->actions[$action];
-            if (isset($actions['args']) && is_array($actions['args'])) {
-                if (in_array(Lengow_Connector_Model_Import_Action::ARG_LINE, $actions['args'])) {
-                    return true;
-                }
+            if (isset($actions['args'])
+                && is_array($actions['args'])
+                && in_array(Lengow_Connector_Model_Import_Action::ARG_LINE, $actions['args'], true)
+            ) {
+                return true;
             }
-            if (isset($actions['optional_args']) && is_array($actions['optional_args'])) {
-                if (in_array(Lengow_Connector_Model_Import_Action::ARG_LINE, $actions['optional_args'])) {
-                    return true;
-                }
+            if (isset($actions['optional_args'])
+                && is_array($actions['optional_args'])
+                && in_array(Lengow_Connector_Model_Import_Action::ARG_LINE, $actions['optional_args'], true)
+            ) {
+                return true;
             }
         }
         return false;
@@ -305,7 +307,7 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
                 $processStateFinish = $orderLengow->getOrderProcessState(
                     Lengow_Connector_Model_Import_Order::STATE_CLOSED
                 );
-                if ((int)$orderLengow->getData('order_process_state') !== $processStateFinish) {
+                if ((int) $orderLengow->getData('order_process_state') !== $processStateFinish) {
                     $orderLengow->updateOrder(array('is_in_error' => 1));
                     Mage::getModel('lengow/import_ordererror')->createOrderError(
                         array(
@@ -345,7 +347,7 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
     {
         /** @var Lengow_Connector_Helper_Data $helper */
         $helper = Mage::helper('lengow_connector/data');
-        if (!in_array($action, self::$validActions)) {
+        if (!in_array($action, self::$validActions, true)) {
             throw new Lengow_Connector_Model_Exception(
                 $helper->setLogMessage('lengow_log.exception.action_not_valid', array('action' => $action))
             );
@@ -371,12 +373,12 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
     {
         /** @var Lengow_Connector_Helper_Data $helper */
         $helper = Mage::helper('lengow_connector/data');
-        if (strlen($order->getData('order_id_lengow')) === 0) {
+        if ($order->getData('order_id_lengow') === '') {
             throw new Lengow_Connector_Model_Exception(
                 $helper->setLogMessage('lengow_log.exception.marketplace_sku_require')
             );
         }
-        if (strlen($order->getData('marketplace_lengow')) === 0) {
+        if ($order->getData('marketplace_lengow') === '') {
             throw new Lengow_Connector_Model_Exception(
                 $helper->setLogMessage('lengow_log.exception.marketplace_name_require')
             );
@@ -393,7 +395,7 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
     protected function _getMarketplaceArguments($action)
     {
         $actions = $this->getAction($action);
-        if (isset($actions['args']) && isset($actions['optional_args'])) {
+        if (isset($actions['args'], $actions['optional_args'])) {
             $marketplaceArguments = array_merge($actions['args'], $actions['optional_args']);
         } elseif (!isset($actions['args']) && isset($actions['optional_args'])) {
             $marketplaceArguments = $actions['optional_args'];
@@ -420,7 +422,7 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
     {
         $params = [];
         $actions = $this->getAction($action);
-        // get all order informations
+        // get all order information
         foreach ($marketplaceArguments as $arg) {
             switch ($arg) {
                 case Lengow_Connector_Model_Import_Action::ARG_TRACKING_NUMBER:
@@ -436,8 +438,8 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
                 case Lengow_Connector_Model_Import_Action::ARG_CUSTOM_CARRIER:
                     $carrierCode = false;
                     if ($lengowOrder) {
-                        $carrierCode = strlen((string)$lengowOrder->getData('carrier')) > 0
-                            ? (string)$lengowOrder->getData('carrier')
+                        $carrierCode = (string) $lengowOrder->getData('carrier') !== ''
+                            ? (string) $lengowOrder->getData('carrier')
                             : false;
                     }
                     if (!$carrierCode) {
@@ -459,11 +461,11 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
                     $params[$arg] = Mage::getModel('core/date')->date('c');
                     break;
                 default:
-                    if (isset($actions['optional_args']) && in_array($arg, $actions['optional_args'])) {
+                    if (isset($actions['optional_args']) && in_array($arg, $actions['optional_args'], true)) {
                         break;
                     }
-                    $defaultValue = $this->getDefaultValue((string)$arg);
-                    $paramValue = $defaultValue ? $defaultValue : $arg . ' not available';
+                    $defaultValue = $this->getDefaultValue((string) $arg);
+                    $paramValue = $defaultValue ?: $arg . ' not available';
                     $params[$arg] = $paramValue;
                     break;
             }
@@ -487,7 +489,7 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
         // check all required arguments
         if (isset($actions['args'])) {
             foreach ($actions['args'] as $arg) {
-                if (!isset($params[$arg]) || strlen($params[$arg]) === 0) {
+                if (!isset($params[$arg]) || $params[$arg] === '') {
                     throw new Lengow_Connector_Model_Exception(
                         Mage::helper('lengow_connector/data')->setLogMessage(
                             'lengow_log.exception.arg_is_required',
@@ -500,7 +502,7 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
         // clean empty optional arguments
         if (isset($actions['optional_args'])) {
             foreach ($actions['optional_args'] as $arg) {
-                if (isset($params[$arg]) && strlen($params[$arg]) === 0) {
+                if (isset($params[$arg]) && $params[$arg] === '') {
                     unset($params[$arg]);
                 }
             }
@@ -600,9 +602,9 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
     private function _searchValue($pattern, $subject, $strict = true)
     {
         if ($strict) {
-            $found = $pattern === $subject ? true : false;
+            $found = $pattern === $subject;
         } else {
-            $found = preg_match('`.*?' . $pattern . '.*?`i', $subject) ? true : false;
+            $found = (bool) preg_match('`.*?' . $pattern . '.*?`i', $subject);
         }
         return $found;
     }

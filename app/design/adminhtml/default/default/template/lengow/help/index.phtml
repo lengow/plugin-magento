@@ -1,22 +1,24 @@
 <?php
-    /** @var Lengow_Connector_Helper_Data $helper */
-    $helper = Mage::helper('lengow_connector');
+/**
+ * @var $this Lengow_Connector_Block_Adminhtml_Main
+ * @see Lengow_Connector_Block_Adminhtml_Main
+ */
 ?>
 
 <div class="lgw-container">
     <div class="lgw-box">
         <div class="text-center">
-            <h2><?php echo $helper->__('help.screen.title'); ?></h2>
+            <h2><?php echo $this->_helper->__('help.screen.title'); ?></h2>
             <p>
-                <?php echo $helper->__('help.screen.contain_text_support')?>
-                <a href="<?php echo $helper->__('help.screen.link_lengow_support') ?>" target="_blank" title="Lengow Support">
-                    <?php echo $helper->__('help.screen.title_lengow_support') ?>
+                <?php echo $this->_helper->__('help.screen.contain_text_support')?>
+                <a href="<?php echo $this->getSupportLink(); ?>" target="_blank" title="Lengow Support">
+                    <?php echo $this->_helper->__('help.screen.title_lengow_support'); ?>
                 </a>
             </p>
-            <p><?php echo $helper->__('help.screen.contain_text_support_hour'); ?></p>
-            <p><?php echo $helper->__('help.screen.find_answer'); ?>
-                <a href="<?php echo $helper->__('help.screen.knowledge_link_url'); ?>" class="sub-link" target="_blank" title="Help Center">
-                    <?php echo $helper->__('help.screen.link_magento_guide'); ?>
+            <p><?php echo $this->_helper->__('help.screen.contain_text_support_hour'); ?></p>
+            <p><?php echo $this->_helper->__('help.screen.find_answer'); ?>
+                <a href="<?php echo $this->getHelpCenterLink(); ?>" target="_blank" title="Help Center">
+                    <?php echo $this->_helper->__('help.screen.link_magento_guide'); ?>
                 </a>
             </p>
         </div>

@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Lengow_Connector>
-            <version>3.3.0</version>
+            <version>3.3.1</version>
         </Lengow_Connector>
     </modules>
     <frontend>
@@ -230,7 +230,7 @@
                 <export_selection_enable>0</export_selection_enable>
                 <export_out_stock>1</export_out_stock>
                 <export_product_type>configurable,simple,downloadable,grouped,virtual</export_product_type>
-                <export_product_status>1</export_product_status>
+                <export_inactive_enable>0</export_inactive_enable>
             </simple>
             <advanced>
                 <export_default_shipping_country>FR</export_default_shipping_country>

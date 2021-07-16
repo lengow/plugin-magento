@@ -40,15 +40,14 @@ class Lengow_Connector_Model_Tracker extends Varien_Object
                 } else {
                     $product = Mage::getModel('catalog/product')->load($item->getProductId());
                 }
-                $quantity = (int)$item->getQtyOrdered();
-                $price = round((float)$item->getRowTotalInclTax() / $quantity, 2);
-                $identifier = Mage::helper('lengow_connector/config')->get('tracking_id');
-                $productDatas = array(
+                $quantity = (int) $item->getQtyOrdered();
+                $price = round((float) $item->getRowTotalInclTax() / $quantity, 2);
+                $identifier = Mage::helper('lengow_connector/config')->get(Lengow_Connector_Helper_Config::TRACKING_ID);
+                $productsCart[] = array(
                     'product_id' => $product->getData($identifier),
                     'price' => $price,
                     'quantity' => $quantity,
                 );
-                $productsCart[] = $productDatas;
             }
             return json_encode($productsCart);
         }

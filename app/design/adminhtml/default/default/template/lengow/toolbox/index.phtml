@@ -1,8 +1,8 @@
 <?php
     /** @var Lengow_Connector_Helper_Data $helper */
     $helper = Mage::helper('lengow_connector');
-    /** @var Lengow_Connector_Helper_Toolbox $toolbox */
-    $toolbox = Mage::helper('lengow_connector/toolbox');
+    /** @var Lengow_Connector_Helper_Toolboxelement $toolbox */
+    $toolboxElement = Mage::helper('lengow_connector/toolboxelement');
 ?>
 
 <div class="lgw-box">
@@ -14,17 +14,21 @@
                 <span></span>
                 <input type="checkbox" data-action="see_global_information" class="lengow_switch_option" checked="checked">
             </div>
-            <?php echo $helper->__('toolbox.screen.gobal_information'); ?>
+            <?php echo $helper->__('toolbox.screen.global_information'); ?>
         </label>
     </div>
     <div id="global-information">
         <div class="lengow-block-full">
+            <h3><i class="fa fa-check"></i> <?php echo $helper->__('toolbox.screen.checklist_information'); ?></h3>
+            <?php echo $toolboxElement->getCheckList(); ?>
+        </div>
+        <div class="lengow-block-full">
             <h3><i class="fa fa-cog"></i> <?php echo $helper->__('toolbox.screen.plugin_information'); ?></h3>
-            <?php echo $toolbox->getPluginInformations(); ?>
+            <?php echo $toolboxElement->getGlobalInformation(); ?>
         </div>
         <div class="lengow-block-full">
             <h3><i class="fa fa-download"></i> <?php echo $helper->__('toolbox.screen.import_information'); ?></h3>
-            <?php echo $toolbox->getImportInformations(); ?>
+            <?php echo $toolboxElement->getImportInformation(); ?>
         </div>
         <div class="clear"></div>
     </div>
@@ -41,29 +45,11 @@
     <div id="store-information">  
         <div class="lengow-block-full">        
             <h3><i class="fa fa-upload"></i> <?php echo $helper->__('toolbox.screen.export_information'); ?></h3>
-            <?php
-            foreach (Mage::app()->getWebsites() as $website) {
-                foreach ($website->getGroups() as $group) {
-                    $stores = $group->getStores();
-                    foreach ($stores as $store) {
-                        echo $toolbox->getExportInformations($store);
-                    }
-                }
-            }
-            ?>
+            <?php echo $toolboxElement->getExportInformation(); ?>
         </div>
         <div class="lengow-block-full">
             <h3><i class="fa fa-list"></i> <?php echo $helper->__('toolbox.screen.content_folder_media'); ?></h3>
-            <?php
-            foreach (Mage::app()->getWebsites() as $website) {
-                foreach ($website->getGroups() as $group) {
-                    $stores = $group->getStores();
-                    foreach ($stores as $store) {
-                        echo $toolbox->getFileInformations($store);
-                    }
-                }
-            }
-            ?>
+            <?php echo $toolboxElement->getFileInformation(); ?>
         </div>
         <div class="clear"></div>
     </div>
@@ -80,11 +66,11 @@
     <div id="cron-information">
         <div class="lengow-block-full">
             <h3><i class="fa fa-clock-o"></i> <?php echo $helper->__('toolbox.screen.export_cron'); ?></h3>
-            <?php echo $toolbox->getCronInformation('export'); ?>
+            <?php echo $toolboxElement->getCronInformation(Lengow_Connector_Helper_Toolboxelement::CRON_JOB_EXPORT); ?>
         </div>
         <div class="lengow-block-full">
             <h3><i class="fa fa-clock-o"></i> <?php echo $helper->__('toolbox.screen.import_cron'); ?></h3>
-            <?php echo $toolbox->getCronInformation('import'); ?>
+            <?php echo $toolboxElement->getCronInformation(Lengow_Connector_Helper_Toolboxelement::CRON_JOB_IMPORT); ?>
         </div>
         <div class="clear"></div>
     </div>
@@ -100,7 +86,7 @@
     </div>
     <div id="checksum-information">
         <div class="lengow-block-full">
-            <?php echo $toolbox->checkFileMd5(); ?>
+            <?php echo $toolboxElement->checkFileMd5(); ?>
         </div>
         <div class="clear"></div>
     </div>

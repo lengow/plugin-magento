@@ -41,7 +41,7 @@ class Lengow_Connector_Block_Adminhtml_Product_Grid extends Mage_Adminhtml_Block
      */
     protected function _getStore()
     {
-        $storeId = (int)$this->getRequest()->getParam('store', 0);
+        $storeId = (int) $this->getRequest()->getParam('store', 0);
         // set default store if storeId is global
         if ($storeId === 0) {
             $storeId = Mage::app()->getWebsite(true)->getDefaultGroup()->getDefaultStoreId();
@@ -308,7 +308,7 @@ class Lengow_Connector_Block_Adminhtml_Product_Grid extends Mage_Adminhtml_Block
     /**
      * Get row url
      *
-     * @param Varien_Object $row Magento varian object instance
+     * @param Varien_Object $row Magento Varien object instance
      *
      * @return string|false
      */

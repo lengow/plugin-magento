@@ -20,16 +20,16 @@
 $version = '3.2.3';
 /** @var Lengow_Connector_Helper_Config $configHelper */
 $configHelper = Mage::helper('lengow_connector/config');
-$installedVersion = $configHelper->get('installed_version');
+$installedVersion = $configHelper->get(Lengow_Connector_Helper_Config::PLUGIN_VERSION);
 
 if (version_compare($installedVersion, $version, '<')) {
     $installer = $this;
     $installer->startSetup();
     $tableName = $installer->getTable('lengow_order');
-    if ((bool)$installer->getConnection()->showTableStatus($tableName)) {
+    if ((bool) $installer->getConnection()->showTableStatus($tableName)) {
         // add order_types attribute in table lengow_order
         $columnName = 'customer_vat_number';
-        if (!(bool)$installer->getConnection()->tableColumnExists($tableName, $columnName)) {
+        if (!(bool) $installer->getConnection()->tableColumnExists($tableName, $columnName)) {
             $installer->getConnection()
                       ->addColumn(
                           $tableName,
@@ -47,5 +47,5 @@ if (version_compare($installedVersion, $version, '<')) {
 
     }
     $installer->endSetup();
-    $configHelper->set('installed_version', $version);
+    $configHelper->set(Lengow_Connector_Helper_Config::PLUGIN_VERSION, $version);
 }

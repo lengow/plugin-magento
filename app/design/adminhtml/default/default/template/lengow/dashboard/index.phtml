@@ -1,63 +1,76 @@
 <?php
-    /** @var Lengow_Connector_Helper_Data $helper */
-    $helper = Mage::helper('lengow_connector');
+/**
+ * @var $this Lengow_Connector_Block_Adminhtml_Main
+ * @see Lengow_Connector_Block_Adminhtml_Main
+ */
+?>
+
+<?php
     $orderToBeSent = Mage::getModel('lengow/import_order')->countOrderToBeSent();
 ?>
 
 <div class="lgw-container">
     <div class="lgw-box lgw-home-header text-center">
         <img src="<?php echo $this->getSkinUrl('lengow/images/') ?>lengow-white-big.png" alt="lengow">
-        <h1><?php echo $helper->__('dashboard.screen.welcome_back'); ?></h1>
-        <a href="//my.<?php echo Lengow_Connector_Model_Connector::LENGOW_URL; ?>" class="lgw-btn" target="_blank" title="<?php echo $helper->__('dashboard.screen.go_to_lengow'); ?>">
-            <?php echo $helper->__('dashboard.screen.go_to_lengow'); ?>
+        <h1><?php echo $this->_helper->__('dashboard.screen.welcome_back'); ?></h1>
+        <a href="<?php echo $this->getLengowSolutionUrl(); ?>"
+           class="lgw-btn" target="_blank"
+           title="<?php echo $this->_helper->__('dashboard.screen.go_to_lengow'); ?>">
+            <?php echo $this->_helper->__('dashboard.screen.go_to_lengow'); ?>
         </a>
     </div>
     <div class="lgw-row lgw-home-menu text-center">
         <div class="lgw-col-4">
-            <a href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_product/'); ?>" class="lgw-box-link" title="<?php echo $helper->__('dashboard.screen.products_title'); ?>">
+            <a href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_product/'); ?>"
+               class="lgw-box-link"
+               title="<?php echo $this->_helper->__('dashboard.screen.products_title'); ?>">
                 <div class="lgw-box">
                     <img src="<?php echo $this->getSkinUrl('lengow/images/') ?>home-products.png" class="img-responsive">
-                    <h2><?php echo $helper->__('dashboard.screen.products_title'); ?></h2>
-                    <p><?php echo $helper->__('dashboard.screen.products_text'); ?></p>
+                    <h2><?php echo $this->_helper->__('dashboard.screen.products_title'); ?></h2>
+                    <p><?php echo $this->_helper->__('dashboard.screen.products_text'); ?></p>
                 </div>
             </a>
         </div>
         <div class="lgw-col-4">
-            <a href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_order/'); ?>" class="lgw-box-link" title="<?php echo $helper->__('dashboard.screen.orders_title'); ?>">
+            <a href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_order/'); ?>"
+               class="lgw-box-link"
+               title="<?php echo $this->_helper->__('dashboard.screen.orders_title'); ?>">
                 <div class="lgw-box">
                     <img src="<?php echo $this->getSkinUrl('lengow/images/') ?>home-orders.png" class="img-responsive">
                     <h2>
-                        <?php echo $helper->__('dashboard.screen.orders_title'); ?>
+                        <?php echo $this->_helper->__('dashboard.screen.orders_title'); ?>
                         <?php if( $orderToBeSent > 0 ) { ?>
                             <span class="lgw-label lgw-label red"><?php echo $orderToBeSent; ?></span>
                         <?php } ?>
                     </h2>
-                    <p><?php echo $helper->__('dashboard.screen.orders_text'); ?></p>
+                    <p><?php echo $this->_helper->__('dashboard.screen.orders_text'); ?></p>
                 </div>
             </a>
         </div>
         <div class="lgw-col-4">
-            <a href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/system_config/edit/section/lengow_global_options'); ?>" class="lgw-box-link" title="<?php echo $helper->__('dashboard.screen.settings_title'); ?>">
+            <a href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/system_config/edit/section/lengow_global_options'); ?>"
+               class="lgw-box-link"
+               title="<?php echo $this->_helper->__('dashboard.screen.settings_title'); ?>">
                 <div class="lgw-box">
                     <img src="<?php echo $this->getSkinUrl('lengow/images/') ?>home-settings.png" class="img-responsive">
-                    <h2><?php echo $helper->__('dashboard.screen.settings_title'); ?></h2>
-                    <p><?php echo $helper->__('dashboard.screen.settings_text'); ?></p>
+                    <h2><?php echo $this->_helper->__('dashboard.screen.settings_title'); ?></h2>
+                    <p><?php echo $this->_helper->__('dashboard.screen.settings_text'); ?></p>
                 </div>
             </a>
         </div>
     </div>
     <div class="lgw-box">
-        <h2><?php echo $helper->__('dashboard.screen.some_help_title'); ?></h2>
+        <h2><?php echo $this->_helper->__('dashboard.screen.some_help_title'); ?></h2>
         <p>
             <a href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_help/'); ?>"
-                title="<?php echo $helper->__('dashboard.screen.get_in_touch'); ?>">
-                <?php echo $helper->__('dashboard.screen.get_in_touch'); ?>
+                title="<?php echo $this->_helper->__('dashboard.screen.get_in_touch'); ?>">
+                <?php echo $this->_helper->__('dashboard.screen.get_in_touch'); ?>
             </a>
         </p>
         <p>
-            <a href="<?php echo $helper->__('help.screen.knowledge_link_url'); ?>" target="_blank"
-                title="<?php echo $helper->__('dashboard.screen.visit_help_center'); ?>"><?php echo $helper->__('dashboard.screen.visit_help_center'); ?></a>
-            <?php echo $helper->__('dashboard.screen.configure_plugin'); ?>
+            <a href="<?php echo $this->getHelpCenterLink(); ?>" target="_blank"
+                title="<?php echo $this->_helper->__('dashboard.screen.visit_help_center'); ?>"><?php echo $this->_helper->__('dashboard.screen.visit_help_center'); ?></a>
+            <?php echo $this->_helper->__('dashboard.screen.configure_plugin'); ?>
         </p>
     </div>
 </div>

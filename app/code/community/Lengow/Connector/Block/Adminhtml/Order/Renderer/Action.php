@@ -26,7 +26,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Renderer_Action
     /**
      * Decorate Action values
      *
-     * @param Varien_Object $row Magento varian object instance
+     * @param Varien_Object $row Magento Varien object instance
      *
      * @return string
      */
@@ -34,8 +34,8 @@ class Lengow_Connector_Block_Adminhtml_Order_Renderer_Action
     {
         /** @var Lengow_Connector_Helper_Data $helper */
         $helper = $this->helper('lengow_connector');
-        $orderProcessState = (int)$row->getData('order_process_state');
-        if ((bool)$row->getData('is_in_error') && $orderProcessState !== 2) {
+        $orderProcessState = (int) $row->getData('order_process_state');
+        if ($orderProcessState !== 2 && (bool) $row->getData('is_in_error')) {
             $orderLengowId = $row->getData('id');
             $errorType = $orderProcessState === 0 ? 'import' : 'send';
             $url = Mage::helper('adminhtml')->getUrl('adminhtml/lengow_order/') . '?isAjax=true';
@@ -52,19 +52,19 @@ class Lengow_Connector_Block_Adminhtml_Order_Renderer_Action
                 }
             }
             if ($errorType === 'import') {
-                $tootlip = $helper->decodeLogMessage('order.table.order_not_imported')
+                $tooltip = $helper->decodeLogMessage('order.table.order_not_imported')
                     . '<br/>' . join('<br/>', $errorMessages);
                 return '<a class="lengow_action lengow_tooltip lgw-btn lgw-btn-white"
                     onclick="makeLengowActions(\'' . $url . '\', \'re_import\', \'' . $orderLengowId . '\')">'
                     . $helper->decodeLogMessage('order.table.not_imported')
-                    . '<span class="lengow_order_action">' . $tootlip . '</span>&nbsp<i class="fa fa-refresh"></i></a>';
+                    . '<span class="lengow_order_action">' . $tooltip . '</span>&nbsp<i class="fa fa-refresh"></i></a>';
             } else {
-                $tootlip = $helper->decodeLogMessage('order.table.action_sent_not_work')
+                $tooltip = $helper->decodeLogMessage('order.table.action_sent_not_work')
                     . '<br/>' . join('<br/>', $errorMessages);
                 return '<a class="lengow_action lengow_tooltip lgw-btn lgw-btn-white" 
                     onclick="makeLengowActions(\'' . $url . '\', \'re_send\', \'' . $orderLengowId . '\')">'
                     . $helper->decodeLogMessage('order.table.not_sent')
-                    . '<span class="lengow_order_action">' . $tootlip . '</span>&nbsp<i class="fa fa-refresh"></i></a>';
+                    . '<span class="lengow_order_action">' . $tooltip . '</span>&nbsp<i class="fa fa-refresh"></i></a>';
             }
         } else {
             //check if order actions in progress

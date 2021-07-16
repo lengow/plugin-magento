@@ -1,36 +1,45 @@
 <?php
-    /** @var Lengow_Connector_Helper_Data $helper */
-    $helper = Mage::helper('lengow_connector');
-    $statusAccount = Mage::helper('lengow_connector/sync')->getStatusAccount();
+/**
+ * @var $this Lengow_Connector_Block_Adminhtml_Main
+ * @see Lengow_Connector_Block_Adminhtml_Main
+ */
 ?>
 
 <div class="lgw-container">
     <div class="lgw-box">
         <div class="lgw-row">
             <div class="lgw-col-6 display-inline-block">
-                <h2 class="text-center"><?php echo $helper->__('status.screen.title_end_free_trial'); ?></h2>
-                <h3 class="text-center"><?php echo $helper->__('status.screen.subtitle_end_free_trial'); ?></h3>
-                <p class="text-center"><?php echo $helper->__('status.screen.first_description_end_free_trial'); ?></p>
-                <p class="text-center"><?php echo $helper->__('status.screen.second_description_end_free_trial'); ?></p>
-                <p class="text-center"><?php echo $helper->__('status.screen.third_description_end_free_trial'); ?></p>
+                <h2 class="text-center"><?php echo $this->_helper->__('status.screen.title_end_free_trial'); ?></h2>
+                <h3 class="text-center"><?php echo $this->_helper->__('status.screen.subtitle_end_free_trial'); ?></h3>
+                <p class="text-center">
+                    <?php echo $this->_helper->__('status.screen.first_description_end_free_trial'); ?>
+                </p>
+                <p class="text-center">
+                    <?php echo $this->_helper->__('status.screen.second_description_end_free_trial'); ?>
+                </p>
+                <p class="text-center">
+                    <?php echo $this->_helper->__('status.screen.third_description_end_free_trial'); ?>
+                </p>
                 <div class="text-center">
                     <button type="button" class="lgw-btn">
-                        <a href="//my.<?php echo Lengow_Connector_Model_Connector::LENGOW_URL; ?>" target="_blank">
+                        <a href="<?php echo $this->getLengowSolutionUrl(); ?>" target="_blank">
                             <?php echo Mage::helper('lengow_connector')->__('status.screen.upgrade_account_button'); ?>
                         </a>
                     </button>
                 </div>
                 <div class="text-center">
-                    <button type="button"  class="lgw-btn">
+                    <button type="button" class="lgw-btn">
                         <a href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_dashboard/reFresh/'); ?>">
-                            <?php echo Mage::helper('lengow_connector')->__('status.screen.refresh_action'); ?>
+                            <?php echo $this->_helper->__('status.screen.refresh_action'); ?>
                         </a>
                     </button>
                 </div> 
             </div>
             <div class="lgw-col-6">
                 <div class="vertical-center">
-                    <img src="<?php echo $this->getSkinUrl('lengow/images/') ?>lengow-blue.png" class="center-block" alt="lengow"/>
+                    <img src="<?php echo $this->getSkinUrl('lengow/images/') ?>lengow-blue.png"
+                         class="center-block"
+                         alt="lengow"/>
                 </div>
             </div>
         </div>

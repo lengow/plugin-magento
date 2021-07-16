@@ -49,7 +49,11 @@ class Lengow_Connector_Adminhtml_Lengow_ProductController extends Mage_Adminhtml
                             $state   = Mage::app()->getRequest()->getParam('state');
                             $storeId = Mage::app()->getRequest()->getParam('store_id');
                             if ($state !== null) {
-                                Mage::helper('lengow_connector/config')->set('selection_enable', $state, $storeId);
+                                Mage::helper('lengow_connector/config')->set(
+                                    Lengow_Connector_Helper_Config::SELECTION_ENABLED,
+                                    $state,
+                                    $storeId
+                                );
                                 Mage::app()->getCacheInstance()->cleanType('config');
                                 $this->getResponse()->setBody($state);
                             }
@@ -78,12 +82,12 @@ class Lengow_Connector_Adminhtml_Lengow_ProductController extends Mage_Adminhtml
     public function massPublishAction()
     {
         $productIds = (array)$this->getRequest()->getParam('product');
-        $storeId = (int)$this->getRequest()->getParam('store', Mage::app()->getStore()->getId());
+        $storeId = (int) $this->getRequest()->getParam('store', Mage::app()->getStore()->getId());
         // set default store if storeId is global
         if ($storeId === 0) {
             $storeId = Mage::app()->getWebsite(true)->getDefaultGroup()->getDefaultStoreId();
         }
-        $publish = (int)$this->getRequest()->getParam('publish');
+        $publish = (int) $this->getRequest()->getParam('publish');
         // update all attribute in one query
         $productAction = Mage::getSingleton('catalog/product_action');
         if ($storeId !== 0) {
@@ -102,13 +106,9 @@ class Lengow_Connector_Adminhtml_Lengow_ProductController extends Mage_Adminhtml
             if (!empty($defaultStoreProductToUpdate)) {
                 $productAction->updateAttributes($defaultStoreProductToUpdate, array('lengow_product' => 0), 0);
             }
-            if ($storeId !== 0) {
-                // set value for other store
-                $productAction->updateAttributes($productIds, array('lengow_product' => $publish), $storeId);
-            }
-        } else {
-            $productAction->updateAttributes($productIds, array('lengow_product' => $publish), $storeId);
         }
+        // set value for other store
+        $productAction->updateAttributes($productIds, array('lengow_product' => $publish), $storeId);
     }
 
     /**

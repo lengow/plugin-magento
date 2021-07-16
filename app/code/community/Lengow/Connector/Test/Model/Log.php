@@ -31,7 +31,7 @@ class Lengow_Connector_Test_Model_Log extends EcomDev_PHPUnit_Test_Case
         $this->assertTrue($insertId > 0, '[Log - Insert] Insert data into log');
 
         $insertLog = Mage::helper('lengow_connector')->log('Category', 'Test message by helper');
-        $this->assertTrue((bool)$insertLog, '[Log - Helper Insert] Insert message');
+        $this->assertTrue((bool) $insertLog, '[Log - Helper Insert] Insert message');
 
         $log = Mage::getModel('lengow/log')->load($insertLog->getId());
         $this->assertEquals($log->getId(), $insertLog->getId(), '[Log - Helper Insert] check data');

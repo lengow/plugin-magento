@@ -6,13 +6,13 @@
     /** @var Lengow_Connector_Helper_Import $importHelper */
     $importHelper = Mage::helper('lengow_connector/import');
     $lastImport = $importHelper->getLastImport();
-    $reportMailActive = (bool)$configHelper->get('report_mail_enable');
+    $reportMailActive = (bool) $configHelper->get(Lengow_Connector_Helper_Config::REPORT_MAIL_ENABLED);
     $reportMailLink = Mage::helper('adminhtml')
         ->getUrl('adminhtml/system_config/edit/section/lengow_import_options/');
     $reportMails = $configHelper->getReportEmailAddress();
     /** @var Lengow_Connector_Model_Import_Order $order */
     $order = Mage::getModel('lengow/import_order');
-    $seeMigrateBlock = (bool)$configHelper->get('see_migrate_block');
+    $seeMigrateBlock = (bool) $configHelper->get(Lengow_Connector_Helper_Config::MIGRATE_BLOCK_ENABLED);
     $nbOrderImported = $order->countOrderImportedByLengow();
     $orderNotMigrate = $order->countNotMigrateOrder(false);
     $orderWithError = $order->countOrderWithError();

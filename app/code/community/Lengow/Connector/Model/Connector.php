@@ -215,6 +215,13 @@ class Lengow_Connector_Model_Connector
     );
 
     /**
+     * @var array API requiring no authorization for the call url
+     */
+    protected $_apiWithoutAuthorizations = array(
+        self::API_PLUGIN,
+    );
+
+    /**
      * @var Lengow_Connector_Helper_Data Lengow helper instance
      */
     protected $_helper;
@@ -268,7 +275,7 @@ class Lengow_Connector_Model_Connector
             return false;
         }
         list($accountId, $accessToken, $secret) = $this->_configHelper->getAccessIds();
-        if ($accountId === null || (int)$accountId === 0 || !is_numeric($accountId)) {
+        if ($accountId === null) {
             return false;
         }
         try {
@@ -309,19 +316,15 @@ class Lengow_Connector_Model_Connector
             return false;
         }
         try {
+            $authorizationRequired = !in_array($url, $this->_apiWithoutAuthorizations, true);
             list($accountId, $accessToken, $secret) = $this->_configHelper->getAccessIds();
-            if ($accountId === null) {
+            if ($accountId === null && $authorizationRequired) {
                 return false;
             }
             $this->init($accessToken, $secret);
             $type = strtolower($type);
-            $results = $this->$type(
-                $url,
-                array_merge(array('account_id' => $accountId), $params),
-                self::FORMAT_STREAM,
-                $body,
-                $logOutput
-            );
+            $params = $authorizationRequired ? array_merge(array('account_id' => $accountId), $params) : $params;
+            $results = $this->$type($url, $params, self::FORMAT_STREAM, $body, $logOutput);
         } catch (Lengow_Connector_Model_Exception $e) {
             $message = $this->_helper->decodeLogMessage(
                 $e->getMessage(),
@@ -392,8 +395,8 @@ class Lengow_Connector_Model_Connector
      */
     public function connect($force = false, $logOutput = false)
     {
-        $token = $this->_configHelper->get('authorization_token');
-        $updatedAt = $this->_configHelper->get('last_authorization_token_update');
+        $token = $this->_configHelper->get(Lengow_Connector_Helper_Config::AUTHORIZATION_TOKEN);
+        $updatedAt = $this->_configHelper->get(Lengow_Connector_Helper_Config::LAST_UPDATE_AUTHORIZATION_TOKEN);
         if (!$force
             && $token !== null
             && $updatedAt !== null
@@ -403,8 +406,8 @@ class Lengow_Connector_Model_Connector
             $authorizationToken = $token;
         } else {
             $authorizationToken = $this->_getAuthorizationToken($logOutput);
-            $this->_configHelper->set('authorization_token', $authorizationToken);
-            $this->_configHelper->set('last_authorization_token_update', time());
+            $this->_configHelper->set(Lengow_Connector_Helper_Config::AUTHORIZATION_TOKEN, $authorizationToken);
+            $this->_configHelper->set(Lengow_Connector_Helper_Config::LAST_UPDATE_AUTHORIZATION_TOKEN, time());
         }
         $this->_token = $authorizationToken;
     }
@@ -498,7 +501,9 @@ class Lengow_Connector_Model_Connector
     private function _call($api, $args, $type, $format, $body, $logOutput)
     {
         try {
-            $this->connect();
+            if (!in_array($api, $this->_apiWithoutAuthorizations, true)) {
+                $this->connect(false, $logOutput);
+            }
             $data = $this->_callAction($api, $args, $type, $format, $body, $logOutput);
         } catch (Lengow_Connector_Model_Exception $e) {
             if (in_array($e->getCode(), $this->_authorizationCodes, true)) {
@@ -507,7 +512,9 @@ class Lengow_Connector_Model_Connector
                     $this->_helper->setLogMessage('log.connector.retry_get_token'),
                     $logOutput
                 );
-                $this->connect(true, $logOutput);
+                if (!in_array($api, $this->_apiWithoutAuthorizations, true)) {
+                    $this->connect(true, $logOutput);
+                }
                 $data = $this->_callAction($api, $args, $type, $format, $body, $logOutput);
             } else {
                 throw new Lengow_Connector_Model_Exception($e->getMessage(), $e->getCode());
@@ -567,7 +574,7 @@ class Lengow_Connector_Model_Connector
                 self::CODE_500
             );
         }
-        if (strlen($data['token']) === 0) {
+        if ($data['token'] === '') {
             throw new Lengow_Connector_Model_Exception(
                 $this->_helper->setLogMessage('log.connector.token_is_empty'),
                 self::CODE_500

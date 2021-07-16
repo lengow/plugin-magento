@@ -30,7 +30,7 @@ class Lengow_Connector_Model_Observer
     /**
      * Save Change on lengow data
      *
-     * @param Varien_Event_Observer $observer Magento varien event observer instance
+     * @param Varien_Event_Observer $observer Magento Varien event observer instance
      */
     public function onAfterSave(Varien_Event_Observer $observer)
     {
@@ -45,7 +45,7 @@ class Lengow_Connector_Model_Observer
     /**
      * Sending a call WSDL for a new order shipment
      *
-     * @param Varien_Event_Observer $observer Magento varien event observer instance
+     * @param Varien_Event_Observer $observer Magento Varien event observer instance
      *
      * @return Lengow_Connector_Model_Observer
      */
@@ -53,9 +53,9 @@ class Lengow_Connector_Model_Observer
     {
         $shipment = $observer->getEvent()->getShipment();
         $order = $shipment->getOrder();
-        if ((bool)$order->getData('from_lengow')
-            && Mage::getSingleton('core/session')->getCurrentOrderLengow() !== $order->getData('order_id_lengow')
+        if ((bool) $order->getData('from_lengow')
             && !array_key_exists($order->getData('order_id_lengow'), $this->_alreadyShipped)
+            && Mage::getSingleton('core/session')->getCurrentOrderLengow() !== $order->getData('order_id_lengow')
         ) {
             /** @var Lengow_Connector_Model_Import_Order $orderLengow */
             $orderLengow = Mage::getModel('lengow/import_order');
@@ -68,7 +68,7 @@ class Lengow_Connector_Model_Observer
     /**
      * Sending a call WSDL for a new tracking
      *
-     * @param Varien_Event_Observer $observer Magento varien event observer instance
+     * @param Varien_Event_Observer $observer Magento Varien event observer instance
      *
      * @return Lengow_Connector_Model_Observer
      */
@@ -77,9 +77,9 @@ class Lengow_Connector_Model_Observer
         $track = $observer->getEvent()->getTrack();
         $shipment = $track->getShipment();
         $order = $shipment->getOrder();
-        if ((bool)$order->getData('from_lengow')
-            && Mage::getSingleton('core/session')->getCurrentOrderLengow() !== $order->getData('order_id_lengow')
+        if ((bool) $order->getData('from_lengow')
             && !array_key_exists($order->getData('order_id_lengow'), $this->_alreadyShipped)
+            && Mage::getSingleton('core/session')->getCurrentOrderLengow() !== $order->getData('order_id_lengow')
         ) {
             /** @var Lengow_Connector_Model_Import_Order $orderLengow */
             $orderLengow = Mage::getModel('lengow/import_order');
@@ -92,7 +92,7 @@ class Lengow_Connector_Model_Observer
     /**
      * Sending a call for a cancellation of order
      *
-     * @param Varien_Event_Observer $observer Magento varien event observer instance
+     * @param Varien_Event_Observer $observer Magento Varien event observer instance
      *
      * @return Lengow_Connector_Model_Observer
      */
@@ -100,7 +100,7 @@ class Lengow_Connector_Model_Observer
     {
         $payment = $observer->getEvent()->getPayment();
         $order = $payment->getOrder();
-        if ((bool)$order->getData('from_lengow')
+        if ((bool) $order->getData('from_lengow')
             && Mage::getSingleton('core/session')->getCurrentOrderLengow() !== $order->getData('order_id_lengow')
         ) {
             /** @var Lengow_Connector_Model_Import_Order $orderLengow */
@@ -123,24 +123,22 @@ class Lengow_Connector_Model_Observer
         $configHelper = Mage::helper('lengow_connector/config');
         $storeCollection = Mage::getResourceModel('core/store_collection')->addFieldToFilter('is_active', 1);
         foreach ($storeCollection as $store) {
-            $storeId = (int)$store->getId();
-            if ($configHelper->get('export_cron_enable', $storeId)) {
+            $storeId = (int) $store->getId();
+            if ($configHelper->get(Lengow_Connector_Helper_Config::EXPORT_MAGENTO_CRON_ENABLED, $storeId)) {
                 try {
                     // config store
                     Mage::app()->getStore()->setCurrentStore($storeId);
-                    /** @var Lengow_Connector_Model_Export $export */
-                    // launch export process
-                    $export = Mage::getModel(
-                        'lengow/export',
-                        array(
-                            'store_id' => $storeId,
-                            'stream' => false,
-                            'update_export_date' => false,
-                            'log_output' => false,
-                            'type' => Lengow_Connector_Model_Export::TYPE_MAGENTO_CRON,
-                        )
+                    $params = array(
+                        Lengow_Connector_Model_Export::PARAM_STORE_ID => $storeId,
+                        Lengow_Connector_Model_Export::PARAM_STREAM => false,
+                        Lengow_Connector_Model_Export::PARAM_UPDATE_EXPORT_DATE => false,
+                        Lengow_Connector_Model_Export::PARAM_LOG_OUTPUT => false,
+                        Lengow_Connector_Model_Export::PARAM_TYPE => Lengow_Connector_Model_Export::TYPE_MAGENTO_CRON,
                     );
+                    /** @var Lengow_Connector_Model_Export $export */
+                    $export = Mage::getModel('lengow/export', $params);
                     $export->setOriginalCurrency(Mage::app()->getStore($storeId)->getCurrentCurrencyCode());
+                    // launch export process
                     $export->exec();
                 } catch (Exception $e) {
                     $errorMessage = '[Magento error] "' . $e->getMessage()
@@ -159,7 +157,9 @@ class Lengow_Connector_Model_Observer
      */
     public function importCron()
     {
-        if ((bool)Mage::helper('lengow_connector/config')->get('import_cron_enable')) {
+        if ((bool) Mage::helper('lengow_connector/config')->get(
+            Lengow_Connector_Helper_Config::SYNCHRONISATION_MAGENTO_CRON_ENABLED
+        )) {
             /** @var Lengow_Connector_Helper_Sync $syncHelper */
             $syncHelper = Mage::helper('lengow_connector/sync');
             // sync catalogs id between Lengow and Magento
@@ -168,7 +168,7 @@ class Lengow_Connector_Model_Observer
             /** @var Lengow_Connector_Model_Import $import */
             $import = Mage::getModel(
                 'lengow/import',
-                array('type' => Lengow_Connector_Model_Import::TYPE_MAGENTO_CRON)
+                array(Lengow_Connector_Model_Import::PARAM_TYPE => Lengow_Connector_Model_Import::TYPE_MAGENTO_CRON)
             );
             $import->exec();
             // sync action between Lengow and Magento
@@ -186,7 +186,7 @@ class Lengow_Connector_Model_Observer
     /**
      * change tax class of lengow's b2b order
      *
-     * @param Varien_Event_Observer $observer Magento varien event observer instance
+     * @param Varien_Event_Observer $observer Magento Varien event observer instance
      * @return void
      */
     public function salesQuoteCollectTotalsBefore(Varien_Event_Observer $observer) {

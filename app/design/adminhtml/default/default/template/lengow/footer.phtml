@@ -1,20 +1,115 @@
 <?php
-    /** @var Lengow_Connector_Helper_Data $helper */
-    $helper = Mage::helper('lengow_connector');
+/**
+ * @var $this Lengow_Connector_Block_Adminhtml_Main
+ * @see Lengow_Connector_Block_Adminhtml_Main
+ */
 ?>
-<div id="footer" class="lgw-footer">
-    <div class="text-center">
+
+<?php
+    $showPluginUpgradeModal = $this->showPluginUpgradeModal();
+?>
+<div id="footer" class="lgw-footer lgw-container">
+    <div class="text-center nav-footer">
         <a href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_toolbox/'); ?>"
-            class="sub-link" title="<?php echo $helper->__('footer.toolbox') ?>"><?php echo $helper->__('footer.toolbox') ?></a>
+           class="sub-link"
+           title="<?php echo $this->_helper->__('footer.toolbox'); ?>"><?php echo $this->_helper->__('footer.toolbox'); ?></a>
         |
         <a href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_legal/'); ?>"
-            class="sub-link" title="<?php echo $helper->__('footer.legals') ?>"><?php echo $helper->__('footer.legals') ?></a>
+           class="sub-link"
+           title="<?php echo $this->_helper->__('footer.legals'); ?>"><?php echo $this->_helper->__('footer.legals'); ?></a>
         |
-        <?php echo $helper->__('footer.plugin_lengow'); ?> - v.<?php echo Mage::helper('lengow_connector/security')->getPluginVersion(); ?>
-        <?php if( Lengow_Connector_Model_Connector::LENGOW_URL === 'lengow.net' ) { ?>
+        <?php echo $this->_helper->__('footer.plugin_lengow'); ?> - v.<?php echo $this->getPluginVersion(); ?>
+        <?php if($this->isPreprodPlugin()): ?>
             <span class="lgw-label-preprod">preprod</span>
-        <?php } ?>
+        <?php endif; ?>
         |
-        copyright © <?php echo date('Y'); ?>  <a href="<?php echo $helper->__('footer.lengow_link_url'); ?>" class="sub-link" title="Lengow.com" target="_blank">Lengow</a> 
+        copyright © <?php echo date('Y'); ?>
+        <a href="<?php echo $this->_helper->__('footer.lengow_link_url'); ?>"
+           class="sub-link"
+           title="Lengow.com"
+           target="_blank">Lengow</a>
     </div>
+    <?php if ($this->newPluginVersionIsAvailable()): ?>
+        <!-- Modal Update plugin -->
+        <div id="upgrade-plugin"
+             class="lgw-modalbox mod-size-medium <?php if ($showPluginUpgradeModal): ?>is-open<?php endif; ?>">
+            <div class="lgw-modalbox-content">
+                <span class="lgw-modalbox-close js-upgrade-plugin-modal-close"></span>
+                <div class="lgw-modalbox-body">
+                    <div class="lgw-row flexbox-vertical-center">
+                        <div class="lgw-col-5 text-center">
+                            <img src="<?php echo $this->getSkinUrl('lengow/images/'); ?>plugin-update.png" alt="">
+                        </div>
+                        <div class="lgw-col-7">
+                            <h1><?php echo $this->_helper->__('update.version_available'); ?></h1>
+                            <p>
+                                <?php echo $this->_helper->__('update.start_now'); ?>
+                                <a href="<?php echo $this->getChangelogLink(); ?>"
+                                   target="_blank">
+                                    <?php echo $this->_helper->__('update.link_changelog'); ?>
+                                </a>
+                            </p>
+                            <div class="lgw-content-section mod-small">
+                                <h2 class="no-margin-bottom"><?php echo $this->_helper->__('update.step_one'); ?></h2>
+                                <p class="no-margin-bottom">
+                                    <?php echo $this->_helper->__('update.download_last_version'); ?>
+                                </p>
+                                <p class="text-lesser text-italic">
+                                    <?php echo $this->_helper->__(
+                                        'update.plugin_compatibility',
+                                        array(
+                                            'cms_min_version' => $this->getCmsMinVersion(),
+                                            'cms_max_version' => $this->getCmsMaxVersion(),
+                                        )
+                                    ); ?>
+                                    <?php foreach ($this->getPluginExtensions() as $extension): ?>
+                                        <br />
+                                        <?php echo $this->_helper->__(
+                                            'update.extension_required',
+                                            array(
+                                                'name' => $extension['name'],
+                                                'min_version' => $extension['min_version'],
+                                                'max_version' => $extension['max_version'],
+                                            )
+                                        ); ?>
+                                    <?php endforeach; ?>
+                                </p>
+                            </div>
+                            <div class="lgw-content-section mod-small">
+                                <h2 class="no-margin-bottom"><?php echo $this->_helper->__('update.step_two'); ?></h2>
+                                <p class="no-margin-bottom">
+                                    <a href="<?php echo $this->getUpdateGuideLink(); ?>"
+                                       target="_blank"><?php echo $this->_helper->__('update.link_follow'); ?></a>
+                                    <?php echo $this->_helper->__('update.update_procedure'); ?>
+                                </p>
+                                <p class="text-lesser text-italic">
+                                    <?php echo $this->_helper->__('update.not_working'); ?>
+                                    <a href="<?php echo $this->getSupportLink(); ?>"
+                                       target="_blank"><?php echo $this->_helper->__('update.customer_success_team'); ?></a>
+                                </p>
+                            </div>
+                            <div class="flexbox-vertical-center margin-standard">
+                                <a class="lgw-btn lgw-modal-download no-margin-top"
+                                   href="<?php echo $this->getNewPluginDownloadLink(); ?>"
+                                   target="_blank">
+                                    <?php echo $this->_helper->__(
+                                        'update.button_download_version',
+                                        array('version' => $this->getNewPluginVersion())
+                                    ); ?>
+                                </a>
+                                <?php if($showPluginUpgradeModal): ?>
+                                    <button class="lgw-btn-link sub-link no-margin-top text-small js-upgrade-plugin-modal-remind-me">
+                                        <?php echo $this->_helper->__('update.button_remind_me_later'); ?>
+                                    </button>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <input type="hidden"
+                   id="lengow_modal_ajax_link"
+                   value="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/lengow_dashboard/'); ?>?isAjax=true">
+        </div>
+    <?php endif; ?>
 </div>

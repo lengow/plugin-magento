@@ -6,6 +6,20 @@ menu.help|Aide
 module.name|Lengow
 global.just_yes|Oui
 global.just_no|Non
+update.version_available|Nouvelle version disponible !
+update.start_now|Commencez dès maintenant à profiter des nouvelles fonctionnalités, améliorations et corrections de bugs résumées sur notre
+update.link_changelog|journal des modifications.
+update.step_one|Étape 1
+update.download_last_version|Téléchargez la dernière version du plugin ci-dessous.
+update.plugin_compatibility|Compatible avec Magento %{cms_min_version} à %{cms_max_version}
+update.extension_required|Nécessite l'extension %{name} %{min_version} à %{max_version}
+update.step_two|Étape 2
+update.link_follow|Suivez
+update.update_procedure|la procédure de mise à jour (simple et rapide).
+update.not_working|Ça ne fonctionne pas ? Contactez notre
+update.customer_success_team|équipe Customer Success
+update.button_download_version|Lengow Magento %{version}
+update.button_remind_me_later|Pas maintenant, rappelez-moi plus tard
 header.debug_active|Debug Mode
 header.counter|Période d'essai : %{counter} jour(s) restant(s).
 header.upgrade_account|Souscrire
@@ -26,7 +40,6 @@ connection.cms.credentials_title|Veuillez entrer vos identifiants API Lengow
 connection.cms.credentials_description|Vous trouverez ces informations dans les paramètres de votre compte, section "A.P.I"
 connection.cms.credentials_help|Besoin d'aide ?
 connection.cms.credentials_help_center|Consultez notre centre d'aide
-connection.cms.credentials_help_center_url|https://support.lengow.com/kb/fr
 connection.cms.credentials_button|Se connecter à Lengow
 connection.cms.credentials_button_loading|Connexion...
 connection.cms.credentials_placeholder_access_token|Entrez votre jeton d'accès
@@ -177,12 +190,10 @@ log.table.message|Message
 help.screen.title|Demandez de l'aide à notre équipe Support !
 help.screen.contain_text_support|Des questions, un feedback sur Lengow... transmettez vos demandes au
 help.screen.title_lengow_support|support Lengow.
-help.screen.link_lengow_support|https://supportlengow.zendesk.com/hc/fr/requests/new
 help.screen.need_some_help|Besoin d'aide ?
 help.screen.contain_text_support_hour|Nous ferons notre maximum pour revenir vers vous au plus vite (Notre équipe Support est disponible du lundi au vendredi, de 9h à 18h).
 help.screen.find_answer|Vous pouvez aussi consulter
 help.screen.link_magento_guide|notre guide dédié à Magento
-help.screen.knowledge_link_url|https://support.lengow.com/kb/guide/fr/magento-ClPhE37tgf/Steps/25858
 legals.screen.simplified_company|Société par actions simplifiés
 legals.screen.social_capital|Capital social :
 legals.screen.cnil_declaration|Déclaration CNIL :
@@ -192,7 +203,22 @@ legals.screen.address|Adresse
 legals.screen.contact|Contact
 legals.screen.hosting|Hébergement
 toolbox.screen.title|Lengow Toolbox
-toolbox.screen.gobal_information|Information générales
+toolbox.screen.global_information|Information générales
+toolbox.screen.checklist_information|Checklist
+toolbox.screen.curl_message|Lengow a besoin de l'extension PHP CURL
+toolbox.screen.curl_help|L'extension CURL n'est pas installée ou activée dans votre installation PHP
+toolbox.screen.curl_help_link|https://www.php.net/manual/fr/curl.setup.php
+toolbox.screen.curl_help_label|Voir le manuel de l'extension Curl PHP
+toolbox.screen.simple_xml_message|Lengow a besoin de l'extension PHP SimpleXML
+toolbox.screen.simple_xml_help|L'extension SimpleXML n'est pas installée ou activée dans votre installation PHP
+toolbox.screen.simple_xml_help_link|https://www.php.net/manual/fr/book.simplexml.php
+toolbox.screen.simple_xml_help_label|Voir le manuel de l'extension SimpleXML PHP
+toolbox.screen.json_php_message|Lengow a besoin de l'extension PHP JSON
+toolbox.screen.json_php_help|L'extension JSON n'est pas installée ou activée dans votre installation PHP
+toolbox.screen.json_php_help_link|https://www.php.net/manual/fr/book.json.php
+toolbox.screen.json_php_help_label|Voir le manuel de l'extension JSON PHP
+toolbox.screen.checksum_message|Vérification des fichiers du plugin
+toolbox.screen.checksum_help|Certains fichiers ont été modifiés par le client
 toolbox.screen.plugin_information|Informations sur le plugin
 toolbox.screen.server_ip|IP Serveur
 toolbox.screen.authorized_ip_enable|Autorisation par IP activée
@@ -200,8 +226,9 @@ toolbox.screen.authorized_ip|IP autorisée(s)
 toolbox.screen.legacy_enable|Activez les en-têtes de la version antérieure dans votre flux
 toolbox.screen.export_on_a_file|Sauvegarde dans un fichier activée
 toolbox.screen.export_cron_enable|Le cron Magento est activé pour l'export
-toolbox.screen.pre_production_enable|Mode préproduction désactivé
+toolbox.screen.debug_disabled|Mode debug désactivé
 toolbox.screen.write_permission|Droit d'écriture sur le dossier média
+toolbox.screen.toolbox_url|URL de toolbox
 toolbox.screen.import_information|Information sur la synchronisation
 toolbox.screen.global_token|Token d'import
 toolbox.screen.url_import|URL d'import
@@ -295,7 +322,7 @@ lengow_setting.export_simple_setting|Paramètres d'export
 lengow_setting.export_selection_enable_label|Exportez seulement les produits sélectionnés
 lengow_setting.export_out_stock_label|Exportez les produits hors stock
 lengow_setting.export_product_type_label|Type de produits à exporter
-lengow_setting.export_product_status_label|Statut des produit à exporter
+lengow_setting.export_inactive_enable_label|Exporter les produits désactivés
 lengow_setting.export_advanced_setting|Paramètres avancés d'export
 lengow_setting.export_attribute_label|Sélectionnez les attributs à exporter
 lengow_setting.export_parent_image_label|Fusionnez les images avec les produits parents
@@ -370,7 +397,7 @@ lengow_log.exception.action_not_created_api|création d'action impossible car l'
 lengow_log.exception.action_is_too_old|l'action est trop ancienne. Réessayez de nouveau
 lengow_log.mail_report.subject_report_mail|Erreur de l'import Lengow
 lengow_log.mail_report.order|commande %{marketplace_sku}
-lengow_log.mail_report.no_error_in_report_mail|Pas de message d'erreur, contacter le support via https://supportlengow.zendesk.com/hc/fr/requests/new
+lengow_log.mail_report.no_error_in_report_mail|Pas de message d'erreur, contacter le support via %{support_link}
 lengow_log.connection.status_draft|Incomplet
 lengow_log.connection.status_active|Actif
 lengow_log.connection.catalog|Catalogue %{catalog_id}
