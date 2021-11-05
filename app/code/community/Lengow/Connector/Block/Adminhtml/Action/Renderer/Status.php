@@ -35,7 +35,7 @@ class Lengow_Connector_Block_Adminhtml_Action_Renderer_Status
         /** @var Lengow_Connector_Helper_Data $helper */
         $helper = $this->helper('lengow_connector');
         $status = (int) $row->getData($this->getColumn()->getIndex());
-        if ($status === 0) {
+        if ($status === Lengow_Connector_Model_Import_Action::STATE_NEW) {
             return '<span class="lgw-label orange">' . $helper->__('toolbox.table.state_processing') . '</span>';
         }
         return '<span class="lgw-label">' . $helper->__('toolbox.table.state_complete') . '</span>';

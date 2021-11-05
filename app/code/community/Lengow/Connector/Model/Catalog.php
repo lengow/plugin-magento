@@ -84,7 +84,7 @@ class Lengow_Connector_Model_Catalog extends Varien_Object
                 array(
                     'catalog_id' => $catalog->id,
                     'catalog_name' => $name,
-                    'nb_products' => $catalog->products ? $catalog->products : 0,
+                    'nb_products' => $catalog->products ?: 0,
                     'catalog_status' => $status,
                 )
             );

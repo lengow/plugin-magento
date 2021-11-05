@@ -531,15 +531,24 @@ class Lengow_Connector_Helper_Toolboxelement extends Mage_Core_Helper_Abstract
                     $out .= '<td></td>';
                 }
                 $scheduledAt = $lengowCronJob['scheduled_at'] !== null
-                    ? Mage::getModel('core/date')->date('Y-m-d H:i:s', strtotime($lengowCronJob['scheduled_at']))
+                    ? Mage::getModel('core/date')->date(
+                        Lengow_Connector_Helper_Data::DATE_FULL,
+                        strtotime($lengowCronJob['scheduled_at'])
+                    )
                     : '';
                 $out .= '<td>' . $scheduledAt . '</td>';
                 $executedAt = $lengowCronJob['executed_at'] !== null
-                    ? Mage::getModel('core/date')->date('Y-m-d H:i:s', strtotime($lengowCronJob['executed_at']))
+                    ? Mage::getModel('core/date')->date(
+                        Lengow_Connector_Helper_Data::DATE_FULL,
+                        strtotime($lengowCronJob['executed_at'])
+                    )
                     : '';
                 $out .= '<td>' . $executedAt . '</td>';
                 $finishedAt = $lengowCronJob['finished_at'] !== null
-                    ? Mage::getModel('core/date')->date('Y-m-d H:i:s', strtotime($lengowCronJob['finished_at']))
+                    ? Mage::getModel('core/date')->date(
+                        Lengow_Connector_Helper_Data::DATE_FULL,
+                        strtotime($lengowCronJob['finished_at'])
+                    )
                     : '';
                 $out .= '<td>' . $finishedAt . '</td>';
                 $out .= '</tr>';

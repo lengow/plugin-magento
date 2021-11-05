@@ -33,15 +33,17 @@ class Lengow_Connector_Block_Adminhtml_Order_Renderer_Total
     public function render(Varien_Object $row)
     {
         $value = $row->getData($this->getColumn()->getIndex());
-        if ($row->getData('currency') !== null && $value !== '') {
-            $currencySymbol = Mage::app()->getLocale()->currency($row->getData('currency'))->getSymbol();
+        if ($value !== '' && $row->getData(Lengow_Connector_Model_Import_Order::FIELD_CURRENCY) !== null) {
+            $currencySymbol = Mage::app()->getLocale()
+                ->currency($row->getData(Lengow_Connector_Model_Import_Order::FIELD_CURRENCY))
+                ->getSymbol();
         } else {
             $currencySymbol = '';
         }
         $nbProduct = $this->helper('lengow_connector')->decodeLogMessage(
             'order.table.nb_product',
             null,
-            array('nb' => $row->getData('order_item'))
+            array('nb' => $row->getData(Lengow_Connector_Model_Import_Order::FIELD_ORDER_ITEM))
         );
         return '
             <div class="lengow_tooltip">'

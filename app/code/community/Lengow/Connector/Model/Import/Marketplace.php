@@ -137,9 +137,8 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
                     $defaultValue = isset($argDescription->default_value)
                         ? (string) $argDescription->default_value
                         : '';
-                    $acceptFreeValue = isset($argDescription->accept_free_values)
-                        ? (bool) $argDescription->accept_free_values
-                        : true;
+                    $acceptFreeValue = !isset($argDescription->accept_free_values)
+                        || (bool) $argDescription->accept_free_values;
                     $this->argValues[(string) $argKey] = array(
                         'default_value' => $defaultValue,
                         'accept_free_values' => $acceptFreeValue,
@@ -286,8 +285,12 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
             if ($orderLineId  !== null) {
                 $params[Lengow_Connector_Model_Import_Action::ARG_LINE] = $orderLineId;
             }
-            $params['marketplace_order_id'] = $order->getData('order_id_lengow');
-            $params['marketplace'] = $order->getData('marketplace_lengow');
+            $params[Lengow_Connector_Model_Import::ARG_MARKETPLACE_ORDER_ID] = $order->getData(
+                Lengow_Connector_Model_Import_Order::FIELD_LEGACY_MARKETPLACE_SKU
+            );
+            $params[Lengow_Connector_Model_Import::ARG_MARKETPLACE] = $order->getData(
+                Lengow_Connector_Model_Import_Order::FIELD_LEGACY_MARKETPLACE_NAME
+            );
             $params[Lengow_Connector_Model_Import_Action::ARG_ACTION_TYPE] = $action;
             // checks whether the action is already created to not return an action
             /** @var Lengow_Connector_Model_Import_Action $orderAction */
@@ -300,20 +303,25 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
         } catch (Lengow_Connector_Model_Exception $e) {
             $errorMessage = $e->getMessage();
         } catch (Exception $e) {
-            $errorMessage = '[Magento error]: "' . $e->getMessage() . '" ' . $e->getFile() . ' line ' . $e->getLine();
+            $errorMessage = '[Magento error]: "' . $e->getMessage()
+                . '" in ' . $e->getFile() . ' on line ' . $e->getLine();
         }
         if (isset($errorMessage)) {
             if ($orderLengow) {
                 $processStateFinish = $orderLengow->getOrderProcessState(
                     Lengow_Connector_Model_Import_Order::STATE_CLOSED
                 );
-                if ((int) $orderLengow->getData('order_process_state') !== $processStateFinish) {
-                    $orderLengow->updateOrder(array('is_in_error' => 1));
+                $orderProcessState = (int) $orderLengow->getData(
+                    Lengow_Connector_Model_Import_Order::FIELD_ORDER_PROCESS_STATE
+                );
+                if ($orderProcessState !== $processStateFinish) {
+                    $orderLengow->updateOrder(array(Lengow_Connector_Model_Import_Order::FIELD_IS_IN_ERROR => 1));
                     Mage::getModel('lengow/import_ordererror')->createOrderError(
                         array(
-                            'order_lengow_id' => $orderLengowId,
-                            'message' => $errorMessage,
-                            'type' => 'send',
+                            Lengow_Connector_Model_Import_Ordererror::FIELD_ORDER_LENGOW_ID => $orderLengowId,
+                            Lengow_Connector_Model_Import_Ordererror::FIELD_MESSAGE => $errorMessage,
+                            Lengow_Connector_Model_Import_Ordererror::FIELD_TYPE =>
+                                Lengow_Connector_Model_Import_Ordererror::TYPE_ERROR_SEND,
                         )
                     );
                 }
@@ -329,7 +337,7 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
                     array('decoded_message' => $decodedMessage)
                 ),
                 false,
-                $order->getData('order_id_lengow')
+                $order->getData(Lengow_Connector_Model_Import_Order::FIELD_LEGACY_MARKETPLACE_SKU)
             );
             return false;
         }
@@ -373,12 +381,12 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
     {
         /** @var Lengow_Connector_Helper_Data $helper */
         $helper = Mage::helper('lengow_connector/data');
-        if ($order->getData('order_id_lengow') === '') {
+        if ($order->getData(Lengow_Connector_Model_Import_Order::FIELD_LEGACY_MARKETPLACE_SKU) === '') {
             throw new Lengow_Connector_Model_Exception(
                 $helper->setLogMessage('lengow_log.exception.marketplace_sku_require')
             );
         }
-        if ($order->getData('marketplace_lengow') === '') {
+        if ($order->getData(Lengow_Connector_Model_Import_Order::FIELD_LEGACY_MARKETPLACE_NAME) === '') {
             throw new Lengow_Connector_Model_Exception(
                 $helper->setLogMessage('lengow_log.exception.marketplace_name_require')
             );
@@ -438,9 +446,8 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
                 case Lengow_Connector_Model_Import_Action::ARG_CUSTOM_CARRIER:
                     $carrierCode = false;
                     if ($lengowOrder) {
-                        $carrierCode = (string) $lengowOrder->getData('carrier') !== ''
-                            ? (string) $lengowOrder->getData('carrier')
-                            : false;
+                        $carrier = (string) $lengowOrder->getData(Lengow_Connector_Model_Import_Order::FIELD_CARRIER);
+                        $carrierCode = $carrier !== '' ? $carrier : false;
                     }
                     if (!$carrierCode) {
                         $tracks = $shipment->getAllTracks();
@@ -458,7 +465,7 @@ class Lengow_Connector_Model_Import_Marketplace extends Varien_Object
                     break;
                 case Lengow_Connector_Model_Import_Action::ARG_SHIPPING_DATE:
                 case Lengow_Connector_Model_Import_Action::ARG_DELIVERY_DATE:
-                    $params[$arg] = Mage::getModel('core/date')->date('c');
+                    $params[$arg] = Mage::getModel('core/date')->date(Lengow_Connector_Helper_Data::DATE_ISO_8601);
                     break;
                 default:
                     if (isset($actions['optional_args']) && in_array($arg, $actions['optional_args'], true)) {

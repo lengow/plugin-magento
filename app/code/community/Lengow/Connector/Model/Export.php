@@ -53,19 +53,9 @@ class Lengow_Connector_Model_Export extends Varien_Object
     const PARAM_LEGACY_INACTIVE = 'product_status';
     const PARAM_LEGACY_LANGUAGE = 'locale';
 
-    /**
-     * @var string manual export type
-     */
+    /* Export types */
     const TYPE_MANUAL = 'manual';
-
-    /**
-     * @var string cron export type
-     */
     const TYPE_CRON = 'cron';
-
-    /**
-     * @var string Magento cron export type
-     */
     const TYPE_MAGENTO_CRON = 'magento cron';
 
     /**
@@ -1083,15 +1073,20 @@ class Lengow_Connector_Model_Export extends Varien_Object
         $coreDate = Mage::getModel('core/date');
         foreach ($listFiles as $file) {
             if (preg_match('/^' . $this->_fileName . '\.[\d]{10}/', $file)) {
-                $fileModified = $coreDate->gmtDate('Y-m-d H:i:s', filemtime($directory . $file));
+                $fileModified = $coreDate->gmtDate(
+                    Lengow_Connector_Helper_Data::DATE_FULL,
+                    filemtime($directory . $file)
+                );
                 $fileModifiedDatetime = new DateTime($fileModified);
                 $fileModifiedDatetime->add(new DateInterval('P10D'));
-                if ($coreDate->gmtDate('Y-m-d') > $fileModifiedDatetime->format('Y-m-d')) {
+                $fileModifiedDateDay = $fileModifiedDatetime->format(Lengow_Connector_Helper_Data::DATE_DAY);
+                if ($coreDate->gmtDate(Lengow_Connector_Helper_Data::DATE_DAY) > $fileModifiedDateDay) {
                     unlink($directory . $file);
                 }
                 $fileModifiedDatetime = new DateTime($fileModified);
                 $fileModifiedDatetime->add(new DateInterval('PT20S'));
-                if ($coreDate->gmtDate('Y-m-d H:i:s') < $fileModifiedDatetime->format('Y-m-d H:i:s')) {
+                $fileModifiedDateFull = $fileModifiedDatetime->format(Lengow_Connector_Helper_Data::DATE_FULL);
+                if ($coreDate->gmtDate(Lengow_Connector_Helper_Data::DATE_FULL) < $fileModifiedDateFull) {
                     return true;
                 }
             }

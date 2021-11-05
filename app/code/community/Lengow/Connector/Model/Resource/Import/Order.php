@@ -27,6 +27,6 @@ class Lengow_Connector_Model_Resource_Import_Order extends Mage_Core_Model_Mysql
      */
     protected function _construct()
     {
-        $this->_init('lengow/import_order', 'id');
+        $this->_init('lengow/import_order', Lengow_Connector_Model_Import_Order::FIELD_ID);
     }
 }

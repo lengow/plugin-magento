@@ -27,6 +27,6 @@ class Lengow_Connector_Model_Resource_Import_Ordererror extends Mage_Core_Model_
      */
     protected function _construct()
     {
-        $this->_init('lengow/import_ordererror', 'id');
+        $this->_init('lengow/import_ordererror', Lengow_Connector_Model_Import_Ordererror::FIELD_ID);
     }
 }

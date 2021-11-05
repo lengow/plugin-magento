@@ -272,8 +272,8 @@ class Lengow_Connector_Model_Export_Catalog_Product extends Mage_Catalog_Model_P
             $from = !is_numeric($from) ? strtotime($from) : $from;
             $to = isset($promo[0]['to_time']) ? $promo[0]['to_time'] : $promo[0]['to_date'];
             $to = !is_numeric($to) ? strtotime($to) : $to;
-            $data['discount_start_date'] = $from ? date('Y-m-d H:i:s', $from) : '';
-            $data['discount_end_date'] = $to ? date('Y-m-d H:i:s', $to) : '';
+            $data['discount_start_date'] = $from ? date(Lengow_Connector_Helper_Data::DATE_FULL, $from) : '';
+            $data['discount_end_date'] = $to ? date(Lengow_Connector_Helper_Data::DATE_FULL, $to) : '';
         }
         return $data;
     }

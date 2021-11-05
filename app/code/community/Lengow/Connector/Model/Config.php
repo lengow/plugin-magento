@@ -110,6 +110,12 @@ class Lengow_Connector_Model_Config extends Mage_Core_Model_Config
             ) {
                 $configHelper->set(Lengow_Connector_Helper_Config::LAST_UPDATE_SETTING, time());
             }
+            // reset the authorization token when a configuration parameter is changed
+            if (isset($keyParams[Lengow_Connector_Helper_Config::PARAM_RESET_TOKEN])
+                && $keyParams[Lengow_Connector_Helper_Config::PARAM_RESET_TOKEN]
+            ) {
+                $configHelper->resetAuthorizationToken();
+            }
         }
     }
 }

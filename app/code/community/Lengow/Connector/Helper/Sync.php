@@ -419,13 +419,13 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
                 );
             }
             return $result;
-        } else {
-            // if the API does not respond, use marketplaces.json if it exists
-            if (file_exists($filePath)) {
-                $marketplacesData = file_get_contents($filePath);
-                if ($marketplacesData) {
-                    return json_decode($marketplacesData);
-                }
+        }
+        // if the API does not respond, use marketplaces.json if it exists
+        if (file_exists($filePath)) {
+            $marketplacesData = file_get_contents($filePath);
+            if ($marketplacesData) {
+                // don't add true, decoded data are used as object
+                return json_decode($marketplacesData);
             }
         }
         return false;
@@ -498,10 +498,8 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
                 $this->_configHelper->set(Lengow_Connector_Helper_Config::LAST_UPDATE_PLUGIN_DATA, time());
                 return $pluginData;
             }
-        } else {
-            if ($this->_configHelper->get(Lengow_Connector_Helper_Config::PLUGIN_DATA)) {
-                return json_decode($this->_configHelper->get(Lengow_Connector_Helper_Config::PLUGIN_DATA), true);
-            }
+        } elseif ($this->_configHelper->get(Lengow_Connector_Helper_Config::PLUGIN_DATA)) {
+            return json_decode($this->_configHelper->get(Lengow_Connector_Helper_Config::PLUGIN_DATA), true);
         }
         return false;
     }

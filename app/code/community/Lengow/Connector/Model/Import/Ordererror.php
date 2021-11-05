@@ -23,13 +23,22 @@
 class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
 {
     /**
-     * @var integer order error import type
+     * @var string Lengow order error table name
      */
-    const TYPE_ERROR_IMPORT = 1;
+    const TABLE_ORDER_ERROR = 'lengow_order_error';
 
-    /**
-     * @var integer order error send type
-     */
+    /* Order error fields */
+    const FIELD_ID = 'id';
+    const FIELD_ORDER_LENGOW_ID = 'order_lengow_id';
+    const FIELD_MESSAGE = 'message';
+    const FIELD_TYPE = 'type';
+    const FIELD_IS_FINISHED = 'is_finished';
+    const FIELD_MAIL = 'mail';
+    const FIELD_CREATED_AT = 'created_at';
+    const FIELD_UPDATED_AT = 'updated_at';
+
+    /* Order error types */
+    const TYPE_ERROR_IMPORT = 1;
     const TYPE_ERROR_SEND = 2;
 
     /**
@@ -38,11 +47,26 @@ class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
      * update   => Fields allowed when updating registration
      */
     protected $_fieldList = array(
-        'order_lengow_id' => array('required' => true, 'updated' => false),
-        'message' => array('required' => true, 'updated' => false),
-        'type' => array('required' => true, 'updated' => false),
-        'is_finished' => array('required' => false, 'updated' => true),
-        'mail' => array('required' => false, 'updated' => true),
+        self::FIELD_ORDER_LENGOW_ID => array(
+            Lengow_Connector_Helper_Data::FIELD_REQUIRED => true,
+            Lengow_Connector_Helper_Data::FIELD_CAN_BE_UPDATED => false,
+        ),
+        self::FIELD_MESSAGE => array(
+            Lengow_Connector_Helper_Data::FIELD_REQUIRED => true,
+            Lengow_Connector_Helper_Data::FIELD_CAN_BE_UPDATED => false,
+        ),
+        self::FIELD_TYPE => array(
+            Lengow_Connector_Helper_Data::FIELD_REQUIRED => true,
+            Lengow_Connector_Helper_Data::FIELD_CAN_BE_UPDATED => false,
+        ),
+        self::FIELD_IS_FINISHED => array(
+            Lengow_Connector_Helper_Data::FIELD_REQUIRED => false,
+            Lengow_Connector_Helper_Data::FIELD_CAN_BE_UPDATED => true,
+        ),
+        self::FIELD_MAIL => array(
+            Lengow_Connector_Helper_Data::FIELD_REQUIRED => false,
+            Lengow_Connector_Helper_Data::FIELD_CAN_BE_UPDATED => true,
+        ),
     );
 
     /**
@@ -64,17 +88,17 @@ class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
     public function createOrderError($params = array())
     {
         foreach ($this->_fieldList as $key => $value) {
-            if (!array_key_exists($key, $params) && $value['required']) {
+            if (!array_key_exists($key, $params) && $value[Lengow_Connector_Helper_Data::FIELD_REQUIRED]) {
                 return false;
             }
         }
         foreach ($params as $key => $value) {
-            if ($key === 'type') {
-                $value = $this->getOrderErrorType($value);
-            }
             $this->setData($key, $value);
         }
-        $this->setData('created_at', Mage::getModel('core/date')->gmtDate('Y-m-d H:i:s'));
+        $this->setData(
+            self::FIELD_CREATED_AT,
+            Mage::getModel('core/date')->gmtDate(Lengow_Connector_Helper_Data::DATE_FULL)
+        );
         try {
             return $this->save();
         } catch (\Exception $e) {
@@ -96,11 +120,14 @@ class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
         }
         $updatedFields = $this->getUpdatedFields();
         foreach ($params as $key => $value) {
-            if (in_array($key, $updatedFields)) {
+            if (in_array($key, $updatedFields, true)) {
                 $this->setData($key, $value);
             }
         }
-        $this->setData('updated_at', Mage::getModel('core/date')->gmtDate('Y-m-d H:i:s'));
+        $this->setData(
+            self::FIELD_UPDATED_AT,
+            Mage::getModel('core/date')->gmtDate(Lengow_Connector_Helper_Data::DATE_FULL)
+        );
         try {
             return $this->save();
         } catch (\Exception $e) {
@@ -117,7 +144,7 @@ class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
     {
         $updatedFields = array();
         foreach ($this->_fieldList as $key => $value) {
-            if ($value['updated']) {
+            if ($value[Lengow_Connector_Helper_Data::FIELD_CAN_BE_UPDATED]) {
                 $updatedFields[] = $key;
             }
         }
@@ -125,28 +152,10 @@ class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
     }
 
     /**
-     * Return type value
-     *
-     * @param string|null $type order error type (import or send)
-     *
-     * @return integer
-     */
-    public function getOrderErrorType($type = null)
-    {
-        switch ($type) {
-            case 'send':
-                return self::TYPE_ERROR_SEND;
-            case 'import':
-            default:
-                return self::TYPE_ERROR_IMPORT;
-        }
-    }
-
-    /**
      * Get all order errors
      *
      * @param integer $orderLengowId Lengow order id
-     * @param string|null $type order error type (import or send)
+     * @param integer|null $type order error type (import or send)
      * @param boolean|null $finished log finished
      *
      * @return array|false
@@ -154,14 +163,13 @@ class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
      */
     public function getOrderErrors($orderLengowId, $type = null, $finished = null)
     {
-        $collection = $this->getCollection()->addFieldToFilter('order_lengow_id', $orderLengowId);
+        $collection = $this->getCollection()->addFieldToFilter(self::FIELD_ORDER_LENGOW_ID, $orderLengowId);
         if ($type !== null) {
-            $errorType = $this->getOrderErrorType($type);
-            $collection->addFieldToFilter('type', $errorType);
+            $collection->addFieldToFilter(self::FIELD_TYPE, $type);
         }
         if ($finished !== null) {
             $errorFinished = $finished ? 1 : 0;
-            $collection->addFieldToFilter('is_finished', $errorFinished);
+            $collection->addFieldToFilter(self::FIELD_IS_FINISHED, $errorFinished);
         }
         $results = $collection->getData();
         if (!empty($results)) {
@@ -174,25 +182,24 @@ class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
      * Removes all order error for one order lengow
      *
      * @param integer $orderLengowId Lengow order id
-     * @param string $type order error type (import or send)
+     * @param integer $type order error type (import or send)
      *
      * @return boolean
      */
-    public function finishOrderErrors($orderLengowId, $type = 'import')
+    public function finishOrderErrors($orderLengowId, $type = self::TYPE_ERROR_IMPORT)
     {
-        $errorType = $this->getOrderErrorType($type);
         // get all order errors
         $results = $this->getCollection()
-            ->addFieldToFilter('order_lengow_id', $orderLengowId)
-            ->addFieldToFilter('is_finished', 0)
-            ->addFieldToFilter('type', $errorType)
-            ->addFieldToSelect('id')
+            ->addFieldToFilter(self::FIELD_ORDER_LENGOW_ID, $orderLengowId)
+            ->addFieldToFilter(self::FIELD_IS_FINISHED, 0)
+            ->addFieldToFilter(self::FIELD_TYPE, $type)
+            ->addFieldToSelect(self::FIELD_ID)
             ->getData();
         if (!empty($results)) {
             foreach ($results as $result) {
                 /** @var Lengow_Connector_Model_Import_Ordererror $orderError */
-                $orderError = Mage::getModel('lengow/import_ordererror')->load($result['id']);
-                $orderError->updateOrderError(array('is_finished' => 1));
+                $orderError = Mage::getModel('lengow/import_ordererror')->load($result[self::FIELD_ID]);
+                $orderError->updateOrderError(array(self::FIELD_IS_FINISHED => 1));
                 unset($orderError);
             }
             return true;
@@ -207,32 +214,20 @@ class Lengow_Connector_Model_Import_Ordererror extends Mage_Core_Model_Abstract
      */
     public function getImportErrors()
     {
-        // compatibility for version 1.5
-        if (Mage::getVersion() < '1.6.0.0') {
-            $results = $this->getCollection()
-                ->join(
-                    'lengow/import_order',
-                    '`lengow/import_order`.id=main_table.order_lengow_id',
-                    array('marketplace_sku' => 'marketplace_sku')
+        $results = $this->getCollection()
+            ->join(
+                array(Lengow_Connector_Model_Import_Order::TABLE_ORDER => 'lengow/import_order'),
+                'lengow_order.id=main_table.order_lengow_id',
+                array(
+                    Lengow_Connector_Model_Import_Order::FIELD_MARKETPLACE_SKU =>
+                        Lengow_Connector_Model_Import_Order::FIELD_MARKETPLACE_SKU,
                 )
-                ->addFieldToFilter('mail', array('eq' => 0))
-                ->addFieldToFilter('is_finished', array('eq' => 0))
-                ->addFieldToSelect('message')
-                ->addFieldToSelect('id')
-                ->getData();
-        } else {
-            $results = $this->getCollection()
-                ->join(
-                    array('lengow_order' => 'lengow/import_order'),
-                    'lengow_order.id=main_table.order_lengow_id',
-                    array('marketplace_sku' => 'marketplace_sku')
-                )
-                ->addFieldToFilter('mail', array('eq' => 0))
-                ->addFieldToFilter('is_finished', array('eq' => 0))
-                ->addFieldToSelect('message')
-                ->addFieldToSelect('id')
-                ->getData();
-        }
+            )
+            ->addFieldToFilter(self::FIELD_MAIL, array('eq' => 0))
+            ->addFieldToFilter(self::FIELD_IS_FINISHED, array('eq' => 0))
+            ->addFieldToSelect(self::FIELD_MESSAGE)
+            ->addFieldToSelect(self::FIELD_ID)
+            ->getData();
         if (empty($results)) {
             return false;
         }

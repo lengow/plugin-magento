@@ -22,6 +22,16 @@
  */
 class Lengow_Connector_Model_Log extends Mage_Core_Model_Abstract
 {
+    /**
+     * @var string Lengow log table name
+     */
+    const TABLE_LOG = 'lengow_log';
+
+    /* Action fields */
+    const FIELD_ID = 'id';
+    const FIELD_DATE = 'date';
+    const FIELD_MESSAGE = 'message';
+
     /* Log params for export */
     const LOG_DATE = 'date';
     const LOG_LINK = 'link';
@@ -37,7 +47,10 @@ class Lengow_Connector_Model_Log extends Mage_Core_Model_Abstract
      * update   => Fields allowed when updating registration
      */
     protected $_fieldList = array(
-        'message' => array('required' => true, 'updated' => false),
+        self::FIELD_MESSAGE => array(
+            Lengow_Connector_Helper_Data::FIELD_REQUIRED => true,
+            Lengow_Connector_Helper_Data::FIELD_CAN_BE_UPDATED => false,
+        ),
     );
 
     /**
@@ -59,14 +72,14 @@ class Lengow_Connector_Model_Log extends Mage_Core_Model_Abstract
     public function createLog($params = array())
     {
         foreach ($this->_fieldList as $key => $value) {
-            if (!array_key_exists($key, $params) && $value['required']) {
+            if (!array_key_exists($key, $params) && $value[Lengow_Connector_Helper_Data::FIELD_REQUIRED]) {
                 return false;
             }
         }
         foreach ($params as $key => $value) {
             $this->setData($key, $value);
         }
-        $this->setData('date', Mage::getModel('core/date')->gmtDate('Y-m-d H:i:s'));
+        $this->setData(self::FIELD_DATE, Mage::getModel('core/date')->gmtDate(Lengow_Connector_Helper_Data::DATE_FULL));
         try {
             return $this->save();
         } catch (\Exception $e) {
@@ -85,10 +98,10 @@ class Lengow_Connector_Model_Log extends Mage_Core_Model_Abstract
     {
         $collection = $this->getCollection()
             ->addFieldToFilter(
-                'date',
+                self::FIELD_DATE,
                 array(
-                    'from' => date('Y-m-d' . ' 00:00:00', strtotime($date)),
-                    'to' => date('Y-m-d' . ' 23:59:59', strtotime($date)),
+                    'from' => date(Lengow_Connector_Helper_Data::DATE_DAY . ' 00:00:00', strtotime($date)),
+                    'to' => date(Lengow_Connector_Helper_Data::DATE_DAY . ' 23:59:59', strtotime($date)),
                     'datetime' => true,
                 )
             );
@@ -108,8 +121,8 @@ class Lengow_Connector_Model_Log extends Mage_Core_Model_Abstract
         $write = $resource->getConnection('core_write');
         $select = $write->select()
             ->from($resource->getTableName('lengow/log'), 'COUNT(*)')
-            ->where('date >=?', date('Y-m-d' . ' 00:00:00', strtotime($date)))
-            ->where('date <=?', date('Y-m-d' . ' 23:59:59', strtotime($date)));
+            ->where('date >=?', date(Lengow_Connector_Helper_Data::DATE_DAY . ' 00:00:00', strtotime($date)))
+            ->where('date <=?', date(Lengow_Connector_Helper_Data::DATE_DAY . ' 23:59:59', strtotime($date)));
         $result = (int) $write->fetchOne($select);
         return $result > 0;
     }
@@ -124,7 +137,7 @@ class Lengow_Connector_Model_Log extends Mage_Core_Model_Abstract
         $logDates = array();
         for ($i = 0; $i <= self::LOG_LIFE; $i++) {
             $date = new DateTime();
-            $logDate = $date->modify('-' . $i . ' day')->format('Y-m-d');
+            $logDate = $date->modify('-' . $i . ' day')->format(Lengow_Connector_Helper_Data::DATE_DAY);
             if ($this->logDateIsAvailable($logDate)) {
                 $logDates[] = $logDate;
             }
@@ -144,7 +157,7 @@ class Lengow_Connector_Model_Log extends Mage_Core_Model_Abstract
             $fileName = $date . '.txt';
             $logs = $this->getLogsByDate($date);
             foreach ($logs as $log) {
-                $contents .= $log['date'] . ' - ' . $log['message'] . "\r\n";
+                $contents .= $log[self::FIELD_DATE] . ' - ' . $log[self::FIELD_MESSAGE] . "\r\n";
             }
         } else {
             $fileName = 'logs.txt';
@@ -152,7 +165,7 @@ class Lengow_Connector_Model_Log extends Mage_Core_Model_Abstract
             foreach ($logDates as $logDate) {
                 $logs = $this->getLogsByDate($logDate);
                 foreach ($logs as $log) {
-                    $contents .= $log['date'] . ' - ' . $log['message'] . "\r\n";
+                    $contents .= $log[self::FIELD_DATE] . ' - ' . $log[self::FIELD_MESSAGE] . "\r\n";
                 }
             }
         }

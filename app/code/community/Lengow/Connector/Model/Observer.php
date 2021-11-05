@@ -53,14 +53,21 @@ class Lengow_Connector_Model_Observer
     {
         $shipment = $observer->getEvent()->getShipment();
         $order = $shipment->getOrder();
-        if ((bool) $order->getData('from_lengow')
-            && !array_key_exists($order->getData('order_id_lengow'), $this->_alreadyShipped)
-            && Mage::getSingleton('core/session')->getCurrentOrderLengow() !== $order->getData('order_id_lengow')
+        if ((bool) $order->getData(Lengow_Connector_Model_Import_Order::FIELD_LEGACY_FROM_LENGOW)
+            && !array_key_exists(
+                $order->getData(Lengow_Connector_Model_Import_Order::FIELD_LEGACY_MARKETPLACE_SKU),
+                $this->_alreadyShipped
+            )
+            && Mage::getSingleton('core/session')->getCurrentOrderLengow() !== $order->getData(
+                Lengow_Connector_Model_Import_Order::FIELD_LEGACY_MARKETPLACE_SKU
+            )
         ) {
             /** @var Lengow_Connector_Model_Import_Order $orderLengow */
             $orderLengow = Mage::getModel('lengow/import_order');
             $orderLengow->callAction(Lengow_Connector_Model_Import_Action::TYPE_SHIP, $order, $shipment);
-            $this->_alreadyShipped[$order->getData('order_id_lengow')] = true;
+            $this->_alreadyShipped[
+                $order->getData(Lengow_Connector_Model_Import_Order::FIELD_LEGACY_MARKETPLACE_SKU)
+            ] = true;
         }
         return $this;
     }
@@ -77,14 +84,21 @@ class Lengow_Connector_Model_Observer
         $track = $observer->getEvent()->getTrack();
         $shipment = $track->getShipment();
         $order = $shipment->getOrder();
-        if ((bool) $order->getData('from_lengow')
-            && !array_key_exists($order->getData('order_id_lengow'), $this->_alreadyShipped)
-            && Mage::getSingleton('core/session')->getCurrentOrderLengow() !== $order->getData('order_id_lengow')
+        if ((bool) $order->getData(Lengow_Connector_Model_Import_Order::FIELD_LEGACY_FROM_LENGOW)
+            && !array_key_exists(
+                $order->getData(Lengow_Connector_Model_Import_Order::FIELD_LEGACY_MARKETPLACE_SKU),
+                $this->_alreadyShipped
+            )
+            && Mage::getSingleton('core/session')->getCurrentOrderLengow() !== $order->getData(
+                Lengow_Connector_Model_Import_Order::FIELD_LEGACY_MARKETPLACE_SKU
+            )
         ) {
             /** @var Lengow_Connector_Model_Import_Order $orderLengow */
             $orderLengow = Mage::getModel('lengow/import_order');
             $orderLengow->callAction(Lengow_Connector_Model_Import_Action::TYPE_SHIP, $order, $shipment);
-            $this->_alreadyShipped[$order->getData('order_id_lengow')] = true;
+            $this->_alreadyShipped[
+                $order->getData(Lengow_Connector_Model_Import_Order::FIELD_LEGACY_MARKETPLACE_SKU)
+            ] = true;
         }
         return $this;
     }
@@ -100,8 +114,10 @@ class Lengow_Connector_Model_Observer
     {
         $payment = $observer->getEvent()->getPayment();
         $order = $payment->getOrder();
-        if ((bool) $order->getData('from_lengow')
-            && Mage::getSingleton('core/session')->getCurrentOrderLengow() !== $order->getData('order_id_lengow')
+        if ((bool) $order->getData(Lengow_Connector_Model_Import_Order::FIELD_LEGACY_FROM_LENGOW)
+            && Mage::getSingleton('core/session')->getCurrentOrderLengow() !== $order->getData(
+                Lengow_Connector_Model_Import_Order::FIELD_LEGACY_MARKETPLACE_SKU
+            )
         ) {
             /** @var Lengow_Connector_Model_Import_Order $orderLengow */
             $orderLengow = Mage::getModel('lengow/import_order');
@@ -141,8 +157,8 @@ class Lengow_Connector_Model_Observer
                     // launch export process
                     $export->exec();
                 } catch (Exception $e) {
-                    $errorMessage = '[Magento error] "' . $e->getMessage()
-                        . '" ' . $e->getFile() . ' line ' . $e->getLine();
+                    $errorMessage = '[Magento error]: "' . $e->getMessage()
+                        . '" in ' . $e->getFile() . ' on line ' . $e->getLine();
                     Mage::helper('lengow_connector')->log(Lengow_Connector_Helper_Data::CODE_EXPORT, $errorMessage);
                 }
             }

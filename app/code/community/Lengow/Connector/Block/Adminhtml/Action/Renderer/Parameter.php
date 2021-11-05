@@ -40,12 +40,15 @@ class Lengow_Connector_Block_Adminhtml_Action_Renderer_Parameter
                 || $key === Lengow_Connector_Model_Import_Action::ARG_ACTION_TYPE
             ) {
                 continue;
-            } elseif ($key === Lengow_Connector_Model_Import_Action::ARG_TRACKING_NUMBER) {
+            }
+
+            if ($key === Lengow_Connector_Model_Import_Action::ARG_TRACKING_NUMBER
+            ) {
                 $key = 'tracking';
-            } elseif ($key === 'marketplace_order_id') {
+            } elseif ($key === Lengow_Connector_Model_Import::ARG_MARKETPLACE_ORDER_ID) {
                 $key = 'marketplace sku';
             }
-            $return .= strlen($return) === 0
+            $return .= $return === ''
                 ? ucfirst($key) . ': ' . $value . ' '
                 : '- ' . ucfirst($key) . ': ' . $value . ' ';
         }

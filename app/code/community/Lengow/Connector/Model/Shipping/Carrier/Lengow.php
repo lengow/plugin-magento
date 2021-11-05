@@ -59,21 +59,6 @@ class Lengow_Connector_Model_Shipping_Carrier_Lengow
     }
 
     /**
-     * Processing additional validation to check is carrier applicable
-     *
-     * @param Mage_Shipping_Model_Rate_Request $request Magento shipping model rate request instance
-     *
-     * @return Mage_Shipping_Model_Carrier_Abstract|Mage_Shipping_Model_Rate_Result_Error|boolean
-     */
-    public function proccessAdditionalValidation(Mage_Shipping_Model_Rate_Request $request)
-    {
-        if (Mage::getVersion() === '1.4.1.0') {
-            return $this->isActive();
-        }
-        return parent::proccessAdditionalValidation($request);
-    }
-
-    /**
      * Get session
      *
      * @return Mage_Checkout_Model_Session|Mage_Core_Model_Abstract

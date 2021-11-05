@@ -27,6 +27,6 @@ class Lengow_Connector_Model_Resource_Import_Action extends Mage_Core_Model_Mysq
      */
     protected function _construct()
     {
-        $this->_init('lengow/import_action', 'id');
+        $this->_init('lengow/import_action', Lengow_Connector_Model_Import_Action::FIELD_ID);
     }
 }

@@ -49,7 +49,7 @@ class Lengow_Connector_Model_System_Config_Source_Attribute extends Mage_Core_Mo
         $attributeArray = array();
         $attributeArray[] = array('value' => 'none', 'label' => '');
         foreach ($attribute as $option) {
-            if (!in_array($option->getAttributeCode(), $this->_excludes)) {
+            if (!in_array($option->getAttributeCode(), $this->_excludes, true)) {
                 $attributeArray[] = array(
                     'value' => $option->getAttributeCode(),
                     'label' => $option->getAttributeCode(),

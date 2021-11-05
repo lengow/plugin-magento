@@ -17,7 +17,7 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-$version = '3.3.2';
+$version = '3.4.0';
 /** @var Lengow_Connector_Helper_Config $configHelper */
 $configHelper = Mage::helper('lengow_connector/config');
 $installedVersion = $configHelper->get(Lengow_Connector_Helper_Config::PLUGIN_VERSION);
