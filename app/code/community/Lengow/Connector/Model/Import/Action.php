@@ -221,15 +221,17 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
      * Find active actions by order id
      *
      * @param integer $orderId Magento order id
+     * @param boolean $onlyActive get only active actions
      * @param string|null $actionType action type (ship or cancel)
      *
      * @return array|false
      */
-    public function getActiveActionByOrderId($orderId, $actionType = null)
+    public function getActionsByOrderId($orderId, $onlyActive = false, $actionType = null)
     {
-        $collection = $this->getCollection()
-            ->addFieldToFilter(self::FIELD_ORDER_ID, $orderId)
-            ->addFieldToFilter(self::FIELD_STATE, self::STATE_NEW);
+        $collection = $this->getCollection()->addFieldToFilter(self::FIELD_ORDER_ID, $orderId);
+        if ($onlyActive) {
+            $collection->addFieldToFilter(self::FIELD_STATE, self::STATE_NEW);
+        }
         if ($actionType !== null) {
             $collection->addFieldToFilter(self::FIELD_RETRY, $actionType);
         }

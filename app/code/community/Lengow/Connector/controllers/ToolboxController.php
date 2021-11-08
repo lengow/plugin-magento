@@ -60,24 +60,40 @@ class Lengow_Connector_ToolboxController extends Mage_Core_Controller_Front_Acti
                         $toolboxHelper->downloadLog($date);
                         break;
                     case Lengow_Connector_Helper_Toolbox::ACTION_ORDER:
-                        $result = $toolboxHelper->syncOrders(
-                            array(
-                                Lengow_Connector_Helper_Toolbox::PARAM_CREATED_TO => $this->getRequest()
-                                    ->getParam(Lengow_Connector_Helper_Toolbox::PARAM_CREATED_TO),
-                                Lengow_Connector_Helper_Toolbox::PARAM_CREATED_FROM => $this->getRequest()
-                                    ->getParam(Lengow_Connector_Helper_Toolbox::PARAM_CREATED_FROM),
-                                Lengow_Connector_Helper_Toolbox::PARAM_DAYS => $this->getRequest()
-                                    ->getParam(Lengow_Connector_Helper_Toolbox::PARAM_DAYS),
-                                Lengow_Connector_Helper_Toolbox::PARAM_FORCE => $this->getRequest()
-                                    ->getParam(Lengow_Connector_Helper_Toolbox::PARAM_FORCE),
-                                Lengow_Connector_Helper_Toolbox::PARAM_MARKETPLACE_NAME => $this->getRequest()
-                                    ->getParam(Lengow_Connector_Helper_Toolbox::PARAM_MARKETPLACE_NAME),
-                                Lengow_Connector_Helper_Toolbox::PARAM_MARKETPLACE_SKU => $this->getRequest()
-                                    ->getParam(Lengow_Connector_Helper_Toolbox::PARAM_MARKETPLACE_SKU),
-                                Lengow_Connector_Helper_Toolbox::PARAM_SHOP_ID => $this->getRequest()
-                                    ->getParam(Lengow_Connector_Helper_Toolbox::PARAM_SHOP_ID),
-                            )
-                        );
+                        $process = $this->getRequest()
+                            ->getParam(
+                                Lengow_Connector_Helper_Toolbox::PARAM_PROCESS,
+                                Lengow_Connector_Helper_Toolbox::PROCESS_TYPE_SYNC
+                            );
+                        if ($process === Lengow_Connector_Helper_Toolbox::PROCESS_TYPE_GET_DATA) {
+                            $result = $toolboxHelper->getOrderData(
+                                $this->getRequest()->getParam(Lengow_Connector_Helper_Toolbox::PARAM_MARKETPLACE_SKU),
+                                $this->getRequest()->getParam(Lengow_Connector_Helper_Toolbox::PARAM_MARKETPLACE_NAME),
+                                $this->getRequest()->getParam(
+                                    Lengow_Connector_Helper_Toolbox::PARAM_TYPE,
+                                    Lengow_Connector_Helper_Toolbox::DATA_TYPE_ORDER
+                                )
+                            );
+                        } else {
+                            $result = $toolboxHelper->syncOrders(
+                                array(
+                                    Lengow_Connector_Helper_Toolbox::PARAM_CREATED_TO => $this->getRequest()
+                                        ->getParam(Lengow_Connector_Helper_Toolbox::PARAM_CREATED_TO),
+                                    Lengow_Connector_Helper_Toolbox::PARAM_CREATED_FROM => $this->getRequest()
+                                        ->getParam(Lengow_Connector_Helper_Toolbox::PARAM_CREATED_FROM),
+                                    Lengow_Connector_Helper_Toolbox::PARAM_DAYS => $this->getRequest()
+                                        ->getParam(Lengow_Connector_Helper_Toolbox::PARAM_DAYS),
+                                    Lengow_Connector_Helper_Toolbox::PARAM_FORCE => $this->getRequest()
+                                        ->getParam(Lengow_Connector_Helper_Toolbox::PARAM_FORCE),
+                                    Lengow_Connector_Helper_Toolbox::PARAM_MARKETPLACE_NAME => $this->getRequest()
+                                        ->getParam(Lengow_Connector_Helper_Toolbox::PARAM_MARKETPLACE_NAME),
+                                    Lengow_Connector_Helper_Toolbox::PARAM_MARKETPLACE_SKU => $this->getRequest()
+                                        ->getParam(Lengow_Connector_Helper_Toolbox::PARAM_MARKETPLACE_SKU),
+                                    Lengow_Connector_Helper_Toolbox::PARAM_SHOP_ID => $this->getRequest()
+                                        ->getParam(Lengow_Connector_Helper_Toolbox::PARAM_SHOP_ID),
+                                )
+                            );
+                        }
                         if (isset($result[Lengow_Connector_Helper_Toolbox::ERRORS][
                             Lengow_Connector_Helper_Toolbox::ERROR_CODE
                         ])) {

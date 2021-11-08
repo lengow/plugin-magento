@@ -227,7 +227,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Tab
     public function canReSendAction()
     {
         $order = $this->getOrder();
-        if (Mage::getModel('lengow/import_action')->getActiveActionByOrderId($order->getData('entity_id'))) {
+        if (Mage::getModel('lengow/import_action')->getActionsByOrderId($order->getData('entity_id'), true)) {
             return false;
         }
         $magentoStatus = $order->getData('status');

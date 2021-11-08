@@ -461,6 +461,7 @@ log.import.quantity_back_shipped_by_marketplace|adding quantity back to stock co
 log.import.anonymized_order|Order is anonymized and has not been imported
 log.import.old_order|Order is older than 3 months and has not been imported
 log.import.unable_verify_date|unable to check if the order is too old
+log.import.unable_find_order|Unable to find the requested order
 log.connection.cms_creation_success|CMS successfully created with Lengow webservice (CMS token %{cms_token})
 log.connection.cms_creation_failed|WARNING! CMS could NOT be created with Lengow webservice (CMS token %{cms_token})
 log.connection.cms_already_exist|CMS already created in Lengow (CMS token %{cms_token})

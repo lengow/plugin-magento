@@ -61,6 +61,7 @@ en:
       anonymized_order: "Order is anonymized and has not been imported"
       old_order: "Order is older than 3 months and has not been imported"
       unable_verify_date: "unable to check if the order is too old"
+      unable_find_order: "Unable to find the requested order"
     connection:
       cms_creation_success: "CMS successfully created with Lengow webservice (CMS token %{cms_token})"
       cms_creation_failed: "WARNING! CMS could NOT be created with Lengow webservice (CMS token %{cms_token})"

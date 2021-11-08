@@ -483,6 +483,23 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
     }
 
     /**
+     * Retrieves all the Lengow order from a marketplace reference
+     *
+     * @param string $marketplaceSku marketplace sku
+     * @param string $marketplaceName marketplace name
+     *
+     * @return array
+     */
+    public function getAllLengowOrders($marketplaceSku, $marketplaceName)
+    {
+        $results = $this->getCollection()
+            ->addFieldToFilter(self::FIELD_MARKETPLACE_SKU, $marketplaceSku)
+            ->addFieldToFilter(self::FIELD_MARKETPLACE_NAME, $marketplaceName)
+            ->getData();
+        return !empty($results) ? $results : array();
+    }
+
+    /**
      * Get ID record from lengow orders table
      *
      * @param string $marketplaceSku marketplace sku
@@ -563,7 +580,7 @@ class Lengow_Connector_Model_Import_Order extends Mage_Core_Model_Abstract
         if (!empty($results)) {
             $unsentOrders = array();
             foreach ($results as $result) {
-                if (!Mage::getModel('lengow/import_action')->getActiveActionByOrderId($result[self::FIELD_ORDER_ID])) {
+                if (!Mage::getModel('lengow/import_action')->getActionsByOrderId($result[self::FIELD_ORDER_ID], true)) {
                     $unsentOrders[] = array(
                         'order_id' => $result[self::FIELD_ORDER_ID],
                         'action' => $result['state'] === Mage_Sales_Model_Order::STATE_CANCELED
