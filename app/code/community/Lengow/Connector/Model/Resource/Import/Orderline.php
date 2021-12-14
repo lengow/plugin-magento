@@ -27,6 +27,6 @@ class Lengow_Connector_Model_Resource_Import_Orderline extends Mage_Core_Model_M
      */
     protected function _construct()
     {
-        $this->_init('lengow/import_orderline', 'id');
+        $this->_init('lengow/import_orderline', Lengow_Connector_Model_Import_Orderline::FIELD_ID);
     }
 }

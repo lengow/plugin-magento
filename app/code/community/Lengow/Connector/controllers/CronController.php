@@ -24,24 +24,23 @@ class Lengow_Connector_CronController extends Mage_Core_Controller_Front_Action
 {
     /**
      * Cron Process (Import orders, check actions and send stats)
+     *
+     * List params
+     * string  sync                Data type to synchronize
+     * integer days                Synchronization interval time
+     * integer limit               Maximum number of new orders created
+     * integer store_id            Store id to synchronize
+     * string  marketplace_sku     Lengow marketplace order id to synchronize
+     * string  marketplace_name    Lengow marketplace name to synchronize
+     * string  created_from        Synchronization of orders since
+     * string  created_to          Synchronization of orders until
+     * integer delivery_address_id Lengow delivery address id to synchronize
+     * boolean debug_mode          Activate debug mode
+     * boolean log_output          See logs (1) or not (0)
+     * boolean get_sync            See synchronization parameters in json format (1) or not (0)
      */
     public function indexAction()
     {
-        /**
-         * List params
-         * string  sync                Number of products exported
-         * integer days                Import period
-         * integer limit               Number of orders to import
-         * integer store_id            Store id to import
-         * string  marketplace_sku     Lengow marketplace order id to import
-         * string  marketplace_name    Lengow marketplace name to import
-         * string  created_from        import of orders since
-         * string  created_to          import of orders until
-         * integer delivery_address_id Lengow delivery address id to import
-         * boolean debug_mode          Activate debug mode
-         * boolean log_output          See logs (1) or not (0)
-         * boolean get_sync            See synchronisation parameters in json format (1) or not (0)
-         */
         $token = $this->getRequest()->getParam(Lengow_Connector_Model_Import::PARAM_TOKEN);
         /** @var Lengow_Connector_Helper_Security $securityHelper */
         $securityHelper = Mage::helper('lengow_connector/security');
@@ -71,6 +70,10 @@ class Lengow_Connector_CronController extends Mage_Core_Controller_Front_Action
                         Lengow_Connector_Model_Import::PARAM_LOG_OUTPUT => $logOutput,
                     );
                     // check if the GET parameters are available
+                    if ($this->getRequest()->getParam(Lengow_Connector_Model_Import::PARAM_FORCE_SYNC) !== null) {
+                        $params[Lengow_Connector_Model_Import::PARAM_FORCE_SYNC] = (bool) $this->getRequest()
+                            ->getParam(Lengow_Connector_Model_Import::PARAM_FORCE_SYNC);
+                    }
                     if ($this->getRequest()->getParam(Lengow_Connector_Model_Import::PARAM_DEBUG_MODE) !== null) {
                         $params[Lengow_Connector_Model_Import::PARAM_DEBUG_MODE] = (bool) $this->getRequest()
                             ->getParam(Lengow_Connector_Model_Import::PARAM_DEBUG_MODE);

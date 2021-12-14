@@ -110,46 +110,50 @@ class Lengow_Connector_Block_Adminhtml_Order_Tab
         // get all Lengow data
         if ($orderLengowId) {
             $orderLengow = $orderLengow->load($orderLengowId);
-            $marketplaceSku = $orderLengow->getData('marketplace_sku');
-            $marketplaceLabel = $orderLengow->getData('marketplace_label');
-            $feedId = (int) $orderLengow->getData('feed_id');
-            $deliveryAddressId = $orderLengow->getData('delivery_address_id');
-            $currency = $orderLengow->getData('currency');
-            $totalPaid = $orderLengow->getData('total_paid');
-            $commission = $orderLengow->getData('commission');
-            $customerName = $orderLengow->getData('customer_name');
-            $customerEmail = $orderLengow->getData('customer_email');
-            $carrier = $orderLengow->getData('carrier');
-            $carrierMethod = $orderLengow->getData('carrier_method');
-            $carrierTracking = $orderLengow->getData('carrier_tracking');
-            $carrierIdRelay = $orderLengow->getData('carrier_id_relay');
+            $marketplaceSku = $orderLengow->getData(Lengow_Connector_Model_Import_Order::FIELD_MARKETPLACE_SKU);
+            $marketplaceLabel = $orderLengow->getData(Lengow_Connector_Model_Import_Order::FIELD_MARKETPLACE_LABEL);
+            $feedId = (int) $orderLengow->getData(Lengow_Connector_Model_Import_Order::FIELD_FEED_ID);
+            $deliveryAddressId = $orderLengow->getData(Lengow_Connector_Model_Import_Order::FIELD_DELIVERY_ADDRESS_ID);
+            $currency = $orderLengow->getData(Lengow_Connector_Model_Import_Order::FIELD_CURRENCY);
+            $totalPaid = $orderLengow->getData(Lengow_Connector_Model_Import_Order::FIELD_TOTAL_PAID);
+            $commission = $orderLengow->getData(Lengow_Connector_Model_Import_Order::FIELD_COMMISSION);
+            $customerName = $orderLengow->getData(Lengow_Connector_Model_Import_Order::FIELD_CUSTOMER_NAME);
+            $customerEmail = $orderLengow->getData(Lengow_Connector_Model_Import_Order::FIELD_CUSTOMER_EMAIL);
+            $carrier = $orderLengow->getData(Lengow_Connector_Model_Import_Order::FIELD_CARRIER);
+            $carrierMethod = $orderLengow->getData(Lengow_Connector_Model_Import_Order::FIELD_CARRIER_METHOD);
+            $carrierTracking = $orderLengow->getData(Lengow_Connector_Model_Import_Order::FIELD_CARRIER_TRACKING);
+            $carrierIdRelay = $orderLengow->getData(Lengow_Connector_Model_Import_Order::FIELD_CARRIER_RELAY_ID);
             $isExpress = $orderLengow->isExpress();
             $isDeliveredByMarketplace = $orderLengow->isDeliveredByMarketplace();
             $isBusiness = $orderLengow->isBusiness();
-            $importedAt = $helper->getDateInCorrectFormat(strtotime($orderLengow->getData('created_at')));
-            $message = $orderLengow->getData('message');
-            $extra = $orderLengow->getData('extra');
-            $vatNumber = $orderLengow->getData('customer_vat_number');
+            $importedAt = $helper->getDateInCorrectFormat(
+                strtotime($orderLengow->getData(Lengow_Connector_Model_Import_Order::FIELD_CREATED_AT))
+            );
+            $message = $orderLengow->getData(Lengow_Connector_Model_Import_Order::FIELD_MESSAGE);
+            $extra = $orderLengow->getData(Lengow_Connector_Model_Import_Order::FIELD_EXTRA);
+            $vatNumber = $orderLengow->getData(Lengow_Connector_Model_Import_Order::FIELD_CUSTOMER_VAT_NUMBER);
         } else {
-            $marketplaceSku = $order->getData('order_id_lengow');
-            $marketplaceLabel = $order->getData('marketplace_lengow');
-            $feedId = (int) $order->getData('feed_id_lengow');
-            $deliveryAddressId = $order->getData('delivery_address_id_lengow');
+            $marketplaceSku = $order->getData(Lengow_Connector_Model_Import_Order::FIELD_LEGACY_MARKETPLACE_SKU);
+            $marketplaceLabel = $order->getData(Lengow_Connector_Model_Import_Order::FIELD_LEGACY_MARKETPLACE_NAME);
+            $feedId = (int) $order->getData(Lengow_Connector_Model_Import_Order::FIELD_LEGACY_FEED_ID);
+            $deliveryAddressId = $order->getData(Lengow_Connector_Model_Import_Order::FIELD_LEGACY_DELIVERY_ADDRESS_ID);
             $currency = $order->getData('base_currency_code');
-            $totalPaid = $order->getData('total_paid_lengow');
-            $commission = $order->getData('fees_lengow');
+            $totalPaid = $order->getData(Lengow_Connector_Model_Import_Order::FIELD_LEGACY_TOTAL_PAID);
+            $commission = $order->getData(Lengow_Connector_Model_Import_Order::FIELD_LEGACY_COMMISSION);
             $customerName = $order->getData('customer_firstname') . ' ' . $order->getData('customer_lastname');
             $customerEmail = $order->getData('customer_email');
-            $carrier = $order->getData('carrier_lengow');
-            $carrierMethod = $order->getData('carrier_method_lengow');
-            $carrierTracking = $order->getData('carrier_tracking_lengow');
-            $carrierIdRelay = $order->getData('carrier_id_relay_lengow');
+            $carrier = $order->getData(Lengow_Connector_Model_Import_Order::FIELD_LEGACY_CARRIER);
+            $carrierMethod = $order->getData(Lengow_Connector_Model_Import_Order::FIELD_LEGACY_CARRIER_METHOD);
+            $carrierTracking = $order->getData(Lengow_Connector_Model_Import_Order::FIELD_LEGACY_CARRIER_TRACKING);
+            $carrierIdRelay = $order->getData(Lengow_Connector_Model_Import_Order::FIELD_LEGACY_CARRIER_RELAY_ID);
             $isExpress = false;
             $isDeliveredByMarketplace = false;
             $isBusiness = false;
-            $importedAt = $helper->getDateInCorrectFormat(strtotime($order->getData('carrier_id_relay_lengow')));
+            $importedAt = $helper->getDateInCorrectFormat(
+                strtotime($order->getData(Lengow_Connector_Model_Import_Order::FIELD_LEGACY_CARRIER_RELAY_ID))
+            );
             $message = $order->getData('created_at');
-            $extra = $order->getData('xml_node_lengow');
+            $extra = $order->getData(Lengow_Connector_Model_Import_Order::FIELD_LEGACY_EXTRA);
             $vatNumber = null;
         }
         // construct fields list
@@ -202,7 +206,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Tab
      */
     public function isLengowOrder()
     {
-        return (bool) $this->getOrder()->getData('from_lengow');
+        return (bool) $this->getOrder()->getData(Lengow_Connector_Model_Import_Order::FIELD_LEGACY_FROM_LENGOW);
     }
 
     /**
@@ -212,7 +216,7 @@ class Lengow_Connector_Block_Adminhtml_Order_Tab
      */
     public function isFollowByLengow()
     {
-        return (bool) $this->getOrder()->getData('follow_by_lengow');
+        return (bool) $this->getOrder()->getData(Lengow_Connector_Model_Import_Order::FIELD_LEGACY_FOLLOW_BY_LENGOW);
     }
 
     /**
@@ -223,11 +227,13 @@ class Lengow_Connector_Block_Adminhtml_Order_Tab
     public function canReSendAction()
     {
         $order = $this->getOrder();
-        if (Mage::getModel('lengow/import_action')->getActiveActionByOrderId($order->getData('entity_id'))) {
+        if (Mage::getModel('lengow/import_action')->getActionsByOrderId($order->getData('entity_id'), true)) {
             return false;
         }
         $magentoStatus = $order->getData('status');
-        if ($magentoStatus === 'complete' || $magentoStatus === 'cancel') {
+        if ($magentoStatus === Mage_Sales_Model_Order::STATE_COMPLETE
+            || $magentoStatus === Mage_Sales_Model_Order::STATE_CANCELED
+        ) {
             /** @var Lengow_Connector_Model_Import_Order $orderLengow */
             $orderLengow = Mage::getModel('lengow/import_order');
             $orderLengowId = $orderLengow->getLengowOrderIdWithOrderId($order->getData('entity_id'));
@@ -236,7 +242,10 @@ class Lengow_Connector_Block_Adminhtml_Order_Tab
                 $orderProcessStateClosed = $orderLengow->getOrderProcessState(
                     Lengow_Connector_Model_Import_Order::STATE_CLOSED
                 );
-                if ((int) $orderLengow->getData('order_process_state') !== $orderProcessStateClosed) {
+                $orderProcessState = (int) $orderLengow->getData(
+                    Lengow_Connector_Model_Import_Order::FIELD_ORDER_PROCESS_STATE
+                );
+                if ($orderProcessState !== $orderProcessStateClosed) {
                     return true;
                 }
             } else {

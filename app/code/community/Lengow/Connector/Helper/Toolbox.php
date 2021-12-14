@@ -23,25 +23,43 @@
 class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
 {
     /* Toolbox GET params */
+    const PARAM_CREATED_FROM = 'created_from';
+    const PARAM_CREATED_TO = 'created_to';
+    const PARAM_DATE = 'date';
+    const PARAM_DAYS = 'days';
+    const PARAM_FORCE = 'force';
+    const PARAM_MARKETPLACE_NAME = 'marketplace_name';
+    const PARAM_MARKETPLACE_SKU = 'marketplace_sku';
+    const PARAM_PROCESS = 'process';
+    const PARAM_SHOP_ID = 'shop_id';
     const PARAM_TOKEN = 'token';
     const PARAM_TOOLBOX_ACTION = 'toolbox_action';
-    const PARAM_DATE = 'date';
     const PARAM_TYPE = 'type';
 
     /* Toolbox Actions */
     const ACTION_DATA = 'data';
     const ACTION_LOG = 'log';
+    const ACTION_ORDER = 'order';
 
     /* Data type */
+    const DATA_TYPE_ACTION = 'action';
     const DATA_TYPE_ALL = 'all';
     const DATA_TYPE_CHECKLIST = 'checklist';
     const DATA_TYPE_CHECKSUM = 'checksum';
     const DATA_TYPE_CMS = 'cms';
+    const DATA_TYPE_ERROR = 'error';
+    const DATA_TYPE_EXTRA = 'extra';
     const DATA_TYPE_LOG = 'log';
     const DATA_TYPE_PLUGIN = 'plugin';
     const DATA_TYPE_OPTION = 'option';
+    const DATA_TYPE_ORDER = 'order';
+    const DATA_TYPE_ORDER_STATUS = 'order_status';
     const DATA_TYPE_SHOP = 'shop';
     const DATA_TYPE_SYNCHRONIZATION = 'synchronization';
+
+    /* Process type */
+    const PROCESS_TYPE_GET_DATA = 'get_data';
+    const PROCESS_TYPE_SYNC = 'sync';
 
     /* Toolbox Data  */
     const CHECKLIST = 'checklist';
@@ -90,6 +108,75 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
     const CHECKSUM_FILE_DELETED = 'file_deleted';
     const LOGS = 'logs';
 
+    /* Toolbox order data  */
+    const ID = 'id';
+    const ORDERS = 'orders';
+    const ORDER_MARKETPLACE_SKU = 'marketplace_sku';
+    const ORDER_MARKETPLACE_NAME = 'marketplace_name';
+    const ORDER_MARKETPLACE_LABEL = 'marketplace_label';
+    const ORDER_MERCHANT_ORDER_ID = 'merchant_order_id';
+    const ORDER_MERCHANT_ORDER_REFERENCE = 'merchant_order_reference';
+    const ORDER_DELIVERY_ADDRESS_ID = 'delivery_address_id';
+    const ORDER_DELIVERY_COUNTRY_ISO = 'delivery_country_iso';
+    const ORDER_PROCESS_STATE = 'order_process_state';
+    const ORDER_STATUSES = 'order_statuses';
+    const ORDER_STATUS = 'order_status';
+    const ORDER_MERCHANT_ORDER_STATUS = 'merchant_order_status';
+    const ORDER_TOTAL_PAID = 'total_paid';
+    const ORDER_MERCHANT_TOTAL_PAID = 'merchant_total_paid';
+    const ORDER_COMMISSION= 'commission';
+    const ORDER_CURRENCY = 'currency';
+    const ORDER_DATE = 'order_date';
+    const ORDER_ITEMS = 'order_items';
+    const ORDER_IS_REIMPORTED = 'is_reimported';
+    const ORDER_IS_IN_ERROR = 'is_in_error';
+    const ORDER_ACTION_IN_PROGRESS = 'action_in_progress';
+    const CUSTOMER = 'customer';
+    const CUSTOMER_NAME = 'name';
+    const CUSTOMER_EMAIL = 'email';
+    const CUSTOMER_VAT_NUMBER = 'vat_number';
+    const ORDER_TYPES = 'order_types';
+    const ORDER_TYPE_EXPRESS = 'is_express';
+    const ORDER_TYPE_PRIME = 'is_prime';
+    const ORDER_TYPE_BUSINESS = 'is_business';
+    const ORDER_TYPE_DELIVERED_BY_MARKETPLACE = 'is_delivered_by_marketplace';
+    const TRACKING = 'tracking';
+    const TRACKING_CARRIER = 'carrier';
+    const TRACKING_METHOD = 'method';
+    const TRACKING_NUMBER = 'tracking_number';
+    const TRACKING_RELAY_ID = 'relay_id';
+    const TRACKING_MERCHANT_CARRIER = 'merchant_carrier';
+    const TRACKING_MERCHANT_TRACKING_NUMBER = 'merchant_tracking_number';
+    const TRACKING_MERCHANT_TRACKING_URL = 'merchant_tracking_url';
+    const CREATED_AT = 'created_at';
+    const UPDATED_AT = 'updated_at';
+    const IMPORTED_AT = 'imported_at';
+    const ERRORS = 'errors';
+    const ERROR_TYPE = 'type';
+    const ERROR_MESSAGE = 'message';
+    const ERROR_CODE = 'code';
+    const ERROR_FINISHED = 'is_finished';
+    const ERROR_REPORTED = 'is_reported';
+    const ACTIONS = 'actions';
+    const ACTION_ID = 'action_id';
+    const ACTION_PARAMETERS = 'parameters';
+    const ACTION_RETRY = 'retry';
+    const ACTION_FINISH = 'is_finished';
+
+    /* Process state labels */
+    const PROCESS_STATE_NEW = 'new';
+    const PROCESS_STATE_IMPORT = 'import';
+    const PROCESS_STATE_FINISH = 'finish';
+
+    /* Error type labels */
+    const TYPE_ERROR_IMPORT = 'import';
+    const TYPE_ERROR_SEND = 'send';
+
+    /* PHP extensions */
+    const PHP_EXTENSION_CURL = 'curl_version';
+    const PHP_EXTENSION_SIMPLEXML = 'simplexml_load_file';
+    const PHP_EXTENSION_JSON = 'json_decode';
+
     /* Toolbox files */
     const FILE_CHECKMD5 = 'checkmd5.csv';
     const FILE_TEST = 'test.txt';
@@ -100,6 +187,7 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
     private $toolboxActions = array(
         self::ACTION_DATA,
         self::ACTION_LOG,
+        self::ACTION_ORDER,
     );
 
     /**
@@ -176,6 +264,68 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * Start order synchronization based on specific parameters
+     *
+     * @param array $params synchronization parameters
+     *
+     * @return array
+     */
+    public function syncOrders($params = array())
+    {
+        // get all params for order synchronization
+        $params = $this->filterParamsForSync($params);
+        /** @var Lengow_Connector_Model_Import $import */
+        $import = Mage::getModel('lengow/import', $params);
+        $result = $import->exec();
+        // if global error return error message and request http code
+        if (isset($result[Lengow_Connector_Model_Import::ERRORS][0])) {
+            return $this->generateErrorReturn(
+                Lengow_Connector_Model_Connector::CODE_403,
+                $result[Lengow_Connector_Model_Import::ERRORS][0]
+            );
+        }
+        unset($result[Lengow_Connector_Model_Import::ERRORS]);
+        return $result;
+    }
+
+    /**
+     * Get all order data from a marketplace reference
+     *
+     * @param string|null $marketplaceSku marketplace order reference
+     * @param string|null $marketplaceName marketplace code
+     * @param string $type Toolbox order data type
+     *
+     * @return array
+     */
+    public function getOrderData($marketplaceSku = null, $marketplaceName = null, $type = self::DATA_TYPE_ORDER)
+    {
+        $lengowOrders = $marketplaceSku && $marketplaceName
+            ? Mage::getModel('lengow/import_order')->getAllLengowOrders($marketplaceSku, $marketplaceName)
+            : array();
+        // if no reference is found, process is blocked
+        if (empty($lengowOrders)) {
+            return $this->generateErrorReturn(
+                Lengow_Connector_Model_Connector::CODE_404,
+                $this->_helper->setLogMessage('log.import.unable_find_order')
+            );
+        }
+        $orders = array();
+        foreach ($lengowOrders as $data) {
+            if ($type === self::DATA_TYPE_EXTRA) {
+                return $this->getOrderExtraData($data);
+            }
+            $marketplaceLabel = $data[Lengow_Connector_Model_Import_Order::FIELD_MARKETPLACE_LABEL];
+            $orders[] = $this->getOrderDataByType($data, $type);
+        }
+        return array(
+            self::ORDER_MARKETPLACE_SKU => $marketplaceSku,
+            self::ORDER_MARKETPLACE_NAME => $marketplaceName,
+            self::ORDER_MARKETPLACE_LABEL => isset($marketplaceLabel) ? $marketplaceLabel : null,
+            self::ORDERS => $orders,
+        );
+    }
+
+    /**
      * Is toolbox action
      *
      * @param string $action toolbox action
@@ -194,7 +344,7 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
      */
     public static function isCurlActivated()
     {
-        return function_exists('curl_version');
+        return function_exists(self::PHP_EXTENSION_CURL);
     }
 
     /**
@@ -431,7 +581,7 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
      */
     private function isSimpleXMLActivated()
     {
-        return function_exists('simplexml_load_file');
+        return function_exists(self::PHP_EXTENSION_SIMPLEXML);
     }
 
     /**
@@ -441,7 +591,7 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
      */
     private function isJsonActivated()
     {
-        return function_exists('json_decode');
+        return function_exists(self::PHP_EXTENSION_JSON);
     }
 
     /**
@@ -463,5 +613,342 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
         } catch (\Exception $e) {
             return false;
         }
+    }
+
+    /**
+     * Filter parameters for order synchronization
+     *
+     * @param array $params synchronization params
+     *
+     * @return array
+     */
+    private function filterParamsForSync($params = array())
+    {
+        $paramsFiltered = array(
+            Lengow_Connector_Model_Import::PARAM_TYPE => Lengow_Connector_Model_Import::TYPE_TOOLBOX,
+        );
+        if (isset(
+            $params[self::PARAM_MARKETPLACE_SKU],
+            $params[self::PARAM_MARKETPLACE_NAME],
+            $params[self::PARAM_SHOP_ID]
+        )) {
+            // get all parameters to synchronize a specific order
+            $paramsFiltered[Lengow_Connector_Model_Import::PARAM_MARKETPLACE_SKU] = $params[
+                self::PARAM_MARKETPLACE_SKU
+            ];
+            $paramsFiltered[Lengow_Connector_Model_Import::PARAM_MARKETPLACE_NAME] = $params[
+                self::PARAM_MARKETPLACE_NAME
+            ];
+            $paramsFiltered[Lengow_Connector_Model_Import::PARAM_STORE_ID] = (int) $params[self::PARAM_SHOP_ID];
+        } elseif (isset($params[self::PARAM_CREATED_FROM], $params[self::PARAM_CREATED_TO])) {
+            // get all parameters to synchronize over a fixed period
+            $paramsFiltered[Lengow_Connector_Model_Import::PARAM_CREATED_FROM] = $params[self::PARAM_CREATED_FROM];
+            $paramsFiltered[Lengow_Connector_Model_Import::PARAM_CREATED_TO] = $params[self::PARAM_CREATED_TO];
+        } elseif (isset($params[self::PARAM_DAYS])) {
+            // get all parameters to synchronize over a time interval
+            $paramsFiltered[Lengow_Connector_Model_Import::PARAM_DAYS] = (int) $params[self::PARAM_DAYS];
+        }
+        // force order synchronization by removing pending errors
+        if (isset($params[self::PARAM_FORCE])) {
+            $paramsFiltered[Lengow_Connector_Model_Import::PARAM_FORCE_SYNC] = (bool) $params[self::PARAM_FORCE];
+        }
+        return $paramsFiltered;
+    }
+
+    /**
+     * Get array of all the data of the order
+     *
+     * @param array $data All Lengow order data
+     * @param string $type Toolbox order data type
+     *
+     * @return array
+     */
+    private function getOrderDataByType($data, $type)
+    {
+        $order = $data[Lengow_Connector_Model_Import_Order::FIELD_ORDER_ID]
+            ? Mage::getModel('sales/order')->load((int) $data[Lengow_Connector_Model_Import_Order::FIELD_ORDER_ID])
+            : null;
+        $orderReferences = array(
+            self::ID => (int) $data[Lengow_Connector_Model_Import_Order::FIELD_ID],
+            self::ORDER_MERCHANT_ORDER_ID  => $order ? (int) $order->getId() : null,
+            self::ORDER_MERCHANT_ORDER_REFERENCE  => $order ? $order->getIncrementId() : null,
+            self::ORDER_DELIVERY_ADDRESS_ID =>
+                (int) $data[Lengow_Connector_Model_Import_Order::FIELD_DELIVERY_ADDRESS_ID],
+        );
+        switch ($type) {
+            case self::DATA_TYPE_ACTION:
+                $orderData = array(
+                    self::ACTIONS => $order ? $this->getOrderActionData((int) $order->getId()) : array(),
+                );
+                break;
+            case self::DATA_TYPE_ERROR:
+                $orderData = array(
+                    self::ERRORS => $this->getOrderErrorsData(
+                        (int) $data[Lengow_Connector_Model_Import_Order::FIELD_ID]
+                    ),
+                );
+                break;
+            case self::DATA_TYPE_ORDER_STATUS:
+                $orderData = array(
+                    self::ORDER_STATUSES => $order ? $this->getOrderStatusesData($order) : array(),
+                );
+                break;
+            case self::DATA_TYPE_ORDER:
+            default:
+                $orderData = $this->getAllOrderData($data, $order);
+        }
+        return array_merge($orderReferences, $orderData);
+    }
+
+    /**
+     * Get array of all the data of the order
+     *
+     * @param array $data All Lengow order data
+     * @param Mage_Sales_Model_Order|null $order Magento order instance
+     *
+     * @return array
+     */
+    private function getAllOrderData(array $data, $order = null)
+    {
+        $importedAt = 0;
+        $lastTrack = null;
+        $hasActionInProgress = false;
+        $orderTypes = json_decode($data[Lengow_Connector_Model_Import_Order::FIELD_ORDER_TYPES], true);
+        if ($order) {
+            $tracks = $order->getShipmentsCollection()->getLastItem()->getAllTracks();
+            $lastTrack = !empty($tracks) ? end($tracks) : null;
+            $hasActionInProgress = (bool) Mage::getModel('lengow/import_action')->getActionsByOrderId(
+                (int) $order->getId(),
+                true
+            );
+            $importedAt = strtotime($order->getStatusHistoryCollection()->getFirstItem()->getCreatedAt());
+        }
+        return array(
+            self::ORDER_DELIVERY_COUNTRY_ISO => $data[Lengow_Connector_Model_Import_Order::FIELD_DELIVERY_COUNTRY_ISO],
+            self::ORDER_PROCESS_STATE => $this->getOrderProcessLabel(
+                (int) $data[Lengow_Connector_Model_Import_Order::FIELD_ORDER_PROCESS_STATE]
+            ),
+            self::ORDER_STATUS => $data[Lengow_Connector_Model_Import_Order::FIELD_ORDER_LENGOW_STATE],
+            self::ORDER_MERCHANT_ORDER_STATUS => $order ? $order->getState() : null,
+            self::ORDER_STATUSES => $order ? $this->getOrderStatusesData($order) : array(),
+            self::ORDER_TOTAL_PAID => (float) $data[Lengow_Connector_Model_Import_Order::FIELD_TOTAL_PAID],
+            self::ORDER_MERCHANT_TOTAL_PAID => $order ? (float) $order->getTotalPaid() : null,
+            self::ORDER_COMMISSION => (float) $data[Lengow_Connector_Model_Import_Order::FIELD_COMMISSION],
+            self::ORDER_CURRENCY => $data[Lengow_Connector_Model_Import_Order::FIELD_CURRENCY],
+            self::CUSTOMER => array(
+                self::CUSTOMER_NAME => !empty($data[Lengow_Connector_Model_Import_Order::FIELD_CUSTOMER_NAME])
+                    ? $data[Lengow_Connector_Model_Import_Order::FIELD_CUSTOMER_NAME]
+                    : null,
+                self::CUSTOMER_EMAIL => !empty($data[Lengow_Connector_Model_Import_Order::FIELD_CUSTOMER_EMAIL])
+                    ? $data[Lengow_Connector_Model_Import_Order::FIELD_CUSTOMER_EMAIL]
+                    : null,
+                self::CUSTOMER_VAT_NUMBER => !empty(
+                    $data[Lengow_Connector_Model_Import_Order::FIELD_CUSTOMER_VAT_NUMBER]
+                )
+                    ? $data[Lengow_Connector_Model_Import_Order::FIELD_CUSTOMER_VAT_NUMBER]
+                    : null,
+            ),
+            self::ORDER_DATE => strtotime($data[Lengow_Connector_Model_Import_Order::FIELD_ORDER_DATE]),
+            self::ORDER_TYPES => array(
+                self::ORDER_TYPE_EXPRESS => isset($orderTypes[Lengow_Connector_Model_Import_Order::TYPE_EXPRESS]),
+                self::ORDER_TYPE_PRIME => isset($orderTypes[Lengow_Connector_Model_Import_Order::TYPE_PRIME]),
+                self::ORDER_TYPE_BUSINESS => isset($orderTypes[Lengow_Connector_Model_Import_Order::TYPE_BUSINESS]),
+                self::ORDER_TYPE_DELIVERED_BY_MARKETPLACE => isset(
+                    $orderTypes[Lengow_Connector_Model_Import_Order::TYPE_DELIVERED_BY_MARKETPLACE]
+                ),
+            ),
+            self::ORDER_ITEMS => (int) $data[Lengow_Connector_Model_Import_Order::FIELD_ORDER_ITEM],
+            self::TRACKING => array(
+                self::TRACKING_CARRIER => !empty($data[Lengow_Connector_Model_Import_Order::FIELD_CARRIER])
+                    ? $data[Lengow_Connector_Model_Import_Order::FIELD_CARRIER]
+                    : null,
+                self::TRACKING_METHOD => !empty($data[Lengow_Connector_Model_Import_Order::FIELD_CARRIER_METHOD])
+                    ? $data[Lengow_Connector_Model_Import_Order::FIELD_CARRIER_METHOD]
+                    : null,
+                self::TRACKING_NUMBER => !empty($data[Lengow_Connector_Model_Import_Order::FIELD_CARRIER_TRACKING])
+                    ? $data[Lengow_Connector_Model_Import_Order::FIELD_CARRIER_TRACKING]
+                    : null,
+                self::TRACKING_RELAY_ID => !empty($data[Lengow_Connector_Model_Import_Order::FIELD_CARRIER_RELAY_ID])
+                    ? $data[Lengow_Connector_Model_Import_Order::FIELD_CARRIER_RELAY_ID]
+                    : null,
+                self::TRACKING_MERCHANT_CARRIER => $lastTrack ? $lastTrack->getTitle() : null,
+                self::TRACKING_MERCHANT_TRACKING_NUMBER => $lastTrack ? $lastTrack->getNumber() : null,
+                self::TRACKING_MERCHANT_TRACKING_URL => null,
+            ),
+            self::ORDER_IS_REIMPORTED => $order
+                && $order->getData(Lengow_Connector_Model_Import_Order::FIELD_LEGACY_IS_REIMPORTED),
+            self::ORDER_IS_IN_ERROR => (bool) $data[Lengow_Connector_Model_Import_Order::FIELD_IS_IN_ERROR],
+            self::ERRORS => $this->getOrderErrorsData((int) $data[Lengow_Connector_Model_Import_Order::FIELD_ID]),
+            self::ORDER_ACTION_IN_PROGRESS => $hasActionInProgress,
+            self::ACTIONS => $order ? $this->getOrderActionData((int) $order->getId()) : array(),
+            self::CREATED_AT => strtotime($data[Lengow_Connector_Model_Import_Order::FIELD_CREATED_AT]),
+            self::UPDATED_AT => strtotime($data[Lengow_Connector_Model_Import_Order::FIELD_UPDATED_AT]),
+            self::IMPORTED_AT => $importedAt,
+        );
+    }
+
+    /**
+     * Get array of all the errors of a Lengow order
+     *
+     * @param integer $lengowOrderId Lengow order id
+     *
+     * @return array
+     */
+    private function getOrderErrorsData($lengowOrderId)
+    {
+        $orderErrors = array();
+        $errors = Mage::getModel('lengow/import_ordererror')->getOrderErrors($lengowOrderId);
+        if ($errors) {
+            foreach ($errors as $error) {
+                $type = (int) $error[Lengow_Connector_Model_Import_Ordererror::FIELD_TYPE];
+                $orderErrors[] = array(
+                    self::ID => (int) $error[Lengow_Connector_Model_Import_Ordererror::FIELD_ID],
+                    self::ERROR_TYPE => $type === Lengow_Connector_Model_Import_Ordererror::TYPE_ERROR_IMPORT
+                        ? self::TYPE_ERROR_IMPORT
+                        : self::TYPE_ERROR_SEND,
+                    self::ERROR_MESSAGE => $this->_helper->decodeLogMessage(
+                        $error[Lengow_Connector_Model_Import_Ordererror::FIELD_MESSAGE],
+                        Lengow_Connector_Helper_Translation::DEFAULT_ISO_CODE
+                    ),
+                    self::ERROR_FINISHED => (bool) $error[Lengow_Connector_Model_Import_Ordererror::FIELD_IS_FINISHED],
+                    self::ERROR_REPORTED => (bool) $error[Lengow_Connector_Model_Import_Ordererror::FIELD_MAIL],
+                    self::CREATED_AT => strtotime($error[Lengow_Connector_Model_Import_Ordererror::FIELD_CREATED_AT]),
+                    self::UPDATED_AT => $error[Lengow_Connector_Model_Import_Ordererror::FIELD_UPDATED_AT]
+                        ? strtotime($error[Lengow_Connector_Model_Import_Ordererror::FIELD_UPDATED_AT])
+                        : 0,
+                );
+            }
+        }
+        return $orderErrors;
+    }
+
+    /**
+     * Get array of all the actions of a Lengow order
+     *
+     * @param integer $orderId Magento order id
+     *
+     * @return array
+     */
+    private function getOrderActionData($orderId)
+    {
+        $orderActions = array();
+        $actions = Mage::getModel('lengow/import_action')->getActionsByOrderId($orderId);
+        if ($actions) {
+            foreach ($actions as $action) {
+                $orderActions[] = array(
+                    self::ID => (int) $action[Lengow_Connector_Model_Import_Action::FIELD_ID],
+                    self::ACTION_ID => (int) $action[Lengow_Connector_Model_Import_Action::FIELD_ACTION_ID],
+                    self::ACTION_PARAMETERS => json_decode(
+                        $action[Lengow_Connector_Model_Import_Action::FIELD_PARAMETERS],
+                        true
+                    ),
+                    self::ACTION_RETRY => (int) $action[Lengow_Connector_Model_Import_Action::FIELD_RETRY],
+                    self::ACTION_FINISH => $action[Lengow_Connector_Model_Import_Action::FIELD_STATE] ===
+                        Lengow_Connector_Model_Import_Action::STATE_FINISH,
+                    self::CREATED_AT => strtotime($action[Lengow_Connector_Model_Import_Action::FIELD_CREATED_AT]),
+                    self::UPDATED_AT => $action[Lengow_Connector_Model_Import_Action::FIELD_UPDATED_AT]
+                        ? strtotime($action[Lengow_Connector_Model_Import_Action::FIELD_UPDATED_AT])
+                        : 0,
+                );
+            }
+        }
+        return $orderActions;
+    }
+
+    /**
+     * Get array of all the statuses of an order
+     *
+     * @param Mage_Sales_Model_Order $order Magento order instance
+     *
+     * @return array
+     */
+    private function getOrderStatusesData($order)
+    {
+        $orderStatuses = array();
+        $pendingStatusHistoryCreatedAt = $order->getStatusHistoryCollection()->getFirstItem()->getCreatedAt();
+        $invoiceCreatedAt = $order->getInvoiceCollection()->getFirstItem()->getCreatedAt();
+        $shipmentCreatedAt = $order->getShipmentsCollection()->getFirstItem()->getCreatedAt();
+        if ($pendingStatusHistoryCreatedAt) {
+            $orderStatuses[] = array(
+                self::ORDER_MERCHANT_ORDER_STATUS => Mage_Sales_Model_Order::STATE_NEW,
+                self::ORDER_STATUS => null,
+                self::CREATED_AT => strtotime($pendingStatusHistoryCreatedAt),
+            );
+        }
+        if ($invoiceCreatedAt) {
+            $orderStatuses[] = array(
+                self::ORDER_MERCHANT_ORDER_STATUS => Mage_Sales_Model_Order::STATE_PROCESSING,
+                self::ORDER_STATUS => Lengow_Connector_Model_Import_Order::STATE_WAITING_SHIPMENT,
+                self::CREATED_AT => strtotime($invoiceCreatedAt),
+            );
+        }
+        if ($shipmentCreatedAt) {
+            $orderStatuses[] = array(
+                self::ORDER_MERCHANT_ORDER_STATUS => Mage_Sales_Model_Order::STATE_COMPLETE,
+                self::ORDER_STATUS => Lengow_Connector_Model_Import_Order::STATE_SHIPPED,
+                self::CREATED_AT => strtotime($shipmentCreatedAt),
+            );
+        }
+        if ($order->getState() === Mage_Sales_Model_Order::STATE_CANCELED) {
+            $orderStatuses[] = array(
+                self::ORDER_MERCHANT_ORDER_STATUS => Mage_Sales_Model_Order::STATE_CANCELED,
+                self::ORDER_STATUS => Lengow_Connector_Model_Import_Order::STATE_CANCELED,
+                self::CREATED_AT => strtotime($order->getUpdatedAt()),
+            );
+        }
+        return $orderStatuses;
+    }
+
+    /**
+     * Get all the data of the order at the time of import
+     *
+     * @param array $data All Lengow order data
+     *
+     * @return array
+     */
+    private function getOrderExtraData($data)
+    {
+        return json_decode($data[Lengow_Connector_Model_Import_Order::FIELD_EXTRA], true);
+    }
+
+    /**
+     * Get order process label
+     *
+     * @param integer $orderProcess Lengow order process (new, import or finish)
+     *
+     * @return string
+     */
+    private function getOrderProcessLabel($orderProcess)
+    {
+        switch ($orderProcess) {
+            case Lengow_Connector_Model_Import_Order::PROCESS_STATE_NEW:
+                return self::PROCESS_STATE_NEW;
+            case Lengow_Connector_Model_Import_Order::PROCESS_STATE_IMPORT:
+                return self::PROCESS_STATE_IMPORT;
+            case Lengow_Connector_Model_Import_Order::PROCESS_STATE_FINISH:
+            default:
+                return self::PROCESS_STATE_FINISH;
+        }
+    }
+
+    /**
+     * Generates an error return for the Toolbox webservice
+     *
+     * @param integer $httpCode request http code
+     * @param string $error error message
+     *
+     * @return array
+     */
+    private function generateErrorReturn($httpCode, $error)
+    {
+        return array(
+            self::ERRORS => array(
+                self::ERROR_MESSAGE => $this->_helper->decodeLogMessage(
+                    $error,
+                    Lengow_Connector_Helper_Translation::DEFAULT_ISO_CODE
+                ),
+                self::ERROR_CODE => $httpCode,
+            ),
+        );
     }
 }

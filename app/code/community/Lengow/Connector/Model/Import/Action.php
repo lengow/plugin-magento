@@ -23,73 +23,40 @@
 class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
 {
     /**
-     * @var integer action state for new action
+     * @var string Lengow action table name
      */
-    const STATE_NEW = 0;
+    const TABLE_ACTION = 'lengow_action';
 
-    /**
-     * @var integer action state for action finished
-     */
+    /* Action fields */
+    const FIELD_ID = 'id';
+    const FIELD_ORDER_ID = 'order_id';
+    const FIELD_ACTION_ID = 'action_id';
+    const FIELD_ORDER_LINE_SKU = 'order_line_sku';
+    const FIELD_ACTION_TYPE = 'action_type';
+    const FIELD_RETRY = 'retry';
+    const FIELD_PARAMETERS = 'parameters';
+    const FIELD_STATE = 'state';
+    const FIELD_CREATED_AT = 'created_at';
+    const FIELD_UPDATED_AT = 'updated_at';
+
+    /* Action states */
+    const STATE_NEW = 0;
     const STATE_FINISH = 1;
 
-    /**
-     * @var string action type ship
-     */
+    /* Action types */
     const TYPE_SHIP = 'ship';
-
-    /**
-     * @var string action type cancel
-     */
     const TYPE_CANCEL = 'cancel';
 
-    /**
-     * @var string action argument action type
-     */
+    /* Action API arguments */
     const ARG_ACTION_TYPE = 'action_type';
-
-    /**
-     * @var string action argument line
-     */
     const ARG_LINE = 'line';
-
-    /**
-     * @var string action argument carrier
-     */
     const ARG_CARRIER = 'carrier';
-
-    /**
-     * @var string action argument carrier name
-     */
     const ARG_CARRIER_NAME = 'carrier_name';
-
-    /**
-     * @var string action argument custom carrier
-     */
     const ARG_CUSTOM_CARRIER = 'custom_carrier';
-
-    /**
-     * @var string action argument shipping method
-     */
     const ARG_SHIPPING_METHOD = 'shipping_method';
-
-    /**
-     * @var string action argument tracking number
-     */
     const ARG_TRACKING_NUMBER = 'tracking_number';
-
-    /**
-     * @var string action argument shipping price
-     */
     const ARG_SHIPPING_PRICE = 'shipping_price';
-
-    /**
-     * @var string action argument shipping date
-     */
     const ARG_SHIPPING_DATE = 'shipping_date';
-
-    /**
-     * @var string action argument delivery date
-     */
     const ARG_DELIVERY_DATE = 'delivery_date';
 
     /**
@@ -116,13 +83,34 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
      * update   => Fields allowed when updating registration
      */
     protected $_fieldList = array(
-        'order_id' => array('required' => true, 'updated' => false),
-        'action_id' => array('required' => true, 'updated' => false),
-        'order_line_sku' => array('required' => false, 'updated' => false),
-        'action_type' => array('required' => true, 'updated' => false),
-        'retry' => array('required' => false, 'updated' => true),
-        'parameters' => array('required' => true, 'updated' => false),
-        'state' => array('required' => false, 'updated' => true),
+        self::FIELD_ORDER_ID => array(
+            Lengow_Connector_Helper_Data::FIELD_REQUIRED => true,
+            Lengow_Connector_Helper_Data::FIELD_CAN_BE_UPDATED => false,
+        ),
+        self::FIELD_ACTION_ID => array(
+            Lengow_Connector_Helper_Data::FIELD_REQUIRED => true,
+            Lengow_Connector_Helper_Data::FIELD_CAN_BE_UPDATED => false,
+        ),
+        self::FIELD_ORDER_LINE_SKU => array(
+            Lengow_Connector_Helper_Data::FIELD_REQUIRED => false,
+            Lengow_Connector_Helper_Data::FIELD_CAN_BE_UPDATED => false,
+        ),
+        self::FIELD_ACTION_TYPE => array(
+            Lengow_Connector_Helper_Data::FIELD_REQUIRED => true,
+            Lengow_Connector_Helper_Data::FIELD_CAN_BE_UPDATED => false,
+        ),
+        self::FIELD_RETRY => array(
+            Lengow_Connector_Helper_Data::FIELD_REQUIRED => false,
+            Lengow_Connector_Helper_Data::FIELD_CAN_BE_UPDATED => true,
+        ),
+        self::FIELD_PARAMETERS => array(
+            Lengow_Connector_Helper_Data::FIELD_REQUIRED => true,
+            Lengow_Connector_Helper_Data::FIELD_CAN_BE_UPDATED => false,
+        ),
+        self::FIELD_STATE => array(
+            Lengow_Connector_Helper_Data::FIELD_REQUIRED => false,
+            Lengow_Connector_Helper_Data::FIELD_CAN_BE_UPDATED => true,
+        ),
     );
 
     /**
@@ -144,15 +132,18 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
     public function createAction($params = array())
     {
         foreach ($this->_fieldList as $key => $value) {
-            if (!array_key_exists($key, $params) && $value['required']) {
+            if (!array_key_exists($key, $params) && $value[Lengow_Connector_Helper_Data::FIELD_REQUIRED]) {
                 return false;
             }
         }
         foreach ($params as $key => $value) {
             $this->setData($key, $value);
         }
-        $this->setData('state', self::STATE_NEW);
-        $this->setData('created_at', Mage::getModel('core/date')->gmtDate('Y-m-d H:i:s'));
+        $this->setData(self::FIELD_STATE, self::STATE_NEW);
+        $this->setData(
+            self::FIELD_CREATED_AT,
+            Mage::getModel('core/date')->gmtDate(Lengow_Connector_Helper_Data::DATE_FULL)
+        );
         try {
             return $this->save();
         } catch (\Exception $e) {
@@ -172,7 +163,7 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
         if (!$this->id) {
             return false;
         }
-        if ((int) $this->getData('state') !== self::STATE_NEW) {
+        if ((int) $this->getData(self::FIELD_STATE) !== self::STATE_NEW) {
             return false;
         }
         $updatedFields = $this->getUpdatedFields();
@@ -181,7 +172,10 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
                 $this->setData($key, $value);
             }
         }
-        $this->setData('updated_at', Mage::getModel('core/date')->gmtDate('Y-m-d H:i:s'));
+        $this->setData(
+            self::FIELD_UPDATED_AT,
+            Mage::getModel('core/date')->gmtDate(Lengow_Connector_Helper_Data::DATE_FULL)
+        );
         try {
             return $this->save();
         } catch (\Exception $e) {
@@ -198,7 +192,7 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
     {
         $updatedFields = array();
         foreach ($this->_fieldList as $key => $value) {
-            if ($value['updated']) {
+            if ($value[Lengow_Connector_Helper_Data::FIELD_CAN_BE_UPDATED]) {
                 $updatedFields[] = $key;
             }
         }
@@ -215,10 +209,10 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
     public function getActionByActionId($actionId)
     {
         $results = $this->getCollection()
-            ->addFieldToFilter('action_id', $actionId)
+            ->addFieldToFilter(self::FIELD_ACTION_ID, $actionId)
             ->getData();
         if (!empty($results)) {
-            return (int) $results[0]['id'];
+            return (int) $results[0][self::FIELD_ID];
         }
         return false;
     }
@@ -227,17 +221,19 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
      * Find active actions by order id
      *
      * @param integer $orderId Magento order id
+     * @param boolean $onlyActive get only active actions
      * @param string|null $actionType action type (ship or cancel)
      *
      * @return array|false
      */
-    public function getActiveActionByOrderId($orderId, $actionType = null)
+    public function getActionsByOrderId($orderId, $onlyActive = false, $actionType = null)
     {
-        $collection = $this->getCollection()
-            ->addFieldToFilter('order_id', $orderId)
-            ->addFieldToFilter('state', self::STATE_NEW);
+        $collection = $this->getCollection()->addFieldToFilter(self::FIELD_ORDER_ID, $orderId);
+        if ($onlyActive) {
+            $collection->addFieldToFilter(self::FIELD_STATE, self::STATE_NEW);
+        }
         if ($actionType !== null) {
-            $collection->addFieldToFilter('action_type', $actionType);
+            $collection->addFieldToFilter(self::FIELD_RETRY, $actionType);
         }
         $results = $collection->getData();
         if (!empty($results)) {
@@ -256,12 +252,12 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
     public function getLastOrderActionType($orderId)
     {
         $results = $this->getCollection()
-            ->addFieldToFilter('order_id', $orderId)
-            ->addFieldToFilter('state', self::STATE_NEW)
-            ->addFieldToSelect('action_type');
+            ->addFieldToFilter(self::FIELD_ORDER_ID, $orderId)
+            ->addFieldToFilter(self::FIELD_STATE, self::STATE_NEW)
+            ->addFieldToSelect(self::FIELD_ACTION_TYPE);
         if (!empty($results)) {
             $lastAction = $results->getLastItem()->getData();
-            return (string) $lastAction['action_type'];
+            return (string) $lastAction[self::FIELD_ACTION_TYPE];
         }
         return false;
     }
@@ -317,9 +313,9 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
                 if ($actionId) {
                     /** @var Lengow_Connector_Model_Import_Action $action */
                     $action = Mage::getModel('lengow/import_action')->load($actionId);
-                    if ((int) $action->getData('state') === 0) {
-                        $retry = (int) $action->getData('retry') + 1;
-                        $action->updateAction(array('retry' => $retry));
+                    if ((int) $action->getData(self::FIELD_STATE) === 0) {
+                        $retry = (int) $action->getData(self::FIELD_RETRY) + 1;
+                        $action->updateAction(array(self::FIELD_RETRY => $retry));
                         $sendAction = false;
                     }
                     unset($action);
@@ -327,11 +323,13 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
                     // if update doesn't work, create new action
                     $this->createAction(
                         array(
-                            'order_id' => $order->getId(),
-                            'action_type' => $params[self::ARG_ACTION_TYPE],
-                            'action_id' => $row->id,
-                            'order_line_sku' => isset($params[self::ARG_LINE]) ? $params[self::ARG_LINE] : null,
-                            'parameters' => Mage::helper('core')->jsonEncode($params),
+                            self::FIELD_ORDER_ID => $order->getId(),
+                            self::FIELD_ACTION_TYPE => $params[self::ARG_ACTION_TYPE],
+                            self::FIELD_ACTION_ID => $row->id,
+                            self::FIELD_ORDER_LINE_SKU => isset($params[self::ARG_LINE])
+                                ? $params[self::ARG_LINE]
+                                : null,
+                            self::FIELD_PARAMETERS => Mage::helper('core')->jsonEncode($params),
                         )
                     );
                     $sendAction = false;
@@ -362,11 +360,11 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
             if (isset($result->id)) {
                 $this->createAction(
                     array(
-                        'order_id' => $order->getId(),
-                        'action_type' => $params[self::ARG_ACTION_TYPE],
-                        'action_id' => $result->id,
-                        'order_line_sku' => isset($params[self::ARG_LINE]) ? $params[self::ARG_LINE] : null,
-                        'parameters' => Mage::helper('core')->jsonEncode($params),
+                        self::FIELD_ORDER_ID => $order->getId(),
+                        self::FIELD_ACTION_TYPE => $params[self::ARG_ACTION_TYPE],
+                        self::FIELD_ACTION_ID => $result->id,
+                        self::FIELD_ORDER_LINE_SKU => isset($params[self::ARG_LINE]) ? $params[self::ARG_LINE] : null,
+                        self::FIELD_PARAMETERS => Mage::helper('core')->jsonEncode($params),
                     )
                 );
             } else {
@@ -391,7 +389,7 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
             Lengow_Connector_Helper_Data::CODE_ACTION,
             $helper->setLogMessage('log.order_action.call_tracking', array('parameters' => $paramList)),
             false,
-            $order->getData('order_id_lengow')
+            $order->getData(Lengow_Connector_Model_Import_Order::FIELD_LEGACY_MARKETPLACE_SKU)
         );
     }
 
@@ -407,16 +405,16 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
     {
         // get all order action
         $collection = $this->getCollection()
-            ->addFieldToFilter('order_id', $orderId)
-            ->addFieldToFilter('state', self::STATE_NEW);
+            ->addFieldToFilter(self::FIELD_ORDER_ID, $orderId)
+            ->addFieldToFilter(self::FIELD_STATE, self::STATE_NEW);
         if ($actionType !== null) {
-            $collection->addFieldToFilter('action_type', $actionType);
+            $collection->addFieldToFilter(self::FIELD_ACTION_TYPE, $actionType);
         }
-        $results = $collection->addFieldToSelect('id')->getData();
+        $results = $collection->addFieldToSelect(self::FIELD_ID)->getData();
         if (!empty($results)) {
             foreach ($results as $result) {
-                $action = Mage::getModel('lengow/import_action')->load($result['id']);
-                $action->updateAction(array('state' => self::STATE_FINISH));
+                $action = Mage::getModel('lengow/import_action')->load($result[self::FIELD_ID]);
+                $action->updateAction(array(self::FIELD_STATE => self::STATE_FINISH));
                 unset($action);
             }
             return true;
@@ -463,8 +461,8 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
             $helper->setLogMessage(
                 'log.order_action.connector_get_all_action',
                 array(
-                    'date_from' => $coreDate->date('Y-m-d H:i:s', $dateFrom),
-                    'date_to' => $coreDate->date('Y-m-d H:i:s', $dateTo),
+                    'date_from' => $coreDate->date(Lengow_Connector_Helper_Data::DATE_FULL, $dateFrom),
+                    'date_to' => $coreDate->date(Lengow_Connector_Helper_Data::DATE_FULL, $dateTo),
                 )
             ),
             $logOutput
@@ -474,9 +472,13 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
                 Lengow_Connector_Model_Connector::GET,
                 Lengow_Connector_Model_Connector::API_ORDER_ACTION,
                 array(
-                    'updated_from' => Mage::app()->getLocale()->date($dateFrom)->toString('c'),
-                    'updated_to' => Mage::app()->getLocale()->date($dateTo)->toString('c'),
-                    'page' => $page,
+                    Lengow_Connector_Model_Import::ARG_UPDATED_FROM => Mage::app()->getLocale()
+                        ->date($dateFrom)
+                        ->toString(Lengow_Connector_Helper_Data::DATE_ISO_8601),
+                    Lengow_Connector_Model_Import::ARG_UPDATED_TO => Mage::app()->getLocale()
+                        ->date($dateTo)
+                        ->toString(Lengow_Connector_Helper_Data::DATE_ISO_8601),
+                    Lengow_Connector_Model_Import::ARG_PAGE => $page,
                 ),
                 '',
                 $logOutput
@@ -497,72 +499,78 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
         }
         // check foreach action if is complete
         foreach ($activeActions as $action) {
-            if (!isset($apiActions[$action['action_id']])) {
+            if (!isset($apiActions[$action[self::FIELD_ACTION_ID]])) {
                 continue;
             }
-            if (isset($apiActions[$action['action_id']]->queued)
-                && isset($apiActions[$action['action_id']]->processed)
-                && isset($apiActions[$action['action_id']]->errors)
-            ) {
-                if ($apiActions[$action['action_id']]->queued == false) {
-                    // order action is waiting to return from the marketplace
-                    if ($apiActions[$action['action_id']]->processed == false
-                        && empty($apiActions[$action['action_id']]->errors)
-                    ) {
-                        continue;
-                    }
-                    // finish action in lengow_action table
-                    /** @var Lengow_Connector_Model_Import_Action $lengowAction */
-                    $lengowAction = Mage::getModel('lengow/import_action')->load($action['id']);
-                    $lengowAction->updateAction(array('state' => self::STATE_FINISH));
-                    $orderLengowId = Mage::getModel('lengow/import_order')
-                        ->getLengowOrderIdWithOrderId($action['order_id']);
-                    // if lengow order not exist do nothing (compatibility v2)
-                    if ($orderLengowId) {
-                        /** @var Lengow_Connector_Model_Import_Ordererror $orderError */
-                        $orderError = Mage::getModel('lengow/import_ordererror');
-                        $orderError->finishOrderErrors($orderLengowId, 'send');
-                        /** @var Lengow_Connector_Model_Import_Order $orderLengow */
-                        $orderLengow = Mage::getModel('lengow/import_order')->load($orderLengowId);
-                        if ((bool) $orderLengow->getData('is_in_error')) {
-                            $orderLengow->updateOrder(array('is_in_error' => 0));
-                        }
-                        $processStateFinish = $orderLengow->getOrderProcessState(
-                            Lengow_Connector_Model_Import_Order::STATE_CLOSED
-                        );
-                        if ((int) $orderLengow->getData('order_process_state') !== $processStateFinish) {
-                            // if action is accepted -> close order and finish all order actions
-                            if ($apiActions[$action['action_id']]->processed == true
-                                && empty($apiActions[$action['action_id']]->errors)
-                            ) {
-                                $orderLengow->updateOrder(array('order_process_state' => $processStateFinish));
-                                $this->finishAllActions($action['order_id']);
-                            } else {
-                                // if action is denied -> create order error
-                                $orderError->createOrderError(
-                                    array(
-                                        'order_lengow_id' => $orderLengowId,
-                                        'message' => $apiActions[$action['action_id']]->errors,
-                                        'type' => 'send',
-                                    )
-                                );
-                                $orderLengow->updateOrder(array('is_in_error' => 1));
-                                $helper->log(
-                                    Lengow_Connector_Helper_Data::CODE_ACTION,
-                                    $helper->setLogMessage(
-                                        'log.order_action.call_action_failed',
-                                        array('decoded_message' => $apiActions[$action['action_id']]->errors)
-                                    ),
-                                    $logOutput,
-                                    $orderLengow->getData('marketplace_sku')
-                                );
-                                unset($orderError);
-                            }
-                        }
-                        unset($orderLengow);
-                    }
-                    unset($lengowAction);
+            $apiAction = $apiActions[$action[self::FIELD_ACTION_ID]];
+            if (isset($apiAction->queued, $apiAction->processed, $apiAction->errors) && $apiAction->queued == false) {
+                // order action is waiting to return from the marketplace
+                if ($apiAction->processed == false && empty($apiAction->errors)) {
+                    continue;
                 }
+                // finish action in lengow_action table
+                /** @var Lengow_Connector_Model_Import_Action $lengowAction */
+                $lengowAction = Mage::getModel('lengow/import_action')->load($action[self::FIELD_ID]);
+                $lengowAction->updateAction(array(self::FIELD_STATE => self::STATE_FINISH));
+                $orderLengowId = Mage::getModel('lengow/import_order')
+                    ->getLengowOrderIdWithOrderId($action[self::FIELD_ORDER_ID]);
+                // if lengow order not exist do nothing (compatibility v2)
+                if ($orderLengowId) {
+                    /** @var Lengow_Connector_Model_Import_Ordererror $orderError */
+                    $orderError = Mage::getModel('lengow/import_ordererror');
+                    $orderError->finishOrderErrors(
+                        $orderLengowId,
+                        Lengow_Connector_Model_Import_Ordererror::TYPE_ERROR_SEND
+                    );
+                    /** @var Lengow_Connector_Model_Import_Order $orderLengow */
+                    $orderLengow = Mage::getModel('lengow/import_order')->load($orderLengowId);
+                    if ((bool) $orderLengow->getData(Lengow_Connector_Model_Import_Order::FIELD_IS_IN_ERROR)) {
+                        $orderLengow->updateOrder(array(Lengow_Connector_Model_Import_Order::FIELD_IS_IN_ERROR => 0));
+                    }
+                    $processStateFinish = $orderLengow->getOrderProcessState(
+                        Lengow_Connector_Model_Import_Order::STATE_CLOSED
+                    );
+                    $orderProcessState = (int) $orderLengow->getData(
+                        Lengow_Connector_Model_Import_Order::FIELD_ORDER_PROCESS_STATE
+                    );
+                    if ($orderProcessState !== $processStateFinish) {
+                        // if action is accepted -> close order and finish all order actions
+                        if ($apiAction->processed == true && empty($apiAction->errors)) {
+                            $orderLengow->updateOrder(
+                                array(
+                                    Lengow_Connector_Model_Import_Order::FIELD_ORDER_PROCESS_STATE =>
+                                        $processStateFinish,
+                                )
+                            );
+                            $this->finishAllActions($action[self::FIELD_ORDER_ID]);
+                        } else {
+                            // if action is denied -> create order error
+                            $orderError->createOrderError(
+                                array(
+                                    Lengow_Connector_Model_Import_Ordererror::FIELD_ORDER_LENGOW_ID => $orderLengowId,
+                                    Lengow_Connector_Model_Import_Ordererror::FIELD_MESSAGE => $apiAction->errors,
+                                    Lengow_Connector_Model_Import_Ordererror::FIELD_TYPE =>
+                                        Lengow_Connector_Model_Import_Ordererror::TYPE_ERROR_SEND,
+                                )
+                            );
+                            $orderLengow->updateOrder(
+                                array(Lengow_Connector_Model_Import_Order::FIELD_IS_IN_ERROR => 1)
+                            );
+                            $helper->log(
+                                Lengow_Connector_Helper_Data::CODE_ACTION,
+                                $helper->setLogMessage(
+                                    'log.order_action.call_action_failed',
+                                    array('decoded_message' => $apiAction->errors)
+                                ),
+                                $logOutput,
+                                $orderLengow->getData('marketplace_sku')
+                            );
+                            unset($orderError);
+                        }
+                    }
+                    unset($orderLengow);
+                }
+                unset($lengowAction);
             }
         }
         $configHelper->set(Lengow_Connector_Helper_Config::LAST_UPDATE_ACTION_SYNCHRONIZATION, time());
@@ -593,18 +601,21 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
         if ($actions) {
             foreach ($actions as $action) {
                 /** @var Lengow_Connector_Model_Import_Action $action */
-                $action = Mage::getModel('lengow/import_action')->load($action['id']);
-                $action->updateAction(array('state' => self::STATE_FINISH));
+                $action = Mage::getModel('lengow/import_action')->load($action[self::FIELD_ID]);
+                $action->updateAction(array(self::FIELD_STATE => self::STATE_FINISH));
                 $orderLengowId = Mage::getModel('lengow/import_order')
-                    ->getLengowOrderIdWithOrderId($action['order_id']);
+                    ->getLengowOrderIdWithOrderId($action[self::FIELD_ORDER_ID]);
                 if ($orderLengowId) {
                     /** @var Lengow_Connector_Model_Import_Order $orderLengow */
                     $orderLengow = Mage::getModel('lengow/import_order')->load($orderLengowId);
                     $processStateFinish = $orderLengow->getOrderProcessState(
                         Lengow_Connector_Model_Import_Order::STATE_CLOSED
                     );
-                    if ((int) $orderLengow->getData('order_process_state') !== $processStateFinish
-                        && !(bool) $orderLengow->getData('is_in_error')
+                    $orderProcessState = (int) $orderLengow->getData(
+                        Lengow_Connector_Model_Import_Order::FIELD_ORDER_PROCESS_STATE
+                    );
+                    if ($orderProcessState !== $processStateFinish
+                        && !(bool) $orderLengow->getData(Lengow_Connector_Model_Import_Order::FIELD_IS_IN_ERROR)
                     ) {
                         // if action is denied -> create order error
                         $errorMessage = $helper->setLogMessage('lengow_log.exception.action_is_too_old');
@@ -612,12 +623,13 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
                         $orderError = Mage::getModel('lengow/import_ordererror');
                         $orderError->createOrderError(
                             array(
-                                'order_lengow_id' => $orderLengowId,
-                                'message' => $errorMessage,
-                                'type' => 'send',
+                                Lengow_Connector_Model_Import_Ordererror::FIELD_ORDER_LENGOW_ID => $orderLengowId,
+                                Lengow_Connector_Model_Import_Ordererror::FIELD_MESSAGE => $errorMessage,
+                                Lengow_Connector_Model_Import_Ordererror::FIELD_TYPE =>
+                                    Lengow_Connector_Model_Import_Ordererror::TYPE_ERROR_SEND,
                             )
                         );
-                        $orderLengow->updateOrder(array('is_in_error' => 1));
+                        $orderLengow->updateOrder(array(Lengow_Connector_Model_Import_Order::FIELD_IS_IN_ERROR => 1));
                         $decodedMessage = $helper->decodeLogMessage(
                             $errorMessage,
                             Lengow_Connector_Helper_Translation::DEFAULT_ISO_CODE
@@ -650,9 +662,9 @@ class Lengow_Connector_Model_Import_Action extends Mage_Core_Model_Abstract
     public function getOldActions()
     {
         $collection = $this->getCollection()
-            ->addFieldToFilter('state', self::STATE_NEW)
+            ->addFieldToFilter(self::FIELD_STATE, self::STATE_NEW)
             ->addFieldToFilter(
-                'created_at',
+                self::FIELD_CREATED_AT,
                 array(
                     'to' => time() - self::MAX_INTERVAL_TIME,
                     'datetime' => true,

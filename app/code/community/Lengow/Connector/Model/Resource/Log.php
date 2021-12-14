@@ -27,6 +27,6 @@ class Lengow_Connector_Model_Resource_Log extends Mage_Core_Model_Mysql4_Abstrac
      */
     protected function _construct()
     {
-        $this->_init('lengow/log', 'id');
+        $this->_init('lengow/log', Lengow_Connector_Model_Log::FIELD_ID);
     }
 }

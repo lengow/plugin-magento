@@ -25,22 +25,20 @@ $installedVersion = $configHelper->get(Lengow_Connector_Helper_Config::PLUGIN_VE
 if (version_compare($installedVersion, $version, '<')) {
     $installer = $this;
     $installer->startSetup();
-    $tableName = $installer->getTable('lengow_order');
+    $tableName = $installer->getTable(Lengow_Connector_Model_Import_Order::TABLE_ORDER);
     if ((bool) $installer->getConnection()->showTableStatus($tableName)) {
         // add order_types attribute in table lengow_order
-        $columnName = 'customer_vat_number';
+        $columnName = Lengow_Connector_Model_Import_Order::FIELD_CUSTOMER_VAT_NUMBER;
         if (!(bool) $installer->getConnection()->tableColumnExists($tableName, $columnName)) {
             $installer->getConnection()
                       ->addColumn(
                           $tableName,
                           $columnName,
                           array(
-                              'type' => Mage::getVersion() < '1.6.0.0'
-                                  ? Varien_Db_Ddl_Table::TYPE_LONGVARCHAR
-                                  : Varien_Db_Ddl_Table::TYPE_TEXT,
+                              'type' => Varien_Db_Ddl_Table::TYPE_TEXT,
                               'nullable' => true,
                               'default' => null,
-                              'after' => 'total_paid',
+                              'after' => Lengow_Connector_Model_Import_Order::FIELD_TOTAL_PAID,
                               'comment' => 'Customer Vat Number'
                           ));
         }

@@ -23,13 +23,29 @@
 class Lengow_Connector_Model_Import_Orderline extends Mage_Core_Model_Abstract
 {
     /**
+     * @var string Lengow order line table name
+     */
+    const TABLE_ORDER_LINE = 'lengow_order_line';
+
+    /* Order line fields */
+    const FIELD_ID = 'id';
+    const FIELD_ORDER_ID = 'order_id';
+    const FIELD_ORDER_LINE_ID = 'order_line_id';
+
+    /**
      * @var array $_fieldList field list for the table lengow_order_line
      * required => Required fields when creating registration
      * update   => Fields allowed when updating registration
      */
     protected $_fieldList = array(
-        'order_id' => array('required' => true, 'updated' => false),
-        'order_line_id' => array('required' => true, 'updated' => false),
+        self::FIELD_ORDER_ID => array(
+            Lengow_Connector_Helper_Data::FIELD_REQUIRED => true,
+            Lengow_Connector_Helper_Data::FIELD_CAN_BE_UPDATED => false,
+        ),
+        self::FIELD_ORDER_LINE_ID => array(
+            Lengow_Connector_Helper_Data::FIELD_REQUIRED => true,
+            Lengow_Connector_Helper_Data::FIELD_CAN_BE_UPDATED => false,
+        ),
     );
 
     /**
@@ -51,7 +67,7 @@ class Lengow_Connector_Model_Import_Orderline extends Mage_Core_Model_Abstract
     public function createOrderLine($params = array())
     {
         foreach ($this->_fieldList as $key => $value) {
-            if (!array_key_exists($key, $params) && $value['required']) {
+            if (!array_key_exists($key, $params) && $value[Lengow_Connector_Helper_Data::FIELD_REQUIRED]) {
                 return false;
             }
         }
@@ -63,7 +79,7 @@ class Lengow_Connector_Model_Import_Orderline extends Mage_Core_Model_Abstract
         } catch (\Exception $e) {
             /** @var Lengow_Connector_Helper_Data $helper */
             $helper = Mage::helper('lengow_connector/data');
-            $errorMessage = 'Orm error: "' . $e->getMessage() . '" ' . $e->getFile() . ' line ' . $e->getLine();
+            $errorMessage = '[Orm error]: "' . $e->getMessage() . '" in ' . $e->getFile() . ' on line ' . $e->getLine();
             $helper->log(
                 Lengow_Connector_Helper_Data::CODE_ORM,
                 $helper->setLogMessage('log.orm.record_insert_failed', array('error_message' => $errorMessage))
@@ -82,8 +98,8 @@ class Lengow_Connector_Model_Import_Orderline extends Mage_Core_Model_Abstract
     public function getOrderLineByOrderID($orderId)
     {
         $results = $this->getCollection()
-            ->addFieldToFilter('order_id', $orderId)
-            ->addFieldToSelect('order_line_id')
+            ->addFieldToFilter(self::FIELD_ORDER_ID, $orderId)
+            ->addFieldToSelect(self::FIELD_ORDER_LINE_ID)
             ->getData();
         if (!empty($results)) {
             return $results;

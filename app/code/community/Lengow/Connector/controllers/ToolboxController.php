@@ -24,15 +24,22 @@ class Lengow_Connector_ToolboxController extends Mage_Core_Controller_Front_Acti
 {
     /**
      * Get all plugin data for toolbox
+     *
+     * List params
+     * string  toolbox_action   Toolbox specific action
+     * string  type             Type of data to display
+     * string  created_from     Synchronization of orders since
+     * string  created_to       Synchronization of orders until
+     * string  date             Log date to download
+     * string  marketplace_name Lengow marketplace name to synchronize
+     * string  marketplace_sku  Lengow marketplace order id to synchronize
+     * string  process          Type of process for order action
+     * boolean force            Force synchronization order even if there are errors (1) or not (0)
+     * integer shop_id          Shop id to synchronize
+     * integer days             Synchronization interval time
      */
     public function indexAction()
     {
-        /**
-         * List params
-         * string toolbox_action toolbox specific action
-         * string type           type of data to display
-         * string date           date of the log to export
-         */
         $token = $this->getRequest()->getParam(Lengow_Connector_Helper_Toolbox::PARAM_TOKEN);
         /** @var Lengow_Connector_Helper_Data $helper */
         $helper = Mage::helper('lengow_connector');
@@ -43,16 +50,69 @@ class Lengow_Connector_ToolboxController extends Mage_Core_Controller_Front_Acti
         if ($securityHelper->checkWebserviceAccess($token)) {
             // check if toolbox action is valid
             $action = $this->getRequest()->getParam(
-                Lengow_Connector_Helper_Toolbox::PARAM_TOOLBOX_ACTION
-            ) ?: Lengow_Connector_Helper_Toolbox::ACTION_DATA;
+                Lengow_Connector_Helper_Toolbox::PARAM_TOOLBOX_ACTION,
+                Lengow_Connector_Helper_Toolbox::ACTION_DATA
+            );
             if ($toolboxHelper->isToolboxAction($action)) {
                 switch ($action) {
                     case Lengow_Connector_Helper_Toolbox::ACTION_LOG:
                         $date = $this->getRequest()->getParam(Lengow_Connector_Helper_Toolbox::PARAM_DATE);
                         $toolboxHelper->downloadLog($date);
                         break;
+                    case Lengow_Connector_Helper_Toolbox::ACTION_ORDER:
+                        $process = $this->getRequest()
+                            ->getParam(
+                                Lengow_Connector_Helper_Toolbox::PARAM_PROCESS,
+                                Lengow_Connector_Helper_Toolbox::PROCESS_TYPE_SYNC
+                            );
+                        if ($process === Lengow_Connector_Helper_Toolbox::PROCESS_TYPE_GET_DATA) {
+                            $result = $toolboxHelper->getOrderData(
+                                $this->getRequest()->getParam(Lengow_Connector_Helper_Toolbox::PARAM_MARKETPLACE_SKU),
+                                $this->getRequest()->getParam(Lengow_Connector_Helper_Toolbox::PARAM_MARKETPLACE_NAME),
+                                $this->getRequest()->getParam(
+                                    Lengow_Connector_Helper_Toolbox::PARAM_TYPE,
+                                    Lengow_Connector_Helper_Toolbox::DATA_TYPE_ORDER
+                                )
+                            );
+                        } else {
+                            $result = $toolboxHelper->syncOrders(
+                                array(
+                                    Lengow_Connector_Helper_Toolbox::PARAM_CREATED_TO => $this->getRequest()
+                                        ->getParam(Lengow_Connector_Helper_Toolbox::PARAM_CREATED_TO),
+                                    Lengow_Connector_Helper_Toolbox::PARAM_CREATED_FROM => $this->getRequest()
+                                        ->getParam(Lengow_Connector_Helper_Toolbox::PARAM_CREATED_FROM),
+                                    Lengow_Connector_Helper_Toolbox::PARAM_DAYS => $this->getRequest()
+                                        ->getParam(Lengow_Connector_Helper_Toolbox::PARAM_DAYS),
+                                    Lengow_Connector_Helper_Toolbox::PARAM_FORCE => $this->getRequest()
+                                        ->getParam(Lengow_Connector_Helper_Toolbox::PARAM_FORCE),
+                                    Lengow_Connector_Helper_Toolbox::PARAM_MARKETPLACE_NAME => $this->getRequest()
+                                        ->getParam(Lengow_Connector_Helper_Toolbox::PARAM_MARKETPLACE_NAME),
+                                    Lengow_Connector_Helper_Toolbox::PARAM_MARKETPLACE_SKU => $this->getRequest()
+                                        ->getParam(Lengow_Connector_Helper_Toolbox::PARAM_MARKETPLACE_SKU),
+                                    Lengow_Connector_Helper_Toolbox::PARAM_SHOP_ID => $this->getRequest()
+                                        ->getParam(Lengow_Connector_Helper_Toolbox::PARAM_SHOP_ID),
+                                )
+                            );
+                        }
+                        if (isset($result[Lengow_Connector_Helper_Toolbox::ERRORS][
+                            Lengow_Connector_Helper_Toolbox::ERROR_CODE
+                        ])) {
+                            $errorCode = $result[Lengow_Connector_Helper_Toolbox::ERRORS][
+                                Lengow_Connector_Helper_Toolbox::ERROR_CODE
+                            ];
+                            if ($errorCode === Lengow_Connector_Model_Connector::CODE_404) {
+                                $this->getResponse()->setHeader('HTTP/1.1', '404 Not Found');
+                            } else {
+                                $this->getResponse()->setHeader('HTTP/1.1', '403 Forbidden');
+                            }
+                        }
+                        $this->getResponse()->setBody(json_encode($result));
+                        break;
                     default:
-                        $type = $this->getRequest()->getParam(Lengow_Connector_Helper_Toolbox::PARAM_TYPE);
+                        $type = $this->getRequest()->getParam(
+                            Lengow_Connector_Helper_Toolbox::PARAM_TYPE,
+                            Lengow_Connector_Helper_Toolbox::DATA_TYPE_CMS
+                        );
                         $this->getResponse()->setBody(json_encode($toolboxHelper->getData($type)));
                 }
             } else {

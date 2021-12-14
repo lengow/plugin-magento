@@ -54,9 +54,11 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
      *
      * @param string $name marketplace name
      *
+     * @throws Lengow_Connector_Model_Exception
+     *
      * @return array Lengow marketplace
      */
-    public static function getMarketplaceSingleton($name)
+    public function getMarketplaceSingleton($name)
     {
         if (!array_key_exists($name, self::$marketplaces)) {
             self::$marketplaces[$name] = Mage::getModel('lengow/import_marketplace', array('name' => $name));
@@ -211,10 +213,14 @@ class Lengow_Connector_Helper_Import extends Mage_Core_Helper_Abstract
                     null,
                     array('marketplace_sku' => $error['marketplace_sku'])
                 );
-                $message = $error['message'] !== '' ? $helper->decodeLogMessage($error['message']): $support;
+                $message = $error[Lengow_Connector_Model_Import_Ordererror::FIELD_MESSAGE] !== ''
+                    ? $helper->decodeLogMessage($error[Lengow_Connector_Model_Import_Ordererror::FIELD_MESSAGE])
+                    : $support;
                 $mailBody .= '<li>' . $order . ' - ' . $message . '</li>';
-                $orderError = Mage::getModel('lengow/import_ordererror')->load($error['id']);
-                $orderError->updateOrderError(array('mail' => 1));
+                $orderError = Mage::getModel('lengow/import_ordererror')->load(
+                    $error[Lengow_Connector_Model_Import_Ordererror::FIELD_ID]
+                );
+                $orderError->updateOrderError(array(Lengow_Connector_Model_Import_Ordererror::FIELD_MAIL => 1));
                 unset($orderError, $order, $message);
             }
             $mailBody .= '</ul></p>';

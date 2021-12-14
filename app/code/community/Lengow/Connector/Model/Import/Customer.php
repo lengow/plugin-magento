@@ -22,19 +22,9 @@
  */
 class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Customer
 {
-    /**
-     * @var string code ISO A2 for France
-     */
+    /* Country iso codes */
     const ISO_A2_FR = 'FR';
-
-    /**
-     * @var string code ISO A2 for Spain
-     */
     const ISO_A2_ES = 'ES';
-
-    /**
-     * @var string code ISO A2 for Italy
-     */
     const ISO_A2_IT = 'IT';
 
     /**
@@ -471,15 +461,11 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
         $defaultAddressStreet = is_array($defaultAddress->getStreet())
             ? implode("\n", $defaultAddress->getStreet())
             : $defaultAddress->getStreet();
-        if ($defaultAddressStreet === $street
+        return $defaultAddressStreet === $street
             && $defaultAddress->getFirstname() === $firstName
             && $defaultAddress->getLastname() === $lastName
             && $defaultAddress->getPostcode() === $postcode
-            && $defaultAddress->getCity() === $city
-        ) {
-            return true;
-        }
-        return false;
+            && $defaultAddress->getCity() === $city;
     }
 
     /**
@@ -498,12 +484,10 @@ class Lengow_Connector_Model_Import_Customer extends Mage_Customer_Model_Custome
         );
         if (empty($names['lastName']) && empty($names['firstName'])) {
             $names = $this->_splitNames($names['fullName']);
-        } else {
-            if (empty($names['firstName'])) {
-                $names = $this->_splitNames($names['lastName']);
-            } elseif (empty($names['lastName'])) {
-                $names = $this->_splitNames($names['firstName']);
-            }
+        } else if (empty($names['firstName'])) {
+            $names = $this->_splitNames($names['lastName']);
+        } elseif (empty($names['lastName'])) {
+            $names = $this->_splitNames($names['firstName']);
         }
         unset($names['fullName']);
         $names['firstName'] = !empty($names['firstName']) ? ucfirst(strtolower($names['firstName'])) : '__';

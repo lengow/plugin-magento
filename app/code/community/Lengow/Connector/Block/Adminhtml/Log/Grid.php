@@ -30,7 +30,7 @@ class Lengow_Connector_Block_Adminhtml_Log_Grid extends Mage_Adminhtml_Block_Wid
         parent::__construct();
         $this->setId('LengowLogGrid');
         $this->setUseAjax(true);
-        $this->setDefaultSort('id');
+        $this->setDefaultSort(Lengow_Connector_Model_Log::FIELD_ID);
         $this->setDefaultDir('DESC');
         $this->setSaveParametersInSession(true);
     }
@@ -55,28 +55,28 @@ class Lengow_Connector_Block_Adminhtml_Log_Grid extends Mage_Adminhtml_Block_Wid
         /** @var Lengow_Connector_Helper_Data $helper */
         $helper = $this->helper('lengow_connector');
         $this->addColumn(
-            'id',
+            Lengow_Connector_Model_Log::FIELD_ID,
             array(
                 'header' => $helper->__('log.table.id'),
                 'width' => '80px',
                 'type' => 'text',
-                'index' => 'id',
+                'index' => Lengow_Connector_Model_Log::FIELD_ID,
             )
         );
         $this->addColumn(
-            'date',
+            Lengow_Connector_Model_Log::FIELD_DATE,
             array(
                 'header' => $helper->__('log.table.date'),
-                'index' => 'date',
+                'index' => Lengow_Connector_Model_Log::FIELD_DATE,
                 'type' => 'datetime',
                 'width' => '100px',
             )
         );
         $this->addColumn(
-            'message',
+            Lengow_Connector_Model_Log::FIELD_MESSAGE,
             array(
                 'header' => $helper->__('log.table.message'),
-                'index' => 'message',
+                'index' => Lengow_Connector_Model_Log::FIELD_MESSAGE,
             )
         );
         return parent::_prepareColumns();

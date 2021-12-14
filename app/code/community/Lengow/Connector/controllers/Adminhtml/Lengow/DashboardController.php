@@ -38,26 +38,24 @@ class Lengow_Connector_Adminhtml_Lengow_DashboardController extends Mage_Adminht
      */
     public function indexAction()
     {
-        if (Mage::helper('lengow_connector/config')->isNewMerchant()) {
+        if ($this->getRequest()->getParam('isAjax')) {
+            $action = Mage::app()->getRequest()->getParam('action');
+            if ($action) {
+                switch ($action) {
+                    case 'remind_me_later':
+                        $timestamp = time() + (7 * 86400);
+                        Mage::helper('lengow_connector/config')->set(
+                            Lengow_Connector_Helper_Config::LAST_UPDATE_PLUGIN_MODAL,
+                            $timestamp
+                        );
+                        $this->getResponse()->setBody(Mage::helper('core')->jsonEncode(array('success' => true)));
+                        break;
+                }
+            }
+        } elseif (Mage::helper('lengow_connector/config')->isNewMerchant()) {
             $this->_redirect('adminhtml/lengow_home/index');
         } else {
-            if ($this->getRequest()->getParam('isAjax')) {
-                $action = Mage::app()->getRequest()->getParam('action');
-                if ($action) {
-                    switch ($action) {
-                        case 'remind_me_later':
-                            $timestamp = time() + (7 * 86400);
-                            Mage::helper('lengow_connector/config')->set(
-                                Lengow_Connector_Helper_Config::LAST_UPDATE_PLUGIN_MODAL,
-                                $timestamp
-                            );
-                            $this->getResponse()->setBody(Mage::helper('core')->jsonEncode(array('success' => true)));
-                            break;
-                    }
-                }
-            } else {
-                $this->_initAction()->renderLayout();
-            }
+            $this->_initAction()->renderLayout();
         }
     }
 

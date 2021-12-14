@@ -82,6 +82,7 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
     const PARAM_GLOBAL = 'global';
     const PARAM_LOG = 'log';
     const PARAM_NO_CACHE = 'no_cache';
+    const PARAM_RESET_TOKEN = 'reset_token';
     const PARAM_RETURN = 'return';
     const PARAM_SECRET = 'secret';
     const PARAM_SHOP = 'store';
@@ -168,6 +169,7 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
             self::PARAM_NO_CACHE => true,
             self::PARAM_EXPORT => false,
             self::PARAM_SECRET => true,
+            self::PARAM_RESET_TOKEN => true,
         ),
         self::SECRET => array(
             self::PARAM_PATH => 'lengow_global_options/store_credential/global_secret_token',
@@ -175,6 +177,7 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
             self::PARAM_NO_CACHE => true,
             self::PARAM_EXPORT => false,
             self::PARAM_SECRET => true,
+            self::PARAM_RESET_TOKEN => true,
         ),
         self::CMS_TOKEN => array(
             self::PARAM_PATH => 'lengow_global_options/store_credential/token',
@@ -650,6 +653,15 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * Reset authorization token
+     */
+    public function resetAuthorizationToken()
+    {
+        $this->set(self::AUTHORIZATION_TOKEN, '');
+        $this->set(self::LAST_UPDATE_AUTHORIZATION_TOKEN, '');
+    }
+
+    /**
      * Recovers if a store is active or not
      *
      * @param integer $storeId Magento store id
@@ -845,15 +857,20 @@ class Lengow_Connector_Helper_Config extends Mage_Core_Helper_Abstract
     /**
      * Get list of Magento stores that have been activated in Lengow
      *
+     * @param integer|null $storeId Magento store id
+     *
      * @return array
      */
-    public function getLengowActiveStores()
+    public function getLengowActiveStores($storeId = null)
     {
         $lengowActiveStores = array();
         $storeCollection = Mage::getResourceModel('core/store_collection')->addFieldToFilter('is_active', 1);
         foreach ($storeCollection as $store) {
+            if ($storeId && (int) $store->getId() !== $storeId) {
+                continue;
+            }
             // get Lengow config for this store
-            if ($this->storeIsActive((int)$store->getId())) {
+            if ($this->storeIsActive((int) $store->getId())) {
                 $lengowActiveStores[] = $store;
             }
         }

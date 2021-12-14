@@ -32,6 +32,20 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
     const CODE_MAIL_REPORT = 'Mail Report';
     const CODE_ORM = 'Orm';
 
+    /* Field database actions */
+    const FIELD_REQUIRED = 'required';
+    const FIELD_CAN_BE_UPDATED = 'updated';
+
+    /* Date formats */
+    const DATE_FULL = 'Y-m-d H:i:s';
+    const DATE_DAY = 'Y-m-d';
+    const DATE_ISO_8601 = 'c';
+
+    /**
+     * @var string Lengow technical error state
+     */
+    const LENGOW_TECHNICAL_ERROR_STATE = 'lengow_technical_error';
+
     /**
      * User another translation system (key based)
      *
@@ -139,11 +153,13 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
         $finalMessage .= '' . (empty($marketplaceSku) ? '' : 'order ' . $marketplaceSku . ' : ');
         $finalMessage .= $decodedMessage;
         if ($display) {
-            $date = Mage::getModel('core/date')->date('Y-m-d H:i:s');
+            $date = Mage::getModel('core/date')->date(self::DATE_FULL);
             print_r($date . ' - ' . $finalMessage . '<br />');
             flush();
         }
-        return Mage::getModel('lengow/log')->createLog(array('message' => $finalMessage));
+        return Mage::getModel('lengow/log')->createLog(
+            array(Lengow_Connector_Model_Log::FIELD_MESSAGE => $finalMessage)
+        );
     }
 
     /**
@@ -164,7 +180,7 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
             $value = str_replace(array('|', '=='), array('', ''), $value);
             $allParams[] = $param . '==' . $value;
         }
-        return $key . '[' . join('|', $allParams) . ']';
+        return $key . '[' . implode('|', $allParams) . ']';
     }
 
     /**
@@ -178,19 +194,17 @@ class Lengow_Connector_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function decodeLogMessage($message, $isoCode = null, $params = null)
     {
-        if (preg_match('/^(([a-z\_]*\.){1,3}[a-z\_]*)(\[(.*)\]|)$/', $message, $result)) {
-            if (isset($result[1])) {
-                $key = $result[1];
-                if (isset($result[4]) && $params === null) {
-                    $strParam = $result[4];
-                    $allParams = explode('|', $strParam);
-                    foreach ($allParams as $param) {
-                        $result = explode('==', $param);
-                        $params[$result[0]] = $result[1];
-                    }
+        if (preg_match('/^(([a-z\_]*\.){1,3}[a-z\_]*)(\[(.*)\]|)$/', $message, $result) && isset($result[1])) {
+            $key = $result[1];
+            if (isset($result[4]) && $params === null) {
+                $strParam = $result[4];
+                $allParams = explode('|', $strParam);
+                foreach ($allParams as $param) {
+                    $result = explode('==', $param);
+                    $params[$result[0]] = $result[1];
                 }
-                $message = $this->__($key, $params, $isoCode);
             }
+            $message = $this->__($key, $params, $isoCode);
         }
         return $message;
     }

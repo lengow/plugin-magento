@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2017 Lengow SAS
+ * Copyright 2021 Lengow SAS
  *
  * NOTICE OF LICENSE
  *
@@ -11,22 +11,17 @@
  *
  * @category    Lengow
  * @package     Lengow_Connector
- * @subpackage  Model
+ * @subpackage  sql
  * @author      Team module <team-module@lengow.com>
- * @copyright   2017 Lengow SAS
+ * @copyright   2021 Lengow SAS
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-/**
- * Model resource import action
- */
-class Lengow_Connector_Model_Resource_Import_Action extends Mage_Core_Model_Mysql4_Abstract
-{
-    /**
-     * Construct
-     */
-    protected function _construct()
-    {
-        $this->_init('lengow/import_action', Lengow_Connector_Model_Import_Action::FIELD_ID);
-    }
+$version = '3.4.0';
+/** @var Lengow_Connector_Helper_Config $configHelper */
+$configHelper = Mage::helper('lengow_connector/config');
+$installedVersion = $configHelper->get(Lengow_Connector_Helper_Config::PLUGIN_VERSION);
+
+if (version_compare($installedVersion, $version, '<')) {
+    $configHelper->set(Lengow_Connector_Helper_Config::PLUGIN_VERSION, $version);
 }

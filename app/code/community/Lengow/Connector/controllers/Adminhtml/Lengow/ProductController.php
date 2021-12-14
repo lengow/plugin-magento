@@ -38,31 +38,29 @@ class Lengow_Connector_Adminhtml_Lengow_ProductController extends Mage_Adminhtml
      */
     public function indexAction()
     {
-        if (Mage::helper('lengow_connector/sync')->pluginIsBlocked()) {
+        if ($this->getRequest()->getParam('isAjax')) {
+            $action = Mage::app()->getRequest()->getParam('action');
+            if ($action) {
+                switch ($action) {
+                    case 'change_option_selected':
+                        $state   = Mage::app()->getRequest()->getParam('state');
+                        $storeId = Mage::app()->getRequest()->getParam('store_id');
+                        if ($state !== null) {
+                            Mage::helper('lengow_connector/config')->set(
+                                Lengow_Connector_Helper_Config::SELECTION_ENABLED,
+                                $state,
+                                $storeId
+                            );
+                            Mage::app()->getCacheInstance()->cleanType('config');
+                            $this->getResponse()->setBody($state);
+                        }
+                        break;
+                }
+            }
+        } else if (Mage::helper('lengow_connector/sync')->pluginIsBlocked()) {
             $this->_redirect('adminhtml/lengow_home/index');
         } else {
-            if ($this->getRequest()->getParam('isAjax')) {
-                $action = Mage::app()->getRequest()->getParam('action');
-                if ($action) {
-                    switch ($action) {
-                        case 'change_option_selected':
-                            $state   = Mage::app()->getRequest()->getParam('state');
-                            $storeId = Mage::app()->getRequest()->getParam('store_id');
-                            if ($state !== null) {
-                                Mage::helper('lengow_connector/config')->set(
-                                    Lengow_Connector_Helper_Config::SELECTION_ENABLED,
-                                    $state,
-                                    $storeId
-                                );
-                                Mage::app()->getCacheInstance()->cleanType('config');
-                                $this->getResponse()->setBody($state);
-                            }
-                            break;
-                    }
-                }
-            } else {
-                $this->_initAction()->renderLayout();
-            }
+            $this->_initAction()->renderLayout();
         }
     }
 

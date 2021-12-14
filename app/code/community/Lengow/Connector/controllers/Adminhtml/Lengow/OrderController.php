@@ -38,53 +38,51 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
      */
     public function indexAction()
     {
-        if (Mage::helper('lengow_connector/sync')->pluginIsBlocked()) {
+        if ($this->getRequest()->getParam('isAjax')) {
+            $action = Mage::app()->getRequest()->getParam('action');
+            if ($action) {
+                switch ($action) {
+                    case 'import_all':
+                        $params = array(
+                            Lengow_Connector_Model_Import::PARAM_TYPE => Lengow_Connector_Model_Import::TYPE_MANUAL,
+                        );
+                        $results = Mage::getModel('lengow/import', $params)->exec();
+                        $information = $this->getInformation();
+                        $information['messages'] = $this->getMessages($results);
+                        $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($information));
+                        break;
+                    case 're_import':
+                        $orderLengowId = Mage::app()->getRequest()->getParam('order_lengow_id');
+                        if ($orderLengowId !== null) {
+                            Mage::getModel('lengow/import_order')->reImportOrder((int) $orderLengowId);
+                            $information = $this->getInformation();
+                            $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($information));
+                        }
+                        break;
+                    case 're_send':
+                        $orderLengowId = Mage::app()->getRequest()->getParam('order_lengow_id');
+                        if ($orderLengowId !== null) {
+                            Mage::getModel('lengow/import_order')->reSendOrder((int) $orderLengowId);
+                            $information = $this->getInformation();
+                            $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($information));
+                        }
+                        break;
+                    case 'migrate_button_fade':
+                        Mage::helper('lengow_connector/config')->set(
+                            Lengow_Connector_Helper_Config::MIGRATE_BLOCK_ENABLED,
+                            0
+                        );
+                        break;
+                    case 'load_information':
+                        $information = $this->getInformation();
+                        $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($information));
+                        break;
+                }
+            }
+        } elseif (Mage::helper('lengow_connector/sync')->pluginIsBlocked()) {
             $this->_redirect('adminhtml/lengow_home/index');
         } else {
-            if ($this->getRequest()->getParam('isAjax')) {
-                $action = Mage::app()->getRequest()->getParam('action');
-                if ($action) {
-                    switch ($action) {
-                        case 'import_all':
-                            $params = array(
-                                Lengow_Connector_Model_Import::PARAM_TYPE => Lengow_Connector_Model_Import::TYPE_MANUAL,
-                            );
-                            $results = Mage::getModel('lengow/import', $params)->exec();
-                            $information = $this->getInformation();
-                            $information['messages'] = $this->getMessages($results);
-                            $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($information));
-                            break;
-                        case 're_import':
-                            $orderLengowId = Mage::app()->getRequest()->getParam('order_lengow_id');
-                            if ($orderLengowId !== null) {
-                                $result = Mage::getModel('lengow/import_order')->reImportOrder((int) $orderLengowId);
-                                $information = $this->getInformation();
-                                $information['import_order'] = $result;
-                                $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($information));
-                            }
-                            break;
-                        case 're_send':
-                            $orderLengowId = Mage::app()->getRequest()->getParam('order_lengow_id');
-                            if ($orderLengowId !== null) {
-                                $result = Mage::getModel('lengow/import_order')->reSendOrder((int)$orderLengowId);
-                                $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($result));
-                            }
-                            break;
-                        case 'migrate_button_fade':
-                            Mage::helper('lengow_connector/config')->set(
-                                Lengow_Connector_Helper_Config::MIGRATE_BLOCK_ENABLED,
-                                0
-                            );
-                            break;
-                        case 'load_information':
-                            $information = $this->getInformation();
-                            $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($information));
-                            break;
-                    }
-                }
-            } else {
-                $this->_initAction()->renderLayout();
-            }
+            $this->_initAction()->renderLayout();
         }
     }
 
@@ -107,7 +105,7 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
         $helper = Mage::helper('lengow_connector/data');
         $orderId = $this->getRequest()->getParam('order_id');
         $order = Mage::getModel('sales/order')->load($orderId);
-        $marketplaceSku = $order->getData('order_id_lengow');
+        $marketplaceSku = $order->getData(Lengow_Connector_Model_Import_Order::FIELD_LEGACY_MARKETPLACE_SKU);
         $synchro = Mage::getModel('lengow/import_order')->synchronizeOrder($order);
         if ($synchro) {
             $synchroMessage = $helper->setLogMessage(
@@ -221,33 +219,39 @@ class Lengow_Connector_Adminhtml_Lengow_OrderController extends Mage_Adminhtml_C
         /** @var Lengow_Connector_Helper_Data $helper */
         $helper = Mage::helper('lengow_connector');
         // if global error return this
-        if (isset($results['error'][0])) {
-            $messages[] = $helper->decodeLogMessage($results['error'][0]);
+        if (isset($results[Lengow_Connector_Model_Import::ERRORS][0])) {
+            $messages[] = $helper->decodeLogMessage($results[Lengow_Connector_Model_Import::ERRORS][0]);
             return $messages;
         }
-        if (isset($results['order_new']) && $results['order_new'] > 0) {
+        if (isset($results[Lengow_Connector_Model_Import::NUMBER_ORDERS_CREATED])
+            && $results[Lengow_Connector_Model_Import::NUMBER_ORDERS_CREATED] > 0
+        ) {
             $messages[] = $helper->__(
                 'lengow_log.error.nb_order_imported',
-                array('nb_order' => $results['order_new'])
+                array('nb_order' => $results[Lengow_Connector_Model_Import::NUMBER_ORDERS_CREATED])
             );
         }
-        if (isset($results['order_update']) && $results['order_update'] > 0) {
+        if (isset($results[Lengow_Connector_Model_Import::NUMBER_ORDERS_UPDATED])
+            && $results[Lengow_Connector_Model_Import::NUMBER_ORDERS_UPDATED] > 0
+        ) {
             $messages[] = $helper->__(
                 'lengow_log.error.nb_order_updated',
-                array('nb_order' => $results['order_update'])
+                array('nb_order' => $results[Lengow_Connector_Model_Import::NUMBER_ORDERS_UPDATED])
             );
         }
-        if (isset($results['order_error']) && $results['order_error'] > 0) {
+        if (isset($results[Lengow_Connector_Model_Import::NUMBER_ORDERS_FAILED])
+            && $results[Lengow_Connector_Model_Import::NUMBER_ORDERS_FAILED] > 0
+        ) {
             $messages[] = $helper->__(
                 'lengow_log.error.nb_order_with_error',
-                array('nb_order' => $results['order_error'])
+                array('nb_order' => $results[Lengow_Connector_Model_Import::NUMBER_ORDERS_FAILED])
             );
         }
         if (empty($messages)) {
             $messages[] = $helper->__('lengow_log.error.no_notification');
         }
-        if (isset($results['error'])) {
-            foreach ($results['error'] as $storeId => $values) {
+        if (isset($results[Lengow_Connector_Model_Import::ERRORS])) {
+            foreach ($results[Lengow_Connector_Model_Import::ERRORS] as $storeId => $values) {
                 if ((int) $storeId > 0) {
                     $store = Mage::getModel('core/store')->load($storeId);
                     $storeName = $store->getName() . ' (' . $store->getId() . ') : ';

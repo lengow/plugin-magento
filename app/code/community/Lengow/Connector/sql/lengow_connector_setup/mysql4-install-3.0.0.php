@@ -87,7 +87,7 @@ if (!$fromLengowCustomer) {
 // create attribute from_lengow for order
 $listAttributes = array();
 $listAttributes[] = array(
-    'name' => 'from_lengow',
+    'name' => Lengow_Connector_Model_Import_Order::FIELD_LEGACY_FROM_LENGOW,
     'label' => 'From Lengow',
     'type' => 'int',
     'input' => 'select',
@@ -96,7 +96,7 @@ $listAttributes[] = array(
     'grid' => true,
 );
 $listAttributes[] = array(
-    'name' => 'order_id_lengow',
+    'name' => Lengow_Connector_Model_Import_Order::FIELD_LEGACY_MARKETPLACE_SKU,
     'label' => 'Lengow order ID',
     'type' => 'text',
     'input' => 'text',
@@ -105,7 +105,7 @@ $listAttributes[] = array(
     'grid' => true,
 );
 $listAttributes[] = array(
-    'name' => 'feed_id_lengow',
+    'name' => Lengow_Connector_Model_Import_Order::FIELD_LEGACY_FEED_ID,
     'label' => 'Feed ID',
     'type' => 'float',
     'input' => 'text',
@@ -114,7 +114,7 @@ $listAttributes[] = array(
     'grid' => false,
 );
 $listAttributes[] = array(
-    'name' => 'marketplace_lengow',
+    'name' => Lengow_Connector_Model_Import_Order::FIELD_LEGACY_MARKETPLACE_NAME,
     'label' => 'marketplace',
     'type' => 'text',
     'input' => 'text',
@@ -123,7 +123,7 @@ $listAttributes[] = array(
     'grid' => true,
 );
 $listAttributes[] = array(
-    'name' => 'delivery_address_id_lengow',
+    'name' => Lengow_Connector_Model_Import_Order::FIELD_LEGACY_DELIVERY_ADDRESS_ID,
     'label' => 'Delivery address id lengow',
     'type' => 'int',
     'input' => 'text',
@@ -132,7 +132,7 @@ $listAttributes[] = array(
     'grid' => false,
 );
 $listAttributes[] = array(
-    'name' => 'is_reimported_lengow',
+    'name' => Lengow_Connector_Model_Import_Order::FIELD_LEGACY_IS_REIMPORTED,
     'label' => 'Is Reimported Lengow',
     'type' => 'int',
     'input' => 'select',
@@ -141,7 +141,7 @@ $listAttributes[] = array(
     'grid' => false,
 );
 $listAttributes[] = array(
-    'name' => 'follow_by_lengow',
+    'name' => Lengow_Connector_Model_Import_Order::FIELD_LEGACY_FOLLOW_BY_LENGOW,
     'label' => 'Follow By Lengow',
     'type' => 'int',
     'input' => 'select',
@@ -200,16 +200,13 @@ foreach ($attributeSetCollection as $id => $attributeSet) {
 //                  Create Lengow tables
 // *********************************************************
 
-// compatibility for version 1.5
-$typeText = Mage::getVersion() < '1.6.0.0' ? Varien_Db_Ddl_Table::TYPE_LONGVARCHAR : Varien_Db_Ddl_Table::TYPE_TEXT;
-
 // create table lengow_order
-$tableName = $installer->getTable('lengow_order');
+$tableName = $installer->getTable(Lengow_Connector_Model_Import_Order::TABLE_ORDER);
 if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
     $table = $installer->getConnection()
-        ->newTable($installer->getTable('lengow_order'))
+        ->newTable($tableName)
         ->addColumn(
-            'id',
+            Lengow_Connector_Model_Import_Order::FIELD_ID,
             Varien_Db_Ddl_Table::TYPE_INTEGER,
             null,
             array(
@@ -221,7 +218,7 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Id'
         )
         ->addColumn(
-            'order_id',
+            Lengow_Connector_Model_Import_Order::FIELD_ORDER_ID,
             Varien_Db_Ddl_Table::TYPE_INTEGER,
             null,
             array(
@@ -232,7 +229,7 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Order Id'
         )
         ->addColumn(
-            'order_sku',
+            Lengow_Connector_Model_Import_Order::FIELD_ORDER_SKU,
             Varien_Db_Ddl_Table::TYPE_VARCHAR,
             40,
             array(
@@ -242,7 +239,7 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Order sku'
         )
         ->addColumn(
-            'store_id',
+            Lengow_Connector_Model_Import_Order::FIELD_STORE_ID,
             Varien_Db_Ddl_Table::TYPE_INTEGER,
             null,
             array(
@@ -252,7 +249,7 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Store Id'
         )
         ->addColumn(
-            'feed_id',
+            Lengow_Connector_Model_Import_Order::FIELD_FEED_ID,
             Varien_Db_Ddl_Table::TYPE_INTEGER,
             null,
             array(
@@ -263,7 +260,7 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Feed Id'
         )
         ->addColumn(
-            'delivery_address_id',
+            Lengow_Connector_Model_Import_Order::FIELD_DELIVERY_ADDRESS_ID,
             Varien_Db_Ddl_Table::TYPE_INTEGER,
             null,
             array(
@@ -274,7 +271,7 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Delivery Address Id'
         )
         ->addColumn(
-            'delivery_country_iso',
+            Lengow_Connector_Model_Import_Order::FIELD_DELIVERY_COUNTRY_ISO,
             Varien_Db_Ddl_Table::TYPE_VARCHAR,
             3,
             array(
@@ -285,7 +282,7 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Delivery Country Iso'
         )
         ->addColumn(
-            'marketplace_sku',
+            Lengow_Connector_Model_Import_Order::FIELD_MARKETPLACE_SKU,
             Varien_Db_Ddl_Table::TYPE_VARCHAR,
             100,
             array(
@@ -295,7 +292,7 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Marketplace Sku'
         )
         ->addColumn(
-            'marketplace_name',
+            Lengow_Connector_Model_Import_Order::FIELD_MARKETPLACE_NAME,
             Varien_Db_Ddl_Table::TYPE_VARCHAR,
             100,
             array(
@@ -305,7 +302,7 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Marketplace Name'
         )
         ->addColumn(
-            'marketplace_label',
+            Lengow_Connector_Model_Import_Order::FIELD_MARKETPLACE_LABEL,
             Varien_Db_Ddl_Table::TYPE_VARCHAR,
             100,
             array(
@@ -316,7 +313,7 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Marketplace Label'
         )
         ->addColumn(
-            'order_lengow_state',
+            Lengow_Connector_Model_Import_Order::FIELD_ORDER_LENGOW_STATE,
             Varien_Db_Ddl_Table::TYPE_VARCHAR,
             100,
             array(
@@ -326,7 +323,7 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Order Lengow State'
         )
         ->addColumn(
-            'order_process_state',
+            Lengow_Connector_Model_Import_Order::FIELD_ORDER_PROCESS_STATE,
             Varien_Db_Ddl_Table::TYPE_SMALLINT,
             null,
             array(
@@ -336,7 +333,7 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Order Process State'
         )
         ->addColumn(
-            'order_date',
+            Lengow_Connector_Model_Import_Order::FIELD_ORDER_DATE,
             Varien_Db_Ddl_Table::TYPE_TIMESTAMP,
             null,
             array(
@@ -345,7 +342,7 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Order Date'
         )
         ->addColumn(
-            'order_item',
+            Lengow_Connector_Model_Import_Order::FIELD_ORDER_ITEM,
             Varien_Db_Ddl_Table::TYPE_SMALLINT,
             null,
             array(
@@ -356,8 +353,8 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Order Item'
         )
 	    ->addColumn(
-		    'order_types',
-		    $typeText,
+            Lengow_Connector_Model_Import_Order::FIELD_ORDER_TYPES,
+            Varien_Db_Ddl_Table::TYPE_TEXT,
 		    null,
 		    array(
 			    'nullable' => true,
@@ -366,7 +363,7 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
 		    'Order Types'
 	    )
         ->addColumn(
-            'currency',
+            Lengow_Connector_Model_Import_Order::FIELD_CURRENCY,
             Varien_Db_Ddl_Table::TYPE_VARCHAR,
             3,
             array(
@@ -377,7 +374,7 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Currency'
         )
         ->addColumn(
-            'total_paid',
+            Lengow_Connector_Model_Import_Order::FIELD_TOTAL_PAID,
             Varien_Db_Ddl_Table::TYPE_DECIMAL,
             null,
             array(
@@ -390,8 +387,8 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Total Paid'
         )
         ->addColumn(
-            'customer_vat_number',
-            $typeText,
+            Lengow_Connector_Model_Import_Order::FIELD_CUSTOMER_VAT_NUMBER,
+            Varien_Db_Ddl_Table::TYPE_TEXT,
             null,
             array(
                 'nullable' => true,
@@ -400,7 +397,7 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Customer Vat Number'
         )
         ->addColumn(
-            'commission',
+            Lengow_Connector_Model_Import_Order::FIELD_COMMISSION,
             Varien_Db_Ddl_Table::TYPE_DECIMAL,
             null,
             array(
@@ -413,7 +410,7 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Commission'
         )
         ->addColumn(
-            'customer_name',
+            Lengow_Connector_Model_Import_Order::FIELD_CUSTOMER_NAME,
             Varien_Db_Ddl_Table::TYPE_VARCHAR,
             255,
             array(
@@ -424,7 +421,7 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Customer Name'
         )
         ->addColumn(
-            'customer_email',
+            Lengow_Connector_Model_Import_Order::FIELD_CUSTOMER_EMAIL,
             Varien_Db_Ddl_Table::TYPE_VARCHAR,
             255,
             array(
@@ -435,7 +432,7 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Customer Email'
         )
         ->addColumn(
-            'carrier',
+            Lengow_Connector_Model_Import_Order::FIELD_CARRIER,
             Varien_Db_Ddl_Table::TYPE_VARCHAR,
             100,
             array(
@@ -446,7 +443,7 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Carrier'
         )
         ->addColumn(
-            'carrier_method',
+            Lengow_Connector_Model_Import_Order::FIELD_CARRIER_METHOD,
             Varien_Db_Ddl_Table::TYPE_VARCHAR,
             100,
             array(
@@ -457,7 +454,7 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Carrier Method'
         )
         ->addColumn(
-            'carrier_tracking',
+            Lengow_Connector_Model_Import_Order::FIELD_CARRIER_TRACKING,
             Varien_Db_Ddl_Table::TYPE_VARCHAR,
             100,
             array(
@@ -468,7 +465,7 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Carrier Tracking'
         )
         ->addColumn(
-            'carrier_id_relay',
+            Lengow_Connector_Model_Import_Order::FIELD_CARRIER_RELAY_ID,
             Varien_Db_Ddl_Table::TYPE_VARCHAR,
             100,
             array(
@@ -479,7 +476,7 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Carrier Id Relay'
         )
         ->addColumn(
-            'sent_marketplace',
+            Lengow_Connector_Model_Import_Order::FIELD_SENT_MARKETPLACE,
             Varien_Db_Ddl_Table::TYPE_BOOLEAN,
             null,
             array(
@@ -489,7 +486,7 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Sent Marketplace'
         )
         ->addColumn(
-            'is_in_error',
+            Lengow_Connector_Model_Import_Order::FIELD_IS_IN_ERROR,
             Varien_Db_Ddl_Table::TYPE_BOOLEAN,
             null,
             array(
@@ -499,8 +496,8 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Is In Error'
         )
         ->addColumn(
-            'message',
-            $typeText,
+            Lengow_Connector_Model_Import_Order::FIELD_MESSAGE,
+            Varien_Db_Ddl_Table::TYPE_TEXT,
             null,
             array(
                 'nullable' => true,
@@ -509,7 +506,7 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Message'
         )
         ->addColumn(
-            'created_at',
+            Lengow_Connector_Model_Import_Order::FIELD_CREATED_AT,
             Varien_Db_Ddl_Table::TYPE_TIMESTAMP,
             null,
             array(
@@ -518,7 +515,7 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Created At'
         )
         ->addColumn(
-            'updated_at',
+            Lengow_Connector_Model_Import_Order::FIELD_UPDATED_AT,
             Varien_Db_Ddl_Table::TYPE_TIMESTAMP,
             null,
             array(
@@ -528,8 +525,8 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Updated At'
         )
         ->addColumn(
-            'extra',
-            $typeText,
+            Lengow_Connector_Model_Import_Order::FIELD_EXTRA,
+            Varien_Db_Ddl_Table::TYPE_TEXT,
             null,
             array(
                 'nullable' => true,
@@ -538,21 +535,15 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Extra'
         );
     $installer->getConnection()->createTable($table);
-    // compatibility with version 1.5
-    if (Mage::getVersion() < '1.6.0.0') {
-        $installer->getConnection()->modifyColumn($tableName, 'id', 'int(11) NOT NULL auto_increment');
-        $installer->getConnection()->modifyColumn($tableName, 'total_paid', 'DECIMAL(17,2) UNSIGNED NULL');
-        $installer->getConnection()->modifyColumn($tableName, 'commission', 'DECIMAL(17,2) UNSIGNED NULL');
-    }
 }
 
 // create table lengow_order_line
-$tableName = $installer->getTable('lengow_order_line');
+$tableName = $installer->getTable(Lengow_Connector_Model_Import_Orderline::TABLE_ORDER_LINE);
 if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
     $table = $installer->getConnection()
-        ->newTable($installer->getTable('lengow_order_line'))
+        ->newTable($tableName)
         ->addColumn(
-            'id',
+            Lengow_Connector_Model_Import_Orderline::FIELD_ID,
             Varien_Db_Ddl_Table::TYPE_INTEGER,
             null,
             array(
@@ -564,7 +555,7 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Id'
         )
         ->addColumn(
-            'order_id',
+            Lengow_Connector_Model_Import_Orderline::FIELD_ORDER_ID,
             Varien_Db_Ddl_Table::TYPE_INTEGER,
             null,
             array(
@@ -574,7 +565,7 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Order Id'
         )
         ->addColumn(
-            'order_line_id',
+            Lengow_Connector_Model_Import_Orderline::FIELD_ORDER_LINE_ID,
             Varien_Db_Ddl_Table::TYPE_VARCHAR,
             100,
             array(
@@ -584,31 +575,32 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Order Line Id'
         );
     $installer->getConnection()->createTable($table);
-    // compatibility with version 1.5
-    if (Mage::getVersion() < '1.6.0.0') {
-        $installer->getConnection()->modifyColumn($tableName, 'id', 'int(11) NOT NULL auto_increment');
-    }
 } else {
     if ($installer->getConnection()->tableColumnExists($tableName, 'id_order')) {
-        $installer->getConnection()->changeColumn($tableName, 'id_order', 'order_id', 'int(11) UNSIGNED NOT NULL');
+        $installer->getConnection()->changeColumn(
+            $tableName,
+            'id_order',
+            Lengow_Connector_Model_Import_Orderline::FIELD_ORDER_ID,
+            'int(11) UNSIGNED NOT NULL'
+        );
     }
     if ($installer->getConnection()->tableColumnExists($tableName, 'id_order_line')) {
         $installer->getConnection()->changeColumn(
             $tableName,
             'id_order_line',
-            'order_line_id',
+            Lengow_Connector_Model_Import_Orderline::FIELD_ORDER_LINE_ID,
             'VARCHAR(100) NOT NULL'
         );
     }
 }
 
 // create table lengow_order_error
-$tableName = $installer->getTable('lengow_order_error');
+$tableName = $installer->getTable(Lengow_Connector_Model_Import_Ordererror::TABLE_ORDER_ERROR);
 if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
     $table = $installer->getConnection()
-        ->newTable($installer->getTable('lengow_order_error'))
+        ->newTable($tableName)
         ->addColumn(
-            'id',
+            Lengow_Connector_Model_Import_Ordererror::FIELD_ID,
             Varien_Db_Ddl_Table::TYPE_INTEGER,
             null,
             array(
@@ -620,7 +612,7 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Id'
         )
         ->addColumn(
-            'order_lengow_id',
+            Lengow_Connector_Model_Import_Ordererror::FIELD_ORDER_LENGOW_ID,
             Varien_Db_Ddl_Table::TYPE_INTEGER,
             null,
             array(
@@ -630,8 +622,8 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Order Lengow Id'
         )
         ->addColumn(
-            'message',
-            $typeText,
+            Lengow_Connector_Model_Import_Ordererror::FIELD_MESSAGE,
+            Varien_Db_Ddl_Table::TYPE_TEXT,
             null,
             array(
                 'nullable' => true,
@@ -640,7 +632,7 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Message'
         )
         ->addColumn(
-            'type',
+            Lengow_Connector_Model_Import_Ordererror::FIELD_TYPE,
             Varien_Db_Ddl_Table::TYPE_INTEGER,
             null,
             array(
@@ -650,7 +642,7 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Type'
         )
         ->addColumn(
-            'is_finished',
+            Lengow_Connector_Model_Import_Ordererror::FIELD_IS_FINISHED,
             Varien_Db_Ddl_Table::TYPE_BOOLEAN,
             null,
             array(
@@ -660,7 +652,7 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Is Finished'
         )
         ->addColumn(
-            'mail',
+            Lengow_Connector_Model_Import_Ordererror::FIELD_MAIL,
             Varien_Db_Ddl_Table::TYPE_BOOLEAN,
             null,
             array(
@@ -670,7 +662,7 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Mail'
         )
         ->addColumn(
-            'created_at',
+            Lengow_Connector_Model_Import_Ordererror::FIELD_CREATED_AT,
             Varien_Db_Ddl_Table::TYPE_TIMESTAMP,
             null,
             array(
@@ -679,7 +671,7 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Created At'
         )
         ->addColumn(
-            'updated_at',
+            Lengow_Connector_Model_Import_Ordererror::FIELD_UPDATED_AT,
             Varien_Db_Ddl_Table::TYPE_TIMESTAMP,
             null,
             array(
@@ -689,19 +681,15 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Updated At'
         );
     $installer->getConnection()->createTable($table);
-    // compatibility with version 1.5
-    if (Mage::getVersion() < '1.6.0.0') {
-        $installer->getConnection()->modifyColumn($tableName, 'id', 'int(11) NOT NULL auto_increment');
-    }
 }
 
 // create table lengow_action
-$tableName = $installer->getTable('lengow_action');
+$tableName = $installer->getTable(Lengow_Connector_Model_Import_Action::TABLE_ACTION);
 if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
     $table = $installer->getConnection()
-        ->newTable($installer->getTable('lengow_action'))
+        ->newTable($tableName)
         ->addColumn(
-            'id',
+            Lengow_Connector_Model_Import_Action::FIELD_ID,
             Varien_Db_Ddl_Table::TYPE_INTEGER,
             null,
             array(
@@ -713,7 +701,7 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Id'
         )
         ->addColumn(
-            'order_id',
+            Lengow_Connector_Model_Import_Action::FIELD_ORDER_ID,
             Varien_Db_Ddl_Table::TYPE_INTEGER,
             null,
             array(
@@ -723,7 +711,7 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Order Id'
         )
         ->addColumn(
-            'action_id',
+            Lengow_Connector_Model_Import_Action::FIELD_ACTION_ID,
             Varien_Db_Ddl_Table::TYPE_INTEGER,
             null,
             array(
@@ -733,7 +721,7 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Action Id'
         )
         ->addColumn(
-            'order_line_sku',
+            Lengow_Connector_Model_Import_Action::FIELD_ORDER_LINE_SKU,
             Varien_Db_Ddl_Table::TYPE_VARCHAR,
             100,
             array(
@@ -744,7 +732,7 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Order Line Sku'
         )
         ->addColumn(
-            'action_type',
+            Lengow_Connector_Model_Import_Action::FIELD_ACTION_TYPE,
             Varien_Db_Ddl_Table::TYPE_VARCHAR,
             32,
             array(
@@ -754,7 +742,7 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Action Type'
         )
         ->addColumn(
-            'retry',
+            Lengow_Connector_Model_Import_Action::FIELD_RETRY,
             Varien_Db_Ddl_Table::TYPE_SMALLINT,
             null,
             array(
@@ -765,8 +753,8 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Retry'
         )
         ->addColumn(
-            'parameters',
-            $typeText,
+            Lengow_Connector_Model_Import_Action::FIELD_PARAMETERS,
+            Varien_Db_Ddl_Table::TYPE_TEXT,
             null,
             array(
                 'nullable' => false,
@@ -774,7 +762,7 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Parameters'
         )
         ->addColumn(
-            'state',
+            Lengow_Connector_Model_Import_Action::FIELD_STATE,
             Varien_Db_Ddl_Table::TYPE_SMALLINT,
             null,
             array(
@@ -784,7 +772,7 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'State'
         )
         ->addColumn(
-            'created_at',
+            Lengow_Connector_Model_Import_Action::FIELD_CREATED_AT,
             Varien_Db_Ddl_Table::TYPE_TIMESTAMP,
             null,
             array(
@@ -793,7 +781,7 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Created At'
         )
         ->addColumn(
-            'updated_at',
+            Lengow_Connector_Model_Import_Action::FIELD_UPDATED_AT,
             Varien_Db_Ddl_Table::TYPE_TIMESTAMP,
             null,
             array(
@@ -803,19 +791,15 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Updated At'
         );
     $installer->getConnection()->createTable($table);
-    // compatibility with version 1.5
-    if (Mage::getVersion() < '1.6.0.0') {
-        $installer->getConnection()->modifyColumn($tableName, 'id', 'int(11) NOT NULL auto_increment');
-    }
 }
 
 // create table lengow_log
-$tableName = $installer->getTable('lengow_log');
+$tableName = $installer->getTable(Lengow_Connector_Model_Log::TABLE_LOG);
 if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
     $table = $installer->getConnection()
-        ->newTable($installer->getTable('lengow_log'))
+        ->newTable($tableName)
         ->addColumn(
-            'id',
+            Lengow_Connector_Model_Log::FIELD_ID,
             Varien_Db_Ddl_Table::TYPE_INTEGER,
             null,
             array(
@@ -827,7 +811,7 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Id'
         )
         ->addColumn(
-            'date',
+            Lengow_Connector_Model_Log::FIELD_DATE,
             Varien_Db_Ddl_Table::TYPE_TIMESTAMP,
             null,
             array(
@@ -836,8 +820,8 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Date'
         )
         ->addColumn(
-            'message',
-            $typeText,
+            Lengow_Connector_Model_Log::FIELD_MESSAGE,
+            Varien_Db_Ddl_Table::TYPE_TEXT,
             null,
             array(
                 'nullable' => false,
@@ -845,10 +829,6 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
             'Message'
         );
     $installer->getConnection()->createTable($table);
-    // compatibility with version 1.5
-    if (Mage::getVersion() < '1.6.0.0') {
-        $installer->getConnection()->modifyColumn($tableName, 'id', 'int(11) NOT NULL auto_increment');
-    }
 }
 
 // *********************************************************
@@ -859,7 +839,7 @@ if (!(bool) $installer->getConnection()->showTableStatus($tableName)) {
 $collections = Mage::getModel('sales/order_status')->getCollection()->toOptionArray();
 $lengowTechnicalExists = false;
 foreach ($collections as $value) {
-    if ($value['value'] === 'lengow_technical_error') {
+    if ($value['value'] === Lengow_Connector_Helper_Data::LENGOW_TECHNICAL_ERROR_STATE) {
         $lengowTechnicalExists = true;
     }
 }
@@ -873,7 +853,7 @@ if (!$lengowTechnicalExists) {
         array('status', 'label'),
         array(
             array(
-                'status' => 'lengow_technical_error',
+                'status' => Lengow_Connector_Helper_Data::LENGOW_TECHNICAL_ERROR_STATE,
                 'label' => 'Lengow Technical Error',
             ),
         )
@@ -884,8 +864,8 @@ if (!$lengowTechnicalExists) {
         array('status', 'state', 'is_default'),
         array(
             array(
-                'status' => 'lengow_technical_error',
-                'state' => 'lengow_technical_error',
+                'status' => Lengow_Connector_Helper_Data::LENGOW_TECHNICAL_ERROR_STATE,
+                'state' => Lengow_Connector_Helper_Data::LENGOW_TECHNICAL_ERROR_STATE,
                 'is_default' => 1,
             ),
         )

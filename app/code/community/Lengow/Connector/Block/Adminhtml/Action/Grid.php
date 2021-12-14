@@ -30,7 +30,7 @@ class Lengow_Connector_Block_Adminhtml_Action_Grid extends Mage_Adminhtml_Block_
         parent::__construct();
         $this->setId('LengowActionGrid');
         $this->setUseAjax(true);
-        $this->setDefaultSort('created_at');
+        $this->setDefaultSort(Lengow_Connector_Model_Import_Action::FIELD_CREATED_AT);
         $this->setDefaultDir('DESC');
         $this->setSaveParametersInSession(true);
     }
@@ -55,91 +55,91 @@ class Lengow_Connector_Block_Adminhtml_Action_Grid extends Mage_Adminhtml_Block_
         /** @var Lengow_Connector_Helper_Data $helper */
         $helper = $this->helper('lengow_connector');
         $this->addColumn(
-            'id',
+            Lengow_Connector_Model_Import_Action::FIELD_ID,
             array(
                 'header' => $helper->__('toolbox.table.id'),
-                'index' => 'id',
+                'index' => Lengow_Connector_Model_Import_Action::FIELD_ID,
                 'width' => '60px',
                 'type' => 'text',
                 'column_css_class' => 'lengow_table_center',
             )
         );
         $this->addColumn(
-            'order_id',
+            Lengow_Connector_Model_Import_Action::FIELD_ORDER_ID,
             array(
                 'header' => $helper->__('toolbox.table.order_id'),
-                'index' => 'order_id',
+                'index' => Lengow_Connector_Model_Import_Action::FIELD_ORDER_ID,
                 'width' => '100px',
                 'column_css_class' => 'lengow_table_center',
             )
         );
         $this->addColumn(
-            'action_id',
+            Lengow_Connector_Model_Import_Action::FIELD_ACTION_ID,
             array(
                 'header' => $helper->__('toolbox.table.action_id'),
-                'index' => 'action_id',
+                'index' => Lengow_Connector_Model_Import_Action::FIELD_ACTION_ID,
                 'width' => '100px',
                 'column_css_class' => 'lengow_table_center',
             )
         );
         $this->addColumn(
-            'order_line_sku',
+            Lengow_Connector_Model_Import_Action::FIELD_ORDER_LINE_SKU,
             array(
                 'header' => $helper->__('toolbox.table.order_line_sku'),
-                'index' => 'order_line_sku',
+                'index' => Lengow_Connector_Model_Import_Action::FIELD_ORDER_LINE_SKU,
                 'column_css_class' => 'lengow_table_center',
             )
         );
         $this->addColumn(
-            'action_type',
+            Lengow_Connector_Model_Import_Action::FIELD_ACTION_TYPE,
             array(
                 'header' => $helper->__('toolbox.table.action_type'),
-                'index' => 'action_type',
+                'index' => Lengow_Connector_Model_Import_Action::FIELD_ACTION_TYPE,
                 'width' => '100px',
                 'column_css_class' => 'lengow_table_center',
             )
         );
         $this->addColumn(
-            'retry',
+            Lengow_Connector_Model_Import_Action::FIELD_RETRY,
             array(
                 'header' => $helper->__('toolbox.table.retry'),
-                'index' => 'retry',
+                'index' => Lengow_Connector_Model_Import_Action::FIELD_RETRY,
                 'width' => '100px',
                 'column_css_class' => 'lengow_table_center',
             )
         );
         $this->addColumn(
-            'parameters',
+            Lengow_Connector_Model_Import_Action::FIELD_PARAMETERS,
             array(
                 'header' => $helper->__('toolbox.table.parameters'),
-                'index' => 'parameters',
+                'index' => Lengow_Connector_Model_Import_Action::FIELD_PARAMETERS,
                 'renderer' => 'Lengow_Connector_Block_Adminhtml_Action_Renderer_Parameter',
                 'column_css_class' => 'lengow_table_center',
             )
         );
         $this->addColumn(
-            'state',
+            Lengow_Connector_Model_Import_Action::FIELD_STATE,
             array(
                 'header' => $helper->__('toolbox.table.state'),
-                'index' => 'state',
+                'index' => Lengow_Connector_Model_Import_Action::FIELD_STATE,
                 'renderer' => 'Lengow_Connector_Block_Adminhtml_Action_Renderer_Status',
                 'column_css_class' => 'lengow_table_center',
             )
         );
         $this->addColumn(
-            'created_at',
+            Lengow_Connector_Model_Import_Action::FIELD_CREATED_AT,
             array(
                 'header' => $helper->__('toolbox.table.created_at'),
-                'index' => 'created_at',
+                'index' => Lengow_Connector_Model_Import_Action::FIELD_CREATED_AT,
                 'type' => 'datetime',
                 'column_css_class' => 'lengow_table_center',
             )
         );
         $this->addColumn(
-            'updated_at',
+            Lengow_Connector_Model_Import_Action::FIELD_UPDATED_AT,
             array(
                 'header' => $helper->__('toolbox.table.updated_at'),
-                'index' => 'updated_at',
+                'index' => Lengow_Connector_Model_Import_Action::FIELD_UPDATED_AT,
                 'type' => 'datetime',
                 'column_css_class' => 'lengow_table_center',
             )

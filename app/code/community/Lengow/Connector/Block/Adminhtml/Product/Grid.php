@@ -107,17 +107,15 @@ class Lengow_Connector_Block_Adminhtml_Product_Grid extends Mage_Adminhtml_Block
      */
     protected function _addColumnFilterToCollection($column)
     {
-        if ($this->getCollection()) {
-            if ($column->getId() === 'websites') {
-                $this->getCollection()->joinField(
-                    'websites',
-                    'catalog/product_website',
-                    'website_id',
-                    'product_id=entity_id',
-                    null,
-                    'left'
-                );
-            }
+        if ($this->getCollection() && $column->getId() === 'websites') {
+            $this->getCollection()->joinField(
+                'websites',
+                'catalog/product_website',
+                'website_id',
+                'product_id=entity_id',
+                null,
+                'left'
+            );
         }
         return parent::_addColumnFilterToCollection($column);
     }

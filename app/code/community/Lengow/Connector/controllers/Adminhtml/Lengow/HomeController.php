@@ -35,13 +35,10 @@ class Lengow_Connector_Adminhtml_Lengow_HomeController extends Mage_Adminhtml_Co
 
     /**
      * Index Action
-     *
-     * @return mixed
      */
     public function indexAction()
     {
-        $isAjax = Mage::app()->getRequest()->isAjax();
-        if ($isAjax) {
+        if (Mage::app()->getRequest()->isAjax()) {
             $action = (string) $this->getRequest()->getParam('action');
             if ($action !== '') {
                 switch ($action) {
@@ -105,14 +102,11 @@ class Lengow_Connector_Adminhtml_Lengow_HomeController extends Mage_Adminhtml_Co
                         break;
                 }
             }
+        } elseif (Mage::helper('lengow_connector/config')->isNewMerchant()) {
+            $this->_initAction()->renderLayout();
         } else {
-            if (Mage::helper('lengow_connector/config')->isNewMerchant()) {
-                $this->_initAction()->renderLayout();
-            } else {
-                $this->_redirect('adminhtml/lengow_dashboard/index');
-            }
+            $this->_redirect('adminhtml/lengow_dashboard/index');
         }
-        return $this;
     }
 
     /**
@@ -188,6 +182,7 @@ class Lengow_Connector_Adminhtml_Lengow_HomeController extends Mage_Adminhtml_Co
         // reset access ids if cms creation failed
         if (!$cmsConnected) {
             $configHelper->resetAccessIds();
+            $configHelper->resetAuthorizationToken();
         }
         return $cmsConnected;
     }

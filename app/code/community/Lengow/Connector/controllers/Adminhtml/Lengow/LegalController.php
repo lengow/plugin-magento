@@ -35,13 +35,10 @@ class Lengow_Connector_Adminhtml_Lengow_LegalController extends Mage_Adminhtml_C
 
     /**
      * Index Action
-     *
-     * @return Lengow_Connector_Adminhtml_Lengow_LegalController
      */
     public function indexAction()
     {
         $this->_initAction()->renderLayout();
-        return $this;
     }
 
     /**

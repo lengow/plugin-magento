@@ -162,6 +162,6 @@ class Lengow_Connector_Helper_Security extends Mage_Core_Helper_Abstract
      */
     public function checkValidMagentoVersion()
     {
-        return version_compare($this->getMagentoVersion(), '1.5.0.0', '>');
+        return version_compare($this->getMagentoVersion(), '1.7.0.0', '>');
     }
 }

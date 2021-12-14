@@ -33,7 +33,10 @@ class Lengow_Connector_Block_Tag_Simple extends Mage_Core_Block_Template
         if (Mage::app()->getRequest()->getActionName() === 'success') {
             $orderId = Mage::getSingleton('checkout/session')->getLastOrderId();
             $order = Mage::getModel('sales/order')->load($orderId);
-            $this->setData('account_id', Mage::helper('lengow_connector/config')->get('account_id'));
+            $this->setData(
+                'account_id',
+                Mage::helper('lengow_connector/config')->get(Lengow_Connector_Helper_Config::ACCOUNT_ID)
+            );
             $cart = Mage::getModel('lengow/tracker')->getIdsProducts($order);
             $this->setData('order_ref', $orderId);
             $this->setData('amount', $order->getGrandTotal());
