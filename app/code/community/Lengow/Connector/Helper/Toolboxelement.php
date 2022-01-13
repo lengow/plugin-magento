@@ -130,6 +130,10 @@ class Lengow_Connector_Helper_Toolboxelement extends Mage_Core_Helper_Abstract
                 self::DATA_MESSAGE => $pluginData[Lengow_Connector_Helper_Toolbox::PLUGIN_VERSION],
             ),
             array(
+                self::DATA_TITLE => $this->_helper->__('toolbox.screen.php_version'),
+                self::DATA_MESSAGE => $pluginData[Lengow_Connector_Helper_Toolbox::PLUGIN_PHP_VERSION],
+            ),
+            array(
                 self::DATA_TITLE => $this->_helper->__('toolbox.screen.server_ip'),
                 self::DATA_MESSAGE => $pluginData[Lengow_Connector_Helper_Toolbox::PLUGIN_SERVER_IP],
             ),

@@ -1,6 +1,6 @@
 # Lengow for Magento
 
-- **Requires at least:** 1.7
+- **Requires at least:** 1.9
 - **Tested up to:** 1.9
 - **Requires PHP:** 5.4
 - **Stable tag:** 3.4.0

@@ -70,6 +70,7 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
     const PLUGIN = 'plugin';
     const PLUGIN_CMS_VERSION = 'cms_version';
     const PLUGIN_VERSION = 'plugin_version';
+    const PLUGIN_PHP_VERSION = 'php_version';
     const PLUGIN_DEBUG_MODE_DISABLE = 'debug_mode_disable';
     const PLUGIN_WRITE_PERMISSION = 'write_permission';
     const PLUGIN_SERVER_IP = 'server_ip';
@@ -406,6 +407,7 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
         return array(
             self::PLUGIN_CMS_VERSION => Mage::getVersion(),
             self::PLUGIN_VERSION => $this->_securityHelper->getPluginVersion(),
+            self::PLUGIN_PHP_VERSION => PHP_VERSION,
             self::PLUGIN_DEBUG_MODE_DISABLE => !$this->_configHelper->debugModeIsActive(),
             self::PLUGIN_WRITE_PERMISSION => $this->testWritePermission(),
             self::PLUGIN_SERVER_IP => $_SERVER['SERVER_ADDR'],
