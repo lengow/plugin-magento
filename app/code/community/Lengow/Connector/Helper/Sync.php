@@ -48,10 +48,10 @@ class Lengow_Connector_Helper_Sync extends Mage_Core_Helper_Abstract
     const LINK_TYPE_SUPPORT = 'support';
 
     /* Default plugin links */
-    const LINK_HELP_CENTER = 'https://support.lengow.com/kb/guide/en/ClPhE37tgf';
-    const LINK_CHANGELOG = 'https://support.lengow.com/kb/guide/en/hI6niKLnJG';
-    const LINK_UPDATE_GUIDE = 'https://support.lengow.com/kb/guide/en/ClPhE37tgf/Steps/25858,117750';
-    const LINK_SUPPORT = 'https://help-support.lengow.com/hc/en-us/requests/new';
+    const LINK_HELP_CENTER = 'https://help.lengow.com/hc/en-us/articles/360011978332';
+    const LINK_CHANGELOG = 'https://help.lengow.com/hc/en-us/articles/360011027659';
+    const LINK_UPDATE_GUIDE = 'https://help.lengow.com/hc/en-us/articles/360011978332#12-update-the-plugin-version';
+    const LINK_SUPPORT = 'https://help.lengow.com/hc/en-us/requests/new';
 
     /* Api iso codes */
     const API_ISO_CODE_EN = 'en';
