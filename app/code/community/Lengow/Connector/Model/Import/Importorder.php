@@ -155,6 +155,11 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
     protected $_orderReference;
 
     /**
+     * @var string order types data
+     */
+    protected $_orderTypes;
+
+    /**
      * @var string order date in GMT format
      */
     protected $_orderDate;
@@ -644,6 +649,8 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
     {
         // load order date
         $this->_loadOrderDate();
+        // load order types data
+        $this->_loadOrderTypesData();
         // If the Lengow order already exists do not recreate it
         if ($this->_orderLengowId) {
             return true;
@@ -655,7 +662,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
             Lengow_Connector_Model_Import_Order::FIELD_MARKETPLACE_LABEL => $this->_marketplaceLabel,
             Lengow_Connector_Model_Import_Order::FIELD_DELIVERY_ADDRESS_ID => (int) $this->_deliveryAddressId,
             Lengow_Connector_Model_Import_Order::FIELD_ORDER_LENGOW_STATE => $this->_orderStateLengow,
-            Lengow_Connector_Model_Import_Order::FIELD_ORDER_TYPES => $this->_getOrderTypesData(),
+            Lengow_Connector_Model_Import_Order::FIELD_ORDER_TYPES => $this->_orderTypes,
             Lengow_Connector_Model_Import_Order::FIELD_CUSTOMER_VAT_NUMBER => $this->_getVatNumberFromOrderData(),
             Lengow_Connector_Model_Import_Order::FIELD_ORDER_DATE => $this->_orderDate,
             Lengow_Connector_Model_Import_Order::FIELD_MESSAGE => $this->_getOrderComment(),
@@ -709,9 +716,9 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
     }
 
     /**
-     * Get order types data and update Lengow order record
+     * Load order types data and update Lengow order record
      */
-    private function _getOrderTypesData()
+    private function _loadOrderTypesData()
     {
         $orderTypes = array();
         if ($this->_orderData->order_types !== null && !empty($this->_orderData->order_types)) {
@@ -722,7 +729,7 @@ class Lengow_Connector_Model_Import_Importorder extends Varien_Object
                 }
             }
         }
-        return Mage::helper('core')->jsonEncode($orderTypes);
+        $this->_orderTypes = Mage::helper('core')->jsonEncode($orderTypes);
     }
 
     /**
