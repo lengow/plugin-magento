@@ -4,6 +4,7 @@ Version 3.4.1
 
     - Feature: Adding the PHP version in the toolbox
     - Feature: Modification of the fallback urls of the Lengow Help Center
+    - Feature: Adding extra field update date in external toolbox
     - BugFix: [Import] Loading of order types at each order synchronization
 
 =============================================================
