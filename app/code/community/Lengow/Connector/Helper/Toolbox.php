@@ -70,6 +70,7 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
     const PLUGIN = 'plugin';
     const PLUGIN_CMS_VERSION = 'cms_version';
     const PLUGIN_VERSION = 'plugin_version';
+    const PLUGIN_PHP_VERSION = 'php_version';
     const PLUGIN_DEBUG_MODE_DISABLE = 'debug_mode_disable';
     const PLUGIN_WRITE_PERMISSION = 'write_permission';
     const PLUGIN_SERVER_IP = 'server_ip';
@@ -162,6 +163,7 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
     const ACTION_PARAMETERS = 'parameters';
     const ACTION_RETRY = 'retry';
     const ACTION_FINISH = 'is_finished';
+    const EXTRA_UPDATED_AT = 'extra_updated_at';
 
     /* Process state labels */
     const PROCESS_STATE_NEW = 'new';
@@ -311,11 +313,15 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
         }
         $orders = array();
         foreach ($lengowOrders as $data) {
+            $order = $data[Lengow_Connector_Model_Import_Order::FIELD_ORDER_ID]
+                ? Mage::getModel('sales/order')->load((int) $data[Lengow_Connector_Model_Import_Order::FIELD_ORDER_ID])
+                : null;
             if ($type === self::DATA_TYPE_EXTRA) {
-                return $this->getOrderExtraData($data);
+                return $this->getOrderExtraData($data, $order);
             }
             $marketplaceLabel = $data[Lengow_Connector_Model_Import_Order::FIELD_MARKETPLACE_LABEL];
-            $orders[] = $this->getOrderDataByType($data, $type);
+            $orders[] = $this->getOrderDataByType($type, $data, $order);
+            unset($order);
         }
         return array(
             self::ORDER_MARKETPLACE_SKU => $marketplaceSku,
@@ -406,6 +412,7 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
         return array(
             self::PLUGIN_CMS_VERSION => Mage::getVersion(),
             self::PLUGIN_VERSION => $this->_securityHelper->getPluginVersion(),
+            self::PLUGIN_PHP_VERSION => PHP_VERSION,
             self::PLUGIN_DEBUG_MODE_DISABLE => !$this->_configHelper->debugModeIsActive(),
             self::PLUGIN_WRITE_PERMISSION => $this->testWritePermission(),
             self::PLUGIN_SERVER_IP => $_SERVER['SERVER_ADDR'],
@@ -658,16 +665,14 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
     /**
      * Get array of all the data of the order
      *
-     * @param array $data All Lengow order data
      * @param string $type Toolbox order data type
+     * @param array $data All Lengow order data
+     * @param Mage_Sales_Model_Order|null $order Magento order instance
      *
      * @return array
      */
-    private function getOrderDataByType($data, $type)
+    private function getOrderDataByType($type, $data, $order = null)
     {
-        $order = $data[Lengow_Connector_Model_Import_Order::FIELD_ORDER_ID]
-            ? Mage::getModel('sales/order')->load((int) $data[Lengow_Connector_Model_Import_Order::FIELD_ORDER_ID])
-            : null;
         $orderReferences = array(
             self::ID => (int) $data[Lengow_Connector_Model_Import_Order::FIELD_ID],
             self::ORDER_MERCHANT_ORDER_ID  => $order ? (int) $order->getId() : null,
@@ -903,12 +908,17 @@ class Lengow_Connector_Helper_Toolbox extends Mage_Core_Helper_Abstract
      * Get all the data of the order at the time of import
      *
      * @param array $data All Lengow order data
+     * @param Mage_Sales_Model_Order|null $order Magento order instance
      *
      * @return array
      */
-    private function getOrderExtraData($data)
+    private function getOrderExtraData($data, $order = null)
     {
-        return json_decode($data[Lengow_Connector_Model_Import_Order::FIELD_EXTRA], true);
+        $orderData = json_decode($data[Lengow_Connector_Model_Import_Order::FIELD_EXTRA], true);
+        $orderData[self::EXTRA_UPDATED_AT] = $order
+            ? strtotime($order->getStatusHistoryCollection()->getFirstItem()->getCreatedAt())
+            : strtotime($data[Lengow_Connector_Model_Import_Order::FIELD_UPDATED_AT]);
+        return $orderData;
     }
 
     /**

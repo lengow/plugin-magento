@@ -250,6 +250,7 @@ fr:
       checksum_message: "Vérification des fichiers du plugin"
       checksum_help: "Certains fichiers ont été modifiés par le client"
       plugin_information: "Informations sur le plugin"
+      php_version: "Version du PHP"
       server_ip: "IP Serveur"
       authorized_ip_enable: "Autorisation par IP activée"
       authorized_ip: "IP autorisée(s)"

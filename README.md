@@ -1,9 +1,9 @@
 # Lengow for Magento
 
-- **Requires at least:** 1.5
+- **Requires at least:** 1.9
 - **Tested up to:** 1.9
 - **Requires PHP:** 5.4
-- **Stable tag:** 3.4.0
+- **Stable tag:** 3.4.1
 - **License:** OSL-3.0
 - **License URI:** https://opensource.org/licenses/OSL-3.0
 
@@ -66,11 +66,11 @@ Warning ! On the latest 1.9 versions of Magento, this option was removed for sec
 
 ### Where can I find Lengow documentation and user guides?
 
-For help setting up and configuring Lengow plugin please refer to our [user guide](https://support.lengow.com/hc/en-us/articles/360011978332-Magento-1-For-new-Lengow-platform-users)
+For help setting up and configuring Lengow plugin please refer to our [user guide](https://help.lengow.com/hc/en-us/articles/360011978332)
 
 ### Where can I get support?
 
-To make a support request to Lengow, use [our helpdesk](https://support.lengow.com/hc/en-us/requests/new).
+To make a support request to Lengow, use [our helpdesk](https://help.lengow.com/hc/en-us/requests/new).
 
 
 ## Become a contributor

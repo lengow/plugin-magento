@@ -220,6 +220,7 @@ toolbox.screen.json_php_help_label|Go to JSON PHP extension manual
 toolbox.screen.checksum_message|Plugin files check
 toolbox.screen.checksum_help|Some files have been changed by the customer
 toolbox.screen.plugin_information|Plugin information
+toolbox.screen.php_version|PHP version
 toolbox.screen.server_ip|Server IP
 toolbox.screen.authorized_ip_enable|Authorisation by IP enabled
 toolbox.screen.authorized_ip|Authorised IP

@@ -220,6 +220,7 @@ toolbox.screen.json_php_help_label|Gehen Sie zum Handbuch zur JSON PHP-Erweiteru
 toolbox.screen.checksum_message|Prüfung von Plugin-Dateien
 toolbox.screen.checksum_help|Einige Dateien wurden vom Kunden geändert
 toolbox.screen.plugin_information|Information zum Plugin
+toolbox.screen.php_version|PHP-Version
 toolbox.screen.server_ip|Server IP
 toolbox.screen.authorized_ip_enable|Autorisierung über IP aktiviert
 toolbox.screen.authorized_ip|Autorisierte IP
